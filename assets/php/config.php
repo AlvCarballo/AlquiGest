@@ -30,6 +30,6 @@ return [
     // IMPORTANTE: Cambia esta cadena antes de poner en producción.
     // Si se pierde esta clave las credenciales cifradas son irrecuperables.
     // Mínimo 32 caracteres recomendado (AES-256 usa los primeros 32 bytes).
-    'encrypt_key' => 'AG_ENC_KEY_ALQ26_xK7mP9nQ2vR8sT5uAbCdEfGhIjKlMnOpQr',
+    'encrypt_key' => '',
 
 ];
