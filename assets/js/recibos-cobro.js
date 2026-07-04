@@ -506,11 +506,20 @@ function marcarCobrado(id) { modalDarCobro(id); }
 //   · Nunca se borra físicamente: el recibo original queda con estado 'anulado'.
 //   · Si el recibo TODAVÍA NO tiene factura: se genera un recibo rectificativo
 //     RER-AAAAMM-NNNNN (importes negados) que compensa al original en los totales.
-//     No se toca en ningún caso la lógica de facturas rectificativas.
-//   · Si el recibo YA tiene factura emitida: el recibo se anula igualmente, pero
-//     no se genera ningún recibo rectificativo ni ninguna factura rectificativa
-//     de forma automática — la rectificación fiscal de la factura es un acto
-//     explícito que el usuario debe iniciar desde el módulo Facturas (anularFactura()).
+//       — Si además el recibo ya estaba COBRADO (total o parcialmente), no se anula
+//         "sin más": se pregunta explícitamente si se quiere devolver el cobro, y el
+//         rectificativo generado incluye ese cobro en negativo (campo `pagos` e
+//         `importe_pagado`), dejando trazabilidad de la devolución. Si el usuario
+//         cancela esa pregunta, no se modifica nada (ni estado ni RER ni cobros).
+//   · Si el recibo tiene una factura EMITIDA asociada: ya no basta con anular el
+//     recibo dejando la factura tal cual — hay que rectificar antes la factura
+//     (genera RET-AAAAMM-NNNNN reutilizando anularFacturaConRectificativa() de
+//     facturas.js) y solo si eso sale bien se anula el recibo. Nunca se genera un
+//     RER en este caso: la corrección fiscal ya queda hecha con el RET de la
+//     factura, y generar además un RER duplicaría la compensación.
+//   · Si la factura asociada YA está rectificada (o anulada): la corrección fiscal
+//     ya existe de antes, así que es seguro anular el recibo sin tocar de nuevo la
+//     factura ni generar ningún documento adicional (evita un RET duplicado).
 // ===========================
 async function anularRecibo(id) {
   const r = DB.getItem('recibos', id);
@@ -518,31 +527,97 @@ async function anularRecibo(id) {
   if (r.estado === 'anulado') { toast('Este recibo ya está anulado.', 'info'); return; }
   if (r.estado === 'rectificativo') { toast('Los recibos rectificativos no se pueden anular.', 'info'); return; }
 
-  // Comprobar si el recibo tiene factura emitida antes de confirmar
-  const facturaAsoc = DB.get('facturas').find(f => f.recibo_id === id);
+  // Se busca por `factura_id` (el puntero que mantiene actualizado
+  // generarFacturaDesdeRecibo()) y no con .find() sobre todas las facturas: un
+  // mismo recibo puede tener más de una factura a lo largo del tiempo (p. ej. una
+  // sustitutiva tras rectificar la anterior), y factura_id es la única forma
+  // fiable de saber cuál es la vigente.
+  const facturaAsoc = r.factura_id ? DB.getItem('facturas', r.factura_id) : null;
 
-  if (facturaAsoc) {
+  if (facturaAsoc && facturaAsoc.estado === 'emitida') {
+    // Regla nueva: un recibo con factura EMITIDA no puede anularse sin rectificar
+    // antes la factura. Se pregunta explícitamente porque implica anular también
+    // un documento fiscal (la factura), no solo el recibo.
     if (!confirm(
-      '¿Anular este recibo?\n\n' +
-      '⚠ ATENCIÓN: Este recibo tiene la factura ' + facturaAsoc.numero_factura + ' emitida. ' +
-      'El recibo se anulará pero la factura quedará en estado "emitida" y no se generará ningún ' +
-      'recibo rectificativo. Si necesitas rectificar la factura, hazlo desde el módulo de Facturas.'
-    )) return;
+      'Este recibo tiene una factura emitida asociada. Para anular el recibo es necesario ' +
+      'anular también la factura y generar su factura rectificativa. ¿Desea anular la factura y continuar?'
+    )) {
+      toast('No se ha anulado el recibo. Para anular un recibo con factura emitida es necesario anular también la factura y generar su factura rectificativa.', 'info');
+      return;
+    }
 
+    // Se rectifica primero la factura (genera RET). Solo si esto termina bien se
+    // anula después el recibo: así nunca queda un recibo anulado con la factura
+    // todavía "emitida" a medias, ni una anulación parcial.
+    const resultadoFactura = await anularFacturaConRectificativa(facturaAsoc.id, {
+      reciboId: r.id, reciboNumero: r.numero_recibo
+    });
+    if (!resultadoFactura.ok) {
+      toast('No se ha anulado el recibo porque no se ha podido anular correctamente la factura asociada.', 'error');
+      return;
+    }
+
+    // No se genera RER: la corrección fiscal ya la aporta el RET recién creado
+    // sobre la factura: un RER adicional duplicaría la compensación.
     r.estado = 'anulado';
+    r.notas = (r.notas ? r.notas + '\n' : '') +
+      'Recibo anulado. Factura ' + facturaAsoc.numero_factura + ' rectificada por ' + resultadoFactura.numeroRectificativa + '.';
     await DB.save('recibos', r);
+
     const _inqAnul = (DB.getItem('inquilinos', r.inquilino_id) || {}).nombre || '';
-    registrarActividad('anulacion_recibo', 'recibos', id, r.numero_recibo + ' — ' + _inqAnul);
-    toast('Recibo anulado — la factura ' + facturaAsoc.numero_factura + ' sigue emitida', 'info');
+    registrarActividad('anulacion_recibo', 'recibos', id, r.numero_recibo + ' — ' + _inqAnul + ' — factura rectificada ' + resultadoFactura.numeroRectificativa);
+
+    toast('Factura anulada con rectificativa y recibo anulado correctamente.', 'success');
     renderRecibos();
     return;
   }
 
-  if (!confirm(
-    '¿Anular este recibo?\n\n' +
-    'Al no tener factura emitida, se generará automáticamente un recibo rectificativo ' +
-    '(serie RER) que anula sus efectos.'
-  )) return;
+  if (facturaAsoc) {
+    // La factura asociada ya está rectificada (o anulada): la corrección fiscal
+    // ya existe de antes, así que es seguro anular el recibo sin generar ningún
+    // documento adicional (ni RER ni un segundo RET sobre la misma factura).
+    if (!confirm(
+      '¿Anular este recibo?\n\n' +
+      'La factura asociada (' + facturaAsoc.numero_factura + ') ya está ' +
+      (facturaAsoc.estado === 'rectificada' ? 'rectificada' : 'anulada') + '. ' +
+      'El recibo se anulará sin generar ningún documento adicional.'
+    )) return;
+
+    r.estado = 'anulado';
+    await DB.save('recibos', r);
+    const _inqAnul2 = (DB.getItem('inquilinos', r.inquilino_id) || {}).nombre || '';
+    registrarActividad('anulacion_recibo', 'recibos', id, r.numero_recibo + ' — ' + _inqAnul2);
+    toast('Recibo anulado — la factura ya estaba ' + facturaAsoc.estado + '.', 'info');
+    renderRecibos();
+    return;
+  }
+
+  // El recibo tiene cobros (totales o parciales) si su estado es 'cobrado'/'parcial'
+  // o si el array de pagos suma un importe mayor que cero. En ese caso NO se puede
+  // anular "sin más": hay que preguntar explícitamente si se quiere devolver el cobro,
+  // porque el rectificativo que se genera a continuación va a reflejar esa devolución
+  // en negativo. Si el recibo está pendiente (sin cobros), se mantiene el comportamiento
+  // anterior: un único aviso genérico y no se pregunta nada sobre devoluciones.
+  const totalPagadoActual = (r.pagos || []).reduce((s, p) => s + (parseFloat(p.importe) || 0), 0);
+  const estaCobrado = r.estado === 'cobrado' || r.estado === 'parcial' || totalPagadoActual > 0;
+
+  if (estaCobrado) {
+    if (!confirm(
+      'El recibo ya está cobrado. Para anularlo es necesario devolver el cobro en el recibo ' +
+      'rectificativo. ¿Desea continuar y generar la devolución?'
+    )) {
+      // Cancelación explícita: no se toca el recibo ni se genera nada. Se sale
+      // aquí mismo, antes de reservar número ni de tocar la BD.
+      toast('Anulación cancelada. No se ha modificado el recibo.', 'info');
+      return;
+    }
+  } else {
+    if (!confirm(
+      '¿Anular este recibo?\n\n' +
+      'Al no tener factura emitida, se generará automáticamente un recibo rectificativo ' +
+      '(serie RER) que anula sus efectos.'
+    )) return;
+  }
 
   // Reservar número del recibo rectificativo (atómico, reinicio mensual, mismo servicio que REC/FAC)
   const hoy     = new Date().toISOString().split('T')[0];
@@ -568,26 +643,40 @@ async function anularRecibo(id) {
     importe_iva  : -parseFloat(r.importe_iva   || 0),
     importe_irpf : -parseFloat(r.importe_irpf  || 0),
     importe_total: -parseFloat(r.importe_total || 0),
-    importe_pagado: 0,
-    pagos        : [],
+    // Si el recibo tenía cobros, el rectificativo refleja la devolución con el
+    // mismo importe en negativo (mismo patrón que las facturas rectificativas RET),
+    // dejando un "pago" de devolución trazable dentro del propio array de pagos.
+    importe_pagado: estaCobrado ? -totalPagadoActual : 0,
+    pagos        : estaCobrado
+      ? [{ fecha: hoy, importe: -totalPagadoActual, metodo: 'Devolución', cuenta: '' }]
+      : [],
     estado       : 'rectificativo',
     recibo_rectificado_id: r.id,
-    notas        : 'Recibo rectificativo de ' + r.numero_recibo + '. Anulación total.',
+    notas        : estaCobrado
+      ? 'Recibo rectificativo de ' + r.numero_recibo + '. Anulación total con devolución de cobro de ' + fmtMoney(totalPagadoActual) + '.'
+      : 'Recibo rectificativo de ' + r.numero_recibo + '. Anulación total.',
     fecha_creacion: new Date().toISOString(),
   };
   const saved = await DB.save('recibos', rectificativo);
   if (!saved || saved.error) { toast('Error al crear el recibo rectificativo.', 'error'); return; }
 
-  // Marcar el original como anulado con referencia al rectificativo
+  // Marcar el original como anulado con referencia al rectificativo.
+  // confirmar_devolucion viaja al backend (aunque no sea una columna de la tabla)
+  // para que la validación server-side sepa que el usuario ya confirmó la
+  // devolución del cobro y no rechace la operación (ver validarDatos() en api.php).
   r.estado = 'anulado';
+  r.confirmar_devolucion = estaCobrado;
   r.notas = (r.notas ? r.notas + '\n' : '') +
-    'Rectificado por: ' + rerInfo.numero + ' · emitido el ' + hoy + '.';
+    'Rectificado por: ' + rerInfo.numero + ' · emitido el ' + hoy + '.' +
+    (estaCobrado ? ' Devolución de ' + fmtMoney(totalPagadoActual) + ' registrada.' : '');
   await DB.save('recibos', r);
 
   const _inqAnul = (DB.getItem('inquilinos', r.inquilino_id) || {}).nombre || '';
   registrarActividad('anulacion_recibo', 'recibos', id, r.numero_recibo + ' — ' + _inqAnul);
 
-  toast('Creado ' + rerInfo.numero + ' · ' + r.numero_recibo + ' queda anulado.', 'success');
+  toast(estaCobrado
+    ? 'Recibo anulado correctamente y devolución registrada en ' + rerInfo.numero + '.'
+    : 'Creado ' + rerInfo.numero + ' · ' + r.numero_recibo + ' queda anulado.', 'success');
   renderRecibos();
 }
 

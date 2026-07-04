@@ -540,6 +540,20 @@ if ($mode === 'clean' || $mode === 'sample') {
         //   '1' → el botón se muestra (comportamiento por defecto)
         //   '0' → el botón queda oculto (útil en entornos de solo consulta)
         $configDefaults = [
+            // ── Dashboard — visibilidad de widgets (pestaña "Dashboard" de Configuración) ──
+            ['dash_kpis',             '1', 'Muestra las 4 tarjetas de resumen del Dashboard (propietarios, inmuebles, contratos activos, pendiente de cobro) (1=visible, 0=oculto).'],
+            ['dash_alerta_ipc',       '1', 'Muestra el aviso naranja de revisión IPC/IRAV pendiente este mes en el Dashboard (1=visible, 0=oculto).'],
+            ['dash_alerta_backup',    '1', 'Muestra el aviso azul de backup desactualizado en el Dashboard (1=visible, 0=oculto).'],
+            ['dash_avisos_revision',  '1', 'Muestra la tarjeta de revisiones anuales urgentes (aniversario en los próximos 30 días) en el Dashboard (1=visible, 0=oculto).'],
+            ['dash_renovaciones',     '1', 'Muestra la tabla de próximas renovaciones de contrato (vencidas o en los próximos 6 meses) en el Dashboard (1=visible, 0=oculto).'],
+            ['dash_revisiones',       '1', 'Muestra la tabla completa de próximas revisiones anuales de todos los contratos activos en el Dashboard (1=visible, 0=oculto).'],
+            ['dash_ultimos_recibos',  '1', 'Muestra la tabla de últimos 5 recibos en el Dashboard (1=visible, 0=oculto).'],
+            ['dash_cobrado_mes',      '1', 'Muestra la tarjeta de cobrado este mes y recibos pendientes en el Dashboard (1=visible, 0=oculto).'],
+            ['dash_graficos',         '1', 'Muestra los gráficos de ingresos y ocupación en el Dashboard (1=visible, 0=oculto).'],
+            ['dash_cobros_esperados', '1', 'Muestra el widget de previsión de cobros del mes actual en el Dashboard (1=visible, 0=oculto).'],
+            ['dash_backup_dias',      '7', 'Número de días sin backup a partir del cual aparece el aviso de backup en el Dashboard. Mínimo: 1.'],
+            ['dash_log_actividad',    '1', 'Muestra el widget de últimas actividades en el Dashboard (1=visible, 0=oculto).'],
+            // ── Paginación ──────────────────────────────────────
             ['filas_dashboard',  '6',  'Número de filas por página en las tarjetas del dashboard (renovaciones y revisiones de renta). Mínimo: 1.'],
             ['filas_recibos',     '30', 'Número de filas por página en la tabla de Recibos. Mínimo: 5.'],
             ['filas_propietarios','20', 'Número de filas por página en la tabla de Propietarios. Mínimo: 5.'],
@@ -548,13 +562,39 @@ if ($mode === 'clean' || $mode === 'sample') {
             ['filas_inquilinos',  '20', 'Número de filas por página en la tabla de Inquilinos. Mínimo: 5.'],
             ['filas_contratos',   '20', 'Número de filas por página en la tabla de Contratos. Mínimo: 5.'],
             ['filas_facturas',    '20', 'Número de filas por página en la tabla de Facturas. Mínimo: 5.'],
+            // ── Visibilidad de botones — Contratos ───────────────
+            ['VisiGenerarReciboCont', '1', 'Muestra el botón "Generar recibo" en la tabla de contratos activos (1=visible, 0=oculto).'],
+            ['VisiRenovarCont',       '1', 'Muestra el botón "Renovar" en la tabla de contratos activos (1=visible, 0=oculto).'],
+            ['VisiHistorialCont',     '1', 'Muestra el botón "Historial" de revisiones de renta en la tabla de contratos activos (1=visible, 0=oculto).'],
+            ['VisiBajaCont',          '1', 'Muestra el botón "Baja" en la tabla de contratos activos (1=visible, 0=oculto).'],
+            ['VisiPDFCont',           '0', 'Muestra el botón "PDF" del contrato (1=visible, 0=oculto). Oculto por defecto.'],
+            ['VisiFianzaCont',        '1', 'Muestra el botón "Fianza" (justificante) cuando el contrato tiene fianza registrada (1=visible, 0=oculto).'],
+            ['VisiDocxCont',          '1', 'Muestra el botón "DOCX" para generar documentos desde plantillas Word (1=visible, 0=oculto).'],
             ['VisiBorrarProp',   '1', 'Muestra el botón Eliminar en la tabla de Propietarios (1=visible, 0=oculto).'],
             ['VisiBorrarFinc',   '1', 'Muestra el botón Eliminar en la tabla de Fincas (1=visible, 0=oculto).'],
             ['VisiBorrarInm',    '1', 'Muestra el botón Eliminar en la tabla de Inmuebles (1=visible, 0=oculto).'],
             ['VisiBorrarInq',    '1', 'Muestra el botón Eliminar en la tabla de Inquilinos (1=visible, 0=oculto).'],
             ['VisiBorrarCont',   '1', 'Muestra el botón Eliminar en la tabla de Contratos (1=visible, 0=oculto).'],
+            // ── Visibilidad de botones — Recibos ─────────────────
+            ['VisiCobrarReci',   '1', 'Muestra los botones "Cobrar" / "Ver cobros" en la tabla de Recibos (1=visible, 0=oculto).'],
+            ['VisiEmailReci',    '1', 'Muestra el botón de enviar por email en la tabla de Recibos (1=visible, 0=oculto).'],
+            ['VisiImprimirReci', '1', 'Muestra el botón de imprimir/PDF en la tabla de Recibos (1=visible, 0=oculto).'],
+            ['VisiFacturaReci',  '1', 'Muestra el botón de generar/ver factura en la tabla de Recibos (1=visible, 0=oculto).'],
             ['VisiAnularReci',   '1', 'Muestra el botón Anular en la tabla de Recibos (1=visible, 0=oculto).'],
             ['VisiAnularPago',   '1', 'Muestra el botón Anular en el panel de cobros de un recibo (1=visible, 0=oculto).'],
+            // ── Visibilidad de botones — Facturas ────────────────
+            ['VisiImprimirFact',    '1', 'Muestra el botón de imprimir/PDF en la tabla de Facturas (1=visible, 0=oculto).'],
+            ['VisiEmailFact',       '1', 'Muestra el botón de enviar por email en la tabla de Facturas (1=visible, 0=oculto).'],
+            ['VisiReciboOrigenFact','1', 'Muestra el botón para navegar al recibo origen de la factura (1=visible, 0=oculto).'],
+            ['VisiAEATFact',        '1', 'Muestra el botón de envío a AEAT (VERI*FACTU) en la tabla de Facturas (1=visible, 0=oculto).'],
+            ['VisiXMLFact',         '1', 'Muestra el botón "Ver XML AEAT" en facturas ya enviadas (1=visible, 0=oculto).'],
+            ['VisiAnularFact',      '1', 'Muestra el botón Anular en facturas emitidas (1=visible, 0=oculto).'],
+            // ── Visibilidad de botones — Inquilinos / Propietarios / Fincas / Inmuebles ──
+            ['VisiPagosInq',      '1', 'Muestra el botón "Pagos" (historial de cobros) en la tabla de Inquilinos (1=visible, 0=oculto).'],
+            ['VisiHistorialInq',  '1', 'Muestra el botón "Historial" completo en la tabla de Inquilinos (1=visible, 0=oculto).'],
+            ['VisiIRPFProp',      '1', 'Muestra el botón "IRPF" (informe fiscal anual) en la tabla de Propietarios (1=visible, 0=oculto).'],
+            // ── Sistema ───────────────────────────────────────────
+            ['VisiBackupJSON',    '0', 'Muestra el botón de descarga de backup JSON en Mi Empresa (1=visible, 0=oculto). Oculto por defecto.'],
             ['whatsappVis',      '1', 'Muestra los botones de WhatsApp en la tabla de recibos y en el modal de lote (1=visible, 0=oculto).'],
             ['whatsappPDF',      '1', 'Genera y descarga el PDF del recibo al enviar por WhatsApp (1=activo, 0=solo texto sin PDF).'],
             ['whatsappNativo',   '1', 'Método de apertura de WhatsApp: 1=ventana emergente (window.open), 0=enlace directo href (nunca bloqueado por el navegador).'],
@@ -570,8 +610,10 @@ if ($mode === 'clean' || $mode === 'sample') {
             ['verifactu_sistema_nombre',  'AlquiGest', 'Nombre del sistema informático de facturación declarado ante AEAT.'],
             ['verifactu_sistema_version', '2.0.0',     'Versión del sistema informático de facturación.'],
             ['verifactu_num_instalacion', '1',         'Número de instalación del sistema (1 para instalación única).'],
-            // ── Dashboard — log de actividad ─────────────────────
-            ['dash_log_actividad',   '1', 'Muestra el widget de últimas actividades en el Dashboard (1=visible, 0=oculto).'],
+            // ── Documentos — plantillas DOCX ─────────────────────
+            ['docs_plantillas_activas', '1', 'Activa el módulo de plantillas DOCX en toda la aplicación (1=activo, 0=desactivado).'],
+            ['docs_permitir_pdf',       '0', 'Conversión DOCX→PDF automática (requiere LibreOffice en el servidor; no disponible en MAMP/Windows). 0=desactivado.'],
+            ['dash_plantillas_estado',  '1', 'Muestra en el Dashboard el número de plantillas DOCX activas (1=visible, 0=oculto).'],
             // ── Visibilidad del menú lateral ──────────────────────
             // '1' = visible (por defecto), '0' = oculto.
             // Dashboard y Parámetros son siempre visibles y no tienen clave aquí.
@@ -599,6 +641,40 @@ if ($mode === 'clean' || $mode === 'sample') {
             ]);
         }
         $log[] = "✅ Configuración por defecto insertada (" . count($configDefaults) . " parámetros)";
+
+        // ── Plantillas DOCX obligatorias (funcionales, no datos de ejemplo) ──
+        // Se insertan tanto en instalación limpia como con datos de ejemplo: son
+        // necesarias para que el módulo de Plantillas / generación de documentos
+        // funcione desde el primer arranque. Los ficheros DOCX ya deben existir en
+        // uploads/plantillas/ (se comprueba su existencia antes de insertar la fila;
+        // si falta algún fichero se registra un aviso y no se inserta esa plantilla,
+        // para no dejar referencias rotas en la tabla).
+        $plantillasDefault = [
+            ['nombre'=>'Contrato de Vivienda 2026',                                   'tipo_documento'=>'contrato_arrendamiento', 'descripcion'=>'Contrato de arrendamiento de vivienda (inquilino único)',                        'fichero'=>'20260629202745_0f46bec435f5.docx'],
+            ['nombre'=>'Contrato de Vivienda 2026 (Multi-inquilino)',                  'tipo_documento'=>'contrato_arrendamiento', 'descripcion'=>'Contrato de arrendamiento de vivienda con bloque multi-inquilino',               'fichero'=>'20260629202745_9cd13214a228.docx'],
+            ['nombre'=>'Contrato de Vivienda Temporada 2026',                         'tipo_documento'=>'contrato_arrendamiento', 'descripcion'=>'Contrato de arrendamiento de vivienda de temporada (inquilino único)',           'fichero'=>'20260629202745_3646151941bb.docx'],
+            ['nombre'=>'Contrato de Vivienda Temporada 2026 (Multi-inquilino)',        'tipo_documento'=>'contrato_arrendamiento', 'descripcion'=>'Contrato de arrendamiento de vivienda de temporada con bloque multi-inquilino',  'fichero'=>'20260629202745_0f945bd575bb.docx'],
+            ['nombre'=>'Inventario del Contrato 2026',                                'tipo_documento'=>'otro',                   'descripcion'=>'Anexo de inventario y estado del inmueble (inquilino único)',                    'fichero'=>'20260629202745_696725afdf36.docx'],
+            ['nombre'=>'Inventario del Contrato 2026 (Multi-inquilino)',              'tipo_documento'=>'otro',                   'descripcion'=>'Anexo de inventario y estado del inmueble con bloque multi-inquilino',           'fichero'=>'20260629202745_8e862f292091.docx'],
+        ];
+        $plantillasDir = __DIR__ . '/../../uploads/plantillas/';
+        $plantillasOk = 0;
+        foreach ($plantillasDefault as $pl) {
+            if (!is_file($plantillasDir . $pl['fichero'])) {
+                $log[] = "⚠️ Plantilla <code>{$pl['fichero']}</code> ({$pl['nombre']}) no encontrada en <code>uploads/plantillas/</code> — no se ha insertado su fila en la tabla <code>plantillas</code>.";
+                continue;
+            }
+            insertRow($pdo, 'plantillas', [
+                'nombre'         => $pl['nombre'],
+                'tipo_documento' => $pl['tipo_documento'],
+                'descripcion'    => $pl['descripcion'],
+                'fichero'        => $pl['fichero'],
+                'activa'         => 1,
+                'por_defecto'    => 0,
+            ]);
+            $plantillasOk++;
+        }
+        $log[] = "✅ $plantillasOk/" . count($plantillasDefault) . " plantillas DOCX obligatorias insertadas";
 
         if ($mode === 'sample') {
             // ── Empresa ──────────────────────────────────────────
@@ -810,6 +886,89 @@ if ($mode === 'clean' || $mode === 'sample') {
             $pdo->prepare("UPDATE recibos SET estado='anulado', notas=? WHERE id=?")
                 ->execute(['Rectificado por: '.$rer_num.' · emitido el '.$hoy.'.', $r_c8_feb]);
             $log[] = "✅ Ejemplo: recibo anulado sin factura + recibo rectificativo $rer_num";
+
+            // ── Datos de ejemplo: revisión de renta (IPC/IRAV) ─────────────────
+            // Fechas calculadas en el momento de instalar (no fijas) para que el aviso
+            // de revisión pendiente sea comprobable justo después de instalar, sin
+            // depender del mes en que se ejecute el instalador. La detección real la
+            // hace contratosIPCPendientes() en extras.js: contrato activo, revision
+            // IPC/IRAV, mes de fecha_inicio = mes actual, año de fecha_inicio < año
+            // actual, e ipc_anio_aplicado distinto del año actual.
+            $hoyRev        = new DateTime(); $hoyRev->setTime(0, 0, 0);
+            $anioActualRev = (int)$hoyRev->format('Y');
+            $mesActualRev  = (int)$hoyRev->format('n');
+            $fechaFinRev   = (clone $hoyRev)->modify('+2 years')->format('Y-m-d');
+
+            // Aniversario "próximo": dentro de los próximos 30 días naturales (ventana usada
+            // por getAvisosRevision() en notificaciones.js) pero en un mes distinto al actual,
+            // para no disparar también el aviso naranja de "pendiente" (que exige mismo mes).
+            $anivProxima = (clone $hoyRev)->modify('+25 days');
+            if ((int)$anivProxima->format('n') === $mesActualRev) {
+                $anivProxima = (clone $hoyRev)->modify('first day of next month')->modify('+3 days');
+            }
+            $fiProxima = new DateTime();
+            $fiProxima->setDate($anioActualRev - 4, (int)$anivProxima->format('n'), (int)$anivProxima->format('j'));
+            $fiProxima = $fiProxima->format('Y-m-d');
+
+            // Aniversario "lejano": a más de 30 días y en un mes distinto al actual → no debe
+            // generar ningún aviso (ni "pendiente" ni "próxima"), solo aparece en la tabla
+            // general de "Próximas revisiones anuales" del Dashboard con muchos días restantes.
+            $anivLejana = (clone $hoyRev)->modify('+6 months');
+            $fiLejana = new DateTime();
+            $fiLejana->setDate($anioActualRev - 5, (int)$anivLejana->format('n'), (int)$anivLejana->format('j'));
+            $fiLejana = $fiLejana->format('Y-m-d');
+
+            $p4 = insertRow($pdo,'propietarios',['nombre'=>'Molina Vidal, Teresa','nif'=>'99001122X','telefono'=>'699 555 111','email'=>'teresa.molina@email.com','observaciones'=>'Propietaria — cartera con contratos indexados a IPC/IRAV']);
+            $f4 = insertRow($pdo,'fincas',['nombre'=>'C/ Velázquez 22','sigla'=>'VZ','calle'=>'Velázquez','numero'=>'22','cp'=>'28006','municipio'=>'Madrid','provincia'=>'Madrid','propietario_id'=>$p4,'observaciones'=>'Finca con varios contratos sujetos a revisión anual de renta']);
+            $i10 = insertRow($pdo,'inmuebles',['finca_id'=>$f4,'planta'=>'1º','puerta'=>'A','tipo'=>'vivienda','metros'=>72,'referencia_catastral'=>'','cedula'=>'','observaciones'=>'Revisión IPC pendiente de aplicar']);
+            $i11 = insertRow($pdo,'inmuebles',['finca_id'=>$f4,'planta'=>'1º','puerta'=>'B','tipo'=>'vivienda','metros'=>66,'referencia_catastral'=>'','cedula'=>'','observaciones'=>'Revisión IRAV próxima (dentro de 30 días)']);
+            $i12 = insertRow($pdo,'inmuebles',['finca_id'=>$f4,'planta'=>'2º','puerta'=>'A','tipo'=>'vivienda','metros'=>78,'referencia_catastral'=>'','cedula'=>'','observaciones'=>'Revisión IPC ya aplicada este año']);
+            $i13 = insertRow($pdo,'inmuebles',['finca_id'=>$f4,'planta'=>'2º','puerta'=>'B','tipo'=>'vivienda','metros'=>64,'referencia_catastral'=>'','cedula'=>'','observaciones'=>'Revisión IRAV lejana, fuera de ventana de aviso']);
+            $q10 = insertRow($pdo,'inquilinos',['nombre'=>'Delgado Núñez, Cristina','nif'=>'91112233L','telefono'=>'611 900 100','email'=>'cristina.delgado@gmail.com','direccion'=>'C/ Velázquez 22 1º A','cp'=>'28006','municipio'=>'Madrid','provincia'=>'Madrid','iban'=>'','observaciones'=>'']);
+            $q11 = insertRow($pdo,'inquilinos',['nombre'=>'Vázquez Roldán, Ismael','nif'=>'92223344M','telefono'=>'622 900 200','email'=>'ismael.vazquez@gmail.com','direccion'=>'C/ Velázquez 22 1º B','cp'=>'28006','municipio'=>'Madrid','provincia'=>'Madrid','iban'=>'','observaciones'=>'']);
+            $q12 = insertRow($pdo,'inquilinos',['nombre'=>'Bravo Cano, Nuria','nif'=>'93334455N','telefono'=>'633 900 300','email'=>'nuria.bravo@gmail.com','direccion'=>'C/ Velázquez 22 2º A','cp'=>'28006','municipio'=>'Madrid','provincia'=>'Madrid','iban'=>'','observaciones'=>'']);
+            $q13 = insertRow($pdo,'inquilinos',['nombre'=>'Serra Montoya, Álex','nif'=>'94445566P','telefono'=>'644 900 400','email'=>'alex.serra@gmail.com','direccion'=>'C/ Velázquez 22 2º B','cp'=>'28006','municipio'=>'Madrid','provincia'=>'Madrid','iban'=>'','observaciones'=>'']);
+            $log[] = "✅ 1 propietario, 1 finca, 4 inmuebles y 4 inquilinos de ejemplo creados (escenarios de revisión de renta)";
+
+            // 1) PENDIENTE: mismo mes/día que hoy, contrato iniciado hace 3 años, sin aplicar aún
+            $c10 = insertRow($pdo,'contratos',['inmueble_id'=>$i10,'inquilino_id'=>$q10,'fecha_inicio'=>(clone $hoyRev)->modify('-3 years')->format('Y-m-d'),'fecha_fin'=>$fechaFinRev,'duracion_anos'=>3,'duracion_unidad'=>'anos','aviso_recibo'=>1,'renta_base'=>710,'iva_pct'=>0,'irpf_pct'=>0,'fianza'=>1420,'dia_pago'=>5,'estado'=>'activo','revision'=>'IPC','ipc_anio_aplicado'=>null,'observaciones'=>'Ejemplo: revisión IPC pendiente — aparece en el aviso del Dashboard este mes']);
+            // 2) PRÓXIMA: aniversario dentro de 30 días, en un mes distinto al actual (no dispara el aviso "pendiente")
+            $c11 = insertRow($pdo,'contratos',['inmueble_id'=>$i11,'inquilino_id'=>$q11,'fecha_inicio'=>$fiProxima,'fecha_fin'=>$fechaFinRev,'duracion_anos'=>4,'duracion_unidad'=>'anos','aviso_recibo'=>1,'renta_base'=>640,'iva_pct'=>0,'irpf_pct'=>0,'fianza'=>1280,'dia_pago'=>5,'estado'=>'activo','revision'=>'IRAV','ipc_anio_aplicado'=>null,'observaciones'=>'Ejemplo: revisión IRAV próxima — aniversario dentro de 30 días, aún no corresponde este mes']);
+            // 3) YA APLICADA: mismo mes/día que hoy, contrato iniciado hace 2 años, revisión ya aplicada este año → no debe reaparecer como pendiente
+            $rentaAnteriorC12 = 750;
+            $rentaNuevaC12    = 772.5;
+            $c12 = insertRow($pdo,'contratos',['inmueble_id'=>$i12,'inquilino_id'=>$q12,'fecha_inicio'=>(clone $hoyRev)->modify('-2 years')->format('Y-m-d'),'fecha_fin'=>$fechaFinRev,'duracion_anos'=>2,'duracion_unidad'=>'anos','aviso_recibo'=>1,'renta_base'=>$rentaNuevaC12,'iva_pct'=>0,'irpf_pct'=>0,'fianza'=>1500,'dia_pago'=>5,'estado'=>'activo','revision'=>'IPC','ipc_anio_aplicado'=>$anioActualRev,'observaciones'=>'Ejemplo: revisión IPC ya aplicada este año — no debe aparecer como pendiente']);
+            insertRow($pdo,'historial_rentas',['contrato_id'=>$c12,'fecha'=>(clone $hoyRev)->modify('-5 days')->format('Y-m-d'),'tipo_revision'=>'IPC','porcentaje'=>3.0,'renta_anterior'=>$rentaAnteriorC12,'renta_nueva'=>$rentaNuevaC12,'observaciones'=>'Revisión IPC aplicada (dato de ejemplo)']);
+            // 4) LEJANA: aniversario a más de 30 días, mes distinto al actual → no debe generar ningún aviso
+            $c13 = insertRow($pdo,'contratos',['inmueble_id'=>$i13,'inquilino_id'=>$q13,'fecha_inicio'=>$fiLejana,'fecha_fin'=>$fechaFinRev,'duracion_anos'=>5,'duracion_unidad'=>'anos','aviso_recibo'=>1,'renta_base'=>590,'iva_pct'=>0,'irpf_pct'=>0,'fianza'=>1180,'dia_pago'=>5,'estado'=>'activo','revision'=>'IRAV','ipc_anio_aplicado'=>null,'observaciones'=>'Ejemplo: revisión IRAV lejana — no debe aparecer en ningún aviso']);
+            $log[] = "✅ 4 contratos de ejemplo creados (revisión pendiente, próxima, ya aplicada y lejana)";
+
+            // ── Datos de ejemplo: inquilinos secundarios (contratos multi-inquilino) ──
+            // contratos_inq_sec no está enlazada a la tabla inquilinos: son campos libres
+            // (nombre, nif, dirección, teléfono, email) que se copian en la ficha del
+            // contrato y en el bloque {{#INQUILINOS_SECUNDARIOS}} de las plantillas DOCX.
+            // El inquilino principal sigue siendo inquilino_id del contrato; el secundario
+            // nunca lo sustituye.
+            $p5 = insertRow($pdo,'propietarios',['nombre'=>'Santos Prieto, Álvaro','nif'=>'95556677Q','telefono'=>'655 777 888','email'=>'alvaro.santos@email.com','observaciones'=>'Propietario — cartera con contratos multi-inquilino']);
+            $f5 = insertRow($pdo,'fincas',['nombre'=>'C/ Goya 30','sigla'=>'GY','calle'=>'Goya','numero'=>'30','cp'=>'28001','municipio'=>'Madrid','provincia'=>'Madrid','propietario_id'=>$p5,'observaciones'=>'Finca con contratos de uno y varios inquilinos, para comparar']);
+            $i14 = insertRow($pdo,'inmuebles',['finca_id'=>$f5,'planta'=>'BAJO','puerta'=>'A','tipo'=>'vivienda','metros'=>60,'referencia_catastral'=>'','cedula'=>'','observaciones'=>'Contrato de referencia con un solo inquilino']);
+            $i15 = insertRow($pdo,'inmuebles',['finca_id'=>$f5,'planta'=>'1º','puerta'=>'A','tipo'=>'vivienda','metros'=>85,'referencia_catastral'=>'','cedula'=>'','observaciones'=>'Contrato con un inquilino principal y un inquilino secundario']);
+            $i16 = insertRow($pdo,'inmuebles',['finca_id'=>$f5,'planta'=>'1º','puerta'=>'B','tipo'=>'vivienda','metros'=>95,'referencia_catastral'=>'','cedula'=>'','observaciones'=>'Contrato con un inquilino principal y dos inquilinos secundarios']);
+            $q14 = insertRow($pdo,'inquilinos',['nombre'=>'Pardo Segura, Lucía','nif'=>'96667788R','telefono'=>'666 800 100','email'=>'lucia.pardo@gmail.com','direccion'=>'C/ Goya 30 Bajo A','cp'=>'28001','municipio'=>'Madrid','provincia'=>'Madrid','iban'=>'','observaciones'=>'Inquilina única — contrato de referencia sin inquilinos secundarios']);
+            $q15 = insertRow($pdo,'inquilinos',['nombre'=>'Cabrera Morales, Rubén','nif'=>'97778899S','telefono'=>'677 800 200','email'=>'ruben.cabrera@gmail.com','direccion'=>'C/ Goya 30 1º A','cp'=>'28001','municipio'=>'Madrid','provincia'=>'Madrid','iban'=>'','observaciones'=>'Inquilino principal — contrato con 1 inquilino secundario']);
+            $q16 = insertRow($pdo,'inquilinos',['nombre'=>'Iglesias Farto, Patricia','nif'=>'98889900T','telefono'=>'688 800 300','email'=>'patricia.iglesias@gmail.com','direccion'=>'C/ Goya 30 1º B','cp'=>'28001','municipio'=>'Madrid','provincia'=>'Madrid','iban'=>'','observaciones'=>'Inquilina principal — contrato con 2 inquilinos secundarios']);
+            $log[] = "✅ 1 propietario, 1 finca, 3 inmuebles y 3 inquilinos principales de ejemplo creados (escenarios multi-inquilino)";
+
+            $fiMulti = (clone $hoyRev)->modify('-6 months')->format('Y-m-d');
+            $c14 = insertRow($pdo,'contratos',['inmueble_id'=>$i14,'inquilino_id'=>$q14,'fecha_inicio'=>$fiMulti,'fecha_fin'=>$fechaFinRev,'duracion_anos'=>2,'duracion_unidad'=>'anos','aviso_recibo'=>1,'renta_base'=>600,'iva_pct'=>0,'irpf_pct'=>0,'fianza'=>1200,'dia_pago'=>5,'estado'=>'activo','revision'=>'Sin revision','observaciones'=>'Ejemplo: contrato normal con un solo inquilino, sin secundarios (para comparar)']);
+            $c15 = insertRow($pdo,'contratos',['inmueble_id'=>$i15,'inquilino_id'=>$q15,'fecha_inicio'=>$fiMulti,'fecha_fin'=>$fechaFinRev,'duracion_anos'=>2,'duracion_unidad'=>'anos','aviso_recibo'=>1,'renta_base'=>850,'iva_pct'=>0,'irpf_pct'=>0,'fianza'=>1700,'dia_pago'=>5,'estado'=>'activo','revision'=>'Sin revision','observaciones'=>'Ejemplo: contrato con 1 inquilino principal + 1 inquilino secundario']);
+            $c16 = insertRow($pdo,'contratos',['inmueble_id'=>$i16,'inquilino_id'=>$q16,'fecha_inicio'=>$fiMulti,'fecha_fin'=>$fechaFinRev,'duracion_anos'=>2,'duracion_unidad'=>'anos','aviso_recibo'=>1,'renta_base'=>950,'iva_pct'=>0,'irpf_pct'=>0,'fianza'=>1900,'dia_pago'=>5,'estado'=>'activo','revision'=>'Sin revision','observaciones'=>'Ejemplo: contrato con 1 inquilino principal + 2 inquilinos secundarios']);
+            $log[] = "✅ 3 contratos de ejemplo creados (1 solo inquilino, +1 secundario, +2 secundarios)";
+
+            insertRow($pdo,'contratos_inq_sec',['contrato_id'=>$c15,'nombre'=>'Cabrera Morales, Sonia','nif'=>'97778800U','direccion'=>'C/ Goya 30 1º A','telefono'=>'677 800 250','email'=>'sonia.cabrera@gmail.com','orden'=>1]);
+            insertRow($pdo,'contratos_inq_sec',['contrato_id'=>$c16,'nombre'=>'Iglesias Farto, Marcos','nif'=>'98889901V','direccion'=>'C/ Goya 30 1º B','telefono'=>'688 800 350','email'=>'marcos.iglesias@gmail.com','orden'=>1]);
+            insertRow($pdo,'contratos_inq_sec',['contrato_id'=>$c16,'nombre'=>'Iglesias Farto, Elena','nif'=>'98889902W','direccion'=>'C/ Goya 30 1º B','telefono'=>'688 800 360','email'=>'elena.iglesias@gmail.com','orden'=>2]);
+            $log[] = "✅ 3 inquilinos secundarios de ejemplo creados (1 en el contrato de 2, 2 en el contrato de 3)";
 
             // Poblar doc_secuencias con los máximos de los datos de ejemplo
             // para que el próximo recibo/factura continúe la secuencia correctamente.

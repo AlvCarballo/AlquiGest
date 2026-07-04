@@ -528,7 +528,7 @@ try {
     // ── validarDatos: validación server-side de campos críticos ──
     // Comprueba los campos mínimos obligatorios antes de cada guardado.
     // Devuelve null si todo está bien, o un string con el mensaje de error.
-    function validarDatos(string $tabla, array $datos): ?string {
+    function validarDatos(string $tabla, array $datos, ?PDO $pdo = null): ?string {
         switch ($tabla) {
             case 'contratos':
                 if (empty($datos['inmueble_id']) || (int)$datos['inmueble_id'] <= 0) {
@@ -554,6 +554,50 @@ try {
                 }
                 if (!isset($datos['renta_base']) || (!$esRectificativoRec && (float)$datos['renta_base'] < 0)) {
                     return 'La renta base del recibo no puede ser negativa.';
+                }
+                // ── Anulación de un recibo: protecciones server-side ──────────────
+                // No basta con la validación del navegador: si alguien llama directamente
+                // al endpoint para poner estado='anulado' en un recibo, se comprueba el
+                // estado previo real en BD (no lo que diga el payload) antes de permitirlo.
+                //
+                // 1) Recibo con factura EMITIDA asociada: no puede anularse hasta que esa
+                //    factura deje de estar 'emitida' (es decir, hasta que ya se haya
+                //    rectificado generando su RET). El flujo normal (anularRecibo() en
+                //    recibos-cobro.js) siempre rectifica la factura ANTES de guardar el
+                //    recibo como anulado, así que cuando esta comprobación se ejecuta la
+                //    factura ya está 'rectificada' en BD. Si sigue 'emitida' es que no se
+                //    ha completado ese paso (o que alguien ha llamado al endpoint
+                //    directamente sin pasar por el flujo) — se rechaza sin excepción.
+                // 2) Recibo cobrado (o con cobros parciales) SIN factura asociada: exige
+                //    que el payload incluya `confirmar_devolucion` (lo envía anularRecibo()
+                //    tras preguntar al usuario si quiere devolver el cobro). Solo aplica
+                //    cuando no hay factura: es el único caso en que se genera
+                //    automáticamente el recibo rectificativo (RER) con el cobro en negativo.
+                if ($pdo && ($datos['estado'] ?? '') === 'anulado' && !empty($datos['id'])) {
+                    $stmtPrevRec = $pdo->prepare('SELECT estado, importe_pagado, factura_id FROM recibos WHERE id = ?');
+                    $stmtPrevRec->execute([(int)$datos['id']]);
+                    $prevRec = $stmtPrevRec->fetch();
+                    if ($prevRec) {
+                        $facturaEstadoRec = null;
+                        if (!empty($prevRec['factura_id'])) {
+                            $stmtFacRec = $pdo->prepare('SELECT estado FROM facturas WHERE id = ?');
+                            $stmtFacRec->execute([(int)$prevRec['factura_id']]);
+                            $facRec = $stmtFacRec->fetch();
+                            $facturaEstadoRec = $facRec ? $facRec['estado'] : null;
+                        }
+
+                        if ($facturaEstadoRec === 'emitida') {
+                            return 'Este recibo tiene una factura emitida asociada. Anula primero la factura (se generará su rectificativa) antes de anular el recibo.';
+                        }
+
+                        if ($facturaEstadoRec === null) {
+                            $estabaCobrado = in_array($prevRec['estado'], ['cobrado', 'parcial'], true)
+                                || (float)($prevRec['importe_pagado'] ?? 0) > 0;
+                            if ($estabaCobrado && empty($datos['confirmar_devolucion'])) {
+                                return 'El recibo ya está cobrado. Debe confirmar la devolución del cobro para poder anularlo.';
+                            }
+                        }
+                    }
                 }
                 break;
 
@@ -658,7 +702,7 @@ try {
         if (!validTable($table)) json_out(['error' => 'Tabla no válida'], 400);
 
         // Validar los datos antes de persistirlos
-        $errorValidacion = validarDatos($table, $input);
+        $errorValidacion = validarDatos($table, $input, $pdo);
         if ($errorValidacion !== null) {
             json_out(['error' => $errorValidacion], 422);
         }

@@ -129,7 +129,18 @@ assets/php/verifactu.php ← Integración AEAT VERI*FACTU
 
 5. Accede a la aplicación: `http://localhost/AlquiGest_v2/AlquiGest.php`
 
-> `install.php` puede ejecutarse de nuevo para aplicar migraciones (nuevas columnas) sin destruir datos existentes. Solo destruye datos si eliges "instalación limpia".
+> `install.php` puede ejecutarse de nuevo para aplicar migraciones (nuevas columnas) sin destruir datos existentes. Solo destruye datos si eliges "instalación limpia" o "con datos de ejemplo" (ambas opciones recrean todas las tablas desde cero).
+
+### Qué incluye cada modo
+
+Ambos modos siembran siempre lo **obligatorio para que la aplicación funcione** desde el primer arranque, sin necesitar configuración manual:
+- Las 6 plantillas DOCX de contrato/inventario (normal y multi-inquilino) en la tabla `plantillas`.
+- Los 77 parámetros de `configuracion` con sus valores por defecto (paginación, visibilidad de botones y menús, Dashboard, WhatsApp, VERI*FACTU, documentos).
+- La estructura completa de tablas, incluida `doc_secuencias` para la numeración atómica.
+
+La **instalación limpia** no crea ningún propietario, finca, inmueble, inquilino, contrato, recibo ni factura — la BD queda vacía y lista para datos reales.
+
+La **instalación con datos de ejemplo** añade además un escenario completo de prueba: propietarios/fincas/inmuebles/inquilinos/contratos/recibos de varios meses (incluido un salto de año en la numeración), facturas normales y rectificativas (`RET`), recibos anulados con y sin factura (incluido un `RER`), un contrato finalizado, **4 contratos con los distintos casos de revisión de renta** (pendiente / próxima / ya aplicada / lejana — ver sección 16) y **3 contratos con inquilinos secundarios** (0, 1 y 2 secundarios, para poder comparar).
 
 ---
 
@@ -240,6 +251,10 @@ AlquiGest_v2/
 | Parámetros | 6 pestañas: Dashboard, Paginación, Botones, WhatsApp, VERI*FACTU, Documentos |
 | VERI*FACTU | Facturación electrónica AEAT (opcional, desactivado por defecto) |
 | Plantillas DOCX | Motor de plantillas Word: 42 variables, bloques repetitivos, tabla de fotos |
+
+**Modo oscuro:** alternable desde el icono de la cabecera; persiste en `localStorage`. Los gráficos del Dashboard (Chart.js) adaptan sus colores automáticamente al tema activo.
+
+**Atajos de teclado:** `Alt+D` Dashboard · `Alt+R` Recibos · `Alt+C` Contratos · `Alt+F` Facturas · `Alt+I` Inquilinos · `Alt+G` Generar recibos.
 
 ---
 
@@ -400,12 +415,18 @@ El botón **Pagos** lleva directamente a los recibos del contrato activo del inq
 
 ### Anulación de un recibo
 
-La anulación de un recibo es siempre **lógica**: nunca se borra físicamente, el registro original permanece en la base de datos con estado `anulado` y una nota indicando qué documento lo rectifica (si aplica). El comportamiento exacto depende de si el recibo ya generó factura:
+La anulación de un recibo es siempre **lógica**: nunca se borra físicamente, el registro original permanece en la base de datos con estado `anulado` y una nota indicando qué documento lo rectifica (si aplica). El comportamiento exacto depende de si el recibo tiene cobros registrados y de si ya generó factura:
 
-- **Recibo sin factura emitida:** el recibo pasa a `anulado` y se genera automáticamente un **recibo rectificativo** con la nueva numeración `RER-AAAAMM-NNNNN` (ej. `RER-202607-00001`), con los mismos importes en negativo, que compensa al original en los totales. No se toca ni se genera ninguna factura ni factura rectificativa.
-- **Recibo con factura ya emitida:** el recibo pasa a `anulado`, pero **no** se genera ningún recibo rectificativo. La factura asociada permanece en estado "emitida": la rectificación fiscal de una factura es un acto explícito y separado que debe iniciarse desde el módulo **Facturas** (ver siguiente sección), nunca automáticamente desde el recibo.
+- **Recibo pendiente, sin factura:** se anula directamente y se genera un **recibo rectificativo** `RER-AAAAMM-NNNNN` con los importes en negativo (a 0€, ya que no había ningún cobro que compensar).
+- **Recibo cobrado (total o parcialmente), sin factura:** antes de anular, el sistema pregunta explícitamente si se quiere devolver el cobro (*"El recibo ya está cobrado. Para anularlo es necesario devolver el cobro en el recibo rectificativo..."*). Si se cancela, no se modifica nada. Si se acepta, se genera el `RER-AAAAMM-NNNNN` con el cobro reflejado en negativo (campos `importe_pagado` y `pagos`), dejando trazabilidad completa de la devolución.
+- **Recibo con factura EMITIDA:** ya no basta con anular el recibo dejando la factura intacta. El sistema pregunta (*"Este recibo tiene una factura emitida asociada. Para anular el recibo es necesario anular también la factura y generar su factura rectificativa..."*). Si se cancela, no se modifica nada (ni recibo, ni factura, ni cobros). Si se acepta:
+  1. Se anula primero la factura asociada, generando su factura rectificativa `RET-AAAAMM-NNNNN` (misma lógica que anular una factura desde el módulo Facturas — código reutilizado, no duplicado).
+  2. Solo si eso termina con éxito, el recibo pasa a `anulado`.
+  3. **No se genera ningún `RER`**: la corrección fiscal ya la aporta el `RET` de la factura; un recibo rectificativo adicional duplicaría la compensación.
+  4. Si falla la rectificación de la factura, el recibo **no** se anula y se informa con un mensaje de error — nunca queda una anulación parcial.
+- **Recibo con factura ya rectificada (o anulada) de antes:** la corrección fiscal ya existe, así que el recibo se anula directamente sin generar ningún documento adicional (evita duplicar el `RET`).
 
-Un recibo ya anulado, o un recibo que es en sí mismo un rectificativo (`RER-...`), no se puede volver a anular.
+Un recibo ya anulado, o un recibo que es en sí mismo un rectificativo (`RER-...`), no se puede volver a anular. Estas reglas están protegidas también en el backend (`api.php`, función `validarDatos()`): un recibo con factura vinculada cuyo estado siga `'emitida'` no puede pasar a `anulado` por ninguna vía, ni siquiera llamando directamente al endpoint; y un recibo cobrado sin factura exige el flag `confirmar_devolucion` en la petición.
 
 ### Métodos de cobro
 
@@ -429,16 +450,57 @@ Conformes al **RD 1619/2012** (Reglamento de Facturación):
 
 | Documento | Cuándo se genera | Numeración | Efecto |
 |-----------|-------------------|------------|--------|
-| Factura rectificativa (`RET`) | Al anular una factura ya emitida, desde el módulo Facturas | `RET-AAAAMM-NNNNN` | Cancela fiscalmente la factura original (importes negados); la original queda "rectificada" |
-| Recibo rectificativo (`RER`) | Al anular un recibo que **no** tiene factura emitida | `RER-AAAAMM-NNNNN` | Compensa el recibo original en los totales internos (importes negados); no tiene efecto fiscal ante la AEAT |
+| Factura rectificativa (`RET`) | Al anular una factura ya emitida — desde el módulo Facturas, o en cascada al anular un recibo con factura emitida asociada | `RET-AAAAMM-NNNNN` | Cancela fiscalmente la factura original (importes negados); la original queda "rectificada" |
+| Recibo rectificativo (`RER`) | Al anular un recibo que **no** tiene factura emitida asociada | `RER-AAAAMM-NNNNN` | Compensa el recibo original en los totales internos (importes negados, incluido el cobro si lo había); no tiene efecto fiscal ante la AEAT |
 
-Un recibo nunca genera una factura rectificativa por sí mismo: solo existe factura rectificativa cuando ya existía una factura previa que rectificar.
+Un recibo con factura emitida nunca genera un `RER`: su corrección la aporta el `RET` de la factura (ver sección anterior). Y una factura nunca se rectifica automáticamente si no existía ya — no hay forma de generar un `RET` sin una factura `F1` previa.
+
+La función que genera la rectificativa de una factura (`anularFacturaConRectificativa()` en `facturas.js`) es una única pieza de código reutilizada tanto por el botón "Anular factura" del módulo Facturas como por la cascada de anulación de recibos, para no duplicar la lógica de numeración e importes negados en dos sitios distintos.
 
 ---
 
 ## 16. Revisiones de renta
 
-El asistente IPC/IRAV se activa automáticamente cuando el contrato tiene cláusula de revisión y han pasado más de 11 meses desde la última actualización. Consulta el IPC del INE en tiempo real y calcula la nueva renta sugerida. El historial de subidas queda registrado y visible desde el botón **Historial** del contrato.
+### Cómo se calcula la "Revisión IPC/IRAV pendiente"
+
+Un contrato aparece como revisión pendiente (aviso naranja del Dashboard + badge `IPC ⚠` y botón `⚠ IPC` en Contratos) cuando se cumplen **las 5 condiciones a la vez** (función `contratosIPCPendientes()` en `assets/js/extras.js`):
+
+1. `contratos.estado = 'activo'`.
+2. `contratos.revision` es `'IPC'` o `'IRAV'` (los valores `'Fija'` y `'Sin revision'` nunca generan este aviso).
+3. El **mes** de `contratos.fecha_inicio` coincide con el mes actual (el día del mes es irrelevante).
+4. El **año** de `contratos.fecha_inicio` es anterior al año actual (un contrato de alta este mismo año no genera aviso el mismo año).
+5. `contratos.ipc_anio_aplicado` es distinto del año actual (`NULL` o un año anterior cuentan como pendiente; si ya es el año en curso, no vuelve a aparecer).
+
+Al pulsar `⚠ IPC` se abre un modal (`modalAplicarIPC()`) que consulta el % oficial a la API del INE (`api.php?action=ine_rate`); si no hay conexión, el % se introduce a mano. Al aplicar (`aplicarSubidaIPC()`): se actualiza `contratos.renta_base` con el nuevo importe, se fija `contratos.ipc_anio_aplicado` al año actual (esto es lo que hace desaparecer el aviso) y se añade una fila en `historial_rentas` con el detalle de la subida, visible desde el botón **Historial** del contrato.
+
+Este aviso es distinto de otros dos, que no filtran por tipo de revisión:
+- la campana de notificaciones y la tarjeta "Revisiones anuales urgentes" del Dashboard muestran **cualquier** contrato activo cuyo aniversario caiga en los próximos 30 días, tenga o no revisión indexada;
+- la tabla "Próximas revisiones anuales de renta" del Dashboard lista **todos** los contratos activos ordenados por días restantes, sin límite de ventana.
+
+### Cómo forzar manualmente una revisión pendiente (para pruebas)
+
+Usar siempre una base de datos de pruebas, nunca la real. El SQL usa `CURDATE()`/`DATE_SUB()`/`YEAR()` para funcionar cualquier día:
+
+```sql
+-- 1) Localizar contratos activos disponibles para la prueba
+SELECT id, fecha_inicio, revision, ipc_anio_aplicado, renta_base, estado
+FROM contratos WHERE estado = 'activo' ORDER BY id LIMIT 5;
+
+-- 2) Forzar revisión IPC PENDIENTE (mismo mes que hoy, hace 2 años, sin aplicar nunca)
+UPDATE contratos
+SET revision = 'IPC', fecha_inicio = DATE_SUB(CURDATE(), INTERVAL 2 YEAR), ipc_anio_aplicado = NULL
+WHERE id = <ID_CONTRATO>;
+
+-- 3) Marcarla como YA APLICADA este año (no debe volver a aparecer como pendiente)
+UPDATE contratos
+SET ipc_anio_aplicado = YEAR(CURDATE())
+WHERE id = <ID_CONTRATO>;
+
+-- 4) Revertir / limpiar la prueba
+UPDATE contratos SET revision = 'Sin revision', ipc_anio_aplicado = NULL WHERE id = <ID_CONTRATO>;
+```
+
+Después de forzar el paso 2: abrir el **Dashboard** (debe verse el aviso naranja) y **Contratos** (badge `IPC ⚠` y botón `⚠ IPC`, filtro "⚠ Revisión pendiente"). Tras aplicar la subida: comprobar `renta_base` actualizada, `ipc_anio_aplicado` = año actual, nueva fila en `historial_rentas`, y que el aviso desaparece.
 
 ---
 
@@ -482,18 +544,19 @@ Ver `assets/docs/ayuda_verifactu.php` para la guía técnica completa.
 
 ## 19. Parámetros de configuración
 
-Menú lateral → **Parámetros**. Seis pestañas:
+Menú lateral → **Parámetros**. Siete pestañas:
 
 | Pestaña | Contenido |
 |---------|-----------|
-| Dashboard | Activa/desactiva cada widget del panel principal |
+| Dashboard | Activa/desactiva cada widget del panel principal (KPIs, alerta IPC, revisiones, gráficos, previsión de cobros...) |
 | Paginación | Filas por página en cada sección |
-| Botones | Muestra/oculta botones de acción por módulo |
+| Botones | Muestra/oculta botones de acción por módulo (Contratos, Recibos, Facturas, Inquilinos, Propietarios, Sistema) |
 | WhatsApp | Envío por WhatsApp + generación automática de PDF |
 | VERI*FACTU | Certificado, entorno, NIF del obligado de emisión |
 | Documentos | Módulo de plantillas DOCX |
+| Menú | Muestra/oculta cada opción del menú lateral (`menu_propietarios`, `menu_facturas`, etc.); un grupo entero desaparece si se ocultan todas sus opciones. Dashboard y Parámetros son siempre visibles. |
 
-Cada opción incluye un botón `?` con descripción detallada y consejo de uso.
+Cada opción incluye un botón `?` con descripción detallada y consejo de uso. Todos estos parámetros (77 en total) se siembran con sus valores por defecto tanto en la instalación limpia como en la instalación con datos de ejemplo — la aplicación funciona sin configuración manual desde el primer arranque.
 
 ---
 
@@ -534,6 +597,7 @@ El botón de envío por email aparece deshabilitado. Añadir el email en la fich
 | Sin multi-usuario ni roles | Acceso restringido por diseño a red local |
 | Sin app móvil nativa | Funciona en navegador móvil (optimizado escritorio) |
 | Sin sincronización en la nube | Backup JSON manual periódico |
+| Sin transacción SQL real en la cascada "anular recibo con factura" (son 2-3 guardados secuenciales desde JS, igual que el resto del proyecto) | El orden está protegido (la factura se rectifica antes que el recibo; si falla, el recibo no se toca), pero un corte de red justo entre pasos podría dejar el `RET` creado sin completar el resto — caso raro, sin reversión automática |
 
 ---
 
@@ -557,5 +621,5 @@ El botón de envío por email aparece deshabilitado. Añadir el email en la fich
 
 ---
 
-*Versión: 2.2.1 · Última actualización: junio 2026*  
+*Versión: 2.2.7 · Última actualización: julio 2026*  
 *Documentación de usuario: `assets/docs/ayuda.php`*

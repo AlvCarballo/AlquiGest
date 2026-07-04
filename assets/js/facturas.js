@@ -208,25 +208,27 @@ async function generarFacturaDesdeRecibo(reciboId) {
 }
 
 // ===========================
-// ANULAR FACTURA — crea factura rectificativa (RD 1619/2012, art. 15)
-// La original pasa a 'rectificada'; se genera una nueva RET-YYYYMM-NNNNN
-// con todos los importes negados y tipo_factura 'R1'.
+// ANULAR FACTURA CON RECTIFICATIVA (núcleo reutilizable) — RD 1619/2012, art. 15
+// Genera la factura rectificativa RET-AAAAMM-NNNNN (importes negados, tipo_factura
+// 'R1') y marca la original como 'rectificada'. No pide confirmación al usuario
+// (la decide quien la llama) ni gestiona la interfaz: se reutiliza tanto desde el
+// botón "Anular factura" del módulo Facturas (anularFactura(), más abajo) como
+// desde la anulación de un recibo con factura emitida asociada
+// (anularRecibo() en recibos-cobro.js), para no duplicar la lógica de generación
+// de la rectificativa en dos sitios.
+// opciones.reciboId / opciones.reciboNumero: si la llamada viene de anular un
+// recibo, se anota en las notas de ambas facturas para dejar trazabilidad.
+// Devuelve { ok:true, rectificativaId, numeroRectificativa } o { ok:false, error }.
 // ===========================
-async function anularFactura(id) {
+async function anularFacturaConRectificativa(id, opciones = {}) {
   const f = DB.getItem('facturas', id);
-  if (!f) return;
+  if (!f) return { ok: false, error: 'Factura no encontrada.' };
   if (f.serie === 'RET' || (f.tipo_factura || '').startsWith('R')) {
-    toast('Las facturas rectificativas no se pueden anular. Si hay un error, consulta a tu asesor fiscal.', 'info'); return;
+    return { ok: false, error: 'Las facturas rectificativas no se pueden anular. Si hay un error, consulta a tu asesor fiscal.' };
   }
   if (f.estado === 'anulada' || f.estado === 'rectificada') {
-    toast('Esta factura ya está anulada o rectificada.', 'info'); return;
+    return { ok: false, error: 'Esta factura ya está anulada o rectificada.' };
   }
-  if (!confirm(
-    '¿Anular la factura ' + f.numero_factura + '?\n\n' +
-    'Se creará automáticamente una factura rectificativa (R1) con importes\n' +
-    'negativos que cancela fiscalmente la original (RD 1619/2012, art. 15).\n\n' +
-    'La factura original quedará marcada como RECTIFICADA.'
-  )) return;
 
   // Número de la rectificativa: serie RET-YYYYMM-NNNNN (atómico, reinicio mensual)
   const hoy    = new Date().toISOString().split('T')[0];
@@ -237,9 +239,12 @@ async function anularFactura(id) {
     numRect = rectInfo.numero;
     sigSeq  = rectInfo.seq;
   } catch (e) {
-    toast('No se pudo generar el número de factura rectificativa. Inténtalo de nuevo.', 'error');
-    return;
+    return { ok: false, error: 'No se pudo generar el número de factura rectificativa. Inténtalo de nuevo.' };
   }
+
+  const notaOrigen = opciones.reciboId
+    ? ' (anulación solicitada desde el recibo ' + (opciones.reciboNumero || ('#' + opciones.reciboId)) + ')'
+    : '';
 
   const rectificativa = {
     recibo_id             : null,
@@ -272,7 +277,7 @@ async function anularFactura(id) {
     inmueble_direccion : f.inmueble_direccion,
     concepto           : 'Rectificación de: ' + (f.concepto || ''),
     conceptos_extra    : f.conceptos_extra || '',
-    notas              : 'Factura rectificativa de ' + f.numero_factura + '. Anulación total.',
+    notas              : 'Factura rectificativa de ' + f.numero_factura + '. Anulación total.' + notaOrigen,
 
     // Importes negados — cancelan los efectos fiscales de la original
     base_imponible : -parseFloat(f.base_imponible || 0),
@@ -290,15 +295,49 @@ async function anularFactura(id) {
   };
 
   const saved = await DB.save('facturas', rectificativa);
-  if (!saved || saved.error) { toast('Error al crear la factura rectificativa.', 'error'); return; }
+  if (!saved || saved.error) return { ok: false, error: 'Error al crear la factura rectificativa.' };
 
   // Marcar la original como rectificada con referencia a la nueva rectificativa
   f.estado = 'rectificada';
   f.notas = (f.notas ? f.notas + '\n' : '') +
-    'Rectificada por: ' + numRect + ' · emitida el ' + hoy + '.';
-  await DB.save('facturas', f);
+    'Rectificada por: ' + numRect + ' · emitida el ' + hoy + '.' + notaOrigen;
+  const savedOrig = await DB.save('facturas', f);
+  if (!savedOrig || savedOrig.error) {
+    // La rectificativa ya se creó pero no se pudo marcar la original como
+    // rectificada: se informa como fallo para que el llamador NO continúe
+    // (p. ej. no debe anular el recibo si esto no ha terminado bien), aunque
+    // la rectificativa quede creada — caso raro, queda documentado en notas.
+    return { ok: false, error: 'La factura rectificativa se creó pero no se pudo actualizar la factura original.', rectificativaId: saved.id, numeroRectificativa: numRect };
+  }
 
-  toast('Creada ' + numRect + ' · ' + f.numero_factura + ' queda rectificada.', 'success');
+  return { ok: true, rectificativaId: saved.id, numeroRectificativa: numRect };
+}
+
+// ===========================
+// ANULAR FACTURA (botón del módulo Facturas) — RD 1619/2012, art. 15
+// Confirma con el usuario y delega la generación de la rectificativa en
+// anularFacturaConRectificativa() (ver arriba).
+// ===========================
+async function anularFactura(id) {
+  const f = DB.getItem('facturas', id);
+  if (!f) return;
+  if (f.serie === 'RET' || (f.tipo_factura || '').startsWith('R')) {
+    toast('Las facturas rectificativas no se pueden anular. Si hay un error, consulta a tu asesor fiscal.', 'info'); return;
+  }
+  if (f.estado === 'anulada' || f.estado === 'rectificada') {
+    toast('Esta factura ya está anulada o rectificada.', 'info'); return;
+  }
+  if (!confirm(
+    '¿Anular la factura ' + f.numero_factura + '?\n\n' +
+    'Se creará automáticamente una factura rectificativa (R1) con importes\n' +
+    'negativos que cancela fiscalmente la original (RD 1619/2012, art. 15).\n\n' +
+    'La factura original quedará marcada como RECTIFICADA.'
+  )) return;
+
+  const resultado = await anularFacturaConRectificativa(id);
+  if (!resultado.ok) { toast(resultado.error || 'Error al anular la factura.', 'error'); return; }
+
+  toast('Creada ' + resultado.numeroRectificativa + ' · ' + f.numero_factura + ' queda rectificada.', 'success');
   renderFacturas(navParams);
 }
 
