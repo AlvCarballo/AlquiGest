@@ -1,0 +1,139 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Propietarios
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - button "Nuevo propietario" [ref=e272] [cursor=pointer]:
+            - img [ref=e273]
+            - text: Nuevo propietario
+      - generic [ref=e274]:
+        - generic [ref=e275]:
+          - generic [ref=e276]: Propietarios (2)
+          - generic [ref=e277]:
+            - img
+            - searchbox "Buscar..." [ref=e278]
+        - table [ref=e280]:
+          - rowgroup [ref=e281]:
+            - row "Nombre NIF Teléfono Email Inmuebles" [ref=e282]:
+              - columnheader "Nombre" [ref=e283] [cursor=pointer]
+              - columnheader "NIF" [ref=e284] [cursor=pointer]
+              - columnheader "Teléfono" [ref=e285] [cursor=pointer]
+              - columnheader "Email" [ref=e286] [cursor=pointer]
+              - columnheader "Inmuebles" [ref=e287] [cursor=pointer]
+              - columnheader [ref=e288]
+          - rowgroup [ref=e289]:
+            - row "García Martínez, Manuel 12345678A 650 111 222 manuel@email.com 4 IRPF" [ref=e290]:
+              - cell "García Martínez, Manuel" [ref=e291]:
+                - strong [ref=e292]: García Martínez, Manuel
+              - cell "12345678A" [ref=e293]
+              - cell "650 111 222" [ref=e294]
+              - cell "manuel@email.com" [ref=e295]
+              - cell "4" [ref=e296]:
+                - generic [ref=e297]: "4"
+              - cell "IRPF" [ref=e298]:
+                - button "IRPF" [ref=e299] [cursor=pointer]
+                - button "Editar" [ref=e300] [cursor=pointer]:
+                  - img [ref=e301]
+                - button "Eliminar" [ref=e304] [cursor=pointer]:
+                  - img [ref=e305]
+            - row "Fernández Torres, Ana 87654321B 660 333 444 ana.fernandez@email.com 2 IRPF" [ref=e308]:
+              - cell "Fernández Torres, Ana" [ref=e309]:
+                - strong [ref=e310]: Fernández Torres, Ana
+              - cell "87654321B" [ref=e311]
+              - cell "660 333 444" [ref=e312]
+              - cell "ana.fernandez@email.com" [ref=e313]
+              - cell "2" [ref=e314]:
+                - generic [ref=e315]: "2"
+              - cell "IRPF" [ref=e316]:
+                - button "IRPF" [ref=e317] [cursor=pointer]
+                - button "Editar" [ref=e318] [cursor=pointer]:
+                  - img [ref=e319]
+                - button "Eliminar" [ref=e322] [cursor=pointer]:
+                  - img [ref=e323]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

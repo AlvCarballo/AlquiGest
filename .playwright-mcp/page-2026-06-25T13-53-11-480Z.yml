@@ -1,0 +1,178 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+        - generic [ref=e70]:
+          - generic [ref=e71]: Configuración
+          - generic [ref=e72] [cursor=pointer]:
+            - img [ref=e73]
+            - text: Mi Empresa
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Parámetros
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: VERI*FACTU
+      - generic [ref=e83]: AlquiGest v2.2.1 · 2026
+    - generic [ref=e84]:
+      - banner [ref=e85]:
+        - generic [ref=e86]: Mi Empresa
+        - generic [ref=e87]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e88]
+        - generic [ref=e89]:
+          - button "Alternar modo oscuro" [ref=e90] [cursor=pointer]:
+            - img [ref=e91]
+          - button "1" [ref=e103] [cursor=pointer]:
+            - img [ref=e99]
+            - generic [ref=e104]: "1"
+      - generic [ref=e105]:
+        - generic [ref=e107]: Datos de Mi Empresa / Administración
+        - generic [ref=e108]:
+          - generic [ref=e109]: Estos datos aparecerán en la cabecera de todos los recibos.
+          - generic [ref=e110]:
+            - generic [ref=e111]:
+              - generic [ref=e113]: Identificación
+              - generic [ref=e114]:
+                - generic [ref=e115]: Nombre / Razón Social *
+                - textbox "Mi Administración de Fincas" [ref=e116]: MARIA DE LOS MILAGROS FAILDE SANCHEZ
+              - generic [ref=e117]:
+                - generic [ref=e118]: CIF / NIF *
+                - textbox "B12345678" [ref=e119]: 28690485D
+              - generic [ref=e120]:
+                - generic [ref=e121]: Prefijo de recibos
+                - textbox "R" [ref=e122]
+              - generic [ref=e123]:
+                - generic [ref=e124]: Teléfono
+                - textbox "912 345 678" [ref=e125]: "654020967"
+              - generic [ref=e127]: Dirección
+              - generic [ref=e128]:
+                - generic [ref=e129]: Dirección
+                - textbox "Calle Mayor, 1" [ref=e130]: c/ valle 5 1ºA
+              - generic [ref=e131]:
+                - generic [ref=e132]: Código Postal
+                - textbox "28001" [ref=e133]: "41003"
+              - generic [ref=e134]:
+                - generic [ref=e135]: Municipio
+                - textbox "Madrid" [ref=e136]: SEVILLA
+              - generic [ref=e137]:
+                - generic [ref=e138]: Provincia
+                - textbox "Madrid" [ref=e139]: Sevilla
+              - generic [ref=e140]:
+                - generic [ref=e141]: Email
+                - textbox "admin@miadmin.es" [ref=e142]: milagrosfailde@gmail.com
+              - generic [ref=e143]:
+                - generic [ref=e144]: Web
+                - textbox "www.miadmin.es" [ref=e145]
+              - generic [ref=e147]: Datos bancarios (para recibos)
+              - generic [ref=e148]:
+                - generic [ref=e149]: IBAN
+                - textbox "ES00 0000 0000 0000 0000 0000" [ref=e150]: ES60 2100 8088 5113 0031 3419
+              - generic [ref=e151]:
+                - generic [ref=e152]: Texto pie de recibo
+                - textbox "Texto opcional que aparecerá al pie de cada recibo..." [ref=e153]
+              - generic [ref=e154]:
+                - generic [ref=e155]: 📧 Configuración Email (Gmail)
+                - generic [ref=e156]:
+                  - text: Necesitas una
+                  - strong [ref=e157]: Contraseña de Aplicación
+                  - text: de Google (no tu contraseña normal).
+                  - link "Crear contraseña de aplicación →" [ref=e158] [cursor=pointer]:
+                    - /url: https://myaccount.google.com/apppasswords
+              - generic [ref=e159]:
+                - generic [ref=e160]: Email Gmail (remitente)
+                - textbox "tuemail@gmail.com" [ref=e161]: milagrosfailde@gmail.com
+              - generic [ref=e162]:
+                - generic [ref=e163]: Contraseña de Aplicación Google
+                - textbox "xxxx xxxx xxxx xxxx" [ref=e164]: rkqb pfyy bfgp qbpe
+            - generic [ref=e165]:
+              - generic [ref=e166]: ✉ Plantillas de Email
+              - generic [ref=e167]:
+                - text: Usa
+                - code [ref=e168]: "{{numero_recibo}}"
+                - text: ","
+                - code [ref=e169]: "{{inquilino}}"
+                - text: ","
+                - code [ref=e170]: "{{importe}}"
+                - text: ","
+                - code [ref=e171]: "{{periodo}}"
+                - text: ","
+                - code [ref=e172]: "{{empresa}}"
+                - text: como variables dinámicas.
+            - generic [ref=e173]:
+              - generic [ref=e174]: Asunto del email de recibo
+              - 'textbox "Recibo de alquiler {{numero_recibo}} — {{periodo}}" [ref=e175]'
+            - generic [ref=e176]:
+              - generic [ref=e177]: Cuerpo del email de recibo
+              - 'textbox "Estimado/a {{inquilino}}, Adjuntamos su recibo de alquiler..." [ref=e178]':
+                - /placeholder: "Estimado/a {{inquilino}},\n\nAdjuntamos su recibo de alquiler..."
+                - text: "Estimado/a {{inquilino}}, Le enviamos adjunto su recibo de alquiler correspondiente al período {{periodo}}. Importe: {{importe}} Un saludo, {{empresa}}"
+            - generic [ref=e179]:
+              - generic [ref=e180]: Asunto del email de factura
+              - 'textbox "Factura {{numero_factura}} — {{empresa}}" [ref=e181]'
+        - generic [ref=e182]:
+          - button "Guardar" [ref=e183] [cursor=pointer]:
+            - img [ref=e184]
+            - text: Guardar
+          - button "Descargar backup JSON" [ref=e186] [cursor=pointer]:
+            - img [ref=e187]
+            - text: Descargar backup JSON
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

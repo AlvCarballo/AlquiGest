@@ -1,0 +1,234 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.3 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Plantillas DOCX
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - generic [ref=e111]:
+            - button "Subir plantilla" [ref=e539] [cursor=pointer]:
+              - img [ref=e540]
+              - text: Subir plantilla
+            - 'button "{ } Variables" [ref=e541] [cursor=pointer]'
+      - generic [ref=e110]:
+        - generic [ref=e543]:
+          - heading "Plantillas DOCX" [level=2] [ref=e544]
+          - generic [ref=e545]:
+            - text: Gestiona plantillas Word con variables dinámicas como
+            - code [ref=e546]: "{{Renta}}"
+            - text: ","
+            - code [ref=e547]: "{{NombreInquilino}}"
+            - text: ", etc."
+        - generic [ref=e549]:
+          - img [ref=e550]
+          - generic [ref=e553]: No hay plantillas todavía
+          - generic [ref=e554]:
+            - text: Sube tu primera plantilla DOCX con variables como
+            - code [ref=e555]: "{{Renta}}"
+          - button "Subir primera plantilla" [ref=e556] [cursor=pointer]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Editar contrato
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Inquilino *
+            - combobox:
+              - option "-- Seleccionar --"
+              - option "Rodríguez Pérez, Laura"
+              - option "González Sánchez, Pedro"
+              - option "Martín López, María"
+              - option "Torres Ruiz, Carlos"
+              - option "Comercial Díaz S.L."
+              - option "Jiménez Vega, Sofía" [selected]
+          - generic:
+            - generic: Inmueble *
+            - combobox:
+              - option "-- Seleccionar --"
+              - option "C Mayor 15 1º A"
+              - option "C Mayor 15 1º B"
+              - option "C Mayor 15 2º A"
+              - option "C Mayor 15 2º B"
+              - option "AV Constitución 8 BAJO A"
+              - option "AV Constitución 8 1º A" [selected]
+          - generic:
+            - generic: Fecha inicio *
+            - textbox: 2024-06-01
+          - generic:
+            - generic: Fecha fin
+            - textbox: 2025-05-31
+          - generic:
+            - generic: Estado
+            - combobox:
+              - option "Activo" [selected]
+              - option "Finalizado"
+              - option "Rescindido"
+          - generic:
+            - generic: Duración
+            - generic:
+              - spinbutton: "1"
+              - combobox:
+                - option "años" [selected]
+                - option "meses"
+                - option "días"
+          - generic:
+            - generic: "Motivo de temporada (variable {{MotivoTemporada}} en plantillas)"
+            - 'textbox "Ej: Estudios universitarios 2024-2025"'
+            - generic: Requerido en contratos de temporada (duración inferior a 1 año) según la Ley de Arrendamientos Urbanos.
+          - generic:
+            - generic: Condiciones económicas
+          - generic:
+            - generic: Renta base mensual (€) *
+            - spinbutton: "800"
+          - generic:
+            - generic: IVA (%)
+            - spinbutton: "0"
+          - generic:
+            - generic: IRPF (%)
+            - spinbutton: "0"
+          - generic:
+            - generic: Fianza (€)
+            - spinbutton: "1600"
+          - generic:
+            - generic: Revisión anual
+            - combobox:
+              - option "IPC (INE)" [selected]
+              - option "IRAV (INE)"
+              - option "Subida fija %"
+              - option "Sin revisión"
+          - generic:
+            - generic: Día de pago
+            - spinbutton: "5"
+          - generic:
+            - generic: Observaciones / Cláusulas adicionales
+            - textbox
+          - generic:
+            - generic:
+              - text: Inquilinos secundarios
+              - generic:
+                - text: (firmantes adicionales — bloque
+                - code: "{{#INQUILINOS_SECUNDARIOS}}"
+                - text: en plantillas)
+          - generic:
+            - table:
+              - rowgroup:
+                - row "Nombre NIF Teléfono":
+                  - columnheader "Nombre"
+                  - columnheader "NIF"
+                  - columnheader "Teléfono"
+                  - columnheader
+              - rowgroup:
+                - row "Martínez Gómez, Carlos 33445566F 611 222 333 Editar Eliminar":
+                  - cell "Martínez Gómez, Carlos"
+                  - cell "33445566F"
+                  - cell "611 222 333"
+                  - cell "Editar Eliminar":
+                    - button "Editar"
+                    - button "Eliminar"
+            - button "+ Añadir inquilino secundario"
+          - generic:
+            - generic: "Fiador solidario (opcional — variables {{NombreFiador}}, {{NIFFiador}}, {{DireccionFiador}} en plantillas)"
+          - generic:
+            - generic: Nombre del fiador
+            - textbox "García Ruiz, José": López Sánchez, María
+          - generic:
+            - generic: NIF del fiador
+            - textbox "11223344C": 55667788D
+          - generic:
+            - generic: Dirección del fiador
+            - textbox "Calle Ejemplo 3, 28001 Madrid": Calle Real 15, 28002 Madrid
+          - generic:
+            - generic:
+              - 'checkbox "Mostrar aviso en recibo: \"Recibo no válido sin el correspondiente justificante bancario\"" [checked]'
+              - text: "Mostrar aviso en recibo:"
+              - emphasis: "\"Recibo no válido sin el correspondiente justificante bancario\""
+          - generic:
+            - generic:
+              - 'checkbox "Mostrar aviso en factura: \"Esta factura no constituye justificante de pago sin el correspondiente justificante bancario\""'
+              - text: "Mostrar aviso en factura:"
+              - emphasis: "\"Esta factura no constituye justificante de pago sin el correspondiente justificante bancario\""
+      - generic:
+        - button "Cancelar"
+        - button "Guardar"

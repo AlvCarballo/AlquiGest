@@ -1,0 +1,1 @@
+[      10ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost/AlquiGest_v2/assets/php/api.php?action=delete&table=users&id=1:0

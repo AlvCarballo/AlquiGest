@@ -1,0 +1,183 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+        - generic [ref=e70]:
+          - generic [ref=e71]: Configuración
+          - generic [ref=e72] [cursor=pointer]:
+            - img [ref=e73]
+            - text: Mi Empresa
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: VERI*FACTU
+      - generic [ref=e79]: AlquiGest v2.0.0 · 2026
+    - generic [ref=e80]:
+      - banner [ref=e81]:
+        - generic [ref=e82]: Fincas / Edificios
+        - generic [ref=e83]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e84]
+        - generic [ref=e85]:
+          - button "Alternar modo oscuro" [ref=e86] [cursor=pointer]:
+            - img [ref=e87]
+          - button "Avisos de revisión anual" [ref=e94] [cursor=pointer]:
+            - img [ref=e95]
+          - button "Nueva finca" [ref=e786] [cursor=pointer]:
+            - img [ref=e787]
+            - text: Nueva finca
+      - generic [ref=e788]:
+        - generic [ref=e789]:
+          - generic [ref=e790]: Fincas / Edificios (2)
+          - generic [ref=e791]:
+            - img
+            - searchbox "Buscar..." [ref=e792]
+        - table [ref=e794]:
+          - rowgroup [ref=e795]:
+            - row "Nombre / Dirección Propietario Pisos Recibos" [ref=e796]:
+              - columnheader "Nombre / Dirección" [ref=e797] [cursor=pointer]
+              - columnheader "Propietario" [ref=e798] [cursor=pointer]
+              - columnheader "Pisos" [ref=e799] [cursor=pointer]
+              - columnheader "Recibos" [ref=e800] [cursor=pointer]
+              - columnheader [ref=e801]
+          - rowgroup [ref=e802]:
+            - row "C/ Mayor 15 28001 Madrid (Madrid) García Martínez, Manuel 4 pisos 20 recibos Pisos Recibos" [ref=e803]:
+              - cell "C/ Mayor 15 28001 Madrid (Madrid)" [ref=e804]:
+                - strong [ref=e805]: C/ Mayor 15
+                - text: 28001 Madrid (Madrid)
+              - cell "García Martínez, Manuel" [ref=e806]
+              - cell "4 pisos" [ref=e807]:
+                - generic [ref=e808]: 4 pisos
+              - cell "20 recibos" [ref=e809]:
+                - generic [ref=e810]: 20 recibos
+              - cell "Pisos Recibos" [ref=e811]:
+                - button "Pisos" [ref=e812] [cursor=pointer]
+                - button "Recibos" [ref=e813] [cursor=pointer]
+                - button "Editar" [ref=e814] [cursor=pointer]:
+                  - img [ref=e815]
+                - button "Eliminar" [ref=e818] [cursor=pointer]:
+                  - img [ref=e819]
+            - row "Av. Constitución 8 28002 Madrid (Madrid) Fernández Torres, Ana 2 pisos 10 recibos Pisos Recibos" [ref=e821]:
+              - cell "Av. Constitución 8 28002 Madrid (Madrid)" [ref=e822]:
+                - strong [ref=e823]: Av. Constitución 8
+                - text: 28002 Madrid (Madrid)
+              - cell "Fernández Torres, Ana" [ref=e824]
+              - cell "2 pisos" [ref=e825]:
+                - generic [ref=e826]: 2 pisos
+              - cell "10 recibos" [ref=e827]:
+                - generic [ref=e828]: 10 recibos
+              - cell "Pisos Recibos" [ref=e829]:
+                - button "Pisos" [ref=e830] [cursor=pointer]
+                - button "Recibos" [ref=e831] [cursor=pointer]
+                - button "Editar" [ref=e832] [cursor=pointer]:
+                  - img [ref=e833]
+                - button "Eliminar" [ref=e836] [cursor=pointer]:
+                  - img [ref=e837]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Editar propietario
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Datos personales
+          - generic:
+            - generic: Nombre completo *
+            - textbox "Apellidos, Nombre o Razón Social": QA Prueba Borrar (editado)
+          - generic:
+            - generic: NIF / CIF
+            - textbox "12345678A": 99999999Q
+          - generic:
+            - generic: Teléfono
+            - textbox "600 000 000": 699 999 999
+          - generic:
+            - generic: Email
+            - textbox "propietario@email.com": qa@prueba.com
+          - generic:
+            - generic: Tipo IRPF
+            - combobox:
+              - option "Sin IRPF" [selected]
+              - option "Física"
+              - option "Jurídica"
+          - generic:
+            - generic: Dirección
+          - generic:
+            - generic: Dirección
+            - textbox "Calle, número, piso..."
+          - generic:
+            - generic: C.P.
+            - textbox "28001"
+          - generic:
+            - generic: Municipio
+            - textbox "Madrid"
+          - generic:
+            - generic: Provincia
+            - textbox "Madrid"
+          - generic:
+            - generic: País
+            - textbox "España"
+          - generic:
+            - generic: Datos bancarios
+          - generic:
+            - generic: IBAN
+            - textbox "ES00 0000 0000 0000 0000 0000"
+          - generic:
+            - generic: Observaciones
+            - textbox
+      - generic:
+        - button "Cancelar"
+        - button "Guardar"

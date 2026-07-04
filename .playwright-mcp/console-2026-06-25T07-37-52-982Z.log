@@ -1,0 +1,4 @@
+[    9272ms] [LOG] [PDF] Iniciando descarga: REC-202602-00001.pdf @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625i:189
+[    9273ms] [LOG] [PDF] b64 generado, longitud: 311716 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625i:191
+[    9282ms] [LOG] [PDF] Respuesta HTTP: 200 application/pdf attachment; filename="REC-202602-00001.pdf" @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625i:204
+[    9287ms] [LOG] [PDF] Blob recibido, tamaño: 233787 tipo: application/pdf @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625i:209

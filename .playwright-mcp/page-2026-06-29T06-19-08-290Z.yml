@@ -1,0 +1,217 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Configuración del sistema
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - button "Guardar" [ref=e112] [cursor=pointer]:
+            - img [ref=e113]
+            - text: Guardar
+      - generic [ref=e115]:
+        - generic [ref=e116]:
+          - button "Dashboard" [ref=e117] [cursor=pointer]:
+            - img [ref=e118]
+            - generic [ref=e123]: Dashboard
+          - button "Paginación" [ref=e124] [cursor=pointer]:
+            - img [ref=e125]
+            - generic [ref=e129]: Paginación
+          - button "Botones" [ref=e130] [cursor=pointer]:
+            - img [ref=e131]
+            - generic [ref=e134]: Botones
+          - button "WhatsApp" [ref=e135] [cursor=pointer]:
+            - img [ref=e136]
+            - generic [ref=e138]: WhatsApp
+          - button "VERI*FACTU" [ref=e139] [cursor=pointer]:
+            - img [ref=e140]
+            - generic [ref=e142]: VERI*FACTU
+          - button "Documentos" [ref=e143] [cursor=pointer]:
+            - img [ref=e144]
+            - generic [ref=e147]: Documentos
+        - generic [ref=e148]:
+          - generic [ref=e150]:
+            - img [ref=e151]
+            - generic [ref=e156]:
+              - generic [ref=e157]: Dashboard
+              - generic [ref=e158]: Controla qué elementos aparecen en la pantalla de inicio (Dashboard).
+          - generic [ref=e159]:
+            - generic [ref=e160]:
+              - generic [ref=e161]:
+                - generic [ref=e162]: Tarjetas de resumen
+                - generic [ref=e163]: "Muestra las 4 tarjetas superiores: Propietarios, Inmuebles, Contratos activos y Pendiente de cobro."
+              - generic [ref=e164]:
+                - generic "Activo" [ref=e165]:
+                  - checkbox [checked]
+                - button "?" [ref=e167] [cursor=pointer]
+            - generic [ref=e168]:
+              - generic [ref=e169]:
+                - generic [ref=e170]: Alerta IPC/IRAV pendiente
+                - generic [ref=e171]: Muestra el aviso naranja cuando hay contratos con revisión IPC o IRAV pendiente este mes.
+              - generic [ref=e172]:
+                - generic "Activo" [ref=e173]:
+                  - checkbox [checked]
+                - button "?" [ref=e175] [cursor=pointer]
+            - generic [ref=e176]:
+              - generic [ref=e177]:
+                - generic [ref=e178]: Alerta de backup
+                - generic [ref=e179]: Muestra el aviso azul cuando no se ha hecho backup en los últimos 7 días.
+              - generic [ref=e180]:
+                - generic "Activo" [ref=e181]:
+                  - checkbox [checked]
+                - button "?" [ref=e183] [cursor=pointer]
+            - generic [ref=e184]:
+              - generic [ref=e185]:
+                - generic [ref=e186]: Avisos de revisión urgentes
+                - generic [ref=e187]: Muestra la tarjeta de revisiones anuales próximas (contratos con aniversario en los próximos 30 días).
+              - generic [ref=e188]:
+                - generic "Activo" [ref=e189]:
+                  - checkbox [checked]
+                - button "?" [ref=e191] [cursor=pointer]
+            - generic [ref=e192]:
+              - generic [ref=e193]:
+                - generic [ref=e194]: Próximas renovaciones de contrato
+                - generic [ref=e195]: Muestra la tabla de contratos vencidos o con vencimiento en los próximos 6 meses.
+              - generic [ref=e196]:
+                - generic "Activo" [ref=e197]:
+                  - checkbox [checked]
+                - button "?" [ref=e199] [cursor=pointer]
+            - generic [ref=e200]:
+              - generic [ref=e201]:
+                - generic [ref=e202]: Tabla de revisiones anuales
+                - generic [ref=e203]: Muestra la tabla completa con las próximas revisiones anuales de todos los contratos activos.
+              - generic [ref=e204]:
+                - generic "Activo" [ref=e205]:
+                  - checkbox [checked]
+                - button "?" [ref=e207] [cursor=pointer]
+            - generic [ref=e208]:
+              - generic [ref=e209]:
+                - generic [ref=e210]: Últimos recibos
+                - generic [ref=e211]: Muestra la tabla con los 5 últimos recibos generados y su estado.
+              - generic [ref=e212]:
+                - generic "Activo" [ref=e213]:
+                  - checkbox [checked]
+                - button "?" [ref=e215] [cursor=pointer]
+            - generic [ref=e216]:
+              - generic [ref=e217]:
+                - generic [ref=e218]: Cobrado este mes
+                - generic [ref=e219]: Muestra la tarjeta con el importe total cobrado en el mes actual y los recibos pendientes.
+              - generic [ref=e220]:
+                - generic "Activo" [ref=e221]:
+                  - checkbox [checked]
+                - button "?" [ref=e223] [cursor=pointer]
+            - generic [ref=e224]:
+              - generic [ref=e225]:
+                - generic [ref=e226]: Gráficos de ingresos y ocupación
+                - generic [ref=e227]: Muestra los gráficos de barras (ingresos últimos 6 meses) y de dona (ocupación de inmuebles).
+              - generic [ref=e228]:
+                - generic "Activo" [ref=e229]:
+                  - checkbox [checked]
+                - button "?" [ref=e231] [cursor=pointer]
+            - generic [ref=e232]:
+              - generic [ref=e233]:
+                - generic [ref=e234]: Previsión de cobros del mes
+                - generic [ref=e235]: Muestra el widget con los cobros esperados, cobrados y pendientes para el mes actual.
+              - generic [ref=e236]:
+                - generic "Activo" [ref=e237]:
+                  - checkbox [checked]
+                - button "?" [ref=e239] [cursor=pointer]
+            - generic [ref=e240]:
+              - generic [ref=e241]:
+                - generic [ref=e242]: Días sin backup para avisar
+                - generic [ref=e243]: Número de días sin backup a partir del cual aparece el aviso en el Dashboard.
+              - generic [ref=e244]:
+                - spinbutton [ref=e245]: "7"
+                - button "?" [ref=e246] [cursor=pointer]
+            - generic [ref=e247]:
+              - generic [ref=e248]:
+                - generic [ref=e249]: Últimas actividades
+                - generic [ref=e250]: Muestra el widget con las 5 últimas acciones registradas en el log de auditoría (cobros, facturas, bajas, etc.).
+              - generic [ref=e251]:
+                - generic "Activo" [ref=e252]:
+                  - checkbox [checked]
+                - button "?" [ref=e254] [cursor=pointer]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

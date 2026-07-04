@@ -1,0 +1,12 @@
+[   15342ms] [LOG] [PDF] Iniciando: morosidad_2026-06-25.pdf @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:189
+[   15343ms] [LOG] [PDF] b64 longitud: 174688 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:191
+[   15351ms] [LOG] [PDF] POST status: 200 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:203
+[   15351ms] [LOG] [PDF] Token recibido: a50dd017e88be979404b8a7e39a31c3b @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:208
+[   30957ms] [LOG] [PDF] Iniciando: morosidad_2026-06-25.pdf @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:189
+[   30957ms] [LOG] [PDF] b64 longitud: 75436 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:191
+[   30964ms] [LOG] [PDF] POST status: 200 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:203
+[   30964ms] [LOG] [PDF] Token recibido: fe76d03a888343a65e399731741aafe2 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:208
+[   62134ms] [LOG] [PDF] Iniciando: morosidad_2026-06-25.pdf @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:189
+[   62134ms] [LOG] [PDF] b64 longitud: 75436 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:191
+[   62150ms] [LOG] [PDF] POST status: 200 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:203
+[   62150ms] [LOG] [PDF] Token recibido: 16e8c286c7adc0fbdf411e6dcd0bf2ac @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625l:208

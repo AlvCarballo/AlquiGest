@@ -1,0 +1,617 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Inquilinos
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [active] [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - button "Nuevo inquilino" [ref=e1687] [cursor=pointer]:
+            - img [ref=e1688]
+            - text: Nuevo inquilino
+      - generic [ref=e1689]:
+        - generic [ref=e1690]:
+          - generic [ref=e1691]: Inquilinos (6)
+          - generic [ref=e1692]:
+            - img
+            - searchbox "Buscar..." [ref=e1693]
+        - table [ref=e1695]:
+          - rowgroup [ref=e1696]:
+            - row "Nombre ▲ NIF Teléfono Email Estado" [ref=e1697]:
+              - columnheader "Nombre ▲" [ref=e1698] [cursor=pointer]
+              - columnheader "NIF" [ref=e1699] [cursor=pointer]
+              - columnheader "Teléfono" [ref=e1700] [cursor=pointer]
+              - columnheader "Email" [ref=e1701] [cursor=pointer]
+              - columnheader "Estado" [ref=e1702] [cursor=pointer]
+              - columnheader [ref=e1703]
+          - rowgroup [ref=e1704]:
+            - row "Comercial Díaz S.L. B98765432 91 700 1234 admin@comercialdiaz.es Activo Pagos Historial" [ref=e1705]:
+              - cell "Comercial Díaz S.L." [ref=e1706]:
+                - strong [ref=e1707]: Comercial Díaz S.L.
+              - cell "B98765432" [ref=e1708]
+              - cell "91 700 1234" [ref=e1709]
+              - cell "admin@comercialdiaz.es" [ref=e1710]
+              - cell "Activo" [ref=e1711]:
+                - generic [ref=e1712]: Activo
+              - cell "Pagos Historial" [ref=e1713]:
+                - button "Pagos" [ref=e1714] [cursor=pointer]
+                - button "Historial" [ref=e1715] [cursor=pointer]
+                - button "Editar" [ref=e1716] [cursor=pointer]:
+                  - img [ref=e1717]
+                - button "Eliminar" [ref=e1720] [cursor=pointer]:
+                  - img [ref=e1721]
+            - row "González Sánchez, Pedro 22222222D 622 200 300 pedro.gonzalez@gmail.com Activo Pagos Historial" [ref=e1724]:
+              - cell "González Sánchez, Pedro" [ref=e1725]:
+                - strong [ref=e1726]: González Sánchez, Pedro
+              - cell "22222222D" [ref=e1727]
+              - cell "622 200 300" [ref=e1728]
+              - cell "pedro.gonzalez@gmail.com" [ref=e1729]
+              - cell "Activo" [ref=e1730]:
+                - generic [ref=e1731]: Activo
+              - cell "Pagos Historial" [ref=e1732]:
+                - button "Pagos" [ref=e1733] [cursor=pointer]
+                - button "Historial" [ref=e1734] [cursor=pointer]
+                - button "Editar" [ref=e1735] [cursor=pointer]:
+                  - img [ref=e1736]
+                - button "Eliminar" [ref=e1739] [cursor=pointer]:
+                  - img [ref=e1740]
+            - row "Jiménez Vega, Sofía 55555555G 655 500 600 sofia.jimenez@gmail.com Activo Pagos Historial" [ref=e1743]:
+              - cell "Jiménez Vega, Sofía" [ref=e1744]:
+                - strong [ref=e1745]: Jiménez Vega, Sofía
+              - cell "55555555G" [ref=e1746]
+              - cell "655 500 600" [ref=e1747]
+              - cell "sofia.jimenez@gmail.com" [ref=e1748]
+              - cell "Activo" [ref=e1749]:
+                - generic [ref=e1750]: Activo
+              - cell "Pagos Historial" [ref=e1751]:
+                - button "Pagos" [ref=e1752] [cursor=pointer]
+                - button "Historial" [ref=e1753] [cursor=pointer]
+                - button "Editar" [ref=e1754] [cursor=pointer]:
+                  - img [ref=e1755]
+                - button "Eliminar" [ref=e1758] [cursor=pointer]:
+                  - img [ref=e1759]
+            - row "Martín López, María 33333333E 633 300 400 maria.martin@outlook.com Activo Pagos Historial" [ref=e1762]:
+              - cell "Martín López, María" [ref=e1763]:
+                - strong [ref=e1764]: Martín López, María
+              - cell "33333333E" [ref=e1765]
+              - cell "633 300 400" [ref=e1766]
+              - cell "maria.martin@outlook.com" [ref=e1767]
+              - cell "Activo" [ref=e1768]:
+                - generic [ref=e1769]: Activo
+              - cell "Pagos Historial" [ref=e1770]:
+                - button "Pagos" [ref=e1771] [cursor=pointer]
+                - button "Historial" [ref=e1772] [cursor=pointer]
+                - button "Editar" [ref=e1773] [cursor=pointer]:
+                  - img [ref=e1774]
+                - button "Eliminar" [ref=e1777] [cursor=pointer]:
+                  - img [ref=e1778]
+            - row "Rodríguez Pérez, Laura 11111111C 611 100 200 laura.rodriguez@gmail.com Activo Pagos Historial" [ref=e1781]:
+              - cell "Rodríguez Pérez, Laura" [ref=e1782]:
+                - strong [ref=e1783]: Rodríguez Pérez, Laura
+              - cell "11111111C" [ref=e1784]
+              - cell "611 100 200" [ref=e1785]
+              - cell "laura.rodriguez@gmail.com" [ref=e1786]
+              - cell "Activo" [ref=e1787]:
+                - generic [ref=e1788]: Activo
+              - cell "Pagos Historial" [ref=e1789]:
+                - button "Pagos" [ref=e1790] [cursor=pointer]
+                - button "Historial" [ref=e1791] [cursor=pointer]
+                - button "Editar" [ref=e1792] [cursor=pointer]:
+                  - img [ref=e1793]
+                - button "Eliminar" [ref=e1796] [cursor=pointer]:
+                  - img [ref=e1797]
+            - row "Torres Ruiz, Carlos 44444444F 644 400 500 carlos.torres@gmail.com Activo Pagos Historial" [ref=e1800]:
+              - cell "Torres Ruiz, Carlos" [ref=e1801]:
+                - strong [ref=e1802]: Torres Ruiz, Carlos
+              - cell "44444444F" [ref=e1803]
+              - cell "644 400 500" [ref=e1804]
+              - cell "carlos.torres@gmail.com" [ref=e1805]
+              - cell "Activo" [ref=e1806]:
+                - generic [ref=e1807]: Activo
+              - cell "Pagos Historial" [ref=e1808]:
+                - button "Pagos" [ref=e1809] [cursor=pointer]
+                - button "Historial" [ref=e1810] [cursor=pointer]
+                - button "Editar" [ref=e1811] [cursor=pointer]:
+                  - img [ref=e1812]
+                - button "Eliminar" [ref=e1815] [cursor=pointer]:
+                  - img [ref=e1816]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Variables disponibles
+        - button:
+          - img
+      - generic:
+        - paragraph:
+          - text: Escribe estas variables en tu plantilla Word usando la sintaxis
+          - code: "{{NombreVariable}}"
+          - text: . Se sustituirán automáticamente al generar el documento.
+        - generic:
+          - generic:
+            - generic: Bloque inq. secundarios
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{#INQUILINOS_SECUNDARIOS}} Inicio del bloque repetitivo — párrafo exclusivo con este marcador {{#INQUILINOS_SECUNDARIOS}}"':
+                  - 'cell "{{#INQUILINOS_SECUNDARIOS}}"':
+                    - code: "{{#INQUILINOS_SECUNDARIOS}}"
+                  - cell "Inicio del bloque repetitivo — párrafo exclusivo con este marcador"
+                  - 'cell "{{#INQUILINOS_SECUNDARIOS}}"'
+                - 'row "{{/INQUILINOS_SECUNDARIOS}} Fin del bloque repetitivo — párrafo exclusivo con este marcador {{/INQUILINOS_SECUNDARIOS}}"':
+                  - 'cell "{{/INQUILINOS_SECUNDARIOS}}"':
+                    - code: "{{/INQUILINOS_SECUNDARIOS}}"
+                  - cell "Fin del bloque repetitivo — párrafo exclusivo con este marcador"
+                  - 'cell "{{/INQUILINOS_SECUNDARIOS}}"'
+                - 'row "{{InqNombre}} Nombre del inquilino secundario (solo dentro del bloque) Ruiz Pérez, Ana"':
+                  - 'cell "{{InqNombre}}"':
+                    - code: "{{InqNombre}}"
+                  - cell "Nombre del inquilino secundario (solo dentro del bloque)"
+                  - cell "Ruiz Pérez, Ana"
+                - 'row "{{InqNIF}} NIF/NIE del inquilino secundario (solo dentro del bloque) 44556677E"':
+                  - 'cell "{{InqNIF}}"':
+                    - code: "{{InqNIF}}"
+                  - cell "NIF/NIE del inquilino secundario (solo dentro del bloque)"
+                  - cell "44556677E"
+                - 'row "{{InqDireccion}} Dirección del inquilino secundario (solo dentro del bloque) Av. España 5, 28003 Madrid"':
+                  - 'cell "{{InqDireccion}}"':
+                    - code: "{{InqDireccion}}"
+                  - cell "Dirección del inquilino secundario (solo dentro del bloque)"
+                  - cell "Av. España 5, 28003 Madrid"
+                - 'row "{{InqTelefono}} Teléfono del inquilino secundario (solo dentro del bloque) 600 111 222"':
+                  - 'cell "{{InqTelefono}}"':
+                    - code: "{{InqTelefono}}"
+                  - cell "Teléfono del inquilino secundario (solo dentro del bloque)"
+                  - cell "600 111 222"
+                - 'row "{{InqEmail}} Email del inquilino secundario (solo dentro del bloque) ana@email.com"':
+                  - 'cell "{{InqEmail}}"':
+                    - code: "{{InqEmail}}"
+                  - cell "Email del inquilino secundario (solo dentro del bloque)"
+                  - cell "ana@email.com"
+          - generic:
+            - generic: Contrato
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{FechaInicio}} Fecha de inicio del contrato (dd/mm/aaaa) 01/01/2024"':
+                  - 'cell "{{FechaInicio}}"':
+                    - code: "{{FechaInicio}}"
+                  - cell "Fecha de inicio del contrato (dd/mm/aaaa)"
+                  - cell "01/01/2024"
+                - 'row "{{FechaFin}} Fecha de vencimiento del contrato 31/12/2025"':
+                  - 'cell "{{FechaFin}}"':
+                    - code: "{{FechaFin}}"
+                  - cell "Fecha de vencimiento del contrato"
+                  - cell "31/12/2025"
+                - 'row "{{Duracion}} Duración del contrato en texto 1 año y 6 meses"':
+                  - 'cell "{{Duracion}}"':
+                    - code: "{{Duracion}}"
+                  - cell "Duración del contrato en texto"
+                  - cell "1 año y 6 meses"
+                - 'row "{{MetodoRevision}} Tipo de revisión anual de la renta IPC"':
+                  - 'cell "{{MetodoRevision}}"':
+                    - code: "{{MetodoRevision}}"
+                  - cell "Tipo de revisión anual de la renta"
+                  - cell "IPC"
+                - 'row "{{DiaPago}} Día del mes de pago de la renta 5"':
+                  - 'cell "{{DiaPago}}"':
+                    - code: "{{DiaPago}}"
+                  - cell "Día del mes de pago de la renta"
+                  - cell "5"
+                - 'row "{{MotivoTemporada}} Motivo del arrendamiento de temporada Estudios universitarios 2024-2025"':
+                  - 'cell "{{MotivoTemporada}}"':
+                    - code: "{{MotivoTemporada}}"
+                  - cell "Motivo del arrendamiento de temporada"
+                  - cell "Estudios universitarios 2024-2025"
+          - generic:
+            - generic: Empresa
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{NombreEmpresa}} Nombre de la empresa gestora Gestiones García S.L."':
+                  - 'cell "{{NombreEmpresa}}"':
+                    - code: "{{NombreEmpresa}}"
+                  - cell "Nombre de la empresa gestora"
+                  - cell "Gestiones García S.L."
+                - 'row "{{CIFEmpresa}} CIF/NIF de la empresa B12345678"':
+                  - 'cell "{{CIFEmpresa}}"':
+                    - code: "{{CIFEmpresa}}"
+                  - cell "CIF/NIF de la empresa"
+                  - cell "B12345678"
+                - 'row "{{DireccionEmpresa}} Dirección completa de la empresa Av. Principal 1, 28001 Madrid"':
+                  - 'cell "{{DireccionEmpresa}}"':
+                    - code: "{{DireccionEmpresa}}"
+                  - cell "Dirección completa de la empresa"
+                  - cell "Av. Principal 1, 28001 Madrid"
+                - 'row "{{TelefonoEmpresa}} Teléfono de la empresa 910 000 001"':
+                  - 'cell "{{TelefonoEmpresa}}"':
+                    - code: "{{TelefonoEmpresa}}"
+                  - cell "Teléfono de la empresa"
+                  - cell "910 000 001"
+                - 'row "{{EmailEmpresa}} Email de la empresa info@empresa.com"':
+                  - 'cell "{{EmailEmpresa}}"':
+                    - code: "{{EmailEmpresa}}"
+                  - cell "Email de la empresa"
+                  - cell "info@empresa.com"
+                - 'row "{{IBANEmpresa}} IBAN de la cuenta bancaria de la empresa ES12 3456 7890 1234 5678"':
+                  - 'cell "{{IBANEmpresa}}"':
+                    - code: "{{IBANEmpresa}}"
+                  - cell "IBAN de la cuenta bancaria de la empresa"
+                  - cell "ES12 3456 7890 1234 5678"
+          - generic:
+            - generic: Facturación
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{Renta}} Importe mensual de la renta (con €) 850,00 €"':
+                  - 'cell "{{Renta}}"':
+                    - code: "{{Renta}}"
+                  - cell "Importe mensual de la renta (con €)"
+                  - cell "850,00 €"
+                - 'row "{{RentaLetras}} Renta mensual escrita en letras ochocientos cincuenta euros"':
+                  - 'cell "{{RentaLetras}}"':
+                    - code: "{{RentaLetras}}"
+                  - cell "Renta mensual escrita en letras"
+                  - cell "ochocientos cincuenta euros"
+                - 'row "{{IVA}} Porcentaje de IVA del contrato 21,00%"':
+                  - 'cell "{{IVA}}"':
+                    - code: "{{IVA}}"
+                  - cell "Porcentaje de IVA del contrato"
+                  - cell "21,00%"
+                - 'row "{{IRPF}} Porcentaje de retención IRPF 15,00%"':
+                  - 'cell "{{IRPF}}"':
+                    - code: "{{IRPF}}"
+                  - cell "Porcentaje de retención IRPF"
+                  - cell "15,00%"
+          - generic:
+            - generic: Fiador
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{NombreFiador}} Nombre completo del fiador solidario García Ruiz, José"':
+                  - 'cell "{{NombreFiador}}"':
+                    - code: "{{NombreFiador}}"
+                  - cell "Nombre completo del fiador solidario"
+                  - cell "García Ruiz, José"
+                - 'row "{{NIFFiador}} NIF del fiador solidario 11223344C"':
+                  - 'cell "{{NIFFiador}}"':
+                    - code: "{{NIFFiador}}"
+                  - cell "NIF del fiador solidario"
+                  - cell "11223344C"
+                - 'row "{{DireccionFiador}} Dirección completa del fiador Calle Ejemplo 3, Madrid"':
+                  - 'cell "{{DireccionFiador}}"':
+                    - code: "{{DireccionFiador}}"
+                  - cell "Dirección completa del fiador"
+                  - cell "Calle Ejemplo 3, Madrid"
+          - generic:
+            - generic: Fianza
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{Fianza}} Importe de la fianza (con €) 1.700,00 €"':
+                  - 'cell "{{Fianza}}"':
+                    - code: "{{Fianza}}"
+                  - cell "Importe de la fianza (con €)"
+                  - cell "1.700,00 €"
+                - 'row "{{FianzaLetras}} Importe de la fianza escrito en letras mil setecientos euros"':
+                  - 'cell "{{FianzaLetras}}"':
+                    - code: "{{FianzaLetras}}"
+                  - cell "Importe de la fianza escrito en letras"
+                  - cell "mil setecientos euros"
+          - generic:
+            - generic: Fotos
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{FotosContrato}} Tabla de fotos embebidas. El párrafo debe contener solo esta variable. {{FotosContrato}}"':
+                  - 'cell "{{FotosContrato}}"':
+                    - code: "{{FotosContrato}}"
+                  - cell "Tabla de fotos embebidas. El párrafo debe contener solo esta variable."
+                  - 'cell "{{FotosContrato}}"'
+          - generic:
+            - generic: Inmueble
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{DireccionInmueble}} Dirección completa del inmueble arrendado Av. Constitución 8 1º A, Madrid"':
+                  - 'cell "{{DireccionInmueble}}"':
+                    - code: "{{DireccionInmueble}}"
+                  - cell "Dirección completa del inmueble arrendado"
+                  - cell "Av. Constitución 8 1º A, Madrid"
+                - 'row "{{RefCatastral}} Referencia catastral del inmueble 1234567AB1234"':
+                  - 'cell "{{RefCatastral}}"':
+                    - code: "{{RefCatastral}}"
+                  - cell "Referencia catastral del inmueble"
+                  - cell "1234567AB1234"
+                - 'row "{{TipoInmueble}} Tipo de inmueble (vivienda, local…) Vivienda"':
+                  - 'cell "{{TipoInmueble}}"':
+                    - code: "{{TipoInmueble}}"
+                  - cell "Tipo de inmueble (vivienda, local…)"
+                  - cell "Vivienda"
+                - 'row "{{MunicipioInmueble}} Municipio donde está el inmueble Madrid"':
+                  - 'cell "{{MunicipioInmueble}}"':
+                    - code: "{{MunicipioInmueble}}"
+                  - cell "Municipio donde está el inmueble"
+                  - cell "Madrid"
+                - 'row "{{ProvinciaInmueble}} Provincia del inmueble Madrid"':
+                  - 'cell "{{ProvinciaInmueble}}"':
+                    - code: "{{ProvinciaInmueble}}"
+                  - cell "Provincia del inmueble"
+                  - cell "Madrid"
+          - generic:
+            - generic: Inq. secundarios (pos.)
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{Inquilinos_Secundarios_Nombre_1}} Nombre del 1er inquilino secundario Martínez Gómez, Carlos"':
+                  - 'cell "{{Inquilinos_Secundarios_Nombre_1}}"':
+                    - code: "{{Inquilinos_Secundarios_Nombre_1}}"
+                  - cell "Nombre del 1er inquilino secundario"
+                  - cell "Martínez Gómez, Carlos"
+                - 'row "{{Inquilinos_Secundarios_NIF_1}} NIF del 1er inquilino secundario 33445566F"':
+                  - 'cell "{{Inquilinos_Secundarios_NIF_1}}"':
+                    - code: "{{Inquilinos_Secundarios_NIF_1}}"
+                  - cell "NIF del 1er inquilino secundario"
+                  - cell "33445566F"
+                - 'row "{{Inquilinos_Secundarios_Direccion_1}} Dirección del 1er inquilino secundario Calle Luna 8, 28010 Madrid"':
+                  - 'cell "{{Inquilinos_Secundarios_Direccion_1}}"':
+                    - code: "{{Inquilinos_Secundarios_Direccion_1}}"
+                  - cell "Dirección del 1er inquilino secundario"
+                  - cell "Calle Luna 8, 28010 Madrid"
+                - 'row "{{Inquilinos_Secundarios_Telefono_1}} Teléfono del 1er inquilino secundario 611 222 333"':
+                  - 'cell "{{Inquilinos_Secundarios_Telefono_1}}"':
+                    - code: "{{Inquilinos_Secundarios_Telefono_1}}"
+                  - cell "Teléfono del 1er inquilino secundario"
+                  - cell "611 222 333"
+                - 'row "{{Inquilinos_Secundarios_Email_1}} Email del 1er inquilino secundario carlos@email.com"':
+                  - 'cell "{{Inquilinos_Secundarios_Email_1}}"':
+                    - code: "{{Inquilinos_Secundarios_Email_1}}"
+                  - cell "Email del 1er inquilino secundario"
+                  - cell "carlos@email.com"
+                - 'row "{{Inquilinos_Secundarios_Nombre_2}} Nombre del 2º inquilino secundario Ruiz Pérez, Ana"':
+                  - 'cell "{{Inquilinos_Secundarios_Nombre_2}}"':
+                    - code: "{{Inquilinos_Secundarios_Nombre_2}}"
+                  - cell "Nombre del 2º inquilino secundario"
+                  - cell "Ruiz Pérez, Ana"
+                - 'row "{{Inquilinos_Secundarios_NIF_2}} NIF del 2º inquilino secundario 44556677E"':
+                  - 'cell "{{Inquilinos_Secundarios_NIF_2}}"':
+                    - code: "{{Inquilinos_Secundarios_NIF_2}}"
+                  - cell "NIF del 2º inquilino secundario"
+                  - cell "44556677E"
+                - 'row "{{Inquilinos_Secundarios_Direccion_2}} Dirección del 2º inquilino secundario Av. España 5, 28003 Madrid"':
+                  - 'cell "{{Inquilinos_Secundarios_Direccion_2}}"':
+                    - code: "{{Inquilinos_Secundarios_Direccion_2}}"
+                  - cell "Dirección del 2º inquilino secundario"
+                  - cell "Av. España 5, 28003 Madrid"
+                - 'row "{{Inquilinos_Secundarios_Telefono_2}} Teléfono del 2º inquilino secundario 600 111 222"':
+                  - 'cell "{{Inquilinos_Secundarios_Telefono_2}}"':
+                    - code: "{{Inquilinos_Secundarios_Telefono_2}}"
+                  - cell "Teléfono del 2º inquilino secundario"
+                  - cell "600 111 222"
+                - 'row "{{Inquilinos_Secundarios_Email_2}} Email del 2º inquilino secundario ana@email.com"':
+                  - 'cell "{{Inquilinos_Secundarios_Email_2}}"':
+                    - code: "{{Inquilinos_Secundarios_Email_2}}"
+                  - cell "Email del 2º inquilino secundario"
+                  - cell "ana@email.com"
+                - 'row "{{Inquilinos_Secundarios_Nombre_3}} Nombre del 3er inquilino secundario (el índice puede continuar: _4, _5…) López Vega, Luis"':
+                  - 'cell "{{Inquilinos_Secundarios_Nombre_3}}"':
+                    - code: "{{Inquilinos_Secundarios_Nombre_3}}"
+                  - 'cell "Nombre del 3er inquilino secundario (el índice puede continuar: _4, _5…)"'
+                  - cell "López Vega, Luis"
+                - 'row "{{Inquilinos_Secundarios_NIF_3}} NIF del 3er inquilino secundario 55667788G"':
+                  - 'cell "{{Inquilinos_Secundarios_NIF_3}}"':
+                    - code: "{{Inquilinos_Secundarios_NIF_3}}"
+                  - cell "NIF del 3er inquilino secundario"
+                  - cell "55667788G"
+                - 'row "{{Inquilinos_Secundarios_Direccion_3}} Dirección del 3er inquilino secundario C/ Sol 12, Madrid"':
+                  - 'cell "{{Inquilinos_Secundarios_Direccion_3}}"':
+                    - code: "{{Inquilinos_Secundarios_Direccion_3}}"
+                  - cell "Dirección del 3er inquilino secundario"
+                  - cell "C/ Sol 12, Madrid"
+                - 'row "{{Inquilinos_Secundarios_Telefono_3}} Teléfono del 3er inquilino secundario 622 333 444"':
+                  - 'cell "{{Inquilinos_Secundarios_Telefono_3}}"':
+                    - code: "{{Inquilinos_Secundarios_Telefono_3}}"
+                  - cell "Teléfono del 3er inquilino secundario"
+                  - cell "622 333 444"
+                - 'row "{{Inquilinos_Secundarios_Email_3}} Email del 3er inquilino secundario luis@email.com"':
+                  - 'cell "{{Inquilinos_Secundarios_Email_3}}"':
+                    - code: "{{Inquilinos_Secundarios_Email_3}}"
+                  - cell "Email del 3er inquilino secundario"
+                  - cell "luis@email.com"
+          - generic:
+            - generic: Inquilino
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{NombreInquilino}} Nombre completo del arrendatario Martínez Ruiz, Pedro"':
+                  - 'cell "{{NombreInquilino}}"':
+                    - code: "{{NombreInquilino}}"
+                  - cell "Nombre completo del arrendatario"
+                  - cell "Martínez Ruiz, Pedro"
+                - 'row "{{NIFInquilino}} NIF/NIE del arrendatario 87654321B"':
+                  - 'cell "{{NIFInquilino}}"':
+                    - code: "{{NIFInquilino}}"
+                  - cell "NIF/NIE del arrendatario"
+                  - cell "87654321B"
+                - 'row "{{TelefonoInquilino}} Teléfono o móvil del arrendatario 600 000 001"':
+                  - 'cell "{{TelefonoInquilino}}"':
+                    - code: "{{TelefonoInquilino}}"
+                  - cell "Teléfono o móvil del arrendatario"
+                  - cell "600 000 001"
+                - 'row "{{EmailInquilino}} Email del arrendatario pedro@gmail.com"':
+                  - 'cell "{{EmailInquilino}}"':
+                    - code: "{{EmailInquilino}}"
+                  - cell "Email del arrendatario"
+                  - cell "pedro@gmail.com"
+                - 'row "{{DireccionInquilino}} Dirección del arrendatario C/ Ejemplo 5, 28001 Madrid"':
+                  - 'cell "{{DireccionInquilino}}"':
+                    - code: "{{DireccionInquilino}}"
+                  - cell "Dirección del arrendatario"
+                  - cell "C/ Ejemplo 5, 28001 Madrid"
+          - generic:
+            - generic: Propietario
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{NombrePropietario}} Nombre del propietario del inmueble García López, Ana"':
+                  - 'cell "{{NombrePropietario}}"':
+                    - code: "{{NombrePropietario}}"
+                  - cell "Nombre del propietario del inmueble"
+                  - cell "García López, Ana"
+                - 'row "{{NIFPropietario}} NIF/CIF del propietario 12345678A"':
+                  - 'cell "{{NIFPropietario}}"':
+                    - code: "{{NIFPropietario}}"
+                  - cell "NIF/CIF del propietario"
+                  - cell "12345678A"
+                - 'row "{{DireccionPropietario}} Dirección del propietario Calle Mayor 1, Madrid"':
+                  - 'cell "{{DireccionPropietario}}"':
+                    - code: "{{DireccionPropietario}}"
+                  - cell "Dirección del propietario"
+                  - cell "Calle Mayor 1, Madrid"
+          - generic:
+            - generic: Sistema
+            - table:
+              - rowgroup:
+                - row "Variable Descripción Ejemplo":
+                  - columnheader "Variable"
+                  - columnheader "Descripción"
+                  - columnheader "Ejemplo"
+              - rowgroup:
+                - 'row "{{FechaActual}} Fecha de hoy en formato dd/mm/aaaa 29/6/2026"':
+                  - 'cell "{{FechaActual}}"':
+                    - code: "{{FechaActual}}"
+                  - cell "Fecha de hoy en formato dd/mm/aaaa"
+                  - cell "29/6/2026"
+                - 'row "{{AnioActual}} Año actual en cuatro dígitos 2026"':
+                  - 'cell "{{AnioActual}}"':
+                    - code: "{{AnioActual}}"
+                  - cell "Año actual en cuatro dígitos"
+                  - cell "2026"
+                - 'row "{{MesActual}} Nombre del mes actual en español junio"':
+                  - 'cell "{{MesActual}}"':
+                    - code: "{{MesActual}}"
+                  - cell "Nombre del mes actual en español"
+                  - cell "junio"
+      - generic:
+        - button "Cerrar"

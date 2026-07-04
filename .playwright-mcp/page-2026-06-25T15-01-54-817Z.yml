@@ -1,0 +1,137 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+        - generic [ref=e70]:
+          - generic [ref=e71]: Configuración
+          - generic [ref=e72] [cursor=pointer]:
+            - img [ref=e73]
+            - text: Mi Empresa
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Parámetros
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: VERI*FACTU
+      - generic [ref=e83]: AlquiGest v2.2.1 · 2026
+    - generic [ref=e84]:
+      - banner [ref=e85]:
+        - generic [ref=e86]: Facturas
+        - generic [ref=e87]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e88]
+        - generic [ref=e89]:
+          - button "Alternar modo oscuro" [ref=e90] [cursor=pointer]:
+            - img [ref=e91]
+          - button "Avisos de revisión anual" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+      - generic [ref=e248]:
+        - generic [ref=e249]:
+          - generic [ref=e250]: Facturas emitidas (0)
+          - generic [ref=e251]:
+            - combobox [ref=e252]:
+              - option "Año" [selected]
+            - combobox [ref=e253]:
+              - option "Mes" [selected]
+              - option "Enero"
+              - option "Febrero"
+              - option "Marzo"
+              - option "Abril"
+              - option "Mayo"
+              - option "Junio"
+              - option "Julio"
+              - option "Agosto"
+              - option "Septiembre"
+              - option "Octubre"
+              - option "Noviembre"
+              - option "Diciembre"
+            - combobox [ref=e254]:
+              - option "Todos inquilinos" [selected]
+            - combobox [ref=e255]:
+              - option "Todos estados" [selected]
+              - option "Emitidas"
+              - option "Anuladas"
+              - option "Rectificadas"
+            - generic [ref=e256]:
+              - img
+              - searchbox "Nº factura..." [ref=e257]
+        - table [ref=e259]:
+          - rowgroup [ref=e260]:
+            - row "Nº Factura Fecha emisión ▼ Cliente Inmueble Período Base IVA IRPF Total Estado" [ref=e261]:
+              - columnheader "Nº Factura" [ref=e262] [cursor=pointer]
+              - columnheader "Fecha emisión ▼" [ref=e263] [cursor=pointer]
+              - columnheader "Cliente" [ref=e264] [cursor=pointer]
+              - columnheader "Inmueble" [ref=e265] [cursor=pointer]
+              - columnheader "Período" [ref=e266] [cursor=pointer]
+              - columnheader "Base" [ref=e267] [cursor=pointer]
+              - columnheader "IVA" [ref=e268] [cursor=pointer]
+              - columnheader "IRPF" [ref=e269] [cursor=pointer]
+              - columnheader "Total" [ref=e270] [cursor=pointer]
+              - columnheader "Estado" [ref=e271] [cursor=pointer]
+              - columnheader [ref=e272]
+          - rowgroup [ref=e273]:
+            - row "Sin facturas Genera una factura desde un recibo en la sección Recibos" [ref=e274]:
+              - cell "Sin facturas Genera una factura desde un recibo en la sección Recibos" [ref=e275]:
+                - generic [ref=e276]:
+                  - img [ref=e277]
+                  - paragraph [ref=e279]: Sin facturas
+                  - text: Genera una factura desde un recibo en la sección Recibos
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

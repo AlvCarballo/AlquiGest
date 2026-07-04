@@ -1,0 +1,182 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Informe de Morosidad
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - generic [ref=e388]:
+            - button "Imprimir" [ref=e1785] [cursor=pointer]
+            - button "PDF" [ref=e1786] [cursor=pointer]
+      - generic [ref=e110]:
+        - generic [ref=e1787]:
+          - generic [ref=e1788]:
+            - heading "Informe de Morosidad" [level=2] [ref=e1789]
+            - generic [ref=e1790]: Recibos sin cobrar con más de 30 días desde su emisión
+          - generic [ref=e1791]:
+            - text: 6 recibos ·
+            - strong [ref=e1792]: 4642,00 €
+            - text: pendiente
+        - generic [ref=e1793]:
+          - combobox [ref=e1794]:
+            - option "— Todos los inquilinos —" [selected]
+            - option "Comercial Díaz S.L."
+            - option "González Sánchez, Pedro"
+            - option "Jiménez Vega, Sofía"
+            - option "Martín López, María"
+            - option "Rodríguez Pérez, Laura"
+            - option "Torres Ruiz, Carlos"
+          - textbox "Buscar inmueble o recibo…" [ref=e1795]
+          - generic [ref=e1796] [cursor=pointer]:
+            - checkbox "Incluir recibos con menos de 30 días desde su emisión" [ref=e1797]
+            - text: Incluir recibos con menos de 30 días desde su emisión
+        - table [ref=e1798]:
+          - rowgroup [ref=e1799]:
+            - row "Inquilino Inmueble Recibo Fecha emisión Días sin cobrar Pendiente" [ref=e1800]:
+              - columnheader "Inquilino" [ref=e1801]
+              - columnheader "Inmueble" [ref=e1802]
+              - columnheader "Recibo" [ref=e1803]
+              - columnheader "Fecha emisión" [ref=e1804]
+              - columnheader "Días sin cobrar" [ref=e1805]
+              - columnheader "Pendiente" [ref=e1806]
+              - columnheader [ref=e1807]
+          - rowgroup [ref=e1808]:
+            - row "Rodríguez Pérez, Laura C Mayor 15 1º A REC-202605-00019 1/5/2026 58 días 700,00 € Cobrar" [ref=e1809]:
+              - cell "Rodríguez Pérez, Laura" [ref=e1810]
+              - cell "C Mayor 15 1º A" [ref=e1811]
+              - cell "REC-202605-00019" [ref=e1812]
+              - cell "1/5/2026" [ref=e1813]
+              - cell "58 días" [ref=e1814]
+              - cell "700,00 €" [ref=e1815]
+              - cell "Cobrar" [ref=e1816]:
+                - button "Cobrar" [ref=e1817] [cursor=pointer]
+            - row "González Sánchez, Pedro C Mayor 15 1º B REC-202605-00020 1/5/2026 58 días 650,00 € Cobrar" [ref=e1818]:
+              - cell "González Sánchez, Pedro" [ref=e1819]
+              - cell "C Mayor 15 1º B" [ref=e1820]
+              - cell "REC-202605-00020" [ref=e1821]
+              - cell "1/5/2026" [ref=e1822]
+              - cell "58 días" [ref=e1823]
+              - cell "650,00 €" [ref=e1824]
+              - cell "Cobrar" [ref=e1825]:
+                - button "Cobrar" [ref=e1826] [cursor=pointer]
+            - row "Martín López, María C Mayor 15 2º A REC-202605-00021 1/5/2026 58 días 360,00 € Cobrar" [ref=e1827]:
+              - cell "Martín López, María" [ref=e1828]
+              - cell "C Mayor 15 2º A" [ref=e1829]
+              - cell "REC-202605-00021" [ref=e1830]
+              - cell "1/5/2026" [ref=e1831]
+              - cell "58 días" [ref=e1832]
+              - cell "360,00 €" [ref=e1833]
+              - cell "Cobrar" [ref=e1834]:
+                - button "Cobrar" [ref=e1835] [cursor=pointer]
+            - row "Torres Ruiz, Carlos C Mayor 15 2º B REC-202605-00022 1/5/2026 58 días 680,00 € Cobrar" [ref=e1836]:
+              - cell "Torres Ruiz, Carlos" [ref=e1837]
+              - cell "C Mayor 15 2º B" [ref=e1838]
+              - cell "REC-202605-00022" [ref=e1839]
+              - cell "1/5/2026" [ref=e1840]
+              - cell "58 días" [ref=e1841]
+              - cell "680,00 €" [ref=e1842]
+              - cell "Cobrar" [ref=e1843]:
+                - button "Cobrar" [ref=e1844] [cursor=pointer]
+            - row "Comercial Díaz S.L. AV Constitución 8 BAJO A REC-202605-00023 1/5/2026 58 días 1452,00 € Cobrar" [ref=e1845]:
+              - cell "Comercial Díaz S.L." [ref=e1846]
+              - cell "AV Constitución 8 BAJO A" [ref=e1847]
+              - cell "REC-202605-00023" [ref=e1848]
+              - cell "1/5/2026" [ref=e1849]
+              - cell "58 días" [ref=e1850]
+              - cell "1452,00 €" [ref=e1851]
+              - cell "Cobrar" [ref=e1852]:
+                - button "Cobrar" [ref=e1853] [cursor=pointer]
+            - row "Jiménez Vega, Sofía AV Constitución 8 1º A REC-202605-00024 1/5/2026 58 días 800,00 € Cobrar" [ref=e1854]:
+              - cell "Jiménez Vega, Sofía" [ref=e1855]
+              - cell "AV Constitución 8 1º A" [ref=e1856]
+              - cell "REC-202605-00024" [ref=e1857]
+              - cell "1/5/2026" [ref=e1858]
+              - cell "58 días" [ref=e1859]
+              - cell "800,00 €" [ref=e1860]
+              - cell "Cobrar" [ref=e1861]:
+                - button "Cobrar" [ref=e1862] [cursor=pointer]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

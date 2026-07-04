@@ -1,0 +1,1829 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e6]
+        - generic [ref=e9]: AlquiGest
+      - generic [ref=e10]: Manual de usuario
+    - generic [ref=e11]:
+      - link "🏠 Abrir la aplicación" [ref=e12] [cursor=pointer]:
+        - /url: ../../AlquiGest.php
+      - generic [ref=e14]: Introducción
+      - link "🚀 Primeros pasos" [ref=e15] [cursor=pointer]:
+        - /url: "#inicio"
+      - link "🗂️ Estructura del programa" [ref=e16] [cursor=pointer]:
+        - /url: "#estructura"
+      - generic [ref=e17]: Módulos
+      - link "🏢 Mi Empresa" [ref=e18] [cursor=pointer]:
+        - /url: "#empresa"
+      - link "👤 Propietarios" [ref=e19] [cursor=pointer]:
+        - /url: "#propietarios"
+      - link "🏘️ Fincas" [ref=e20] [cursor=pointer]:
+        - /url: "#fincas"
+      - link "🚪 Inmuebles (Pisos)" [ref=e21] [cursor=pointer]:
+        - /url: "#inmuebles"
+      - link "🧑‍🤝‍🧑 Inquilinos" [ref=e22] [cursor=pointer]:
+        - /url: "#inquilinos"
+      - link "📄 Contratos" [ref=e23] [cursor=pointer]:
+        - /url: "#contratos"
+      - link "🧾 Recibos y Cobros" [ref=e24] [cursor=pointer]:
+        - /url: "#recibos"
+      - link "📋 Facturas legales" [ref=e25] [cursor=pointer]:
+        - /url: "#facturas"
+      - link "⚡ Generar Recibos en Lote" [ref=e26] [cursor=pointer]:
+        - /url: "#generar"
+      - link "📝 Plantillas DOCX" [ref=e27] [cursor=pointer]:
+        - /url: "#plantillas"
+      - generic [ref=e28]: Herramientas
+      - link "📊 Dashboard" [ref=e29] [cursor=pointer]:
+        - /url: "#dashboard"
+      - link "📈 Informes Excel" [ref=e30] [cursor=pointer]:
+        - /url: "#excel"
+      - link "🏛️ Informes fiscales" [ref=e31] [cursor=pointer]:
+        - /url: "#excel-fiscal"
+      - link "📧 Envío por Email" [ref=e32] [cursor=pointer]:
+        - /url: "#email"
+      - link "🖨️ Generación de PDFs" [ref=e33] [cursor=pointer]:
+        - /url: "#pdf"
+      - link "📅 Calendario cobros" [ref=e34] [cursor=pointer]:
+        - /url: "#calendario"
+      - link "🔴 Morosidad" [ref=e35] [cursor=pointer]:
+        - /url: "#morosidad"
+      - link "📥 Importar CSV" [ref=e36] [cursor=pointer]:
+        - /url: "#importar"
+      - link "💾 Backup" [ref=e37] [cursor=pointer]:
+        - /url: "#backup"
+      - link "📄 Certif. IRPF" [ref=e38] [cursor=pointer]:
+        - /url: "#irpf"
+      - generic [ref=e39]: Productividad
+      - link "⚡ Búsqueda y atajos" [ref=e40] [cursor=pointer]:
+        - /url: "#herramientas"
+      - generic [ref=e41]: Avanzado
+      - link "🛡️ VERI*FACTU" [ref=e42] [cursor=pointer]:
+        - /url: "#verifactu-config"
+      - link "⚙️ Parámetros" [ref=e43] [cursor=pointer]:
+        - /url: "#configuracion"
+      - link "❓ Preguntas frecuentes" [ref=e44] [cursor=pointer]:
+        - /url: "#faq"
+      - link "🚧 Limitaciones" [ref=e45] [cursor=pointer]:
+        - /url: "#limitaciones"
+      - link "🏛️ Guía técnica AEAT →" [ref=e46] [cursor=pointer]:
+        - /url: ayuda_verifactu.php
+  - main [ref=e47]:
+    - generic [ref=e48]:
+      - generic [ref=e49]: AlquiGest v2.2.7 · Manual de usuario
+      - heading "Guía completa del programa" [level=1] [ref=e50]
+      - paragraph [ref=e51]: Todo lo que necesitas saber para gestionar fincas, inquilinos, contratos, recibos y facturas de alquiler.
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - generic [ref=e54]: 👤
+          - generic [ref=e55]: Propietarios
+        - generic [ref=e56]:
+          - generic [ref=e57]: 📄
+          - generic [ref=e58]: Contratos
+        - generic [ref=e59]:
+          - generic [ref=e60]: 🧾
+          - generic [ref=e61]: Recibos
+        - generic [ref=e62]:
+          - generic [ref=e63]: 📋
+          - generic [ref=e64]: Facturas
+        - generic [ref=e65]:
+          - generic [ref=e66]: 📝
+          - generic [ref=e67]: Plantillas
+        - generic [ref=e68]:
+          - generic [ref=e69]: 🛡️
+          - generic [ref=e70]: VERI*FACTU
+    - heading "Primeros pasos" [level=2] [ref=e71]
+    - paragraph [ref=e72]:
+      - text: AlquiGest es un programa de gestión de alquileres que funciona en tu navegador web. No necesita instalación adicional más allá del servidor local (MAMP o XAMPP) y se accede desde
+      - code [ref=e73]: http://localhost/AlquiGest_v2/
+      - text: .
+    - heading "Requisitos" [level=3] [ref=e74]
+    - list [ref=e75]:
+      - listitem [ref=e76]:
+        - text: MAMP o XAMPP con
+        - strong [ref=e77]: Apache y MySQL activos
+      - listitem [ref=e78]:
+        - text: Haber ejecutado
+        - code [ref=e79]: install.php
+        - text: al menos una vez para crear la base de datos
+      - listitem [ref=e80]: Navegador moderno (Chrome, Firefox, Edge, Safari)
+    - generic [ref=e81]:
+      - generic [ref=e82]: 💡
+      - generic [ref=e83]:
+        - strong [ref=e84]: Primera vez
+        - paragraph [ref=e85]:
+          - text: Ve a
+          - code [ref=e86]: http://localhost/AlquiGest_v2/install.php
+          - text: y elige "Instalación limpia" o "Instalación con datos de ejemplo" para ver cómo funciona todo. Después accede normalmente a la aplicación.
+    - heading "Flujo de trabajo recomendado" [level=3] [ref=e87]
+    - generic [ref=e88]:
+      - generic [ref=e89]:
+        - generic [ref=e90]: 🏢
+        - generic [ref=e91]:
+          - text: 1. Configura
+          - text: Mi Empresa
+      - generic [ref=e92]: →
+      - generic [ref=e93]:
+        - generic [ref=e94]: 👤
+        - generic [ref=e95]:
+          - text: 2. Crea
+          - text: Propietarios
+      - generic [ref=e96]: →
+      - generic [ref=e97]:
+        - generic [ref=e98]: 🏘️
+        - generic [ref=e99]:
+          - text: 3. Añade
+          - text: Fincas
+      - generic [ref=e100]: →
+      - generic [ref=e101]:
+        - generic [ref=e102]: 🚪
+        - generic [ref=e103]:
+          - text: 4. Registra
+          - text: Inmuebles
+      - generic [ref=e104]: →
+      - generic [ref=e105]:
+        - generic [ref=e106]: 🧑‍🤝‍🧑
+        - generic [ref=e107]:
+          - text: 5. Añade
+          - text: Inquilinos
+      - generic [ref=e108]: →
+      - generic [ref=e109]:
+        - generic [ref=e110]: 📄
+        - generic [ref=e111]:
+          - text: 6. Crea
+          - text: Contratos
+      - generic [ref=e112]: →
+      - generic [ref=e113]:
+        - generic [ref=e114]: 🧾
+        - generic [ref=e115]:
+          - text: 7. Gestiona
+          - text: Recibos
+      - generic [ref=e116]: →
+      - generic [ref=e117]:
+        - generic [ref=e118]: 📋
+        - generic [ref=e119]:
+          - text: 8. Emite
+          - text: Facturas
+    - heading "Estructura del programa" [level=2] [ref=e120]
+    - paragraph [ref=e121]: "AlquiGest organiza la información en una jerarquía lógica. Comprender esta estructura es clave para usar el programa correctamente:"
+    - generic [ref=e122]:
+      - img [ref=e123]:
+        - generic [ref=e125]: 🏢 Mi Empresa
+        - generic [ref=e127]: 👤 Propietario
+        - generic [ref=e129]: 🏘️ Finca
+        - generic [ref=e131]: 🧑 Inquilino
+        - generic [ref=e133]: 🚪 Inmueble
+        - generic [ref=e135]: 📄 Contrato
+        - generic [ref=e136]: tiene
+        - generic [ref=e137]: tiene
+        - generic [ref=e139]: firma
+        - generic [ref=e140]: en
+        - generic [ref=e141]: ─ contexto global ─
+      - paragraph [ref=e142]:
+        - text: Un
+        - strong [ref=e143]: Propietario
+        - text: tiene
+        - strong [ref=e144]: Fincas
+        - text: → cada Finca tiene
+        - strong [ref=e145]: Inmuebles
+        - text: → cada Inmueble puede tener un
+        - strong [ref=e146]: Contrato
+        - text: activo con un
+        - strong [ref=e147]: Inquilino
+    - heading "Mi Empresa" [level=2] [ref=e148]
+    - generic [ref=e150]:
+      - generic [ref=e151]: 🏢
+      - generic [ref=e152]:
+        - generic [ref=e153]: Configuración de la empresa administradora
+        - generic [ref=e154]: Datos que aparecen en recibos, facturas y correos enviados a inquilinos
+    - paragraph [ref=e155]:
+      - text: El módulo
+      - strong [ref=e156]: Mi Empresa
+      - text: guarda los datos del administrador o empresa gestora. Esta información aparece en la cabecera de todos los recibos y facturas generados y en los correos enviados.
+    - table [ref=e157]:
+      - rowgroup [ref=e158]:
+        - row "Campo Descripción" [ref=e159]:
+          - columnheader "Campo" [ref=e160]
+          - columnheader "Descripción" [ref=e161]
+        - row "Nombre Obligatorio Nombre comercial o razón social. Aparece en todos los documentos" [ref=e162]:
+          - cell "Nombre Obligatorio" [ref=e163]:
+            - strong [ref=e164]: Nombre
+            - generic [ref=e165]: Obligatorio
+          - cell "Nombre comercial o razón social. Aparece en todos los documentos" [ref=e166]
+        - row "CIF/NIF Para facturas Identificación fiscal. Imprescindible para generar facturas legales" [ref=e167]:
+          - cell "CIF/NIF Para facturas" [ref=e168]:
+            - strong [ref=e169]: CIF/NIF
+            - generic [ref=e170]: Para facturas
+          - cell "Identificación fiscal. Imprescindible para generar facturas legales" [ref=e171]
+        - row "Dirección, CP, Municipio Dirección completa que aparece en recibos y facturas" [ref=e172]:
+          - cell "Dirección, CP, Municipio" [ref=e173]:
+            - strong [ref=e174]: Dirección, CP, Municipio
+          - cell "Dirección completa que aparece en recibos y facturas" [ref=e175]
+        - row "Teléfono / Email Datos de contacto que aparecen en los documentos" [ref=e176]:
+          - cell "Teléfono / Email" [ref=e177]:
+            - strong [ref=e178]: Teléfono / Email
+          - cell "Datos de contacto que aparecen en los documentos" [ref=e179]
+        - row "IBAN Cuenta bancaria para domiciliaciones" [ref=e180]:
+          - cell "IBAN" [ref=e181]:
+            - strong [ref=e182]: IBAN
+          - cell "Cuenta bancaria para domiciliaciones" [ref=e183]
+        - 'row "Pie de recibo Texto libre al pie de cada recibo (ej: \"Gracias por su pago puntual\")" [ref=e184]':
+          - cell "Pie de recibo" [ref=e185]:
+            - strong [ref=e186]: Pie de recibo
+          - 'cell "Texto libre al pie de cada recibo (ej: \"Gracias por su pago puntual\")" [ref=e187]'
+        - 'row "Prefijo de recibos Siglas que preceden al número de recibo (ej: \"REC\" genera REC-202601-00001)" [ref=e188]':
+          - cell "Prefijo de recibos" [ref=e189]:
+            - strong [ref=e190]: Prefijo de recibos
+          - 'cell "Siglas que preceden al número de recibo (ej: \"REC\" genera REC-202601-00001)" [ref=e191]'
+        - row "Gmail usuario / contraseña Cuenta Gmail y contraseña de aplicación para enviar correos. Ver sección Envío por Email" [ref=e192]:
+          - cell "Gmail usuario / contraseña" [ref=e193]:
+            - strong [ref=e194]: Gmail usuario / contraseña
+          - cell "Cuenta Gmail y contraseña de aplicación para enviar correos. Ver sección Envío por Email" [ref=e195]:
+            - text: Cuenta Gmail y contraseña de aplicación para enviar correos. Ver sección
+            - link "Envío por Email" [ref=e196] [cursor=pointer]:
+              - /url: "#email"
+        - 'row "Plantillas de email Asunto y cuerpo personalizables para correos de recibo y factura. Variables: {{numero_recibo}}, {{periodo}}, {{inquilino}}, {{importe}}, {{empresa}}, {{numero_factura}}" [ref=e197]':
+          - cell "Plantillas de email" [ref=e198]:
+            - strong [ref=e199]: Plantillas de email
+          - 'cell "Asunto y cuerpo personalizables para correos de recibo y factura. Variables: {{numero_recibo}}, {{periodo}}, {{inquilino}}, {{importe}}, {{empresa}}, {{numero_factura}}" [ref=e200]':
+            - text: "Asunto y cuerpo personalizables para correos de recibo y factura. Variables:"
+            - code [ref=e201]: "{{numero_recibo}}"
+            - text: ","
+            - code [ref=e202]: "{{periodo}}"
+            - text: ","
+            - code [ref=e203]: "{{inquilino}}"
+            - text: ","
+            - code [ref=e204]: "{{importe}}"
+            - text: ","
+            - code [ref=e205]: "{{empresa}}"
+            - text: ","
+            - code [ref=e206]: "{{numero_factura}}"
+        - row "Backup JSON Botón Descargar backup JSON que descarga todos los datos de la BD. Ver Copia de seguridad" [ref=e207]:
+          - cell "Backup JSON" [ref=e208]:
+            - strong [ref=e209]: Backup JSON
+          - cell "Botón Descargar backup JSON que descarga todos los datos de la BD. Ver Copia de seguridad" [ref=e210]:
+            - text: Botón
+            - emphasis [ref=e211]: Descargar backup JSON
+            - text: que descarga todos los datos de la BD. Ver
+            - link "Copia de seguridad" [ref=e212] [cursor=pointer]:
+              - /url: "#backup"
+    - heading "Propietarios" [level=2] [ref=e213]
+    - paragraph [ref=e214]: Los propietarios son las personas o empresas dueñas de las fincas. Cada finca debe estar asignada a un propietario.
+    - table [ref=e215]:
+      - rowgroup [ref=e216]:
+        - row "Campo Descripción" [ref=e217]:
+          - columnheader "Campo" [ref=e218]
+          - columnheader "Descripción" [ref=e219]
+        - row "Nombre Obligatorio Nombre completo, idealmente \"Apellido, Nombre\" para mejor ordenación" [ref=e220]:
+          - cell "Nombre Obligatorio" [ref=e221]:
+            - strong [ref=e222]: Nombre
+            - generic [ref=e223]: Obligatorio
+          - cell "Nombre completo, idealmente \"Apellido, Nombre\" para mejor ordenación" [ref=e224]
+        - row "NIF DNI, NIE o CIF del propietario" [ref=e225]:
+          - cell "NIF" [ref=e226]:
+            - strong [ref=e227]: NIF
+          - cell "DNI, NIE o CIF del propietario" [ref=e228]
+        - row "Teléfono / Email Datos de contacto" [ref=e229]:
+          - cell "Teléfono / Email" [ref=e230]:
+            - strong [ref=e231]: Teléfono / Email
+          - cell "Datos de contacto" [ref=e232]
+        - row "IRPF Marca \"S\" si el propietario está sujeto a retención de IRPF" [ref=e233]:
+          - cell "IRPF" [ref=e234]:
+            - strong [ref=e235]: IRPF
+          - cell "Marca \"S\" si el propietario está sujeto a retención de IRPF" [ref=e236]
+        - row "IBAN Cuenta bancaria para liquidaciones de rentas" [ref=e237]:
+          - cell "IBAN" [ref=e238]:
+            - strong [ref=e239]: IBAN
+          - cell "Cuenta bancaria para liquidaciones de rentas" [ref=e240]
+        - row "Observaciones Notas internas, preferencias de contacto, etc." [ref=e241]:
+          - cell "Observaciones" [ref=e242]:
+            - strong [ref=e243]: Observaciones
+          - cell "Notas internas, preferencias de contacto, etc." [ref=e244]
+    - generic [ref=e245]:
+      - generic [ref=e246]: 💡
+      - generic [ref=e247]:
+        - strong [ref=e248]: Contador de inmuebles
+        - paragraph [ref=e249]: La tabla de propietarios muestra cuántos inmuebles tiene cada propietario (sumando los de todas sus fincas). Se actualiza automáticamente.
+    - heading "Fincas" [level=2] [ref=e250]
+    - paragraph [ref=e251]: Una finca es un edificio o conjunto de inmuebles en una misma dirección. Cada finca pertenece a un propietario y agrupa uno o varios inmuebles.
+    - table [ref=e252]:
+      - rowgroup [ref=e253]:
+        - row "Campo Descripción" [ref=e254]:
+          - columnheader "Campo" [ref=e255]
+          - columnheader "Descripción" [ref=e256]
+        - 'row "Nombre Obligatorio Nombre identificativo (ej: \"C/ Mayor 15\")" [ref=e257]':
+          - cell "Nombre Obligatorio" [ref=e258]:
+            - strong [ref=e259]: Nombre
+            - generic [ref=e260]: Obligatorio
+          - 'cell "Nombre identificativo (ej: \"C/ Mayor 15\")" [ref=e261]'
+        - row "Sigla / Calle / Número Dirección de la finca. La sigla es la abreviatura del tipo de vía (C, AV, PZ…)" [ref=e262]:
+          - cell "Sigla / Calle / Número" [ref=e263]:
+            - strong [ref=e264]: Sigla / Calle / Número
+          - cell "Dirección de la finca. La sigla es la abreviatura del tipo de vía (C, AV, PZ…)" [ref=e265]
+        - row "CP, Municipio, Provincia Ubicación de la finca" [ref=e266]:
+          - cell "CP, Municipio, Provincia" [ref=e267]:
+            - strong [ref=e268]: CP, Municipio, Provincia
+          - cell "Ubicación de la finca" [ref=e269]
+        - row "Propietario Obligatorio Propietario al que pertenece esta finca. Debe crearse primero" [ref=e270]:
+          - cell "Propietario Obligatorio" [ref=e271]:
+            - strong [ref=e272]: Propietario
+            - generic [ref=e273]: Obligatorio
+          - cell "Propietario al que pertenece esta finca. Debe crearse primero" [ref=e274]
+    - heading "Inmuebles (Pisos)" [level=2] [ref=e275]
+    - paragraph [ref=e276]: Cada piso, local, garaje o trastero que se alquila es un inmueble. Pertenecen a una finca y pueden tener un contrato activo.
+    - table [ref=e277]:
+      - rowgroup [ref=e278]:
+        - row "Campo Descripción" [ref=e279]:
+          - columnheader "Campo" [ref=e280]
+          - columnheader "Descripción" [ref=e281]
+        - row "Finca Obligatorio La finca a la que pertenece este inmueble" [ref=e282]:
+          - cell "Finca Obligatorio" [ref=e283]:
+            - strong [ref=e284]: Finca
+            - generic [ref=e285]: Obligatorio
+          - cell "La finca a la que pertenece este inmueble" [ref=e286]
+        - 'row "Planta Número de planta: 1º, 2º, BAJO, ÁTICO, etc." [ref=e287]':
+          - cell "Planta" [ref=e288]:
+            - strong [ref=e289]: Planta
+          - 'cell "Número de planta: 1º, 2º, BAJO, ÁTICO, etc." [ref=e290]'
+        - 'row "Puerta Letra o identificador: A, B, DCHA, IZQ, etc." [ref=e291]':
+          - cell "Puerta" [ref=e292]:
+            - strong [ref=e293]: Puerta
+          - 'cell "Letra o identificador: A, B, DCHA, IZQ, etc." [ref=e294]'
+        - 'row "Tipo Clasificación: vivienda, local, garaje, trastero, oficina…" [ref=e295]':
+          - cell "Tipo" [ref=e296]:
+            - strong [ref=e297]: Tipo
+          - 'cell "Clasificación: vivienda, local, garaje, trastero, oficina…" [ref=e298]'
+        - row "Metros Superficie en m²" [ref=e299]:
+          - cell "Metros" [ref=e300]:
+            - strong [ref=e301]: Metros
+          - cell "Superficie en m²" [ref=e302]
+        - row "Ref. Catastral Referencia catastral del inmueble (20 caracteres)" [ref=e303]:
+          - cell "Ref. Catastral" [ref=e304]:
+            - strong [ref=e305]: Ref. Catastral
+          - cell "Referencia catastral del inmueble (20 caracteres)" [ref=e306]
+        - row "Cédula Número de cédula de habitabilidad" [ref=e307]:
+          - cell "Cédula" [ref=e308]:
+            - strong [ref=e309]: Cédula
+          - cell "Número de cédula de habitabilidad" [ref=e310]
+    - paragraph [ref=e311]:
+      - text: La tabla muestra automáticamente si el piso está
+      - strong [ref=e312]: ocupado
+      - text: (contrato activo) o
+      - strong [ref=e313]: libre
+      - text: ", con el nombre del inquilino actual."
+    - heading "Inquilinos" [level=2] [ref=e314]
+    - paragraph [ref=e315]: Los inquilinos son las personas o empresas que alquilan un inmueble. Un mismo inquilino puede tener varios contratos a lo largo del tiempo.
+    - table [ref=e316]:
+      - rowgroup [ref=e317]:
+        - row "Campo Descripción" [ref=e318]:
+          - columnheader "Campo" [ref=e319]
+          - columnheader "Descripción" [ref=e320]
+        - row "Nombre Obligatorio Nombre completo. Para personas usa \"Apellido, Nombre\"" [ref=e321]:
+          - cell "Nombre Obligatorio" [ref=e322]:
+            - strong [ref=e323]: Nombre
+            - generic [ref=e324]: Obligatorio
+          - cell "Nombre completo. Para personas usa \"Apellido, Nombre\"" [ref=e325]
+        - row "NIF Para facturas DNI, NIE o CIF. Imprescindible para generar facturas legales" [ref=e326]:
+          - cell "NIF Para facturas" [ref=e327]:
+            - strong [ref=e328]: NIF
+            - generic [ref=e329]: Para facturas
+          - cell "DNI, NIE o CIF. Imprescindible para generar facturas legales" [ref=e330]
+        - row "Teléfono / Móvil Teléfonos de contacto" [ref=e331]:
+          - cell "Teléfono / Móvil" [ref=e332]:
+            - strong [ref=e333]: Teléfono / Móvil
+          - cell "Teléfonos de contacto" [ref=e334]
+        - row "Email Correo al que se enviarán recibos y facturas. Debe ser válido para el envío por email" [ref=e335]:
+          - cell "Email" [ref=e336]:
+            - strong [ref=e337]: Email
+          - cell "Correo al que se enviarán recibos y facturas. Debe ser válido para el envío por email" [ref=e338]
+        - row "Dirección Dirección particular del inquilino" [ref=e339]:
+          - cell "Dirección" [ref=e340]:
+            - strong [ref=e341]: Dirección
+          - cell "Dirección particular del inquilino" [ref=e342]
+        - row "IBAN Cuenta bancaria para domiciliaciones o devoluciones" [ref=e343]:
+          - cell "IBAN" [ref=e344]:
+            - strong [ref=e345]: IBAN
+          - cell "Cuenta bancaria para domiciliaciones o devoluciones" [ref=e346]
+    - heading "Contratos" [level=2] [ref=e347]
+    - paragraph [ref=e348]: Un contrato vincula un inquilino con un inmueble y define las condiciones del alquiler. Solo puede haber un contrato activo por inmueble.
+    - table [ref=e349]:
+      - rowgroup [ref=e350]:
+        - row "Campo Descripción" [ref=e351]:
+          - columnheader "Campo" [ref=e352]
+          - columnheader "Descripción" [ref=e353]
+        - row "Inmueble Obligatorio El piso o local objeto del contrato. Solo aparecen los que están libres" [ref=e354]:
+          - cell "Inmueble Obligatorio" [ref=e355]:
+            - strong [ref=e356]: Inmueble
+            - generic [ref=e357]: Obligatorio
+          - cell "El piso o local objeto del contrato. Solo aparecen los que están libres" [ref=e358]
+        - row "Inquilino Obligatorio El inquilino que firma el contrato" [ref=e359]:
+          - cell "Inquilino Obligatorio" [ref=e360]:
+            - strong [ref=e361]: Inquilino
+            - generic [ref=e362]: Obligatorio
+          - cell "El inquilino que firma el contrato" [ref=e363]
+        - row "Fecha inicio / Fecha fin Período del contrato" [ref=e364]:
+          - cell "Fecha inicio / Fecha fin" [ref=e365]:
+            - strong [ref=e366]: Fecha inicio / Fecha fin
+          - cell "Período del contrato" [ref=e367]
+        - row "Renta base Importe mensual del alquiler sin impuestos" [ref=e368]:
+          - cell "Renta base" [ref=e369]:
+            - strong [ref=e370]: Renta base
+          - cell "Importe mensual del alquiler sin impuestos" [ref=e371]
+        - 'row "IVA % Para locales comerciales: 21%. Para vivienda habitual: 0%" [ref=e372]':
+          - cell "IVA %" [ref=e373]:
+            - strong [ref=e374]: IVA %
+          - 'cell "Para locales comerciales: 21%. Para vivienda habitual: 0%" [ref=e375]'
+        - row "IRPF % Retención de IRPF si el propietario está sujeto (normalmente 19%)" [ref=e376]:
+          - cell "IRPF %" [ref=e377]:
+            - strong [ref=e378]: IRPF %
+          - cell "Retención de IRPF si el propietario está sujeto (normalmente 19%)" [ref=e379]
+        - row "Fianza Importe de la fianza depositada" [ref=e380]:
+          - cell "Fianza" [ref=e381]:
+            - strong [ref=e382]: Fianza
+          - cell "Importe de la fianza depositada" [ref=e383]
+        - row "Día de pago Día del mes en que vence el recibo (habitualmente 1 o 5)" [ref=e384]:
+          - cell "Día de pago" [ref=e385]:
+            - strong [ref=e386]: Día de pago
+          - cell "Día del mes en que vence el recibo (habitualmente 1 o 5)" [ref=e387]
+        - row "Revisión Cláusula de revisión de renta (IPC, % fijo, etc.). Solo informativo" [ref=e388]:
+          - cell "Revisión" [ref=e389]:
+            - strong [ref=e390]: Revisión
+          - cell "Cláusula de revisión de renta (IPC, % fijo, etc.). Solo informativo" [ref=e391]
+        - 'row "Motivo de temporada Texto libre que justifica la duración limitada del contrato. Aparece en plantillas como {{MotivoTemporada}}. Solo necesario para contratos de temporada (< 1 año)" [ref=e392]':
+          - cell "Motivo de temporada" [ref=e393]:
+            - strong [ref=e394]: Motivo de temporada
+          - 'cell "Texto libre que justifica la duración limitada del contrato. Aparece en plantillas como {{MotivoTemporada}}. Solo necesario para contratos de temporada (< 1 año)" [ref=e395]':
+            - text: Texto libre que justifica la duración limitada del contrato. Aparece en plantillas como
+            - code [ref=e396]: "{{MotivoTemporada}}"
+            - text: . Solo necesario para contratos de temporada (< 1 año)
+        - row "Mostrar aviso en recibo/factura Si está marcado, el recibo y la factura impresos incluyen al pie el aviso de justificante de pago (ver sección Facturas)" [ref=e397]:
+          - cell "Mostrar aviso en recibo/factura" [ref=e398]:
+            - strong [ref=e399]: Mostrar aviso en recibo/factura
+          - cell "Si está marcado, el recibo y la factura impresos incluyen al pie el aviso de justificante de pago (ver sección Facturas)" [ref=e400]:
+            - text: Si está marcado, el recibo y la factura impresos incluyen al pie el aviso de justificante de pago (ver
+            - link "sección Facturas" [ref=e401] [cursor=pointer]:
+              - /url: "#facturas"
+            - text: )
+    - heading "Fiador solidario (opcional)" [level=3] [ref=e402]
+    - paragraph [ref=e403]:
+      - text: Cada contrato puede incluir un fiador solidario que queda vinculado al contrato. Sus datos aparecen en las plantillas DOCX a través de las variables
+      - code [ref=e404]: "{{NombreFiador}}"
+      - text: ","
+      - code [ref=e405]: "{{NIFFiador}}"
+      - text: "y"
+      - code [ref=e406]: "{{DireccionFiador}}"
+      - text: .
+    - heading "Inquilinos secundarios (firmantes adicionales)" [level=3] [ref=e407]
+    - paragraph [ref=e408]:
+      - text: Puedes añadir hasta N inquilinos secundarios por contrato (copropietarios, pareja, etc.). Sus datos se gestionan en la sección inferior del formulario de contrato y se pueden editar independientemente en cualquier momento. En plantillas, se usan con el bloque repetitivo
+      - code [ref=e409]: "{{#INQUILINOS_SECUNDARIOS}}...{{/INQUILINOS_SECUNDARIOS}}"
+      - text: que se expande automáticamente una vez por cada inquilino secundario registrado.
+    - heading "Estados del contrato" [level=3] [ref=e410]
+    - list [ref=e411]:
+      - listitem [ref=e412]:
+        - strong [ref=e413]: Activo
+        - text: — contrato en vigor, el inmueble está ocupado
+      - listitem [ref=e414]:
+        - strong [ref=e415]: Finalizado
+        - text: — contrato vencido por fin de plazo
+      - listitem [ref=e416]:
+        - strong [ref=e417]: Rescindido
+        - text: — contrato terminado antes de su vencimiento
+    - generic [ref=e418]:
+      - generic [ref=e419]: ⚠️
+      - generic [ref=e420]:
+        - strong [ref=e421]: Al dar de baja un contrato
+        - paragraph [ref=e422]: El inmueble queda libre inmediatamente y puede asignarse a un nuevo inquilino. Los recibos y facturas del período se conservan en la base de datos.
+    - heading "Recibos y Cobros" [level=2] [ref=e423]
+    - paragraph [ref=e424]: Los recibos acreditan el cobro mensual del alquiler. AlquiGest los genera automáticamente a partir de los contratos activos.
+    - heading "Generar recibos" [level=3] [ref=e425]
+    - paragraph [ref=e426]:
+      - text: Desde la pestaña
+      - strong [ref=e427]: Recibos
+      - text: ", pulsa"
+      - strong [ref=e428]: Generar recibos del mes
+      - text: . AlquiGest creará un recibo por cada contrato activo calculando automáticamente IVA e IRPF.
+    - generic [ref=e429]:
+      - generic [ref=e430]: 💡
+      - generic [ref=e431]:
+        - strong [ref=e432]: Numeración automática
+        - paragraph [ref=e433]:
+          - text: "El número de recibo usa el prefijo de Mi Empresa, año, mes y un secuencial único. Ejemplo:"
+          - code [ref=e434]: REC-202601-00001
+          - text: . Cada mes el secuencial comienza de nuevo.
+    - heading "Estados de un recibo" [level=3] [ref=e435]
+    - list [ref=e436]:
+      - listitem [ref=e437]:
+        - strong [ref=e438]: Pendiente
+        - text: — emitido pero no cobrado
+      - listitem [ref=e439]:
+        - strong [ref=e440]: Parcial
+        - text: — cobrado parcialmente, queda importe pendiente
+      - listitem [ref=e441]:
+        - strong [ref=e442]: Cobrado
+        - text: — pagado en su totalidad
+      - listitem [ref=e443]:
+        - strong [ref=e444]: Anulado
+        - text: — cancelado. No computa en informes pero se conserva por auditoría
+    - heading "Registrar un cobro" [level=3] [ref=e445]
+    - paragraph [ref=e446]:
+      - text: Abre el detalle del recibo y pulsa
+      - strong [ref=e447]: Registrar pago
+      - text: . Puedes registrar fecha, importe (puede ser parcial), método de pago y cuenta bancaria. Un recibo puede tener múltiples pagos parciales.
+    - heading "Facturas legales" [level=2] [ref=e448]
+    - generic [ref=e449]:
+      - generic [ref=e450]: ✅
+      - generic [ref=e451]:
+        - strong [ref=e452]: Cumplimiento del Reglamento de Facturación (RD 1619/2012)
+        - paragraph [ref=e453]: Las facturas incluyen NIF/CIF del emisor y del cliente, base imponible, desglose de IVA y retención IRPF, numeración correlativa única e inmutable, y pie legal obligatorio.
+    - heading "Cómo generar una factura" [level=3] [ref=e454]
+    - generic [ref=e455]:
+      - generic [ref=e456]:
+        - generic [ref=e457]: 🧾
+        - generic [ref=e458]:
+          - text: 1. Abre
+          - text: Recibos
+      - generic [ref=e459]: →
+      - generic [ref=e460]:
+        - generic [ref=e461]: 🟣
+        - generic [ref=e462]:
+          - text: 2. Pulsa
+          - text: botón FAC
+      - generic [ref=e463]: →
+      - generic [ref=e464]:
+        - generic [ref=e465]: 🔍
+        - generic [ref=e466]:
+          - text: 3. Validación
+          - text: automática
+      - generic [ref=e467]: →
+      - generic [ref=e468]:
+        - generic [ref=e469]: 📋
+        - generic [ref=e470]:
+          - text: 4. Factura
+          - text: emitida
+      - generic [ref=e471]: →
+      - generic [ref=e472]:
+        - generic [ref=e473]: 📄
+        - generic [ref=e474]: 5. PDF / Email
+    - paragraph [ref=e475]:
+      - text: En la tabla de Recibos, cada fila tiene un botón
+      - strong [ref=e476]: FAC
+      - text: (morado). Si el recibo aún no tiene factura, el botón genera una nueva. Si ya la tiene, abre directamente el diálogo de impresión de esa factura.
+    - generic [ref=e477]:
+      - generic [ref=e478]: ⚠️
+      - generic [ref=e479]:
+        - strong [ref=e480]: Requisitos previos
+        - paragraph [ref=e481]:
+          - strong [ref=e482]: Mi Empresa
+          - text: "debe tener rellenos: Nombre y NIF/CIF. El"
+          - strong [ref=e483]: inquilino
+          - text: "debe tener: Nombre y NIF/NIE/CIF. Si falta algún dato, el programa indica exactamente qué completar."
+    - heading "Numeración de facturas" [level=3] [ref=e484]
+    - paragraph [ref=e485]:
+      - text: Las facturas tienen su propio contador independiente del número de recibo. El formato es
+      - code [ref=e486]: FAC-AAAAMM-NNNNN
+      - text: con secuencial autónomo por mes. La primera factura del mes siempre es
+      - code [ref=e487]: FAC-AAAAMM-00001
+      - text: aunque el recibo origen sea el número 58. Los números de factura no se derivan de los recibos.
+    - list [ref=e488]:
+      - listitem [ref=e489]:
+        - text: La numeración es
+        - strong [ref=e490]: correlativa, única e inmutable
+        - text: por serie y mes.
+      - listitem [ref=e491]: No se puede editar el número de factura desde la interfaz.
+      - listitem [ref=e492]: No se puede generar dos facturas del mismo recibo (bloqueado en base de datos).
+    - heading "Inmutabilidad de las facturas" [level=3] [ref=e493]
+    - paragraph [ref=e494]:
+      - text: Una factura emitida
+      - strong [ref=e495]: no se puede editar
+      - text: . Los datos del emisor y del cliente se copian en el momento de emisión y quedan congelados históricamente.
+    - table [ref=e496]:
+      - rowgroup [ref=e497]:
+        - row "Acción ¿Permitida? Motivo" [ref=e498]:
+          - columnheader "Acción" [ref=e499]
+          - columnheader "¿Permitida?" [ref=e500]
+          - columnheader "Motivo" [ref=e501]
+      - rowgroup [ref=e502]:
+        - row "Ver / imprimir / PDF ✅ Sí Siempre disponible" [ref=e503]:
+          - cell "Ver / imprimir / PDF" [ref=e504]
+          - cell "✅ Sí" [ref=e505]
+          - cell "Siempre disponible" [ref=e506]
+        - row "Enviar por email ✅ Sí Si el inquilino tiene email" [ref=e507]:
+          - cell "Enviar por email" [ref=e508]
+          - cell "✅ Sí" [ref=e509]
+          - cell "Si el inquilino tiene email" [ref=e510]
+        - row "Anular factura ⚠️ Solo desde Facturas Anulación lógica, el registro se conserva" [ref=e511]:
+          - cell "Anular factura" [ref=e512]
+          - cell "⚠️ Solo desde Facturas" [ref=e513]
+          - cell "Anulación lógica, el registro se conserva" [ref=e514]
+        - row "Modificar importes ❌ No Inmutabilidad legal (RD 1619/2012)" [ref=e515]:
+          - cell "Modificar importes" [ref=e516]
+          - cell "❌ No" [ref=e517]
+          - cell "Inmutabilidad legal (RD 1619/2012)" [ref=e518]
+        - row "Borrar físicamente ❌ No Inmutabilidad legal" [ref=e519]:
+          - cell "Borrar físicamente" [ref=e520]
+          - cell "❌ No" [ref=e521]
+          - cell "Inmutabilidad legal" [ref=e522]
+        - row "Generar 2ª factura del mismo recibo ❌ No Un recibo = una factura" [ref=e523]:
+          - cell "Generar 2ª factura del mismo recibo" [ref=e524]
+          - cell "❌ No" [ref=e525]
+          - cell "Un recibo = una factura" [ref=e526]
+    - heading "IVA e IRPF en facturas" [level=3] [ref=e527]
+    - list [ref=e528]:
+      - listitem [ref=e529]:
+        - strong [ref=e530]: "IVA = 0%:"
+        - text: la factura indica que la operación está exenta o no sujeta a IVA.
+      - listitem [ref=e531]:
+        - strong [ref=e532]: "IVA > 0%:"
+        - text: se muestra base imponible, tipo y cuota de IVA.
+      - listitem [ref=e533]:
+        - strong [ref=e534]: "Con IRPF:"
+        - text: se muestra la retención como línea separada que resta del total.
+    - heading "Aviso de justificante de pago" [level=3] [ref=e535]
+    - paragraph [ref=e536]:
+      - text: Si el contrato tiene marcado el check
+      - strong [ref=e537]: "\"Mostrar aviso en recibo/factura\""
+      - text: ", la factura impresa o en PDF incluye este aviso en rojo al pie:"
+    - generic [ref=e538]: Esta factura no constituye justificante de pago sin el correspondiente justificante bancario que acredite su abono.
+    - paragraph [ref=e539]: Útil para contratos con domiciliación bancaria donde el inquilino podría confundir la factura con un justificante de cobro. El mismo aviso también aparece en el recibo impreso si el check está activo.
+    - heading "Módulo de Facturas" [level=3] [ref=e540]
+    - paragraph [ref=e541]:
+      - text: La sección
+      - strong [ref=e542]: Facturas
+      - text: del menú lateral muestra todas las facturas emitidas con filtros por año, mes, inquilino y estado. Si VERI*FACTU está activo, también muestra el estado de envío a la AEAT y un botón para enviar o reintentar.
+    - heading "Generar Recibos en Lote" [level=2] [ref=e543]
+    - paragraph [ref=e544]:
+      - text: La sección
+      - strong [ref=e545]: Generar Recibos
+      - text: permite emitir de una sola vez todos los recibos del mes para todos los contratos activos, sin tener que crearlos uno a uno.
+    - generic [ref=e546]:
+      - generic [ref=e547]:
+        - generic [ref=e548]: 📅
+        - generic [ref=e549]:
+          - text: 1. Selecciona
+          - text: mes / año
+      - generic [ref=e550]: →
+      - generic [ref=e551]:
+        - generic [ref=e552]: 👁️
+        - generic [ref=e553]:
+          - text: 2. Vista previa
+          - text: de contratos
+      - generic [ref=e554]: →
+      - generic [ref=e555]:
+        - generic [ref=e556]: ⚡
+        - generic [ref=e557]:
+          - text: 3. Pulsa
+          - text: Generar
+      - generic [ref=e558]: →
+      - generic [ref=e559]:
+        - generic [ref=e560]: 🧾
+        - generic [ref=e561]:
+          - text: 4. Recibos
+          - text: creados
+    - heading "Cómo funciona" [level=3] [ref=e562]
+    - list [ref=e563]:
+      - listitem [ref=e564]: Elige el mes y el año para los que quieres generar recibos.
+      - listitem [ref=e565]:
+        - text: Pulsa
+        - strong [ref=e566]: Vista previa
+        - text: ": se muestra la lista de contratos activos que generarán recibo (con importe, inquilino e inmueble)."
+      - listitem [ref=e567]:
+        - text: Pulsa
+        - strong [ref=e568]: Generar recibos
+        - text: ": el sistema crea automáticamente un recibo por cada contrato activo con la renta vigente."
+    - generic [ref=e569]:
+      - generic [ref=e570]: ⚠️
+      - generic [ref=e571]:
+        - strong [ref=e572]: Sin duplicados
+        - paragraph [ref=e573]: Si ya existe un recibo para un contrato en el mismo mes, ese contrato se omite. No se crean duplicados. Puedes ejecutar el proceso varias veces de forma segura.
+    - heading "Plantillas DOCX para contratos" [level=2] [ref=e574]
+    - paragraph [ref=e575]:
+      - text: AlquiGest puede generar contratos personalizados en formato Word (
+      - code [ref=e576]: .docx
+      - text: ) a partir de plantillas que tú diseñas. Crea el documento en Word con el formato y cláusulas que necesites, inserta variables donde deban aparecer los datos reales, y AlquiGest los rellena automáticamente al generar.
+    - heading "Cómo crear una plantilla" [level=3] [ref=e577]
+    - list [ref=e578]:
+      - listitem [ref=e579]: Diseña el contrato en Word con el formato, fuentes y cláusulas que necesites.
+      - listitem [ref=e580]:
+        - text: "Donde quieras que aparezca un dato (nombre del inquilino, renta, fecha…) escribe la variable entre dobles llaves:"
+        - code [ref=e581]: "{{NombreInquilino}}"
+        - text: .
+      - listitem [ref=e582]:
+        - text: Guarda el archivo como
+        - code [ref=e583]: .docx
+        - text: .
+      - listitem [ref=e584]:
+        - text: En AlquiGest, ve a
+        - strong [ref=e585]: Plantillas
+        - text: →
+        - strong [ref=e586]: Nueva plantilla
+        - text: → sube el archivo.
+      - listitem [ref=e587]:
+        - text: Desde
+        - strong [ref=e588]: Contratos
+        - text: ", usa el botón de generación para crear el contrato con los datos reales."
+    - heading "Catálogo de variables" [level=3] [ref=e589]
+    - paragraph [ref=e590]:
+      - text: Pulsa
+      - strong [ref=e591]: Ver catálogo
+      - text: "en la sección Plantillas para ver la lista completa con descripción y ejemplo de cada variable. Las más habituales:"
+    - table [ref=e592]:
+      - rowgroup [ref=e593]:
+        - row "Variable Dato que inserta" [ref=e594]:
+          - columnheader "Variable" [ref=e595]
+          - columnheader "Dato que inserta" [ref=e596]
+      - rowgroup [ref=e597]:
+        - row "EMPRESA" [ref=e598]:
+          - cell "EMPRESA" [ref=e599]
+        - 'row "{{NombreEmpresa}} Nombre de la empresa gestora" [ref=e600]':
+          - 'cell "{{NombreEmpresa}}" [ref=e601]':
+            - code [ref=e602]: "{{NombreEmpresa}}"
+          - cell "Nombre de la empresa gestora" [ref=e603]
+        - 'row "{{CIFEmpresa}} CIF/NIF de la empresa" [ref=e604]':
+          - 'cell "{{CIFEmpresa}}" [ref=e605]':
+            - code [ref=e606]: "{{CIFEmpresa}}"
+          - cell "CIF/NIF de la empresa" [ref=e607]
+        - 'row "{{DireccionEmpresa}} Dirección completa de la empresa" [ref=e608]':
+          - 'cell "{{DireccionEmpresa}}" [ref=e609]':
+            - code [ref=e610]: "{{DireccionEmpresa}}"
+          - cell "Dirección completa de la empresa" [ref=e611]
+        - row "PROPIETARIO" [ref=e612]:
+          - cell "PROPIETARIO" [ref=e613]
+        - 'row "{{NombrePropietario}} Nombre del propietario del inmueble" [ref=e614]':
+          - 'cell "{{NombrePropietario}}" [ref=e615]':
+            - code [ref=e616]: "{{NombrePropietario}}"
+          - cell "Nombre del propietario del inmueble" [ref=e617]
+        - 'row "{{NIFPropietario}} NIF/CIF del propietario" [ref=e618]':
+          - 'cell "{{NIFPropietario}}" [ref=e619]':
+            - code [ref=e620]: "{{NIFPropietario}}"
+          - cell "NIF/CIF del propietario" [ref=e621]
+        - row "INQUILINO" [ref=e622]:
+          - cell "INQUILINO" [ref=e623]
+        - 'row "{{NombreInquilino}} Nombre completo del arrendatario" [ref=e624]':
+          - 'cell "{{NombreInquilino}}" [ref=e625]':
+            - code [ref=e626]: "{{NombreInquilino}}"
+          - cell "Nombre completo del arrendatario" [ref=e627]
+        - 'row "{{NIFInquilino}} NIF/NIE del arrendatario" [ref=e628]':
+          - 'cell "{{NIFInquilino}}" [ref=e629]':
+            - code [ref=e630]: "{{NIFInquilino}}"
+          - cell "NIF/NIE del arrendatario" [ref=e631]
+        - 'row "{{DireccionInquilino}} Dirección del arrendatario" [ref=e632]':
+          - 'cell "{{DireccionInquilino}}" [ref=e633]':
+            - code [ref=e634]: "{{DireccionInquilino}}"
+          - cell "Dirección del arrendatario" [ref=e635]
+        - row "INMUEBLE" [ref=e636]:
+          - cell "INMUEBLE" [ref=e637]
+        - 'row "{{DireccionInmueble}} Dirección completa del inmueble arrendado" [ref=e638]':
+          - 'cell "{{DireccionInmueble}}" [ref=e639]':
+            - code [ref=e640]: "{{DireccionInmueble}}"
+          - cell "Dirección completa del inmueble arrendado" [ref=e641]
+        - 'row "{{RefCatastral}} Referencia catastral del inmueble" [ref=e642]':
+          - 'cell "{{RefCatastral}}" [ref=e643]':
+            - code [ref=e644]: "{{RefCatastral}}"
+          - cell "Referencia catastral del inmueble" [ref=e645]
+        - 'row "{{TipoInmueble}} Tipo de inmueble (Vivienda, Local…)" [ref=e646]':
+          - 'cell "{{TipoInmueble}}" [ref=e647]':
+            - code [ref=e648]: "{{TipoInmueble}}"
+          - cell "Tipo de inmueble (Vivienda, Local…)" [ref=e649]
+        - row "CONTRATO" [ref=e650]:
+          - cell "CONTRATO" [ref=e651]
+        - 'row "{{FechaInicio}} Fecha de inicio del contrato (dd/mm/aaaa)" [ref=e652]':
+          - 'cell "{{FechaInicio}}" [ref=e653]':
+            - code [ref=e654]: "{{FechaInicio}}"
+          - cell "Fecha de inicio del contrato (dd/mm/aaaa)" [ref=e655]
+        - 'row "{{FechaFin}} Fecha de vencimiento del contrato" [ref=e656]':
+          - 'cell "{{FechaFin}}" [ref=e657]':
+            - code [ref=e658]: "{{FechaFin}}"
+          - cell "Fecha de vencimiento del contrato" [ref=e659]
+        - 'row "{{Duracion}} Duración en texto (ej: \"1 año y 6 meses\")" [ref=e660]':
+          - 'cell "{{Duracion}}" [ref=e661]':
+            - code [ref=e662]: "{{Duracion}}"
+          - 'cell "Duración en texto (ej: \"1 año y 6 meses\")" [ref=e663]'
+        - 'row "{{DiaPago}} Día del mes en que se paga la renta" [ref=e664]':
+          - 'cell "{{DiaPago}}" [ref=e665]':
+            - code [ref=e666]: "{{DiaPago}}"
+          - cell "Día del mes en que se paga la renta" [ref=e667]
+        - row "FACTURACIÓN" [ref=e668]:
+          - cell "FACTURACIÓN" [ref=e669]
+        - 'row "{{Renta}} Importe mensual de la renta (con €)" [ref=e670]':
+          - 'cell "{{Renta}}" [ref=e671]':
+            - code [ref=e672]: "{{Renta}}"
+          - cell "Importe mensual de la renta (con €)" [ref=e673]
+        - 'row "{{RentaLetras}} Renta mensual escrita en letras" [ref=e674]':
+          - 'cell "{{RentaLetras}}" [ref=e675]':
+            - code [ref=e676]: "{{RentaLetras}}"
+          - cell "Renta mensual escrita en letras" [ref=e677]
+        - 'row "{{IVA}} Porcentaje de IVA del contrato" [ref=e678]':
+          - 'cell "{{IVA}}" [ref=e679]':
+            - code [ref=e680]: "{{IVA}}"
+          - cell "Porcentaje de IVA del contrato" [ref=e681]
+        - 'row "{{IRPF}} Porcentaje de retención IRPF" [ref=e682]':
+          - 'cell "{{IRPF}}" [ref=e683]':
+            - code [ref=e684]: "{{IRPF}}"
+          - cell "Porcentaje de retención IRPF" [ref=e685]
+        - row "FIANZA" [ref=e686]:
+          - cell "FIANZA" [ref=e687]
+        - 'row "{{Fianza}} Importe de la fianza (con €)" [ref=e688]':
+          - 'cell "{{Fianza}}" [ref=e689]':
+            - code [ref=e690]: "{{Fianza}}"
+          - cell "Importe de la fianza (con €)" [ref=e691]
+        - 'row "{{FianzaLetras}} Fianza escrita en letras" [ref=e692]':
+          - 'cell "{{FianzaLetras}}" [ref=e693]':
+            - code [ref=e694]: "{{FianzaLetras}}"
+          - cell "Fianza escrita en letras" [ref=e695]
+        - row "FIADOR" [ref=e696]:
+          - cell "FIADOR" [ref=e697]
+        - 'row "{{NombreFiador}} Nombre del fiador solidario" [ref=e698]':
+          - 'cell "{{NombreFiador}}" [ref=e699]':
+            - code [ref=e700]: "{{NombreFiador}}"
+          - cell "Nombre del fiador solidario" [ref=e701]
+        - 'row "{{NIFFiador}} NIF del fiador" [ref=e702]':
+          - 'cell "{{NIFFiador}}" [ref=e703]':
+            - code [ref=e704]: "{{NIFFiador}}"
+          - cell "NIF del fiador" [ref=e705]
+        - row "SISTEMA" [ref=e706]:
+          - cell "SISTEMA" [ref=e707]
+        - 'row "{{FechaActual}} Fecha de generación del documento" [ref=e708]':
+          - 'cell "{{FechaActual}}" [ref=e709]':
+            - code [ref=e710]: "{{FechaActual}}"
+          - cell "Fecha de generación del documento" [ref=e711]
+        - 'row "{{AnioActual}} Año actual en cuatro dígitos" [ref=e712]':
+          - 'cell "{{AnioActual}}" [ref=e713]':
+            - code [ref=e714]: "{{AnioActual}}"
+          - cell "Año actual en cuatro dígitos" [ref=e715]
+    - heading "Bloque para inquilinos secundarios" [level=3] [ref=e716]
+    - paragraph [ref=e717]: "Si el contrato tiene copropietarios, usa el bloque repetitivo. Se expande una vez por cada inquilino secundario registrado:"
+    - generic [ref=e718]:
+      - text: "{{#INQUILINOS_SECUNDARIOS}}"
+      - text: "Nombre: {{Nombre_IS}} — NIF: {{NIF_IS}}"
+      - text: "{{/INQUILINOS_SECUNDARIOS}}"
+    - 'heading "Fotos del contrato — {{FotosContrato}}" [level=3] [ref=e719]':
+      - text: Fotos del contrato —
+      - code [ref=e720]: "{{FotosContrato}}"
+    - paragraph [ref=e721]:
+      - text: Incluye fotografías del inmueble directamente en el Word generado. Coloca
+      - code [ref=e722]: "{{FotosContrato}}"
+      - text: en un párrafo propio (sin más texto en ese párrafo).
+    - generic [ref=e723]:
+      - generic [ref=e724]: 📸
+      - generic [ref=e725]:
+        - strong [ref=e726]: Cómo funciona
+        - paragraph [ref=e727]:
+          - text: Al generar, AlquiGest detecta la variable y abre un diálogo de carga de fotos. Puedes subir cuantas imágenes JPG, PNG o WebP necesites, elegir el número de columnas (1, 2 o 3) y reordenarlas antes de generar. Las fotos quedan embebidas en el
+          - code [ref=e728]: .docx
+          - text: con sus proporciones originales.
+    - heading "Vista previa HTML" [level=3] [ref=e729]
+    - paragraph [ref=e730]:
+      - text: El botón
+      - strong [ref=e731]: Vista previa
+      - text: muestra el contrato renderizado como HTML con todos los datos reales sustituidos, para comprobar el resultado antes de descargar el archivo.
+    - heading "Dashboard" [level=2] [ref=e732]
+    - paragraph [ref=e733]:
+      - text: El
+      - strong [ref=e734]: Dashboard
+      - text: es la pantalla principal. Se muestra al abrir la aplicación y ofrece un resumen visual completo del estado de todas las fincas gestionadas.
+    - heading "Estadísticas rápidas" [level=3] [ref=e735]
+    - paragraph [ref=e736]: "Cuatro tarjetas muestran de un vistazo: propietarios, inmuebles, contratos activos e importe pendiente de cobro."
+    - heading "Gráficos de rendimiento (Chart.js)" [level=3] [ref=e737]
+    - paragraph [ref=e738]: "El Dashboard incluye dos gráficos automáticos:"
+    - list [ref=e739]:
+      - listitem [ref=e740]:
+        - strong [ref=e741]: "Ingresos mensuales (barras):"
+        - text: importe cobrado mes a mes durante el año en curso.
+      - listitem [ref=e742]:
+        - strong [ref=e743]: "Ocupación (dona):"
+        - text: porcentaje de inmuebles ocupados vs. libres.
+    - heading "Alerta de revisión IPC" [level=3] [ref=e744]
+    - paragraph [ref=e745]: Si algún contrato tiene la cláusula de revisión de renta y lleva más de 11 meses sin actualizarse, el Dashboard muestra un aviso amarillo con el listado de contratos afectados. Al generar el recibo de ese contrato, el asistente IPC calcula automáticamente la nueva renta sugerida según el índice aplicable.
+    - heading "Campana de avisos" [level=3] [ref=e746]
+    - paragraph [ref=e747]:
+      - text: El icono de campana se activa en naranja cuando algún contrato tiene su
+      - strong [ref=e748]: revisión anual de renta
+      - text: en los próximos 30 días. Al hacer clic despliega la lista de contratos afectados.
+    - heading "Próximas renovaciones de contrato" [level=3] [ref=e749]
+    - paragraph [ref=e750]:
+      - text: Muestra contratos activos cuya
+      - strong [ref=e751]: fecha de vencimiento
+      - text: sea en los próximos 6 meses o que ya hayan vencido.
+    - table [ref=e752]:
+      - rowgroup [ref=e753]:
+        - row "Color de fila Situación" [ref=e754]:
+          - columnheader "Color de fila" [ref=e755]
+          - columnheader "Situación" [ref=e756]
+        - row "Rojo Contrato vencido o que vence hoy" [ref=e757]:
+          - cell "Rojo" [ref=e758]
+          - cell "Contrato vencido o que vence hoy" [ref=e759]
+        - row "Naranja Vence en menos de 4 meses — plazo de preaviso agotado" [ref=e760]:
+          - cell "Naranja" [ref=e761]
+          - cell "Vence en menos de 4 meses — plazo de preaviso agotado" [ref=e762]
+        - row "Normal Vence en 4-6 meses — todavía en plazo de preaviso" [ref=e763]:
+          - cell "Normal" [ref=e764]
+          - cell "Vence en 4-6 meses — todavía en plazo de preaviso" [ref=e765]
+    - heading "Últimos recibos y cobrado del mes" [level=3] [ref=e766]
+    - paragraph [ref=e767]: La parte inferior muestra los 5 recibos más recientes y un resumen del importe cobrado en el mes actual, junto con los recibos pendientes y el total cobrado histórico.
+    - heading "Informes Excel" [level=2] [ref=e768]
+    - paragraph [ref=e769]:
+      - text: AlquiGest exporta varios tipos de informes a formato Excel (.xlsx). Accede desde la pestaña
+      - strong [ref=e770]: Informes
+      - text: en la barra lateral.
+    - table [ref=e771]:
+      - rowgroup [ref=e772]:
+        - row "Informe Contenido" [ref=e773]:
+          - columnheader "Informe" [ref=e774]
+          - columnheader "Contenido" [ref=e775]
+        - row "Todos los recibos del año Listado completo con base, IVA, IRPF, total, cobrado y pendiente" [ref=e776]:
+          - cell "Todos los recibos del año" [ref=e777]:
+            - strong [ref=e778]: Todos los recibos del año
+          - cell "Listado completo con base, IVA, IRPF, total, cobrado y pendiente" [ref=e779]
+        - row "Ingresos por finca Tabla con una fila por finca y columnas para cada mes del año" [ref=e780]:
+          - cell "Ingresos por finca" [ref=e781]:
+            - strong [ref=e782]: Ingresos por finca
+          - cell "Tabla con una fila por finca y columnas para cada mes del año" [ref=e783]
+        - 'row "Ingresos por piso/unidad Desglose detallado por inmueble: finca, piso, inquilino y total mensual" [ref=e784]':
+          - cell "Ingresos por piso/unidad" [ref=e785]:
+            - strong [ref=e786]: Ingresos por piso/unidad
+          - 'cell "Desglose detallado por inmueble: finca, piso, inquilino y total mensual" [ref=e787]'
+        - row "Recibos pendientes Listado de todos los recibos Pendiente o Parcial con el importe que falta" [ref=e788]:
+          - cell "Recibos pendientes" [ref=e789]:
+            - strong [ref=e790]: Recibos pendientes
+          - cell "Listado de todos los recibos Pendiente o Parcial con el importe que falta" [ref=e791]
+        - row "Histórico de cobros Todos los pagos registrados en un año, con fecha, método y cuenta" [ref=e792]:
+          - cell "Histórico de cobros" [ref=e793]:
+            - strong [ref=e794]: Histórico de cobros
+          - cell "Todos los pagos registrados en un año, con fecha, método y cuenta" [ref=e795]
+        - row "Resumen por propietario Facturado, cobrado y pendiente agrupado por propietario y finca" [ref=e796]:
+          - cell "Resumen por propietario" [ref=e797]:
+            - strong [ref=e798]: Resumen por propietario
+          - cell "Facturado, cobrado y pendiente agrupado por propietario y finca" [ref=e799]
+    - generic [ref=e800]:
+      - generic [ref=e801]: ⚠️
+      - generic [ref=e802]:
+        - strong [ref=e803]: ¿No se descarga el Excel?
+        - paragraph [ref=e804]:
+          - text: Si usas XAMPP es posible que la extensión ZipArchive de PHP no esté activada. Consulta el manual
+          - 'link "Solución: Error al exportar Excel" [ref=e805] [cursor=pointer]':
+            - /url: fixexcel.html
+          - text: .
+    - heading "Informes fiscales (IRPF / Hacienda)" [level=2] [ref=e806]
+    - paragraph [ref=e807]: AlquiGest incluye tres informes para preparar la documentación fiscal de los arrendamientos según la normativa española.
+    - generic [ref=e808]:
+      - generic [ref=e809]: ⚠️
+      - generic [ref=e810]:
+        - strong [ref=e811]: Estos informes son una ayuda, no asesoramiento fiscal
+        - paragraph [ref=e812]: Revisa siempre los datos con tu asesor fiscal antes de presentar cualquier declaración. Los gastos deducibles no están en la aplicación y debes añadirlos manualmente.
+    - heading "1. Rendimientos trimestrales (IRPF)" [level=3] [ref=e813]
+    - paragraph [ref=e814]:
+      - text: Ingresos por arrendamiento desglosados en cuatro trimestres (T1-T4) por inmueble y propietario. Incluye la
+      - strong [ref=e815]: reducción del 60 %
+      - text: "(art. 23.2 LIRPF) cuando aplica: inmueble de vivienda habitual con contrato de duración ≥ 1 año."
+    - heading "2. Declaración de la Renta — Capital Inmobiliario (Modelo 100)" [level=3] [ref=e816]
+    - paragraph [ref=e817]: "Informe anual para rellenar la sección F del Modelo 100. Una fila por inmueble con: ingresos íntegros (K), gastos deducibles (L, a rellenar manualmente), rendimiento neto (M-N) y observaciones (P). Al final del Excel se incluye un recordatorio de todos los gastos deducibles del art. 23.1 LIRPF."
+    - heading "3. Modelo 115 / 180 — Retenciones sobre arrendamientos" [level=3] [ref=e818]
+    - paragraph [ref=e819]:
+      - text: Para el Modelo 115 (declaración trimestral de retenciones) y el Modelo 180 (resumen anual). Solo incluye recibos con
+      - code [ref=e820]: importe_irpf > 0
+      - text: . Los plazos de presentación son el 20 de abril, julio, octubre y enero.
+    - generic [ref=e821]:
+      - generic [ref=e822]: 💡
+      - generic [ref=e823]:
+        - strong [ref=e824]: ¿Cuándo presentar el Modelo 115?
+        - paragraph [ref=e825]: Solo cuando el inquilino es una persona jurídica (empresa, sociedad) o un empresario/profesional que alquila el inmueble para su actividad. Para inquilinos particulares sin actividad empresarial, no procede retención.
+    - heading "Envío por Email" [level=2] [ref=e826]
+    - paragraph [ref=e827]: AlquiGest puede enviar recibos y facturas por correo electrónico al inquilino, con el documento en HTML y PDF adjunto.
+    - heading "Configuración previa (Gmail)" [level=3] [ref=e828]
+    - list [ref=e829]:
+      - listitem [ref=e830]:
+        - text: Activa la
+        - strong [ref=e831]: verificación en dos pasos
+        - text: en tu cuenta de Google
+      - listitem [ref=e832]:
+        - text: Ve a
+        - strong [ref=e833]: Seguridad → Contraseñas de aplicaciones
+      - listitem [ref=e834]: Crea una nueva contraseña de aplicación (Google te dará 16 caracteres)
+      - listitem [ref=e835]:
+        - text: Introduce tu Gmail y esa clave en
+        - strong [ref=e836]: Mi Empresa → Gmail usuario / contraseña
+    - generic [ref=e837]:
+      - generic [ref=e838]: ⚠️
+      - generic [ref=e839]:
+        - strong [ref=e840]: No uses tu contraseña normal de Gmail
+        - paragraph [ref=e841]:
+          - text: Google requiere una
+          - emphasis [ref=e842]: Contraseña de Aplicación
+          - text: específica. Tu contraseña normal no funcionará.
+    - heading "Generación de PDFs" [level=2] [ref=e843]
+    - paragraph [ref=e844]: AlquiGest puede guardar recibos y facturas como PDF directamente desde el navegador, sin software adicional.
+    - heading "Dos formas de generar PDF" [level=3] [ref=e845]
+    - list [ref=e846]:
+      - listitem [ref=e847]:
+        - strong [ref=e848]: Botón "Imprimir / PDF"
+        - text: ": abre el diálogo de impresión del navegador. Selecciona \"Guardar como PDF\" como destino."
+      - listitem [ref=e849]:
+        - strong [ref=e850]: Botón "Guardar PDF"
+        - text: ": genera el archivo directamente usando html2canvas + jsPDF, sin pasar por el diálogo de impresión. El archivo se descarga automáticamente."
+    - generic [ref=e851]:
+      - generic [ref=e852]: 💡
+      - generic [ref=e853]:
+        - strong [ref=e854]: Formatos A4 y A5
+        - paragraph [ref=e855]: Puedes elegir entre formato A4 (estándar) o A5 (más compacto, ideal para imprimir dos por hoja) al imprimir tanto recibos como facturas.
+    - heading "VERI*FACTU — Configuración" [level=2] [ref=e856]
+    - paragraph [ref=e857]:
+      - text: AlquiGest incluye integración completa con
+      - strong [ref=e858]: VERI*FACTU
+      - text: (Sistema de Información de Facturación de la AEAT, regulado por el RD 1007/2023). La integración está
+      - strong [ref=e859]: desactivada por defecto
+      - text: y solo funciona si la activas explícitamente.
+    - generic [ref=e860]:
+      - generic [ref=e861]: ✅
+      - generic [ref=e862]:
+        - strong [ref=e863]: Implementación completa incluida
+        - paragraph [ref=e864]: AlquiGest calcula el hash SHA-256 encadenado, construye el XML SOAP, lo envía a la AEAT con tu certificado digital (.p12/.pfx), y genera el código QR de verificación que aparece impreso en el PDF de la factura.
+    - heading "Acceder a la configuración" [level=3] [ref=e865]
+    - paragraph [ref=e866]:
+      - text: Desde el menú lateral, grupo
+      - strong [ref=e867]: Configuración
+      - text: ", haz clic en"
+      - strong [ref=e868]: 🛡️ VERI*FACTU
+      - text: .
+    - heading "Pasos para activar VERI*FACTU" [level=3] [ref=e869]
+    - list [ref=e870]:
+      - listitem [ref=e871]:
+        - text: Rellena el
+        - strong [ref=e872]: NIF del obligado de emisión
+        - text: y guarda la configuración.
+      - listitem [ref=e873]:
+        - text: Sube tu
+        - strong [ref=e874]: certificado digital
+        - text: (.p12 o .pfx) e introduce la contraseña.
+      - listitem [ref=e875]:
+        - text: Selecciona entorno
+        - strong [ref=e876]: Pruebas
+        - text: y pulsa
+        - strong [ref=e877]: Test conexión
+        - text: para verificar el acceso a la AEAT.
+      - listitem [ref=e878]:
+        - text: Genera una factura y envíala desde la tabla de facturas pulsando
+        - strong [ref=e879]: 🛡 AEAT
+        - text: .
+      - listitem [ref=e880]:
+        - text: Cuando todo funcione en pruebas, cambia a entorno
+        - strong [ref=e881]: Producción
+        - text: y pulsa
+        - strong [ref=e882]: Activar
+        - text: .
+    - table [ref=e883]:
+      - rowgroup [ref=e884]:
+        - row "Campo de configuración Descripción" [ref=e885]:
+          - columnheader "Campo de configuración" [ref=e886]
+          - columnheader "Descripción" [ref=e887]
+      - rowgroup [ref=e888]:
+        - row "Entorno AEAT pruebas (prewww1.aeat.es) o produccion (www1.aeat.es). Usa pruebas hasta validar todo" [ref=e889]:
+          - cell "Entorno AEAT" [ref=e890]:
+            - strong [ref=e891]: Entorno AEAT
+          - cell "pruebas (prewww1.aeat.es) o produccion (www1.aeat.es). Usa pruebas hasta validar todo" [ref=e892]:
+            - code [ref=e893]: pruebas
+            - text: (prewww1.aeat.es) o
+            - code [ref=e894]: produccion
+            - text: (www1.aeat.es). Usa pruebas hasta validar todo
+        - row "NIF del obligado de emisión NIF del emisor registrado en el SIF. Normalmente igual al NIF de empresa" [ref=e895]:
+          - cell "NIF del obligado de emisión" [ref=e896]:
+            - strong [ref=e897]: NIF del obligado de emisión
+          - cell "NIF del emisor registrado en el SIF. Normalmente igual al NIF de empresa" [ref=e898]
+        - row "Certificado digital (.p12/.pfx) Se guarda en la carpeta certs/ protegida contra acceso HTTP directo" [ref=e899]:
+          - cell "Certificado digital (.p12/.pfx)" [ref=e900]:
+            - strong [ref=e901]: Certificado digital (.p12/.pfx)
+          - cell "Se guarda en la carpeta certs/ protegida contra acceso HTTP directo" [ref=e902]:
+            - text: Se guarda en la carpeta
+            - code [ref=e903]: certs/
+            - text: protegida contra acceso HTTP directo
+        - row "Contraseña del certificado Contraseña del archivo .p12/.pfx" [ref=e904]:
+          - cell "Contraseña del certificado" [ref=e905]:
+            - strong [ref=e906]: Contraseña del certificado
+          - cell "Contraseña del archivo .p12/.pfx" [ref=e907]
+        - 'row "Nombre del sistema / Versión Identificación del sistema ante la AEAT. Por defecto: AlquiGest v2.0.0" [ref=e908]':
+          - cell "Nombre del sistema / Versión" [ref=e909]:
+            - strong [ref=e910]: Nombre del sistema / Versión
+          - 'cell "Identificación del sistema ante la AEAT. Por defecto: AlquiGest v2.0.0" [ref=e911]'
+    - generic [ref=e912]:
+      - generic [ref=e913]: ⚠️
+      - generic [ref=e914]:
+        - strong [ref=e915]: VERI*FACTU permanece inactivo hasta que lo actives
+        - paragraph [ref=e916]:
+          - text: Si
+          - code [ref=e917]: verifactu_activo
+          - text: no está a
+          - code [ref=e918]: "1"
+          - text: ", AlquiGest no calcula hashes ni envía nada a la AEAT. El interruptor de la pantalla VERI*FACTU controla esto. Puedes tener toda la configuración lista sin que entre en funcionamiento hasta que decidas activarlo."
+    - paragraph [ref=e919]:
+      - link "📖 Ver guía técnica completa de integración VERI*FACTU / AEAT →" [ref=e920] [cursor=pointer]:
+        - /url: ayuda_verifactu.php
+    - heading "Herramientas de productividad" [level=2] [ref=e921]
+    - heading "Búsqueda global" [level=3] [ref=e922]
+    - paragraph [ref=e923]: La barra de búsqueda del encabezado (icono lupa) permite localizar al instante cualquier inquilino, inmueble, finca o propietario escribiendo parte del nombre. Los resultados aparecen en un desplegable y al hacer clic navega directamente al elemento.
+    - heading "Modo oscuro" [level=3] [ref=e924]
+    - paragraph [ref=e925]: El botón de luna/sol en el encabezado activa o desactiva el modo oscuro. La preferencia se guarda automáticamente y se restaura en cada apertura.
+    - heading "Atajos de teclado" [level=3] [ref=e926]
+    - table [ref=e927]:
+      - rowgroup [ref=e928]:
+        - row "Tecla Acción" [ref=e929]:
+          - columnheader "Tecla" [ref=e930]
+          - columnheader "Acción" [ref=e931]
+      - rowgroup [ref=e932]:
+        - row "Escape Cierra el modal abierto (con aviso si hay cambios sin guardar)" [ref=e933]:
+          - cell "Escape" [ref=e934]
+          - cell "Cierra el modal abierto (con aviso si hay cambios sin guardar)" [ref=e935]
+        - row "Alt + D Ir al Dashboard" [ref=e936]:
+          - cell "Alt + D" [ref=e937]
+          - cell "Ir al Dashboard" [ref=e938]
+        - row "Alt + R Ir a Recibos" [ref=e939]:
+          - cell "Alt + R" [ref=e940]
+          - cell "Ir a Recibos" [ref=e941]
+        - row "Alt + C Ir a Contratos" [ref=e942]:
+          - cell "Alt + C" [ref=e943]
+          - cell "Ir a Contratos" [ref=e944]
+        - row "Alt + F Ir a Facturas" [ref=e945]:
+          - cell "Alt + F" [ref=e946]
+          - cell "Ir a Facturas" [ref=e947]
+        - row "Alt + I Ir a Inquilinos" [ref=e948]:
+          - cell "Alt + I" [ref=e949]
+          - cell "Ir a Inquilinos" [ref=e950]
+        - row "Alt + G Ir a Generar Recibos" [ref=e951]:
+          - cell "Alt + G" [ref=e952]
+          - cell "Ir a Generar Recibos" [ref=e953]
+    - heading "Aviso de cambios sin guardar" [level=3] [ref=e954]
+    - paragraph [ref=e955]: Si has modificado un formulario en un modal y pulsas Escape o el botón de cerrar sin guardar, el programa te preguntará si deseas descartar los cambios. Así se evitan pérdidas accidentales de datos.
+    - heading "Filtros avanzados en Recibos" [level=3] [ref=e956]
+    - paragraph [ref=e957]: "La sección Recibos incluye una barra de filtros que permite combinar: estado del recibo, inquilino, y fechas desde/hasta. Los resultados se paginan de 30 en 30. El botón de paginación aparece en la parte inferior de la tabla."
+    - heading "Historial del inquilino" [level=3] [ref=e958]
+    - paragraph [ref=e959]:
+      - text: Desde la lista de Inquilinos, el botón
+      - strong [ref=e960]: Historial
+      - text: "abre un panel con tres pestañas: todos los contratos que ha tenido, todos sus recibos y todas sus facturas. Incluye un resumen con el total facturado, cobrado y pendiente."
+    - heading "Calendario de Cobros" [level=2] [ref=e961]
+    - paragraph [ref=e962]: Accesible desde el menú lateral. Muestra un calendario mensual con todos los recibos vencidos en ese mes, agrupados por día. Los recibos pendientes aparecen en rojo, los cobrados en verde y los parciales en naranja. Los botones anterior/siguiente permiten navegar entre meses.
+    - heading "Informe de Morosidad" [level=2] [ref=e963]
+    - paragraph [ref=e964]:
+      - text: Accesible desde el menú lateral. Lista todos los recibos en estado
+      - emphasis [ref=e965]: Pendiente
+      - text: o
+      - emphasis [ref=e966]: Parcial
+      - text: con más de 30 días de antigüedad desde su fecha límite, ordenados por importe pendiente.
+    - paragraph [ref=e967]:
+      - text: El botón
+      - strong [ref=e968]: Exportar PDF
+      - text: genera un informe formal de morosidad en formato A4 con los datos de la empresa, fecha de emisión y listado detallado por inquilino con importes acumulados.
+    - paragraph [ref=e969]:
+      - text: El filtro
+      - strong [ref=e970]: Incluir recibos con menos de 30 días
+      - text: amplía el listado para mostrar también los recibos recientes pendientes, útil para anticipar situaciones de morosidad.
+    - heading "Generar Recibos en Lote" [level=2] [ref=e971]
+    - paragraph [ref=e972]:
+      - text: La sección
+      - strong [ref=e973]: Generar Recibos
+      - text: del menú lateral permite crear en un solo clic todos los recibos de un mes para toda la cartera o un subconjunto de inmuebles.
+    - heading "Parámetros de generación" [level=3] [ref=e974]
+    - table [ref=e975]:
+      - rowgroup [ref=e976]:
+        - row "Opción Descripción" [ref=e977]:
+          - columnheader "Opción" [ref=e978]
+          - columnheader "Descripción" [ref=e979]
+      - rowgroup [ref=e980]:
+        - row "Mes / Año El período para el que se generan los recibos" [ref=e981]:
+          - cell "Mes / Año" [ref=e982]:
+            - strong [ref=e983]: Mes / Año
+          - cell "El período para el que se generan los recibos" [ref=e984]
+        - row "Ámbito — Toda la cartera Genera un recibo para cada contrato activo sin importar la finca" [ref=e985]:
+          - cell "Ámbito — Toda la cartera" [ref=e986]:
+            - strong [ref=e987]: Ámbito — Toda la cartera
+          - cell "Genera un recibo para cada contrato activo sin importar la finca" [ref=e988]
+        - row "Ámbito — Por finca/edificio Solo los contratos activos de la finca seleccionada" [ref=e989]:
+          - cell "Ámbito — Por finca/edificio" [ref=e990]:
+            - strong [ref=e991]: Ámbito — Por finca/edificio
+          - cell "Solo los contratos activos de la finca seleccionada" [ref=e992]
+        - row "Ámbito — Por piso concreto Genera el recibo de un único inmueble" [ref=e993]:
+          - cell "Ámbito — Por piso concreto" [ref=e994]:
+            - strong [ref=e995]: Ámbito — Por piso concreto
+          - cell "Genera el recibo de un único inmueble" [ref=e996]
+    - heading "Comportamiento" [level=3] [ref=e997]
+    - list [ref=e998]:
+      - listitem [ref=e999]: Si ya existe un recibo para un contrato en ese mes, no se genera un duplicado (protección automática).
+      - listitem [ref=e1000]: Muestra una previsualización de los recibos que se van a crear antes de confirmar.
+      - listitem [ref=e1001]:
+        - text: Los recibos generados quedan en estado
+        - strong [ref=e1002]: Pendiente
+        - text: listos para cobrar.
+    - generic [ref=e1003]:
+      - generic [ref=e1004]: 💡
+      - generic [ref=e1005]:
+        - strong [ref=e1006]: También puedes generar recibos individualmente
+        - paragraph [ref=e1007]:
+          - text: Desde la sección
+          - strong [ref=e1008]: Contratos
+          - text: ", el botón"
+          - strong [ref=e1009]: Generar recibo
+          - text: de cada fila crea el recibo del mes actual para ese contrato específico.
+    - heading "Plantillas DOCX" [level=2] [ref=e1010]
+    - paragraph [ref=e1011]: AlquiGest incluye un motor de plantillas Word (.docx) que permite generar contratos, comunicaciones y cualquier documento personalizado con los datos reales de cada contrato, inmueble, propietario e inquilino.
+    - generic [ref=e1012]:
+      - generic [ref=e1013]: ✅
+      - generic [ref=e1014]:
+        - strong [ref=e1015]: Sin software adicional
+        - paragraph [ref=e1016]: Las plantillas se generan como archivos .docx descargables directamente desde el navegador. No necesitas LibreOffice ni ningún software instalado.
+    - heading "Cómo funciona" [level=3] [ref=e1017]
+    - generic [ref=e1018]:
+      - generic [ref=e1019]:
+        - generic [ref=e1020]: 📝
+        - generic [ref=e1021]:
+          - text: 1. Crea una
+          - text: plantilla Word
+      - generic [ref=e1022]: →
+      - generic [ref=e1023]:
+        - generic [ref=e1024]: ⬆
+        - generic [ref=e1025]:
+          - text: 2. Súbela en
+          - text: Plantillas
+      - generic [ref=e1026]: →
+      - generic [ref=e1027]:
+        - generic [ref=e1028]: 📄
+        - generic [ref=e1029]:
+          - text: 3. Pulsa DOCX
+          - text: en el contrato
+      - generic [ref=e1030]: →
+      - generic [ref=e1031]:
+        - generic [ref=e1032]: ⬇
+        - generic [ref=e1033]:
+          - text: 4. Descarga el
+          - text: documento
+    - heading "Gestión de plantillas" [level=3] [ref=e1034]
+    - paragraph [ref=e1035]:
+      - text: Desde el menú lateral →
+      - strong [ref=e1036]: Plantillas
+      - text: ". Cada plantilla tiene:"
+    - table [ref=e1037]:
+      - rowgroup [ref=e1038]:
+        - row "Acción Descripción" [ref=e1039]:
+          - columnheader "Acción" [ref=e1040]
+          - columnheader "Descripción" [ref=e1041]
+      - rowgroup [ref=e1042]:
+        - row "Vista previa Muestra el documento con variables sustituidas (texto, sin imágenes) en pantalla" [ref=e1043]:
+          - cell "Vista previa" [ref=e1044]:
+            - strong [ref=e1045]: Vista previa
+          - cell "Muestra el documento con variables sustituidas (texto, sin imágenes) en pantalla" [ref=e1046]
+        - row "⬇ DOCX Descarga el archivo de plantilla original tal como se subió" [ref=e1047]:
+          - cell "⬇ DOCX" [ref=e1048]:
+            - strong [ref=e1049]: ⬇ DOCX
+          - cell "Descarga el archivo de plantilla original tal como se subió" [ref=e1050]
+        - row "Renombrar Cambia el nombre visible de la plantilla" [ref=e1051]:
+          - cell "Renombrar" [ref=e1052]:
+            - strong [ref=e1053]: Renombrar
+          - cell "Cambia el nombre visible de la plantilla" [ref=e1054]
+        - row "Duplicar Crea una copia de la plantilla con nuevo nombre" [ref=e1055]:
+          - cell "Duplicar" [ref=e1056]:
+            - strong [ref=e1057]: Duplicar
+          - cell "Crea una copia de la plantilla con nuevo nombre" [ref=e1058]
+        - row "Activar / Desactivar Las plantillas desactivadas no aparecen en el selector al generar documentos" [ref=e1059]:
+          - cell "Activar / Desactivar" [ref=e1060]:
+            - strong [ref=e1061]: Activar / Desactivar
+          - cell "Las plantillas desactivadas no aparecen en el selector al generar documentos" [ref=e1062]
+        - row "⭐ Por defecto Esta plantilla se usará automáticamente cuando generes un documento sin elegir explícitamente" [ref=e1063]:
+          - cell "⭐ Por defecto" [ref=e1064]:
+            - strong [ref=e1065]: ⭐ Por defecto
+          - cell "Esta plantilla se usará automáticamente cuando generes un documento sin elegir explícitamente" [ref=e1066]
+        - row "Eliminar Borra la plantilla permanentemente" [ref=e1067]:
+          - cell "Eliminar" [ref=e1068]:
+            - strong [ref=e1069]: Eliminar
+          - cell "Borra la plantilla permanentemente" [ref=e1070]
+    - heading "Variables disponibles" [level=3] [ref=e1071]
+    - paragraph [ref=e1072]:
+      - text: "Escribe las variables entre dobles llaves en tu documento Word. Ejemplo:"
+      - code [ref=e1073]: "{{NombreInquilino}}"
+      - text: . Al generar el documento, cada variable se sustituye por el dato real del contrato.
+    - table [ref=e1074]:
+      - rowgroup [ref=e1075]:
+        - row "Variable Contenido" [ref=e1076]:
+          - columnheader "Variable" [ref=e1077]
+          - columnheader "Contenido" [ref=e1078]
+      - rowgroup [ref=e1079]:
+        - row "Empresa" [ref=e1080]:
+          - cell "Empresa" [ref=e1081]
+        - 'row "{{NombreEmpresa}} Nombre o razón social de la empresa administradora" [ref=e1082]':
+          - 'cell "{{NombreEmpresa}}" [ref=e1083]':
+            - code [ref=e1084]: "{{NombreEmpresa}}"
+          - cell "Nombre o razón social de la empresa administradora" [ref=e1085]
+        - 'row "{{CIFEmpresa}} CIF/NIF de la empresa" [ref=e1086]':
+          - 'cell "{{CIFEmpresa}}" [ref=e1087]':
+            - code [ref=e1088]: "{{CIFEmpresa}}"
+          - cell "CIF/NIF de la empresa" [ref=e1089]
+        - 'row "{{DireccionEmpresa}} Dirección completa de la empresa" [ref=e1090]':
+          - 'cell "{{DireccionEmpresa}}" [ref=e1091]':
+            - code [ref=e1092]: "{{DireccionEmpresa}}"
+          - cell "Dirección completa de la empresa" [ref=e1093]
+        - 'row "{{TelefonoEmpresa}} Teléfono de la empresa" [ref=e1094]':
+          - 'cell "{{TelefonoEmpresa}}" [ref=e1095]':
+            - code [ref=e1096]: "{{TelefonoEmpresa}}"
+          - cell "Teléfono de la empresa" [ref=e1097]
+        - 'row "{{EmailEmpresa}} Email de la empresa" [ref=e1098]':
+          - 'cell "{{EmailEmpresa}}" [ref=e1099]':
+            - code [ref=e1100]: "{{EmailEmpresa}}"
+          - cell "Email de la empresa" [ref=e1101]
+        - 'row "{{IBANEmpresa}} IBAN de la empresa" [ref=e1102]':
+          - 'cell "{{IBANEmpresa}}" [ref=e1103]':
+            - code [ref=e1104]: "{{IBANEmpresa}}"
+          - cell "IBAN de la empresa" [ref=e1105]
+        - row "Propietario" [ref=e1106]:
+          - cell "Propietario" [ref=e1107]
+        - 'row "{{NombrePropietario}} Nombre del propietario de la finca" [ref=e1108]':
+          - 'cell "{{NombrePropietario}}" [ref=e1109]':
+            - code [ref=e1110]: "{{NombrePropietario}}"
+          - cell "Nombre del propietario de la finca" [ref=e1111]
+        - 'row "{{NIFPropietario}} NIF del propietario" [ref=e1112]':
+          - 'cell "{{NIFPropietario}}" [ref=e1113]':
+            - code [ref=e1114]: "{{NIFPropietario}}"
+          - cell "NIF del propietario" [ref=e1115]
+        - 'row "{{DireccionPropietario}} Dirección del propietario" [ref=e1116]':
+          - 'cell "{{DireccionPropietario}}" [ref=e1117]':
+            - code [ref=e1118]: "{{DireccionPropietario}}"
+          - cell "Dirección del propietario" [ref=e1119]
+        - row "Inquilino principal" [ref=e1120]:
+          - cell "Inquilino principal" [ref=e1121]
+        - 'row "{{NombreInquilino}} Nombre completo del inquilino" [ref=e1122]':
+          - 'cell "{{NombreInquilino}}" [ref=e1123]':
+            - code [ref=e1124]: "{{NombreInquilino}}"
+          - cell "Nombre completo del inquilino" [ref=e1125]
+        - 'row "{{NIFInquilino}} NIF/NIE/CIF del inquilino" [ref=e1126]':
+          - 'cell "{{NIFInquilino}}" [ref=e1127]':
+            - code [ref=e1128]: "{{NIFInquilino}}"
+          - cell "NIF/NIE/CIF del inquilino" [ref=e1129]
+        - 'row "{{TelefonoInquilino}} Teléfono del inquilino" [ref=e1130]':
+          - 'cell "{{TelefonoInquilino}}" [ref=e1131]':
+            - code [ref=e1132]: "{{TelefonoInquilino}}"
+          - cell "Teléfono del inquilino" [ref=e1133]
+        - 'row "{{EmailInquilino}} Email del inquilino" [ref=e1134]':
+          - 'cell "{{EmailInquilino}}" [ref=e1135]':
+            - code [ref=e1136]: "{{EmailInquilino}}"
+          - cell "Email del inquilino" [ref=e1137]
+        - 'row "{{DireccionInquilino}} Dirección particular del inquilino" [ref=e1138]':
+          - 'cell "{{DireccionInquilino}}" [ref=e1139]':
+            - code [ref=e1140]: "{{DireccionInquilino}}"
+          - cell "Dirección particular del inquilino" [ref=e1141]
+        - row "Inmueble" [ref=e1142]:
+          - cell "Inmueble" [ref=e1143]
+        - 'row "{{DireccionInmueble}} Dirección completa del inmueble alquilado" [ref=e1144]':
+          - 'cell "{{DireccionInmueble}}" [ref=e1145]':
+            - code [ref=e1146]: "{{DireccionInmueble}}"
+          - cell "Dirección completa del inmueble alquilado" [ref=e1147]
+        - 'row "{{RefCatastral}} Referencia catastral" [ref=e1148]':
+          - 'cell "{{RefCatastral}}" [ref=e1149]':
+            - code [ref=e1150]: "{{RefCatastral}}"
+          - cell "Referencia catastral" [ref=e1151]
+        - 'row "{{TipoInmueble}} Tipo: vivienda, local, garaje, etc." [ref=e1152]':
+          - 'cell "{{TipoInmueble}}" [ref=e1153]':
+            - code [ref=e1154]: "{{TipoInmueble}}"
+          - 'cell "Tipo: vivienda, local, garaje, etc." [ref=e1155]'
+        - 'row "{{MunicipioInmueble}} Municipio del inmueble" [ref=e1156]':
+          - 'cell "{{MunicipioInmueble}}" [ref=e1157]':
+            - code [ref=e1158]: "{{MunicipioInmueble}}"
+          - cell "Municipio del inmueble" [ref=e1159]
+        - 'row "{{ProvinciaInmueble}} Provincia del inmueble" [ref=e1160]':
+          - 'cell "{{ProvinciaInmueble}}" [ref=e1161]':
+            - code [ref=e1162]: "{{ProvinciaInmueble}}"
+          - cell "Provincia del inmueble" [ref=e1163]
+        - row "Contrato" [ref=e1164]:
+          - cell "Contrato" [ref=e1165]
+        - 'row "{{FechaInicio}} Fecha de inicio del contrato (dd/mm/aaaa)" [ref=e1166]':
+          - 'cell "{{FechaInicio}}" [ref=e1167]':
+            - code [ref=e1168]: "{{FechaInicio}}"
+          - cell "Fecha de inicio del contrato (dd/mm/aaaa)" [ref=e1169]
+        - 'row "{{FechaFin}} Fecha de fin del contrato" [ref=e1170]':
+          - 'cell "{{FechaFin}}" [ref=e1171]':
+            - code [ref=e1172]: "{{FechaFin}}"
+          - cell "Fecha de fin del contrato" [ref=e1173]
+        - 'row "{{Duracion}} Duración calculada en texto (ej: \"1 año y 6 meses\")" [ref=e1174]':
+          - 'cell "{{Duracion}}" [ref=e1175]':
+            - code [ref=e1176]: "{{Duracion}}"
+          - 'cell "Duración calculada en texto (ej: \"1 año y 6 meses\")" [ref=e1177]'
+        - 'row "{{MotivoTemporada}} Causa de la temporalidad del contrato (solo contratos < 1 año)" [ref=e1178]':
+          - 'cell "{{MotivoTemporada}}" [ref=e1179]':
+            - code [ref=e1180]: "{{MotivoTemporada}}"
+          - cell "Causa de la temporalidad del contrato (solo contratos < 1 año)" [ref=e1181]
+        - 'row "{{MetodoRevision}} Cláusula de revisión de renta (IPC, % fijo…)" [ref=e1182]':
+          - 'cell "{{MetodoRevision}}" [ref=e1183]':
+            - code [ref=e1184]: "{{MetodoRevision}}"
+          - cell "Cláusula de revisión de renta (IPC, % fijo…)" [ref=e1185]
+        - 'row "{{DiaPago}} Día del mes en que vence el pago" [ref=e1186]':
+          - 'cell "{{DiaPago}}" [ref=e1187]':
+            - code [ref=e1188]: "{{DiaPago}}"
+          - cell "Día del mes en que vence el pago" [ref=e1189]
+        - row "Facturación" [ref=e1190]:
+          - cell "Facturación" [ref=e1191]
+        - 'row "{{Renta}} Renta base mensual en euros (ej: 750,00 €)" [ref=e1192]':
+          - 'cell "{{Renta}}" [ref=e1193]':
+            - code [ref=e1194]: "{{Renta}}"
+          - 'cell "Renta base mensual en euros (ej: 750,00 €)" [ref=e1195]'
+        - 'row "{{RentaLetras}} Renta en texto (ej: \"Setecientos cincuenta euros\")" [ref=e1196]':
+          - 'cell "{{RentaLetras}}" [ref=e1197]':
+            - code [ref=e1198]: "{{RentaLetras}}"
+          - 'cell "Renta en texto (ej: \"Setecientos cincuenta euros\")" [ref=e1199]'
+        - 'row "{{IVA}} Porcentaje de IVA aplicable" [ref=e1200]':
+          - 'cell "{{IVA}}" [ref=e1201]':
+            - code [ref=e1202]: "{{IVA}}"
+          - cell "Porcentaje de IVA aplicable" [ref=e1203]
+        - 'row "{{IRPF}} Porcentaje de retención IRPF" [ref=e1204]':
+          - 'cell "{{IRPF}}" [ref=e1205]':
+            - code [ref=e1206]: "{{IRPF}}"
+          - cell "Porcentaje de retención IRPF" [ref=e1207]
+        - row "Fianza" [ref=e1208]:
+          - cell "Fianza" [ref=e1209]
+        - 'row "{{Fianza}} Importe de la fianza" [ref=e1210]':
+          - 'cell "{{Fianza}}" [ref=e1211]':
+            - code [ref=e1212]: "{{Fianza}}"
+          - cell "Importe de la fianza" [ref=e1213]
+        - 'row "{{FianzaLetras}} Fianza en texto" [ref=e1214]':
+          - 'cell "{{FianzaLetras}}" [ref=e1215]':
+            - code [ref=e1216]: "{{FianzaLetras}}"
+          - cell "Fianza en texto" [ref=e1217]
+        - row "Fiador solidario" [ref=e1218]:
+          - cell "Fiador solidario" [ref=e1219]
+        - 'row "{{NombreFiador}} Nombre completo del fiador solidario" [ref=e1220]':
+          - 'cell "{{NombreFiador}}" [ref=e1221]':
+            - code [ref=e1222]: "{{NombreFiador}}"
+          - cell "Nombre completo del fiador solidario" [ref=e1223]
+        - 'row "{{NIFFiador}} NIF del fiador" [ref=e1224]':
+          - 'cell "{{NIFFiador}}" [ref=e1225]':
+            - code [ref=e1226]: "{{NIFFiador}}"
+          - cell "NIF del fiador" [ref=e1227]
+        - 'row "{{DireccionFiador}} Dirección del fiador" [ref=e1228]':
+          - 'cell "{{DireccionFiador}}" [ref=e1229]':
+            - code [ref=e1230]: "{{DireccionFiador}}"
+          - cell "Dirección del fiador" [ref=e1231]
+        - row "Fotos" [ref=e1232]:
+          - cell "Fotos" [ref=e1233]
+        - 'row "{{FotosContrato}} Tabla de fotografías embebidas. Ver sección FotosContrato" [ref=e1234]':
+          - 'cell "{{FotosContrato}}" [ref=e1235]':
+            - code [ref=e1236]: "{{FotosContrato}}"
+          - cell "Tabla de fotografías embebidas. Ver sección FotosContrato" [ref=e1237]:
+            - text: Tabla de fotografías embebidas. Ver sección
+            - link "FotosContrato" [ref=e1238] [cursor=pointer]:
+              - /url: "#fotoscontrato"
+        - row "Sistema" [ref=e1239]:
+          - cell "Sistema" [ref=e1240]
+        - 'row "{{FechaActual}} Fecha de generación del documento (dd/mm/aaaa)" [ref=e1241]':
+          - 'cell "{{FechaActual}}" [ref=e1242]':
+            - code [ref=e1243]: "{{FechaActual}}"
+          - cell "Fecha de generación del documento (dd/mm/aaaa)" [ref=e1244]
+        - 'row "{{AnioActual}} Año en curso (4 dígitos)" [ref=e1245]':
+          - 'cell "{{AnioActual}}" [ref=e1246]':
+            - code [ref=e1247]: "{{AnioActual}}"
+          - cell "Año en curso (4 dígitos)" [ref=e1248]
+        - 'row "{{MesActual}} Mes en curso en texto (ej: \"junio\")" [ref=e1249]':
+          - 'cell "{{MesActual}}" [ref=e1250]':
+            - code [ref=e1251]: "{{MesActual}}"
+          - 'cell "Mes en curso en texto (ej: \"junio\")" [ref=e1252]'
+    - generic [ref=e1253]:
+      - generic [ref=e1254]: ⚠️
+      - generic [ref=e1255]:
+        - strong [ref=e1256]: Las variables distinguen mayúsculas de minúsculas
+        - paragraph [ref=e1257]:
+          - text: Escribe exactamente
+          - code [ref=e1258]: "{{NombreInquilino}}"
+          - text: . Si escribes
+          - code [ref=e1259]: "{{NOMBREINQUILINO}}"
+          - text: o
+          - code [ref=e1260]: "{{nombreinquilino}}"
+          - text: no funcionará. Usa el botón
+          - strong [ref=e1261]: "{ } Variables"
+          - text: en la sección Plantillas para copiar los nombres correctos.
+    - heading "Bloque de inquilinos secundarios" [level=3] [ref=e1262]
+    - paragraph [ref=e1263]: "Para incluir los datos de todos los inquilinos secundarios en la plantilla, usa el bloque repetitivo. Todo lo que esté entre las marcas de apertura y cierre se repite una vez por cada inquilino secundario:"
+    - generic [ref=e1264]: "{{#INQUILINOS_SECUNDARIOS}} {{InqNombre}}, con NIF {{InqNIF}}, domiciliado en {{InqDireccion}}. {{/INQUILINOS_SECUNDARIOS}}"
+    - paragraph [ref=e1265]: Si el contrato no tiene inquilinos secundarios, el bloque desaparece por completo sin dejar espacios vacíos.
+    - paragraph [ref=e1266]: "Variables disponibles dentro del bloque:"
+    - table [ref=e1267]:
+      - rowgroup [ref=e1268]:
+        - row "Variable Contenido" [ref=e1269]:
+          - columnheader "Variable" [ref=e1270]
+          - columnheader "Contenido" [ref=e1271]
+      - rowgroup [ref=e1272]:
+        - 'row "{{InqNombre}} Nombre del inquilino secundario" [ref=e1273]':
+          - 'cell "{{InqNombre}}" [ref=e1274]':
+            - code [ref=e1275]: "{{InqNombre}}"
+          - cell "Nombre del inquilino secundario" [ref=e1276]
+        - 'row "{{InqNIF}} NIF del inquilino secundario" [ref=e1277]':
+          - 'cell "{{InqNIF}}" [ref=e1278]':
+            - code [ref=e1279]: "{{InqNIF}}"
+          - cell "NIF del inquilino secundario" [ref=e1280]
+        - 'row "{{InqDireccion}} Dirección del inquilino secundario" [ref=e1281]':
+          - 'cell "{{InqDireccion}}" [ref=e1282]':
+            - code [ref=e1283]: "{{InqDireccion}}"
+          - cell "Dirección del inquilino secundario" [ref=e1284]
+        - 'row "{{InqTelefono}} Teléfono del inquilino secundario" [ref=e1285]':
+          - 'cell "{{InqTelefono}}" [ref=e1286]':
+            - code [ref=e1287]: "{{InqTelefono}}"
+          - cell "Teléfono del inquilino secundario" [ref=e1288]
+        - 'row "{{InqEmail}} Email del inquilino secundario" [ref=e1289]':
+          - 'cell "{{InqEmail}}" [ref=e1290]':
+            - code [ref=e1291]: "{{InqEmail}}"
+          - cell "Email del inquilino secundario" [ref=e1292]
+    - heading "FotosContrato — tabla de fotografías embebida" [level=3] [ref=e1293]
+    - paragraph [ref=e1294]:
+      - text: La variable especial
+      - code [ref=e1295]: "{{FotosContrato}}"
+      - text: permite incrustar una galería de fotografías directamente en el documento Word generado. Es ideal para contratos de inmuebles donde se quiera acreditar el estado inicial de la vivienda.
+    - heading "Cómo usarla" [level=4] [ref=e1296]
+    - list [ref=e1297]:
+      - listitem [ref=e1298]:
+        - text: En tu plantilla Word, escribe
+        - code [ref=e1299]: "{{FotosContrato}}"
+        - text: en un párrafo
+        - strong [ref=e1300]: solo
+        - text: ", sin ningún otro texto en esa línea."
+      - listitem [ref=e1301]: Al generar el documento desde un contrato, AlquiGest detecta automáticamente si la plantilla tiene esta variable.
+      - listitem [ref=e1302]:
+        - text: Si la detecta, muestra el
+        - strong [ref=e1303]: diálogo de fotografías
+        - text: antes de generar el documento.
+      - listitem [ref=e1304]:
+        - text: Sube las imágenes (JPG, PNG o WebP), ajusta el número de columnas y pulsa
+        - strong [ref=e1305]: Generar DOCX
+        - text: .
+    - heading "Opciones del diálogo de fotos" [level=4] [ref=e1306]
+    - table [ref=e1307]:
+      - rowgroup [ref=e1308]:
+        - row "Opción Descripción" [ref=e1309]:
+          - columnheader "Opción" [ref=e1310]
+          - columnheader "Descripción" [ref=e1311]
+      - rowgroup [ref=e1312]:
+        - row "Número de columnas 1, 2 o 3 columnas en la tabla de fotos. 2 columnas es el valor por defecto (aprox. 7,8 cm por foto en A4)" [ref=e1313]:
+          - cell "Número de columnas" [ref=e1314]:
+            - strong [ref=e1315]: Número de columnas
+          - cell "1, 2 o 3 columnas en la tabla de fotos. 2 columnas es el valor por defecto (aprox. 7,8 cm por foto en A4)" [ref=e1316]
+        - row "Área de subida Arrastra imágenes o haz clic para seleccionarlas. Puedes añadir varias a la vez" [ref=e1317]:
+          - cell "Área de subida" [ref=e1318]:
+            - strong [ref=e1319]: Área de subida
+          - cell "Arrastra imágenes o haz clic para seleccionarlas. Puedes añadir varias a la vez" [ref=e1320]
+        - row "◄ ► (reordenar) Cambia el orden de las fotos en la tabla antes de generar el documento" [ref=e1321]:
+          - cell "◄ ► (reordenar)" [ref=e1322]:
+            - strong [ref=e1323]: ◄ ► (reordenar)
+          - cell "Cambia el orden de las fotos en la tabla antes de generar el documento" [ref=e1324]
+        - row "× (eliminar) Quita una foto de la selección" [ref=e1325]:
+          - cell "× (eliminar)" [ref=e1326]:
+            - strong [ref=e1327]: × (eliminar)
+          - cell "Quita una foto de la selección" [ref=e1328]
+    - generic [ref=e1329]:
+      - generic [ref=e1330]: 💡
+      - generic [ref=e1331]:
+        - strong [ref=e1332]: Formatos admitidos y tamaños
+        - paragraph [ref=e1333]: JPG, JPEG y PNG se procesan directamente. WebP se convierte automáticamente a JPEG si el servidor tiene soporte GD. No hay límite estricto de número de fotos; se han probado hasta 50 imágenes sin problemas.
+    - heading "Parámetros de configuración" [level=2] [ref=e1334]
+    - paragraph [ref=e1335]:
+      - text: Accesible desde el menú lateral →
+      - strong [ref=e1336]: Parámetros
+      - text: ". Organizado en seis pestañas:"
+    - table [ref=e1337]:
+      - rowgroup [ref=e1338]:
+        - row "Pestaña Contenido" [ref=e1339]:
+          - columnheader "Pestaña" [ref=e1340]
+          - columnheader "Contenido" [ref=e1341]
+      - rowgroup [ref=e1342]:
+        - 'row "Dashboard Activa o desactiva cada widget del panel principal: tarjetas KPI, alertas, gráficos, tablas de renovaciones y revisiones, últimos recibos, previsión de cobros y actividad reciente" [ref=e1343]':
+          - cell "Dashboard" [ref=e1344]:
+            - strong [ref=e1345]: Dashboard
+          - 'cell "Activa o desactiva cada widget del panel principal: tarjetas KPI, alertas, gráficos, tablas de renovaciones y revisiones, últimos recibos, previsión de cobros y actividad reciente" [ref=e1346]'
+        - row "Paginación Número de filas por página en cada sección (Propietarios, Fincas, Inmuebles, Inquilinos, Contratos, Recibos, Facturas)" [ref=e1347]:
+          - cell "Paginación" [ref=e1348]:
+            - strong [ref=e1349]: Paginación
+          - cell "Número de filas por página en cada sección (Propietarios, Fincas, Inmuebles, Inquilinos, Contratos, Recibos, Facturas)" [ref=e1350]
+        - row "Botones Muestra u oculta botones de acción en las tablas (Contratos, Recibos, Facturas, Inquilinos, Propietarios, Fincas, Inmuebles). Útil para simplificar la interfaz o evitar acciones accidentales" [ref=e1351]:
+          - cell "Botones" [ref=e1352]:
+            - strong [ref=e1353]: Botones
+          - cell "Muestra u oculta botones de acción en las tablas (Contratos, Recibos, Facturas, Inquilinos, Propietarios, Fincas, Inmuebles). Útil para simplificar la interfaz o evitar acciones accidentales" [ref=e1354]
+        - row "WhatsApp Activa el envío de recibos por WhatsApp y la generación automática de PDF al pulsar el botón" [ref=e1355]:
+          - cell "WhatsApp" [ref=e1356]:
+            - strong [ref=e1357]: WhatsApp
+          - cell "Activa el envío de recibos por WhatsApp y la generación automática de PDF al pulsar el botón" [ref=e1358]
+        - row "VERI*FACTU Configuración del sistema de facturación electrónica de la AEAT. Ver sección VERI*FACTU" [ref=e1359]:
+          - cell "VERI*FACTU" [ref=e1360]:
+            - strong [ref=e1361]: VERI*FACTU
+          - cell "Configuración del sistema de facturación electrónica de la AEAT. Ver sección VERI*FACTU" [ref=e1362]:
+            - text: Configuración del sistema de facturación electrónica de la AEAT. Ver
+            - link "sección VERI*FACTU" [ref=e1363] [cursor=pointer]:
+              - /url: "#verifactu-config"
+        - row "Documentos Activa el módulo de plantillas DOCX, controla si se muestra el estado de plantillas en el Dashboard" [ref=e1364]:
+          - cell "Documentos" [ref=e1365]:
+            - strong [ref=e1366]: Documentos
+          - cell "Activa el módulo de plantillas DOCX, controla si se muestra el estado de plantillas en el Dashboard" [ref=e1367]
+    - paragraph [ref=e1368]:
+      - text: Cada parámetro tiene un botón
+      - strong [ref=e1369]: "?"
+      - text: que explica en detalle para qué sirve y cuándo conviene activarlo o desactivarlo.
+    - heading "Preguntas frecuentes" [level=2] [ref=e1370]
+    - heading "¿Puedo instalar AlquiGest en un servidor real (no localhost)?" [level=3] [ref=e1371]
+    - paragraph [ref=e1372]:
+      - text: Sí, pero el programa está configurado por defecto para funcionar solo en
+      - code [ref=e1373]: localhost
+      - text: . Para uso en servidor real necesitarás editar
+      - code [ref=e1374]: assets/php/api.php
+      - text: "y"
+      - code [ref=e1375]: assets/php/plantillas.php
+      - text: eliminando la restricción
+      - code [ref=e1376]: requireLocalhost()
+      - text: . No se recomienda exponer la aplicación a internet sin añadir autenticación.
+    - heading "¿Cómo hago una copia de seguridad?" [level=3] [ref=e1377]
+    - paragraph [ref=e1378]:
+      - text: Desde
+      - strong [ref=e1379]: Mi Empresa
+      - text: ", pulsa"
+      - strong [ref=e1380]: Descargar backup JSON
+      - text: . El archivo descargado contiene todos los datos en formato JSON. Guárdalo en un lugar seguro. Puedes restaurarlo importando el JSON desde
+      - code [ref=e1381]: install.php
+      - text: .
+    - heading "¿Por qué mis plantillas Word pierden el formato tras generar el DOCX?" [level=3] [ref=e1382]
+    - paragraph [ref=e1383]: Al sustituir variables, AlquiGest reconstruye el contenido de cada párrafo en un único bloque de texto. Esto puede eliminar formatos aplicados solo a una parte de la palabra que contiene la variable (negrita parcial, color de letra, etc.). Para evitarlo, aplica el formato a todo el párrafo, no solo a la variable.
+    - heading "¿Puedo tener varios contratos activos en el mismo inmueble?" [level=3] [ref=e1384]
+    - paragraph [ref=e1385]: No. Un inmueble solo puede tener un contrato activo a la vez. Para cambiar de inquilino, primero da de baja el contrato actual y luego crea uno nuevo.
+    - heading "¿Cómo funciona la revisión IPC?" [level=3] [ref=e1386]
+    - paragraph [ref=e1387]: Cuando generas el recibo de un contrato con revisión de renta activa, AlquiGest detecta si ha pasado un año desde la última actualización y muestra el asistente IPC. El asistente consulta el IPC publicado por el INE y calcula la nueva renta sugerida. Puedes aceptarla, modificarla o rechazarla.
+    - heading "¿Puedo generar facturas sin IVA?" [level=3] [ref=e1388]
+    - paragraph [ref=e1389]: Sí. Si el contrato tiene IVA = 0%, la factura se genera con base imponible y total iguales, sin desglose de IVA. Esto es lo habitual para arrendamientos de vivienda habitual.
+    - heading "¿Qué pasa si el inquilino no tiene email?" [level=3] [ref=e1390]
+    - paragraph [ref=e1391]: El botón de envío por email aparece en gris y no puede pulsarse. Para enviarlo, añade el email del inquilino en su ficha.
+    - heading "¿Cómo convierto una plantilla DOCX a PDF?" [level=3] [ref=e1392]
+    - paragraph [ref=e1393]: AlquiGest no incluye conversión DOCX → PDF porque requiere LibreOffice instalado en el servidor, que no está disponible en MAMP/Windows. Abre el DOCX descargado con Word o LibreOffice y exporta a PDF desde ahí.
+    - heading "Limitaciones conocidas" [level=2] [ref=e1394]
+    - table [ref=e1395]:
+      - rowgroup [ref=e1396]:
+        - row "Limitación Alternativa" [ref=e1397]:
+          - columnheader "Limitación" [ref=e1398]
+          - columnheader "Alternativa" [ref=e1399]
+      - rowgroup [ref=e1400]:
+        - row "Sin conversión automática DOCX → PDF Abrir el DOCX descargado con Word/LibreOffice y exportar" [ref=e1401]:
+          - cell "Sin conversión automática DOCX → PDF" [ref=e1402]
+          - cell "Abrir el DOCX descargado con Word/LibreOffice y exportar" [ref=e1403]
+        - row "Solo un contrato activo por inmueble Diseño por modelo de negocio. Dar de baja el anterior antes de crear otro" [ref=e1404]:
+          - cell "Solo un contrato activo por inmueble" [ref=e1405]
+          - cell "Diseño por modelo de negocio. Dar de baja el anterior antes de crear otro" [ref=e1406]
+        - row "Email solo vía Gmail con contraseña de aplicación También se puede usar cualquier proveedor SMTP editando api.php" [ref=e1407]:
+          - cell "Email solo vía Gmail con contraseña de aplicación" [ref=e1408]
+          - cell "También se puede usar cualquier proveedor SMTP editando api.php" [ref=e1409]:
+            - text: También se puede usar cualquier proveedor SMTP editando
+            - code [ref=e1410]: api.php
+        - row "WebP en plantillas requiere GD con soporte WebP Convertir las imágenes a JPG/PNG antes de subirlas" [ref=e1411]:
+          - cell "WebP en plantillas requiere GD con soporte WebP" [ref=e1412]
+          - cell "Convertir las imágenes a JPG/PNG antes de subirlas" [ref=e1413]
+        - row "Solo funciona en localhost por defecto Editar la restricción en los PHP backends para uso en servidor" [ref=e1414]:
+          - cell "Solo funciona en localhost por defecto" [ref=e1415]
+          - cell "Editar la restricción en los PHP backends para uso en servidor" [ref=e1416]
+        - row "Sin multi-usuario ni control de acceso Acceso restringido por diseño a la red local" [ref=e1417]:
+          - cell "Sin multi-usuario ni control de acceso" [ref=e1418]
+          - cell "Acceso restringido por diseño a la red local" [ref=e1419]
+        - row "Sin aplicación móvil Funciona en navegador móvil pero está optimizado para escritorio" [ref=e1420]:
+          - cell "Sin aplicación móvil" [ref=e1421]
+          - cell "Funciona en navegador móvil pero está optimizado para escritorio" [ref=e1422]
+    - heading "Importación masiva desde CSV" [level=2] [ref=e1423]
+    - paragraph [ref=e1424]:
+      - text: Accesible desde el menú lateral →
+      - strong [ref=e1425]: Importar datos
+      - text: . Permite añadir registros en bloque desde un archivo CSV (exportado de Excel u otro programa).
+    - heading "Formato del CSV" [level=3] [ref=e1426]
+    - paragraph [ref=e1427]: La primera fila debe ser la cabecera con los nombres de los campos. El separador puede ser coma o punto y coma. El sistema detecta automáticamente cuál usar.
+    - heading "Tipos de datos importables" [level=3] [ref=e1428]
+    - list [ref=e1429]:
+      - listitem [ref=e1430]: Propietarios
+      - listitem [ref=e1431]: Inquilinos
+      - listitem [ref=e1432]: Fincas
+      - listitem [ref=e1433]: Inmuebles
+    - heading "Proceso de importación" [level=3] [ref=e1434]
+    - list [ref=e1435]:
+      - listitem [ref=e1436]: Selecciona o arrastra el archivo CSV sobre la zona de importación.
+      - listitem [ref=e1437]: El programa muestra una previsualización de los primeros registros y el número total.
+      - listitem [ref=e1438]: Elige el tipo de datos a importar (propietarios, inquilinos…).
+      - listitem [ref=e1439]:
+        - text: Pulsa
+        - strong [ref=e1440]: Importar
+        - text: . El programa añade los registros uno a uno y muestra el progreso.
+    - generic [ref=e1441]:
+      - generic [ref=e1442]: ⚠️
+      - generic [ref=e1443]:
+        - strong [ref=e1444]: La importación no sobrescribe registros existentes
+        - paragraph [ref=e1445]: Todos los registros del CSV se añaden como nuevos. Si ya existe un registro con el mismo nombre, se creará un duplicado. Revisa la previsualización antes de confirmar.
+    - heading "Copia de seguridad" [level=2] [ref=e1446]
+    - paragraph [ref=e1447]: "AlquiGest ofrece dos formas de hacer copia de seguridad:"
+    - heading "1. Backup JSON desde Mi Empresa (recomendado)" [level=3] [ref=e1448]
+    - paragraph [ref=e1449]:
+      - text: Desde
+      - strong [ref=e1450]: Mi Empresa
+      - text: ", pulsa el botón"
+      - strong [ref=e1451]: Descargar backup JSON
+      - text: . Se descarga un fichero
+      - code [ref=e1452]: alquigest_backup_AAAA-MM-DD.json
+      - text: con todos los datos de la base de datos. Para restaurar los datos en otra instalación, ve a
+      - code [ref=e1453]: install.php
+      - text: →
+      - emphasis [ref=e1454]: Restaurar desde JSON
+      - text: .
+    - heading "2. Backup SQL desde install.php" [level=3] [ref=e1455]
+    - paragraph [ref=e1456]:
+      - text: Desde
+      - code [ref=e1457]: http://localhost/AlquiGest_v2/install.php
+      - text: puedes descargar un volcado SQL completo de la base de datos o restaurar desde un backup anterior.
+    - generic [ref=e1458]:
+      - generic [ref=e1459]: 💡
+      - generic [ref=e1460]:
+        - strong [ref=e1461]: Periodicidad recomendada
+        - paragraph [ref=e1462]: Haz una copia de seguridad al menos una vez a la semana y guárdala en una ubicación diferente al servidor (USB, nube, etc.). Los datos de la base de datos local no se sincronizan con ningún servidor externo.
+    - heading "Certificado de retenciones IRPF" [level=2] [ref=e1463]
+    - paragraph [ref=e1464]:
+      - text: Desde la lista de
+      - strong [ref=e1465]: Propietarios
+      - text: ", los propietarios con IRPF marcado como \"S\" muestran un botón"
+      - strong [ref=e1466]: Cert. IRPF
+      - text: . Este botón genera un PDF con el certificado de retenciones del año, que acredita las cantidades retenidas e ingresadas a cuenta del IRPF del arrendador.
+    - paragraph [ref=e1467]: "El certificado incluye: datos del retenedor (empresa), datos del perceptor (propietario), año fiscal, relación de inmuebles con rentas y retenciones, y total anual. Es apto para que el propietario lo adjunte a su declaración de la renta."
+    - heading "Preguntas frecuentes" [level=2] [ref=e1468]
+    - heading "¿Puedo instalar AlquiGest en un servidor real (no localhost)?" [level=3] [ref=e1469]
+    - paragraph [ref=e1470]:
+      - text: Sí, pero el programa está configurado por defecto para funcionar solo en
+      - code [ref=e1471]: localhost
+      - text: . Para uso en servidor real necesitarás editar
+      - code [ref=e1472]: assets/php/api.php
+      - text: "y"
+      - code [ref=e1473]: assets/php/plantillas.php
+      - text: eliminando la restricción
+      - code [ref=e1474]: requireLocalhost()
+      - text: . No se recomienda exponer la aplicación a internet sin añadir autenticación.
+    - heading "¿Puedo tener varios contratos activos para el mismo inquilino?" [level=3] [ref=e1475]
+    - paragraph [ref=e1476]:
+      - text: Sí. Un inquilino puede alquilar varios inmuebles distintos al mismo tiempo. Lo que no puede haber es dos contratos activos para el
+      - emphasis [ref=e1477]: mismo
+      - text: inmueble.
+    - heading "¿Qué pasa si un contrato está activo pero la fecha de fin ya ha pasado?" [level=3] [ref=e1478]
+    - paragraph [ref=e1479]: AlquiGest no finaliza los contratos automáticamente. Debes marcarlo manualmente como "Finalizado" cuando el inquilino abandone el inmueble.
+    - heading "¿Cómo cambio la numeración de los recibos?" [level=3] [ref=e1480]
+    - paragraph [ref=e1481]:
+      - text: El prefijo se configura en
+      - strong [ref=e1482]: Mi Empresa → Prefijo de recibos
+      - text: . El número secuencial es automático y no puede modificarse para garantizar la trazabilidad contable.
+    - heading "¿Puedo eliminar un recibo que generé por error?" [level=3] [ref=e1483]
+    - paragraph [ref=e1484]:
+      - text: Sí. Desde el detalle del recibo puedes marcarlo como
+      - strong [ref=e1485]: Anulado
+      - text: . Los recibos anulados no aparecen en los informes pero se conservan en la base de datos por auditoría.
+    - heading "¿Cómo funciona la revisión IPC?" [level=3] [ref=e1486]
+    - paragraph [ref=e1487]: Cuando generas el recibo de un contrato con revisión de renta activa, AlquiGest detecta si ha pasado un año desde la última actualización y muestra el asistente IPC/IRAV. El asistente consulta el índice publicado por el INE y calcula la nueva renta sugerida. Puedes aceptarla, modificarla o rechazarla.
+    - heading "¿Por qué mis plantillas Word pierden el formato tras generar el DOCX?" [level=3] [ref=e1488]
+    - paragraph [ref=e1489]: Al sustituir variables, AlquiGest reconstruye el contenido de cada párrafo en un único bloque de texto. Esto puede eliminar formatos aplicados solo a una parte de la palabra que contiene la variable (negrita parcial, color de letra, etc.). Para evitarlo, aplica el formato a todo el párrafo, no solo a la variable.
+    - heading "¿Puedo generar facturas sin IVA?" [level=3] [ref=e1490]
+    - paragraph [ref=e1491]: Sí. Si el contrato tiene IVA = 0%, la factura se genera con base imponible y total iguales, sin desglose de IVA. Esto es lo habitual para arrendamientos de vivienda habitual.
+    - heading "¿Qué pasa si el inquilino no tiene email?" [level=3] [ref=e1492]
+    - paragraph [ref=e1493]: El botón de envío por email aparece en gris y no puede pulsarse. Para enviarlo, añade el email del inquilino en su ficha.
+    - heading "¿Cómo convierto una plantilla DOCX a PDF?" [level=3] [ref=e1494]
+    - paragraph [ref=e1495]: AlquiGest no incluye conversión DOCX → PDF porque requiere LibreOffice instalado en el servidor, que no está disponible en MAMP/Windows. Abre el DOCX descargado con Word o LibreOffice y exporta a PDF desde ahí.
+    - heading "¿Los datos se sincronizan con algún servidor externo?" [level=3] [ref=e1496]
+    - paragraph [ref=e1497]:
+      - text: No. AlquiGest es
+      - strong [ref=e1498]: 100% local
+      - text: . Todos los datos se guardan en la base de datos MySQL de tu servidor local. No se envía ninguna información a internet, salvo los correos que envíes y, si lo activas, los registros VERI*FACTU a la AEAT.
+    - heading "¿Cómo actualizo el programa a una versión nueva?" [level=3] [ref=e1499]
+    - paragraph [ref=e1500]:
+      - text: Copia los archivos nuevos en la carpeta del proyecto sobreescribiendo los existentes.
+      - strong [ref=e1501]: No ejecutes install.php
+      - text: porque borraría todos tus datos. Si hay cambios en la base de datos, encontrarás un archivo
+      - code [ref=e1502]: migration_*.sql
+      - text: con las instrucciones de actualización.
+    - heading "¿Necesito activar VERI*FACTU?" [level=3] [ref=e1503]
+    - paragraph [ref=e1504]: Depende de tu situación fiscal. Para arrendadores de vivienda habitual sin IVA y sin actividad empresarial, probablemente no. Para locales comerciales con IVA o si llevas la gestión como actividad económica, consulta con tu asesor fiscal. AlquiGest está listo para activarlo cuando lo necesites.
+    - heading "Limitaciones conocidas" [level=2] [ref=e1505]
+    - table [ref=e1506]:
+      - rowgroup [ref=e1507]:
+        - row "Limitación Alternativa" [ref=e1508]:
+          - columnheader "Limitación" [ref=e1509]
+          - columnheader "Alternativa" [ref=e1510]
+      - rowgroup [ref=e1511]:
+        - row "Sin conversión automática DOCX → PDF Abrir el DOCX descargado con Word/LibreOffice y exportar" [ref=e1512]:
+          - cell "Sin conversión automática DOCX → PDF" [ref=e1513]
+          - cell "Abrir el DOCX descargado con Word/LibreOffice y exportar" [ref=e1514]
+        - row "Solo un contrato activo por inmueble Diseño por modelo de negocio. Dar de baja el anterior antes de crear otro" [ref=e1515]:
+          - cell "Solo un contrato activo por inmueble" [ref=e1516]
+          - cell "Diseño por modelo de negocio. Dar de baja el anterior antes de crear otro" [ref=e1517]
+        - row "Email solo vía Gmail con contraseña de aplicación También se puede usar cualquier proveedor SMTP editando assets/php/email.php" [ref=e1518]:
+          - cell "Email solo vía Gmail con contraseña de aplicación" [ref=e1519]
+          - cell "También se puede usar cualquier proveedor SMTP editando assets/php/email.php" [ref=e1520]:
+            - text: También se puede usar cualquier proveedor SMTP editando
+            - code [ref=e1521]: assets/php/email.php
+        - row "WebP en plantillas requiere GD con soporte WebP Convertir las imágenes a JPG/PNG antes de subirlas" [ref=e1522]:
+          - cell "WebP en plantillas requiere GD con soporte WebP" [ref=e1523]
+          - cell "Convertir las imágenes a JPG/PNG antes de subirlas" [ref=e1524]
+        - row "Solo funciona en localhost por defecto Editar la restricción requireLocalhost() en los PHP backends" [ref=e1525]:
+          - cell "Solo funciona en localhost por defecto" [ref=e1526]
+          - cell "Editar la restricción requireLocalhost() en los PHP backends" [ref=e1527]:
+            - text: Editar la restricción
+            - code [ref=e1528]: requireLocalhost()
+            - text: en los PHP backends
+        - row "Sin multi-usuario ni control de acceso Acceso restringido por diseño a la red local" [ref=e1529]:
+          - cell "Sin multi-usuario ni control de acceso" [ref=e1530]
+          - cell "Acceso restringido por diseño a la red local" [ref=e1531]
+        - row "Sin aplicación móvil nativa Funciona en navegador móvil pero está optimizado para escritorio" [ref=e1532]:
+          - cell "Sin aplicación móvil nativa" [ref=e1533]
+          - cell "Funciona en navegador móvil pero está optimizado para escritorio" [ref=e1534]
+    - paragraph [ref=e1535]: AlquiGest v2.2.7 · Manual de usuario · Junio 2026

@@ -1,0 +1,221 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: AlquiGest
+      - generic [ref=e6]: "Solución: Error Excel"
+    - generic [ref=e7]:
+      - link "← Inicio" [ref=e8] [cursor=pointer]:
+        - /url: ../../index.html
+      - generic [ref=e10]: Diagnóstico
+      - link "Síntomas del error" [ref=e11] [cursor=pointer]:
+        - /url: "#sintomas"
+      - link "Causa del problema" [ref=e12] [cursor=pointer]:
+        - /url: "#causa"
+      - generic [ref=e13]: Solución
+      - link "XAMPP (Windows)" [ref=e14] [cursor=pointer]:
+        - /url: "#xampp"
+      - link "MAMP (Mac/Win)" [ref=e15] [cursor=pointer]:
+        - /url: "#mamp"
+      - link "Verificar la solución" [ref=e16] [cursor=pointer]:
+        - /url: "#verificar"
+      - generic [ref=e17]: Otros errores
+      - link "Otros problemas comunes" [ref=e18] [cursor=pointer]:
+        - /url: "#otros"
+  - main [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e21]: Solución de problemas
+      - heading "Error al exportar Excel" [level=1] [ref=e22]
+      - paragraph [ref=e23]: Guía paso a paso para resolver el problema de descarga de archivos .xlsx en AlquiGest.
+    - heading "Síntomas del error" [level=2] [ref=e24]
+    - paragraph [ref=e25]: "Cuando el problema está presente, al pulsar cualquier botón de exportación Excel en AlquiGest ocurre una de estas cosas:"
+    - list [ref=e26]:
+      - listitem [ref=e27]: El navegador muestra un mensaje de error en texto plano en vez de descargar el archivo
+      - listitem [ref=e28]: Se descarga un archivo .xlsx pero Excel no puede abrirlo ("el archivo está dañado")
+      - listitem [ref=e29]: El servidor devuelve un error HTTP 500
+    - generic [ref=e30]:
+      - generic [ref=e31]: 🔍
+      - generic [ref=e32]:
+        - strong [ref=e33]: Cómo ver el mensaje de error exacto
+        - paragraph [ref=e34]:
+          - text: Abre las herramientas de desarrollador del navegador (F12), ve a la pestaña
+          - strong [ref=e35]: Red
+          - text: ", haz clic en el botón de exportar y busca la petición a"
+          - code [ref=e36]: export.php
+          - text: . Haz clic en ella y mira la pestaña
+          - strong [ref=e37]: Respuesta
+          - text: .
+    - heading "Causa del problema" [level=2] [ref=e38]
+    - paragraph [ref=e39]:
+      - text: AlquiGest genera archivos Excel (.xlsx) usando la extensión
+      - strong [ref=e40]: ZipArchive
+      - text: de PHP, que construye el fichero zip internamente sin necesitar librerías externas. El problema es que esta extensión viene
+      - strong [ref=e41]: desactivada por defecto
+      - text: en XAMPP para Windows.
+    - img [ref=e43]:
+      - generic [ref=e45]: Navegador
+      - generic [ref=e46]: Botón "Exportar"
+      - generic [ref=e48]: export.php
+      - generic [ref=e49]: PHP procesa
+      - generic [ref=e51]: ZipArchive
+      - generic [ref=e52]: extensión PHP
+      - generic [ref=e53]: ❌ DESACTIVADA
+      - generic [ref=e55]: Error 500 / sin descarga
+      - generic [ref=e57]: ZipArchive
+      - generic [ref=e58]: ✅ ACTIVADA
+      - generic [ref=e59]: → OK
+      - generic [ref=e60]: Sin activar
+      - generic [ref=e61]: Solución
+    - heading "Solución en XAMPP (Windows)" [level=2] [ref=e62]
+    - paragraph [ref=e63]: "Sigue estos pasos exactamente en el orden indicado:"
+    - generic [ref=e64]:
+      - generic [ref=e65]:
+        - generic [ref=e66]: "1"
+        - generic [ref=e67]:
+          - heading "Abre el Panel de Control de XAMPP" [level=3] [ref=e68]
+          - paragraph [ref=e69]: Busca el icono de XAMPP en la barra de tareas o en el escritorio y ábrelo. Verás los servicios Apache, MySQL, etc.
+          - img [ref=e71]:
+            - generic [ref=e75]: XAMPP Control Panel
+            - generic [ref=e77]: Module
+            - generic [ref=e78]: Apache
+            - generic [ref=e80]: Start
+            - generic [ref=e82]: Config
+            - generic [ref=e83]: ← clic aquí
+            - generic [ref=e85]: MySQL
+            - generic [ref=e87]: Start
+            - generic [ref=e89]: Config
+            - generic [ref=e91]: PHP (php.ini)
+      - generic [ref=e93]:
+        - generic [ref=e94]: "2"
+        - generic [ref=e95]:
+          - heading "Selecciona \"PHP (php.ini)\"" [level=3] [ref=e96]
+          - paragraph [ref=e97]:
+            - text: En el menú desplegable del botón
+            - strong [ref=e98]: Config
+            - text: de Apache, selecciona
+            - strong [ref=e99]: PHP (php.ini)
+            - text: . Se abrirá el archivo de configuración de PHP en el Bloc de notas o en tu editor de texto predeterminado.
+      - generic [ref=e100]:
+        - generic [ref=e101]: "3"
+        - generic [ref=e102]:
+          - heading "Busca la línea de la extensión zip" [level=3] [ref=e103]
+          - paragraph [ref=e104]:
+            - text: Dentro del Bloc de notas, pulsa
+            - strong [ref=e105]: Ctrl + F
+            - text: y busca el texto
+            - code [ref=e106]: extension=zip
+            - text: ". Encontrarás la línea con un punto y coma al inicio, que la desactiva:"
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: php.ini — antes
+              - generic [ref=e110]: Buscar esto
+            - generic [ref=e112]: ;extension=zip
+          - generic [ref=e113]:
+            - generic [ref=e114]: 💡
+            - generic [ref=e115]:
+              - strong [ref=e116]: El punto y coma es un comentario
+              - paragraph [ref=e117]:
+                - text: En php.ini, las líneas que empiezan con
+                - code [ref=e118]: ;
+                - text: están desactivadas (comentadas). Quitarlo activa la extensión.
+      - generic [ref=e119]:
+        - generic [ref=e120]: "4"
+        - generic [ref=e121]:
+          - heading "Elimina el punto y coma y guarda" [level=3] [ref=e122]
+          - paragraph [ref=e123]:
+            - text: Borra el
+            - code [ref=e124]: ;
+            - text: "del inicio de la línea. Debe quedar exactamente así:"
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - generic [ref=e127]: php.ini — después
+              - generic [ref=e128]: Resultado final
+            - generic [ref=e130]: extension=zip
+          - paragraph [ref=e131]:
+            - text: Guarda el archivo con
+            - strong [ref=e132]: Ctrl + S
+            - text: . Si el sistema pide permisos de administrador, acéptalos.
+      - generic [ref=e133]:
+        - generic [ref=e134]: "5"
+        - generic [ref=e135]:
+          - heading "Reinicia Apache en el Panel de XAMPP" [level=3] [ref=e136]
+          - paragraph [ref=e137]:
+            - text: Vuelve al Panel de Control de XAMPP. Pulsa el botón
+            - strong [ref=e138]: Stop
+            - text: junto a Apache y luego
+            - strong [ref=e139]: Start
+            - text: . Los cambios en php.ini solo se aplican al reiniciar el servidor.
+          - generic [ref=e140]:
+            - generic [ref=e141]: ⚠️
+            - generic [ref=e142]:
+              - strong [ref=e143]: Es obligatorio reiniciar Apache
+              - paragraph [ref=e144]: Si no reinicias Apache, php.ini no se recarga y el cambio no tendrá efecto.
+    - heading "Solución en MAMP" [level=2] [ref=e145]
+    - paragraph [ref=e146]:
+      - text: En MAMP la extensión ZipArchive suele estar activa por defecto. Si aun así falla, comprueba en
+      - strong [ref=e147]: MAMP → Preferencias → PHP
+      - text: la versión de PHP seleccionada y busca en el php.ini correspondiente.
+    - paragraph [ref=e148]: "La ubicación del php.ini en MAMP (Mac) suele ser:"
+    - generic [ref=e149]:
+      - generic [ref=e151]: Terminal Mac
+      - generic [ref=e152]: /Applications/MAMP/bin/php/phpX.X.X/conf/php.ini
+    - paragraph [ref=e153]: "En MAMP para Windows:"
+    - generic [ref=e154]:
+      - generic [ref=e156]: Ruta Windows
+      - generic [ref=e157]: C:\MAMP\bin\php\phpX.X.X\php.ini
+    - heading "Verificar que la solución funciona" [level=2] [ref=e158]
+    - generic [ref=e159]:
+      - generic [ref=e160]:
+        - generic [ref=e161]: "1"
+        - generic [ref=e162]:
+          - heading "Comprueba ZipArchive con phpinfo()" [level=3] [ref=e163]
+          - paragraph [ref=e164]:
+            - text: Crea un archivo llamado
+            - code [ref=e165]: test.php
+            - text: "en la carpeta de AlquiGest con este contenido:"
+          - generic [ref=e166]:
+            - generic [ref=e168]: test.php — temporal
+            - generic [ref=e169]: "<?php if (class_exists('ZipArchive')) { echo '✅ ZipArchive ACTIVADO — La exportación Excel funcionará.'; } else { echo '❌ ZipArchive NO está disponible. Revisa los pasos anteriores.'; } phpinfo();"
+          - paragraph [ref=e170]:
+            - text: Accede a
+            - code [ref=e171]: http://localhost/AlquiGest_v3/test.php
+            - text: en el navegador. Si ves el mensaje verde, está solucionado.
+            - strong [ref=e172]: Elimina test.php después de la prueba.
+      - generic [ref=e173]:
+        - generic [ref=e174]: "2"
+        - generic [ref=e175]:
+          - heading "Prueba la exportación en AlquiGest" [level=3] [ref=e176]
+          - paragraph [ref=e177]: Vuelve a AlquiGest, ve a la pestaña de Informes y pulsa cualquier botón de exportación Excel. El archivo se debería descargar correctamente.
+          - generic [ref=e178]:
+            - generic [ref=e179]: ✅
+            - generic [ref=e180]:
+              - strong [ref=e181]: Solución completada
+              - paragraph [ref=e182]: Si el archivo .xlsx se descarga y Excel puede abrirlo, el problema está resuelto.
+    - heading "Otros problemas comunes con la exportación" [level=2] [ref=e183]
+    - heading "El archivo se descarga pero Excel dice \"archivo dañado\"" [level=3] [ref=e184]
+    - paragraph [ref=e185]: "Esto ocurre cuando PHP emite algún aviso o mensaje de error antes de los bytes binarios del archivo Excel. Causas frecuentes:"
+    - list [ref=e186]:
+      - listitem [ref=e187]:
+        - text: PHP muestra un
+        - strong [ref=e188]: Warning
+        - text: o
+        - strong [ref=e189]: Notice
+        - text: al principio de la respuesta
+      - listitem [ref=e190]:
+        - text: El archivo php.ini tiene
+        - code [ref=e191]: display_errors = On
+        - text: y PHP está mostrando errores en la salida
+    - paragraph [ref=e192]:
+      - text: "Solución: cambia en php.ini"
+      - code [ref=e193]: display_errors = Off
+      - text: y reinicia Apache.
+    - heading "Error de permisos al crear el archivo temporal" [level=3] [ref=e194]
+    - paragraph [ref=e195]:
+      - text: En algunos sistemas Windows, PHP no tiene permisos para escribir en la carpeta temporal. Comprueba que la carpeta devuelta por
+      - code [ref=e196]: sys_get_temp_dir()
+      - text: existe y tiene permisos de escritura para el usuario del servicio Apache.
+    - heading "La extensión ZipArchive aparece en phpinfo() pero aun así falla" [level=3] [ref=e197]
+    - paragraph [ref=e198]:
+      - text: Asegúrate de que estás editando el php.ini correcto. XAMPP puede tener varios. Busca en phpinfo() el campo
+      - strong [ref=e199]: Loaded Configuration File
+      - text: para saber cuál está usando realmente.
+    - paragraph [ref=e200]: AlquiGest v2.0.0 · Solución de problemas · Error en exportación Excel

@@ -1,0 +1,218 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Plantillas DOCX
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - generic [ref=e111]:
+            - button "Subir plantilla" [ref=e112] [cursor=pointer]:
+              - img [ref=e113]
+              - text: Subir plantilla
+            - 'button "{ } Variables" [ref=e114] [cursor=pointer]'
+      - generic [ref=e110]:
+        - generic [ref=e116]:
+          - heading "Plantillas DOCX" [level=2] [ref=e117]
+          - generic [ref=e118]:
+            - text: Gestiona plantillas Word con variables dinámicas como
+            - code [ref=e119]: "{{Renta}}"
+            - text: ","
+            - code [ref=e120]: "{{NombreInquilino}}"
+            - text: ", etc."
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - generic [ref=e124]: Contrato de arrendamiento (5)
+            - table [ref=e125]:
+              - rowgroup [ref=e126]:
+                - row "Nombre Descripción Estado Acciones" [ref=e127]:
+                  - columnheader "Nombre" [ref=e128]
+                  - columnheader "Descripción" [ref=e129]
+                  - columnheader "Estado" [ref=e130]
+                  - columnheader "Acciones" [ref=e131]
+              - rowgroup [ref=e132]:
+                - row "Contrato de Vivienda 2026 Contrato de arrendamiento de vivienda (inquilino único) Activa Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e133]:
+                  - cell "Contrato de Vivienda 2026" [ref=e134]
+                  - cell "Contrato de arrendamiento de vivienda (inquilino único)" [ref=e135]
+                  - cell "Activa" [ref=e136]
+                  - cell "Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e137]:
+                    - generic [ref=e138]:
+                      - button "Vista previa" [ref=e139] [cursor=pointer]
+                      - button "⬇ DOCX" [ref=e140] [cursor=pointer]
+                      - button "Renombrar" [ref=e141] [cursor=pointer]
+                      - button "Duplicar" [ref=e142] [cursor=pointer]
+                      - button "Desactivar" [ref=e143] [cursor=pointer]
+                      - button "⭐ Por defecto" [ref=e144] [cursor=pointer]
+                      - button "Eliminar" [ref=e145] [cursor=pointer]
+                - row "Contrato de Vivienda 2026 (Multi-inquilino) Contrato de arrendamiento de vivienda con bloque multi-inquilino Activa Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e146]:
+                  - cell "Contrato de Vivienda 2026 (Multi-inquilino)" [ref=e147]
+                  - cell "Contrato de arrendamiento de vivienda con bloque multi-inquilino" [ref=e148]
+                  - cell "Activa" [ref=e149]
+                  - cell "Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e150]:
+                    - generic [ref=e151]:
+                      - button "Vista previa" [ref=e152] [cursor=pointer]
+                      - button "⬇ DOCX" [ref=e153] [cursor=pointer]
+                      - button "Renombrar" [ref=e154] [cursor=pointer]
+                      - button "Duplicar" [ref=e155] [cursor=pointer]
+                      - button "Desactivar" [ref=e156] [cursor=pointer]
+                      - button "⭐ Por defecto" [ref=e157] [cursor=pointer]
+                      - button "Eliminar" [ref=e158] [cursor=pointer]
+                - row "Contrato de Vivienda Temporada 2026 Contrato de arrendamiento de vivienda de temporada (inquilino único) Activa Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e159]:
+                  - cell "Contrato de Vivienda Temporada 2026" [ref=e160]
+                  - cell "Contrato de arrendamiento de vivienda de temporada (inquilino único)" [ref=e161]
+                  - cell "Activa" [ref=e162]
+                  - cell "Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e163]:
+                    - generic [ref=e164]:
+                      - button "Vista previa" [ref=e165] [cursor=pointer]
+                      - button "⬇ DOCX" [ref=e166] [cursor=pointer]
+                      - button "Renombrar" [ref=e167] [cursor=pointer]
+                      - button "Duplicar" [ref=e168] [cursor=pointer]
+                      - button "Desactivar" [ref=e169] [cursor=pointer]
+                      - button "⭐ Por defecto" [ref=e170] [cursor=pointer]
+                      - button "Eliminar" [ref=e171] [cursor=pointer]
+                - row "Contrato de Vivienda Temporada 2026 (Multi-inquilino) Contrato de arrendamiento de vivienda de temporada con bloque multi-inquilino Activa Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e172]:
+                  - cell "Contrato de Vivienda Temporada 2026 (Multi-inquilino)" [ref=e173]
+                  - cell "Contrato de arrendamiento de vivienda de temporada con bloque multi-inquilino" [ref=e174]
+                  - cell "Activa" [ref=e175]
+                  - cell "Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e176]:
+                    - generic [ref=e177]:
+                      - button "Vista previa" [ref=e178] [cursor=pointer]
+                      - button "⬇ DOCX" [ref=e179] [cursor=pointer]
+                      - button "Renombrar" [ref=e180] [cursor=pointer]
+                      - button "Duplicar" [ref=e181] [cursor=pointer]
+                      - button "Desactivar" [ref=e182] [cursor=pointer]
+                      - button "⭐ Por defecto" [ref=e183] [cursor=pointer]
+                      - button "Eliminar" [ref=e184] [cursor=pointer]
+                - row "test fotos contrato — Activa Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e185]:
+                  - cell "test fotos contrato" [ref=e186]
+                  - cell "—" [ref=e187]
+                  - cell "Activa" [ref=e188]
+                  - cell "Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e189]:
+                    - generic [ref=e190]:
+                      - button "Vista previa" [ref=e191] [cursor=pointer]
+                      - button "⬇ DOCX" [ref=e192] [cursor=pointer]
+                      - button "Renombrar" [ref=e193] [cursor=pointer]
+                      - button "Duplicar" [ref=e194] [cursor=pointer]
+                      - button "Desactivar" [ref=e195] [cursor=pointer]
+                      - button "⭐ Por defecto" [ref=e196] [cursor=pointer]
+                      - button "Eliminar" [ref=e197] [cursor=pointer]
+          - generic [ref=e198]:
+            - generic [ref=e200]: Otro (2)
+            - table [ref=e201]:
+              - rowgroup [ref=e202]:
+                - row "Nombre Descripción Estado Acciones" [ref=e203]:
+                  - columnheader "Nombre" [ref=e204]
+                  - columnheader "Descripción" [ref=e205]
+                  - columnheader "Estado" [ref=e206]
+                  - columnheader "Acciones" [ref=e207]
+              - rowgroup [ref=e208]:
+                - row "Inventario del Contrato 2026 Anexo de inventario y estado del inmueble (inquilino único) Activa Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e209]:
+                  - cell "Inventario del Contrato 2026" [ref=e210]
+                  - cell "Anexo de inventario y estado del inmueble (inquilino único)" [ref=e211]
+                  - cell "Activa" [ref=e212]
+                  - cell "Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e213]:
+                    - generic [ref=e214]:
+                      - button "Vista previa" [ref=e215] [cursor=pointer]
+                      - button "⬇ DOCX" [ref=e216] [cursor=pointer]
+                      - button "Renombrar" [ref=e217] [cursor=pointer]
+                      - button "Duplicar" [ref=e218] [cursor=pointer]
+                      - button "Desactivar" [ref=e219] [cursor=pointer]
+                      - button "⭐ Por defecto" [ref=e220] [cursor=pointer]
+                      - button "Eliminar" [ref=e221] [cursor=pointer]
+                - row "Inventario del Contrato 2026 (Multi-inquilino) Anexo de inventario y estado del inmueble con bloque multi-inquilino Activa Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e222]:
+                  - cell "Inventario del Contrato 2026 (Multi-inquilino)" [ref=e223]
+                  - cell "Anexo de inventario y estado del inmueble con bloque multi-inquilino" [ref=e224]
+                  - cell "Activa" [ref=e225]
+                  - cell "Vista previa ⬇ DOCX Renombrar Duplicar Desactivar ⭐ Por defecto Eliminar" [ref=e226]:
+                    - generic [ref=e227]:
+                      - button "Vista previa" [ref=e228] [cursor=pointer]
+                      - button "⬇ DOCX" [ref=e229] [cursor=pointer]
+                      - button "Renombrar" [ref=e230] [cursor=pointer]
+                      - button "Duplicar" [ref=e231] [cursor=pointer]
+                      - button "Desactivar" [ref=e232] [cursor=pointer]
+                      - button "⭐ Por defecto" [ref=e233] [cursor=pointer]
+                      - button "Eliminar" [ref=e234] [cursor=pointer]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

@@ -1,0 +1,3 @@
+[   41566ms] Unexpected end of input
+[  289241ms] ReferenceError: contrato_tipo is not defined
+    at HTMLButtonElement.onclick (http://localhost/AlquiGest_v2/AlquiGest.php:1:28)

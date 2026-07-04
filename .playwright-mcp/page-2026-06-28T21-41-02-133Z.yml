@@ -1,0 +1,227 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: VERI*FACTU — Configuración
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+      - generic [ref=e2706]:
+        - generic [ref=e2707]:
+          - generic [ref=e2708]: ⚫
+          - generic [ref=e2709]:
+            - generic [ref=e2710]: VERI*FACTU está DESACTIVADO
+            - generic [ref=e2711]:
+              - text: "Entorno:"
+              - strong [ref=e2712]: 🟡 Pruebas (prewww)
+              - text: "· Facturas enviadas:"
+              - strong [ref=e2713]: "0"
+              - text: "· Pendientes/error:"
+              - strong [ref=e2714]: "0"
+          - button "Activar" [ref=e2715] [cursor=pointer]
+        - generic [ref=e2716]:
+          - generic [ref=e2717]:
+            - generic [ref=e2719]: ⚙️ Configuración general
+            - generic [ref=e2720]:
+              - generic [ref=e2721]:
+                - generic [ref=e2722]: Entorno AEAT
+                - combobox [ref=e2723]:
+                  - option "🟡 Pruebas (prewww1.aeat.es)" [selected]
+                  - option "🔴 Producción (www1.aeat.es)"
+                - text: Usa Pruebas hasta tener todo validado con la AEAT.
+              - generic [ref=e2724]:
+                - generic [ref=e2725]: NIF del obligado de emisión *
+                - textbox "Igual al NIF de empresa" [ref=e2726]
+                - text: NIF del emisor registrado en el SIF de la AEAT.
+              - generic [ref=e2727]:
+                - generic [ref=e2728]: Nombre del sistema informático
+                - textbox "AlquiGest" [ref=e2729]
+              - generic [ref=e2730]:
+                - generic [ref=e2731]:
+                  - generic [ref=e2732]: Versión
+                  - textbox "3.3" [ref=e2733]: 2.0.0
+                - generic [ref=e2734]:
+                  - generic [ref=e2735]: Nº instalación
+                  - textbox "1" [ref=e2736]
+              - generic [ref=e2737]:
+                - button "Guardar configuración" [ref=e2738] [cursor=pointer]
+                - button "🔌 Test conexión" [ref=e2739] [cursor=pointer]
+          - generic [ref=e2740]:
+            - generic [ref=e2741]:
+              - generic [ref=e2742]: 🔐 Certificado digital
+              - generic [ref=e2744]: Sin certificado
+            - generic [ref=e2745]:
+              - generic [ref=e2746]: Sin certificado. Sube el .p12/.pfx de tu firma digital para enviar facturas a la AEAT.
+              - generic [ref=e2747]:
+                - generic [ref=e2748]: Subir certificado (.p12 / .pfx)
+                - button "Choose File" [ref=e2749]
+                - generic [ref=e2750]:
+                  - text: El archivo se guarda en la carpeta
+                  - code [ref=e2751]: certs/
+                  - text: protegida contra acceso HTTP.
+              - generic [ref=e2752]:
+                - generic [ref=e2753]: Contraseña del certificado
+                - textbox "Contraseña del .p12/.pfx" [ref=e2754]
+              - generic [ref=e2755]:
+                - button "Subir certificado" [ref=e2756] [cursor=pointer]
+                - button "Guardar contraseña" [ref=e2757] [cursor=pointer]
+        - generic [ref=e2758]:
+          - generic [ref=e2760]: 📖 Pasos para activar VERI*FACTU
+          - generic [ref=e2761]:
+            - list [ref=e2762]:
+              - listitem [ref=e2763]:
+                - text: Rellena el
+                - strong [ref=e2764]: NIF del obligado de emisión
+                - text: y guarda la configuración.
+              - listitem [ref=e2765]:
+                - text: Sube tu
+                - strong [ref=e2766]: certificado digital
+                - text: (.p12/.pfx) y guarda la contraseña.
+              - listitem [ref=e2767]:
+                - text: Selecciona entorno
+                - strong [ref=e2768]: Pruebas
+                - text: y pulsa
+                - strong [ref=e2769]: Test conexión
+                - text: para verificar que alcanzas los servidores de la AEAT.
+              - listitem [ref=e2770]:
+                - text: Genera una factura de prueba y pulsa
+                - strong [ref=e2771]: Enviar AEAT
+                - text: en el listado de facturas pendientes.
+              - listitem [ref=e2772]:
+                - text: Cuando todo funcione en pruebas, cambia a entorno
+                - strong [ref=e2773]: Producción
+                - text: ", guarda y pulsa"
+                - strong [ref=e2774]: Activar
+                - text: .
+              - listitem [ref=e2775]: A partir de ese momento, cada nueva factura se firmará y registrará automáticamente al generarla.
+            - paragraph [ref=e2776]:
+              - text: Consulta
+              - link "ayuda_verifactu.html" [ref=e2777] [cursor=pointer]:
+                - /url: ayuda_verifactu.html
+              - text: para la guía técnica detallada.
+  - generic [ref=e327]:
+    - generic [ref=e328]:
+      - generic [ref=e329]: Editar inquilino
+      - button [ref=e330] [cursor=pointer]:
+        - img [ref=e331]
+    - generic [ref=e2661]:
+      - generic [ref=e2663]: Datos personales
+      - generic [ref=e2664]:
+        - generic [ref=e2665]: Nombre completo *
+        - textbox "Apellidos, Nombre o Razón Social" [ref=e2666]: Comercial Díaz S.L.
+      - generic [ref=e2667]:
+        - generic [ref=e2668]: NIF / CIF
+        - textbox "12345678A" [ref=e2669]: B98765432
+      - generic [ref=e2670]:
+        - generic [ref=e2671]: Teléfono
+        - textbox "600 000 000" [ref=e2672]: 91 700 1234
+      - generic [ref=e2673]:
+        - generic [ref=e2674]: Móvil
+        - textbox "600 000 000" [ref=e2675]
+      - generic [ref=e2676]:
+        - generic [ref=e2677]: Email
+        - textbox "inquilino@email.com" [ref=e2678]: admin@comercialdiaz.es
+      - generic [ref=e2680]: Dirección
+      - generic [ref=e2681]:
+        - generic [ref=e2682]: Dirección actual
+        - textbox "Calle, número, piso..." [ref=e2683]: Av. Constitución 8 Bajo A
+      - generic [ref=e2684]:
+        - generic [ref=e2685]: C.P.
+        - textbox "28001" [ref=e2686]: "28002"
+      - generic [ref=e2687]:
+        - generic [ref=e2688]: Municipio
+        - textbox "Madrid" [ref=e2689]
+      - generic [ref=e2690]:
+        - generic [ref=e2691]: Provincia
+        - textbox "Madrid" [ref=e2692]
+      - generic [ref=e2693]:
+        - generic [ref=e2694]: País
+        - textbox [ref=e2695]: España
+      - generic [ref=e2697]: Datos bancarios
+      - generic [ref=e2698]:
+        - generic [ref=e2699]: IBAN
+        - textbox "ES00 0000 0000 0000 0000 0000" [ref=e2700]: ES22 5555 6666 7777 8888 9999
+      - generic [ref=e2701]:
+        - generic [ref=e2702]: Observaciones
+        - textbox [ref=e2703]: Local comercial, pago trimestral
+    - generic [ref=e339]:
+      - button "Cancelar" [ref=e2704] [cursor=pointer]
+      - button "Guardar" [ref=e2705] [cursor=pointer]

@@ -1,0 +1,450 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e9]:
+        - generic [ref=e10]: AlquiGest
+        - generic [ref=e11]: Guía de seguridad
+    - generic [ref=e12]:
+      - link "← Inicio" [ref=e13] [cursor=pointer]:
+        - /url: ../../index.html
+      - generic [ref=e15]: Introducción
+      - link "¿Qué cambia en producción?" [ref=e16] [cursor=pointer]:
+        - /url: "#intro"
+      - link "Qué es CORS" [ref=e17] [cursor=pointer]:
+        - /url: "#cors-que-es"
+      - generic [ref=e18]: Cambios obligatorios
+      - link "1. Activar HTTPS Crítico" [ref=e19] [cursor=pointer]:
+        - /url: "#paso-https"
+        - text: 1. Activar HTTPS
+        - generic [ref=e20]: Crítico
+      - link "2. Añadir autenticación Crítico" [ref=e21] [cursor=pointer]:
+        - /url: "#paso-auth"
+        - text: 2. Añadir autenticación
+        - generic [ref=e22]: Crítico
+      - link "3. Configurar CORS Alto" [ref=e23] [cursor=pointer]:
+        - /url: "#paso-cors"
+        - text: 3. Configurar CORS
+        - generic [ref=e24]: Alto
+      - link "4. Proteger install.php Crítico" [ref=e25] [cursor=pointer]:
+        - /url: "#paso-install"
+        - text: 4. Proteger install.php
+        - generic [ref=e26]: Crítico
+      - link "5. Credenciales de BD Alto" [ref=e27] [cursor=pointer]:
+        - /url: "#paso-bd"
+        - text: 5. Credenciales de BD
+        - generic [ref=e28]: Alto
+      - link "6. Eliminar restricción IP Medio" [ref=e29] [cursor=pointer]:
+        - /url: "#paso-ip"
+        - text: 6. Eliminar restricción IP
+        - generic [ref=e30]: Medio
+      - link "7. Errores en producción Medio" [ref=e31] [cursor=pointer]:
+        - /url: "#paso-errores"
+        - text: 7. Errores en producción
+        - generic [ref=e32]: Medio
+      - generic [ref=e33]: Resumen
+      - link "Checklist de archivos" [ref=e34] [cursor=pointer]:
+        - /url: "#checklist"
+      - link "Orden recomendado" [ref=e35] [cursor=pointer]:
+        - /url: "#orden"
+  - main [ref=e36]:
+    - generic [ref=e37]:
+      - generic [ref=e38]: AlquiGest v2.0.0 · Guía técnica
+      - heading "Migrar a un servidor web" [level=1] [ref=e39]
+      - paragraph [ref=e40]: Todo lo que debes cambiar en el código antes de publicar AlquiGest en internet o en una red corporativa.
+      - generic [ref=e41]:
+        - generic [ref=e42]: CORS
+        - generic [ref=e43]: Autenticación
+        - generic [ref=e44]: HTTPS
+        - generic [ref=e45]: PHP
+        - generic [ref=e46]: Seguridad
+    - heading "¿Qué cambia al pasar a un servidor web?" [level=2] [ref=e47]
+    - paragraph [ref=e48]:
+      - text: Actualmente AlquiGest está diseñado para funcionar
+      - strong [ref=e49]: solo en localhost
+      - text: . El código tiene varias capas de protección que asumen que nadie más puede acceder a la máquina. Al moverlo a un servidor público esas suposiciones dejan de ser válidas.
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - generic [ref=e52]: ⚠ En localhost (actual)
+        - list [ref=e53]:
+          - listitem [ref=e54]: Solo tú tienes acceso a la máquina
+          - listitem [ref=e55]: No hay contraseñas de usuario en la app
+          - listitem [ref=e56]: La API solo responde a 127.0.0.1
+          - listitem [ref=e57]: HTTP sin cifrar es aceptable
+          - listitem [ref=e58]:
+            - code [ref=e59]: install.php
+            - text: solo lo ves tú
+          - listitem [ref=e60]: Credenciales root/root en la BD
+      - generic [ref=e61]:
+        - generic [ref=e62]: ✓ En servidor web (objetivo)
+        - list [ref=e63]:
+          - listitem [ref=e64]: Cualquiera puede intentar acceder
+          - listitem [ref=e65]: Login obligatorio para usar la app
+          - listitem [ref=e66]: CORS restringido a tu dominio
+          - listitem [ref=e67]: HTTPS obligatorio (certificado SSL)
+          - listitem [ref=e68]:
+            - code [ref=e69]: install.php
+            - text: eliminado o bloqueado
+          - listitem [ref=e70]: Usuario de BD con permisos mínimos
+    - heading "Qué es CORS y por qué importa" [level=2] [ref=e71]
+    - paragraph [ref=e72]:
+      - strong [ref=e73]: CORS
+      - text: (Cross-Origin Resource Sharing) es un mecanismo del navegador que controla qué dominios pueden llamar a tu API desde JavaScript.
+    - paragraph [ref=e74]:
+      - text: Cuando AlquiGest está en
+      - code [ref=e75]: https://tuapp.com
+      - text: y su JavaScript llama a
+      - code [ref=e76]: https://tuapp.com/api.php
+      - text: ", es una petición del"
+      - emphasis [ref=e77]: mismo origen
+      - text: y no necesita CORS. El problema surge cuando el cabecero
+      - code [ref=e78]: Access-Control-Allow-Origin
+      - text: es demasiado permisivo.
+    - img [ref=e80]:
+      - generic [ref=e81]: Mismo origen (correcto)
+      - generic [ref=e83]: Navegador
+      - generic [ref=e84]: tuapp.com
+      - generic [ref=e85]: llamada API
+      - generic [ref=e87]: api.php
+      - generic [ref=e88]: tuapp.com ✓
+      - generic [ref=e89]: 200 OK ✓
+      - generic [ref=e90]: Origen cruzado con * (peligroso)
+      - generic [ref=e92]: Navegador
+      - generic [ref=e93]: maliciosa.com
+      - generic [ref=e94]: sitio atacante
+      - generic [ref=e95]: petición CORS
+      - generic [ref=e97]: api.php
+      - generic [ref=e98]: "Allow-Origin: *"
+      - generic [ref=e99]: acepta cualquiera
+      - generic [ref=e100]: 200 OK + tus datos ✗
+      - generic [ref=e102]: ¿Qué puede hacer maliciosa.com si la API acepta * ?
+      - generic [ref=e103]: Si el usuario tiene sesión activa en tuapp.com, el sitio atacante puede leer todos sus datos (inquilinos, contratos,
+      - generic [ref=e104]: recibos, IBANs...) e incluso modificarlos o borrarlos, sin que el usuario lo note.
+      - generic [ref=e106]: "Solución: reemplazar * por tu dominio exacto → Access-Control-Allow-Origin: https://tuapp.com"
+    - heading "Paso 1 — Activar HTTPS Crítico" [level=2] [ref=e107]
+    - generic [ref=e108]:
+      - generic [ref=e109]: 🔒
+      - generic [ref=e110]:
+        - strong [ref=e111]: Sin HTTPS todo lo demás da igual.
+        - paragraph [ref=e112]: Sin cifrado, las credenciales de acceso, los datos de inquilinos y los IBANs viajan en texto plano por la red. Cualquiera en la misma red (WiFi de oficina, router corporativo) puede interceptarlos.
+    - heading "Cómo obtener HTTPS gratuito con Let's Encrypt" [level=3] [ref=e113]
+    - paragraph [ref=e114]:
+      - text: Si tu servidor es Linux con Apache o Nginx,
+      - strong [ref=e115]: Certbot
+      - text: "instala un certificado SSL válido en menos de 5 minutos:"
+    - generic [ref=e116]:
+      - generic [ref=e117]:
+        - generic [ref=e118]: Terminal del servidor
+        - generic [ref=e119]: Shell
+      - generic [ref=e120]: "# Ubuntu / Debian con Apache sudo apt install certbot python3-certbot-apache sudo certbot --apache -d tudominio.com -d www.tudominio.com # Ubuntu / Debian con Nginx sudo apt install certbot python3-certbot-nginx sudo certbot --nginx -d tudominio.com -d www.tudominio.com"
+    - heading "Forzar HTTPS con .htaccess (Apache)" [level=3] [ref=e121]
+    - paragraph [ref=e122]:
+      - text: Crea o edita el archivo
+      - code [ref=e123]: .htaccess
+      - text: "en la raíz del proyecto para redirigir todo el tráfico HTTP a HTTPS:"
+    - generic [ref=e124]:
+      - generic [ref=e125]:
+        - generic [ref=e126]: .htaccess
+        - generic [ref=e127]: Nuevo / Editar
+      - generic [ref=e128]: "RewriteEngine On # Redirigir HTTP → HTTPS RewriteCond %{HTTPS} off RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301] # Bloquear acceso directo a install.php desde navegador RewriteRule ^install\\.php$ - [F,L] # Cabeceras de seguridad HTTP Header always set Strict-Transport-Security \"max-age=31536000\" Header always set X-Content-Type-Options \"nosniff\" Header always set X-Frame-Options \"DENY\""
+    - heading "Paso 2 — Añadir autenticación Crítico" [level=2] [ref=e129]
+    - generic [ref=e130]:
+      - generic [ref=e131]: 🚨
+      - generic [ref=e132]:
+        - strong [ref=e133]: La app actualmente no tiene ningún sistema de login.
+        - paragraph [ref=e134]: En un servidor público, cualquier persona que conozca la URL puede ver y modificar todos los datos. Debes añadir autenticación antes de cualquier otra cosa.
+    - img [ref=e136]:
+      - generic [ref=e137]: Flujo de autenticación recomendado
+      - generic [ref=e139]: Usuario
+      - generic [ref=e140]: abre la app
+      - generic [ref=e141]: solicita
+      - generic [ref=e143]: login.php
+      - generic [ref=e144]: formulario
+      - generic [ref=e145]: usuario+clave
+      - generic [ref=e146]: verifica
+      - generic [ref=e148]: tabla
+      - generic [ref=e149]: usuarios
+      - generic [ref=e150]: (password_hash)
+      - generic [ref=e151]: OK ✓
+      - generic [ref=e152]: Error ✗
+      - generic [ref=e154]: Sesión creada
+      - generic [ref=e156]: 401 Denegado
+      - generic [ref=e158]: Guardia en api.php — cada petición
+      - generic [ref=e159]: if (!isset($_SESSION['user'])) → 401 No autenticado
+    - heading "1. Crear la tabla de usuarios en MySQL" [level=3] [ref=e161]
+    - generic [ref=e162]:
+      - generic [ref=e163]:
+        - generic [ref=e164]: install.php — añadir a los CREATE TABLE
+        - generic [ref=e165]: Añadir
+      - generic [ref=e166]: "CREATE TABLE `usuarios` ( `id` INT AUTO_INCREMENT PRIMARY KEY, `nombre` VARCHAR(100) NOT NULL, `email` VARCHAR(150) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, -- hash bcrypt `rol` ENUM('admin','lectura') DEFAULT 'admin', `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
+    - heading "2. Crear login.php" [level=3] [ref=e167]
+    - generic [ref=e168]:
+      - generic [ref=e169]:
+        - generic [ref=e170]: login.php
+        - generic [ref=e171]: Nuevo archivo
+      - generic [ref=e172]: "<?php session_start(); header('Content-Type: application/json; charset=utf-8'); if (isset($_SESSION['user_id'])) { echo json_encode(['ok' => true]); exit; } if ($_SERVER['REQUEST_METHOD'] === 'POST') { $cfg = require __DIR__ . '/assets/php/config.php'; $input = json_decode(file_get_contents('php://input'), true) ?: []; $email = trim($input['email'] ?? ''); $pass = $input['password'] ?? ''; $pdo = new PDO( \"mysql:host={$cfg['host']};dbname={$cfg['name']};charset=utf8mb4\", $cfg['user'], $cfg['pass'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION] ); $st = $pdo->prepare('SELECT * FROM usuarios WHERE email = ? LIMIT 1'); $st->execute([$email]); $user = $st->fetch(PDO::FETCH_ASSOC); if ($user && password_verify($pass, $user['password'])) { session_regenerate_id(true); // previene session fixation $_SESSION['user_id'] = $user['id']; $_SESSION['user_rol'] = $user['rol']; echo json_encode(['ok' => true]); } else { http_response_code(401); echo json_encode(['error' => 'Credenciales incorrectas']); } exit; }"
+    - heading "3. Proteger api.php con sesión" [level=3] [ref=e173]
+    - paragraph [ref=e174]:
+      - text: Sustituye el bloque de restricción de IP por la comprobación de sesión. El bloque actual dice
+      - emphasis [ref=e175]: "\"solo localhost\""
+      - text: ; en producción debe decir
+      - emphasis [ref=e176]: "\"solo usuarios autenticados\""
+      - text: .
+    - generic [ref=e177]:
+      - generic [ref=e178]:
+        - generic [ref=e179]: api.php — parte superior
+        - generic [ref=e180]: Sustituir
+      - generic [ref=e181]:
+        - generic [ref=e182]: "// Bloque ACTUAL — eliminar en producción: // $ip = $_SERVER['REMOTE_ADDR'] ?? ''; // if (!in_array($ip, ['127.0.0.1', '::1'], true)) { ... }"
+        - generic [ref=e183]: "// NUEVO — añadir esto en su lugar: session_start(); if (!isset($_SESSION['user_id'])) { http_response_code(401); echo json_encode(['error' => 'No autenticado. Inicia sesión primero.']); exit; }"
+    - generic [ref=e184]:
+      - generic [ref=e185]: 💡
+      - generic [ref=e186]:
+        - strong [ref=e187]: Crear el primer usuario administrador
+        - paragraph [ref=e188]:
+          - text: Ejecuta esto una sola vez desde la línea de comandos del servidor para crear el usuario inicial.
+          - strong [ref=e189]: Nunca uses la contraseña en texto plano en el código.
+    - generic [ref=e190]:
+      - generic [ref=e191]:
+        - generic [ref=e192]: crear_admin.php — ejecutar una vez y luego eliminar
+        - generic [ref=e193]: Temporal
+      - generic [ref=e194]: "<?php $cfg = require __DIR__ . '/assets/php/config.php'; $pdo = new PDO(\"mysql:host={$cfg['host']};dbname={$cfg['name']}\", $cfg['user'], $cfg['pass']); $email = 'admin@tuempresa.com'; // ← cambia esto $pass = 'una_contrasena_segura_2025!'; // ← cambia esto $hash = password_hash($pass, PASSWORD_BCRYPT); $st = $pdo->prepare('INSERT INTO usuarios (nombre,email,password) VALUES (?,?,?)'); $st->execute(['Administrador', $email, $hash]); echo \"Usuario creado. Elimina este archivo ahora.\";"
+    - heading "Paso 3 — Configurar CORS correctamente Alto" [level=2] [ref=e195]
+    - paragraph [ref=e196]:
+      - text: El bloque de CORS actual de
+      - code [ref=e197]: api.php
+      - text: permite el origen
+      - code [ref=e198]: localhost
+      - text: . En producción debes sustituirlo por tu dominio real.
+    - generic [ref=e199]:
+      - generic [ref=e200]:
+        - generic [ref=e201]: api.php y email.php — bloque CORS
+        - generic [ref=e202]: Sustituir
+      - generic [ref=e203]:
+        - generic [ref=e204]: "// ACTUAL — permite localhost (solo válido para desarrollo): // $origin = $_SERVER['HTTP_ORIGIN'] ?? ''; // if ($origin && (strpos($origin, '//localhost') !== false || ...)) { // header(\"Access-Control-Allow-Origin: $origin\"); // }"
+        - generic [ref=e205]: "// PRODUCCIÓN — lista blanca con tu dominio exacto: $allowedOrigins = [ 'https://tudominio.com', 'https://www.tudominio.com', // añade aquí subdominios adicionales si los necesitas ]; $origin = $_SERVER['HTTP_ORIGIN'] ?? ''; if (in_array($origin, $allowedOrigins, true)) { header(\"Access-Control-Allow-Origin: $origin\"); header(\"Vary: Origin\"); // importante para caché HTTP } else { http_response_code(403); echo json_encode(['error' => 'Origen no permitido']); exit; }"
+    - generic [ref=e206]:
+      - generic [ref=e207]: ⚠️
+      - generic [ref=e208]:
+        - strong [ref=e209]: Aplica el mismo cambio en email.php
+        - paragraph [ref=e210]:
+          - text: Ambos archivos (
+          - code [ref=e211]: api.php
+          - text: "y"
+          - code [ref=e212]: email.php
+          - text: ) tienen el bloque CORS. Modifícalos los dos.
+    - heading "Paso 4 — Proteger o eliminar install.php Crítico" [level=2] [ref=e213]
+    - generic [ref=e214]:
+      - generic [ref=e215]: 💣
+      - generic [ref=e216]:
+        - strong [ref=e217]: install.php en producción = botón de borrar toda la base de datos.
+        - paragraph [ref=e218]:
+          - text: Cualquier persona que acceda a
+          - code [ref=e219]: https://tudominio.com/install.php
+          - text: puede reiniciar y borrar toda la base de datos con un clic.
+          - strong [ref=e220]: La opción más segura es eliminarlo.
+    - heading "Opción A — Eliminarlo (recomendado)" [level=3] [ref=e221]
+    - generic [ref=e222]:
+      - generic [ref=e223]:
+        - generic [ref=e224]: Terminal del servidor
+        - generic [ref=e225]: Eliminar
+      - generic [ref=e226]: rm /var/www/html/alquigest/install.php
+    - heading "Opción B — Protegerlo con contraseña HTTP (si necesitas conservarlo)" [level=3] [ref=e227]
+    - generic [ref=e228]:
+      - generic [ref=e229]:
+        - generic [ref=e230]: .htaccess — en la raíz del proyecto
+        - generic [ref=e231]: Añadir
+      - generic [ref=e232]: <Files "install.php"> AuthType Basic AuthName "Zona restringida" AuthUserFile /ruta/segura/fuera/de/web/.htpasswd Require valid-user </Files>
+    - paragraph [ref=e233]:
+      - text: Para generar el fichero
+      - code [ref=e234]: .htpasswd
+      - text: ":"
+    - generic [ref=e235]:
+      - generic [ref=e236]:
+        - generic [ref=e237]: Terminal
+        - generic [ref=e238]: Shell
+      - generic [ref=e239]: htpasswd -c /ruta/segura/.htpasswd admin
+    - heading "Paso 5 — Credenciales de base de datos Alto" [level=2] [ref=e240]
+    - paragraph [ref=e241]:
+      - text: El archivo
+      - code [ref=e242]: config.php
+      - text: usa
+      - code [ref=e243]: root / root
+      - text: . En un servidor de producción el usuario
+      - code [ref=e244]: root
+      - text: de MySQL tiene acceso total a todas las bases de datos del servidor.
+    - heading "Crear un usuario MySQL con permisos mínimos" [level=3] [ref=e245]
+    - generic [ref=e246]:
+      - generic [ref=e247]:
+        - generic [ref=e248]: MySQL — como root
+        - generic [ref=e249]: Ejecutar una vez
+      - generic [ref=e250]: "-- Crear usuario específico para AlquiGest CREATE USER 'alquigest_user'@'localhost' IDENTIFIED BY 'contraseña_muy_segura_aqui'; -- Dar solo los permisos necesarios (solo en su BD) GRANT SELECT, INSERT, UPDATE, DELETE ON alquigest.* TO 'alquigest_user'@'localhost'; FLUSH PRIVILEGES;"
+    - heading "Actualizar config.php" [level=3] [ref=e251]
+    - generic [ref=e252]:
+      - generic [ref=e253]: ℹ️
+      - generic [ref=e254]:
+        - strong [ref=e255]: Nueva ubicación en v2.1+
+        - paragraph [ref=e256]:
+          - text: El fichero de configuración se ha movido a
+          - code [ref=e257]: assets/php/config.php
+          - text: . Todos los archivos PHP lo cargan automáticamente con la ruta correcta.
+    - generic [ref=e258]:
+      - generic [ref=e259]:
+        - generic [ref=e260]: assets/php/config.php
+        - generic [ref=e261]: Editar
+      - generic [ref=e262]:
+        - text: return [ 'host' => 'localhost', 'port' => 3306,
+        - generic [ref=e263]: "'user' => 'root', // ← CAMBIAR"
+        - generic [ref=e264]: "'pass' => 'root', // ← CAMBIAR"
+        - generic [ref=e265]: "'user' => 'alquigest_user', 'pass' => 'contraseña_muy_segura_aqui',"
+        - text: "'name' => 'alquigest', 'charset' => 'utf8mb4', ];"
+    - generic [ref=e266]:
+      - generic [ref=e267]: ⚠️
+      - generic [ref=e268]:
+        - strong [ref=e269]: No subas assets/php/config.php a un repositorio Git público.
+        - paragraph [ref=e270]:
+          - text: Añade
+          - code [ref=e271]: assets/php/config.php
+          - text: a tu
+          - code [ref=e272]: .gitignore
+          - text: y usa variables de entorno del servidor o un archivo de configuración fuera del directorio web para guardar las credenciales.
+    - heading "Paso 6 — Eliminar la restricción de IP Medio" [level=2] [ref=e273]
+    - paragraph [ref=e274]:
+      - text: El bloque actual rechaza peticiones que no vengan de
+      - code [ref=e275]: 127.0.0.1
+      - text: . En un servidor web los usuarios acceden desde IPs externas, así que hay que
+      - strong [ref=e276]: eliminar ese bloque
+      - text: y confiar en la autenticación de sesión (paso 2).
+    - generic [ref=e277]:
+      - generic [ref=e278]:
+        - generic [ref=e279]: api.php, email.php y export.php
+        - generic [ref=e280]: Eliminar este bloque
+      - generic [ref=e281]:
+        - generic [ref=e282]: "// ELIMINAR en producción: $_ip = $_SERVER['REMOTE_ADDR'] ?? ''; if (!in_array($_ip, ['127.0.0.1', '::1'], true)) { http_response_code(403); echo json_encode(['error' => 'Acceso solo permitido desde localhost']); exit; }"
+        - generic [ref=e283]: "// La protección ahora viene de la sesión (ver Paso 2) session_start(); if (!isset($_SESSION['user_id'])) { http_response_code(401); echo json_encode(['error' => 'No autenticado']); exit; }"
+    - heading "Paso 7 — Configuración de errores PHP Medio" [level=2] [ref=e284]
+    - paragraph [ref=e285]:
+      - text: PHP en modo desarrollo muestra errores en pantalla. En producción esto expone información interna al usuario. El bloque de errores en
+      - code [ref=e286]: api.php
+      - text: ya oculta los mensajes de excepción; asegúrate también de que el
+      - code [ref=e287]: php.ini
+      - text: del servidor esté configurado correctamente.
+    - generic [ref=e288]:
+      - generic [ref=e289]:
+        - generic [ref=e290]: php.ini — ajustes de producción
+        - generic [ref=e291]: Verificar
+      - generic [ref=e292]: ; Ocultar errores al usuario display_errors = Off display_startup_errors = Off ; Registrar errores en el log del servidor (para depurar) log_errors = On error_log = /var/log/php/alquigest_errors.log ; Nivel de reporte (mantener alto para que queden en el log) error_reporting = E_ALL
+    - generic [ref=e293]:
+      - generic [ref=e294]: ✓
+      - generic [ref=e295]:
+        - strong [ref=e296]: api.php ya está protegido
+        - paragraph [ref=e297]:
+          - text: Los mensajes de error de base de datos ya usan
+          - code [ref=e298]: error_log()
+          - text: en el servidor y devuelven solo "Error de base de datos" al cliente. Este comportamiento es correcto para producción.
+    - heading "Checklist de archivos a modificar" [level=2] [ref=e299]
+    - generic [ref=e300]:
+      - generic [ref=e301]:
+        - generic [ref=e302]: api.php
+        - generic [ref=e303]: Eliminar bloque IP · Añadir sesión · Actualizar CORS con dominio real
+        - generic [ref=e304]: Crítico
+      - generic [ref=e305]:
+        - generic [ref=e306]: email.php
+        - generic [ref=e307]: Eliminar bloque IP · Añadir sesión · Actualizar CORS con dominio real
+        - generic [ref=e308]: Crítico
+      - generic [ref=e309]:
+        - generic [ref=e310]: export.php
+        - generic [ref=e311]: Eliminar bloque IP · Añadir sesión
+        - generic [ref=e312]: Crítico
+      - generic [ref=e313]:
+        - generic [ref=e314]: install.php
+        - generic [ref=e315]: Eliminar el archivo después de la instalación
+        - generic [ref=e316]: Crítico
+      - generic [ref=e317]:
+        - generic [ref=e318]: assets/php/config.php
+        - generic [ref=e319]: Cambiar root/root por usuario MySQL con permisos mínimos · Añadir a .gitignore
+        - generic [ref=e320]: Alto
+      - generic [ref=e321]:
+        - generic [ref=e322]: .htaccess
+        - generic [ref=e323]: "Crear o actualizar: HTTPS forzado · cabeceras de seguridad · bloquear install.php"
+        - generic [ref=e324]: Alto
+      - generic [ref=e325]:
+        - generic [ref=e326]: login.php
+        - generic [ref=e327]: Crear nuevo archivo con formulario y lógica de autenticación
+        - generic [ref=e328]: Nuevo
+      - generic [ref=e329]:
+        - generic [ref=e330]: AlquiGest.html
+        - generic [ref=e331]: Añadir lógica de comprobación de sesión al cargar · redirigir a login si no hay sesión
+        - generic [ref=e332]: Alto
+    - heading "Orden recomendado de implementación" [level=2] [ref=e333]
+    - generic [ref=e334]:
+      - generic [ref=e335]:
+        - generic [ref=e336]: "1"
+        - generic [ref=e337]:
+          - heading "Obtén el certificado SSL antes de tocar el código" [level=3] [ref=e338]
+          - paragraph [ref=e339]:
+            - text: Sin HTTPS el resto no sirve de nada. Usa Certbot en el servidor o el panel de control de tu hosting para activarlo. Verifica que
+            - code [ref=e340]: https://tudominio.com
+            - text: funciona antes de continuar.
+      - generic [ref=e341]:
+        - generic [ref=e342]: "2"
+        - generic [ref=e343]:
+          - heading "Crea el usuario MySQL y actualiza config.php" [level=3] [ref=e344]
+          - paragraph [ref=e345]:
+            - text: Hazlo antes de instalar la BD. Comprueba que la conexión funciona ejecutando
+            - code [ref=e346]: install.php
+            - text: con las nuevas credenciales.
+      - generic [ref=e347]:
+        - generic [ref=e348]: "3"
+        - generic [ref=e349]:
+          - heading "Implementa login.php y la tabla de usuarios" [level=3] [ref=e350]
+          - paragraph [ref=e351]:
+            - text: Crea la tabla de usuarios, ejecuta
+            - code [ref=e352]: crear_admin.php
+            - text: para crear el primer administrador, y luego
+            - strong [ref=e353]: elimina
+            - code [ref=e354]: crear_admin.php
+            - text: inmediatamente.
+      - generic [ref=e355]:
+        - generic [ref=e356]: "4"
+        - generic [ref=e357]:
+          - heading "Actualiza api.php, email.php y export.php" [level=3] [ref=e358]
+          - paragraph [ref=e359]:
+            - text: Elimina el bloque de restricción de IP, añade
+            - code [ref=e360]: session_start()
+            - text: y la comprobación de sesión, y actualiza el CORS con tu dominio real.
+      - generic [ref=e361]:
+        - generic [ref=e362]: "5"
+        - generic [ref=e363]:
+          - heading "Actualiza AlquiGest.html para redirigir si no hay sesión" [level=3] [ref=e364]
+          - paragraph [ref=e365]:
+            - text: Al principio del script, comprueba si la API responde con 401. Si es así, redirige a
+            - code [ref=e366]: login.html
+            - text: . La app ya gestiona el error de conexión; amplíalo para detectar la respuesta 401 específicamente.
+      - generic [ref=e367]:
+        - generic [ref=e368]: "6"
+        - generic [ref=e369]:
+          - heading "Crea .htaccess y elimina install.php" [level=3] [ref=e370]
+          - paragraph [ref=e371]:
+            - text: Activa el redireccionamiento HTTPS y las cabeceras de seguridad. Elimina
+            - code [ref=e372]: install.php
+            - text: definitivamente. Verifica con
+            - link "securityheaders.com" [ref=e373] [cursor=pointer]:
+              - /url: https://securityheaders.com
+            - text: que las cabeceras están correctas.
+      - generic [ref=e374]:
+        - generic [ref=e375]: "7"
+        - generic [ref=e376]:
+          - heading "Haz una prueba de penetración básica" [level=3] [ref=e377]
+          - paragraph [ref=e378]:
+            - text: Intenta acceder a
+            - code [ref=e379]: /api.php?action=getAll
+            - text: "sin iniciar sesión: debe devolver 401. Intenta acceder a"
+            - code [ref=e380]: /install.php
+            - text: ": debe devolver 403 o 404. Intenta hacer una petición desde otro dominio: debe ser bloqueada por CORS."
+    - generic [ref=e381]:
+      - generic [ref=e382]: 🎉
+      - generic [ref=e383]:
+        - strong [ref=e384]: Una vez completados todos los pasos, AlquiGest estará listo para producción.
+        - paragraph [ref=e385]: Los cambios en el código son relativamente pequeños. La mayor parte del trabajo es infraestructura (SSL, usuario BD, configuración del servidor). El código de la aplicación ya usa consultas preparadas, escapa HTML en las tablas y oculta errores internos.
+    - paragraph [ref=e386]: AlquiGest v2.0.0 · Guía de seguridad para migración a servidor web · Generada junto a Claude Code

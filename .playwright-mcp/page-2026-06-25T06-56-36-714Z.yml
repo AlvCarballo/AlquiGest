@@ -1,0 +1,910 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+        - generic [ref=e70]:
+          - generic [ref=e71]: Configuración
+          - generic [ref=e72] [cursor=pointer]:
+            - img [ref=e73]
+            - text: Mi Empresa
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: VERI*FACTU
+      - generic [ref=e79]: AlquiGest v2.2.0 · 2026
+    - generic [ref=e80]:
+      - banner [ref=e81]:
+        - generic [ref=e82]: Recibos
+        - generic [ref=e83]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e84]
+        - generic [ref=e85]:
+          - button "Alternar modo oscuro" [ref=e86] [cursor=pointer]:
+            - img [ref=e87]
+          - button "Avisos de revisión anual" [ref=e94] [cursor=pointer]:
+            - img [ref=e95]
+          - generic [ref=e314]:
+            - button "Imprimir lote / PDF" [ref=e315] [cursor=pointer]:
+              - img [ref=e316]
+              - text: Imprimir lote / PDF
+            - button "Nuevo recibo" [ref=e320] [cursor=pointer]:
+              - img [ref=e321]
+              - text: Nuevo recibo
+      - generic [ref=e98]:
+        - generic [ref=e322]:
+          - combobox [ref=e323]:
+            - option "Todos los estados" [selected]
+            - option "Pendientes"
+            - option "Parciales"
+            - option "Cobrados"
+            - option "Anulados"
+          - combobox [ref=e324]:
+            - option "Todos los inquilinos" [selected]
+            - option "Rodríguez Pérez, Laura"
+            - option "González Sánchez, Pedro"
+            - option "Martín López, María"
+            - option "Torres Ruiz, Carlos"
+            - option "Comercial Díaz S.L."
+            - option "Jiménez Vega, Sofía"
+          - generic [ref=e325]:
+            - generic [ref=e326]: Desde
+            - textbox [ref=e327]
+          - generic [ref=e328]:
+            - generic [ref=e329]: Hasta
+            - textbox [ref=e330]
+          - generic [ref=e331]: 37 recibos
+          - generic [ref=e332]:
+            - img
+            - searchbox "Buscar en tabla..." [ref=e333]
+        - generic [ref=e334]:
+          - generic [ref=e336]: Recibos de alquiler
+          - table [ref=e338]:
+            - rowgroup [ref=e339]:
+              - row "Nº Recibo Inquilino Inmueble Período ▼ Total Pagado Estado" [ref=e340]:
+                - columnheader "Nº Recibo" [ref=e341] [cursor=pointer]
+                - columnheader "Inquilino" [ref=e342] [cursor=pointer]
+                - columnheader "Inmueble" [ref=e343] [cursor=pointer]
+                - columnheader "Período ▼" [ref=e344] [cursor=pointer]
+                - columnheader "Total" [ref=e345] [cursor=pointer]
+                - columnheader "Pagado" [ref=e346] [cursor=pointer]
+                - columnheader "Estado" [ref=e347] [cursor=pointer]
+                - columnheader [ref=e348]
+            - rowgroup [ref=e349]:
+              - row "REC-202607-00037 1/7/2026 Jiménez Vega, Sofía AV Constitución 8 1º A Julio 2026 800,00 € - Pendiente Cobrar ✉ FAC" [ref=e350]:
+                - cell "REC-202607-00037 1/7/2026" [ref=e351]:
+                  - strong [ref=e352]: REC-202607-00037
+                  - text: 1/7/2026
+                - cell "Jiménez Vega, Sofía" [ref=e353]
+                - cell "AV Constitución 8 1º A" [ref=e354]
+                - cell "Julio 2026" [ref=e355]
+                - cell "800,00 €" [ref=e356]:
+                  - strong [ref=e357]: 800,00 €
+                - cell "-" [ref=e358]
+                - cell "Pendiente" [ref=e359]:
+                  - generic [ref=e360]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e361]:
+                  - button "Cobrar" [ref=e362] [cursor=pointer]
+                  - button "✉" [ref=e363] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e364] [cursor=pointer]:
+                    - img [ref=e365]
+                  - button "Imprimir" [ref=e367] [cursor=pointer]:
+                    - img [ref=e368]
+                  - button "Editar" [ref=e372] [cursor=pointer]:
+                    - img [ref=e373]
+                  - button "Anular" [ref=e376] [cursor=pointer]:
+                    - img [ref=e377]
+                  - button "FAC" [ref=e381] [cursor=pointer]:
+                    - img [ref=e382]
+                    - text: FAC
+              - row "REC-202607-00036 1/7/2026 Comercial Díaz S.L. AV Constitución 8 BAJO A Julio 2026 1452,00 € - Pendiente Cobrar ✉ FAC" [ref=e384]:
+                - cell "REC-202607-00036 1/7/2026" [ref=e385]:
+                  - strong [ref=e386]: REC-202607-00036
+                  - text: 1/7/2026
+                - cell "Comercial Díaz S.L." [ref=e387]
+                - cell "AV Constitución 8 BAJO A" [ref=e388]
+                - cell "Julio 2026" [ref=e389]
+                - cell "1452,00 €" [ref=e390]:
+                  - strong [ref=e391]: 1452,00 €
+                - cell "-" [ref=e392]
+                - cell "Pendiente" [ref=e393]:
+                  - generic [ref=e394]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e395]:
+                  - button "Cobrar" [ref=e396] [cursor=pointer]
+                  - button "✉" [ref=e397] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e398] [cursor=pointer]:
+                    - img [ref=e399]
+                  - button "Imprimir" [ref=e401] [cursor=pointer]:
+                    - img [ref=e402]
+                  - button "Editar" [ref=e406] [cursor=pointer]:
+                    - img [ref=e407]
+                  - button "Anular" [ref=e410] [cursor=pointer]:
+                    - img [ref=e411]
+                  - button "FAC" [ref=e415] [cursor=pointer]:
+                    - img [ref=e416]
+                    - text: FAC
+              - row "REC-202607-00032 1/7/2026 Rodríguez Pérez, Laura C Mayor 15 1º A Julio 2026 700,00 € - Pendiente Cobrar ✉ FAC" [ref=e418]:
+                - cell "REC-202607-00032 1/7/2026" [ref=e419]:
+                  - strong [ref=e420]: REC-202607-00032
+                  - text: 1/7/2026
+                - cell "Rodríguez Pérez, Laura" [ref=e421]
+                - cell "C Mayor 15 1º A" [ref=e422]
+                - cell "Julio 2026" [ref=e423]
+                - cell "700,00 €" [ref=e424]:
+                  - strong [ref=e425]: 700,00 €
+                - cell "-" [ref=e426]
+                - cell "Pendiente" [ref=e427]:
+                  - generic [ref=e428]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e429]:
+                  - button "Cobrar" [ref=e430] [cursor=pointer]
+                  - button "✉" [ref=e431] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e432] [cursor=pointer]:
+                    - img [ref=e433]
+                  - button "Imprimir" [ref=e435] [cursor=pointer]:
+                    - img [ref=e436]
+                  - button "Editar" [ref=e440] [cursor=pointer]:
+                    - img [ref=e441]
+                  - button "Anular" [ref=e444] [cursor=pointer]:
+                    - img [ref=e445]
+                  - button "FAC" [ref=e449] [cursor=pointer]:
+                    - img [ref=e450]
+                    - text: FAC
+              - row "REC-202607-00033 1/7/2026 González Sánchez, Pedro C Mayor 15 1º B Julio 2026 650,00 € - Pendiente Cobrar ✉ FAC" [ref=e452]:
+                - cell "REC-202607-00033 1/7/2026" [ref=e453]:
+                  - strong [ref=e454]: REC-202607-00033
+                  - text: 1/7/2026
+                - cell "González Sánchez, Pedro" [ref=e455]
+                - cell "C Mayor 15 1º B" [ref=e456]
+                - cell "Julio 2026" [ref=e457]
+                - cell "650,00 €" [ref=e458]:
+                  - strong [ref=e459]: 650,00 €
+                - cell "-" [ref=e460]
+                - cell "Pendiente" [ref=e461]:
+                  - generic [ref=e462]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e463]:
+                  - button "Cobrar" [ref=e464] [cursor=pointer]
+                  - button "✉" [ref=e465] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e466] [cursor=pointer]:
+                    - img [ref=e467]
+                  - button "Imprimir" [ref=e469] [cursor=pointer]:
+                    - img [ref=e470]
+                  - button "Editar" [ref=e474] [cursor=pointer]:
+                    - img [ref=e475]
+                  - button "Anular" [ref=e478] [cursor=pointer]:
+                    - img [ref=e479]
+                  - button "FAC" [ref=e483] [cursor=pointer]:
+                    - img [ref=e484]
+                    - text: FAC
+              - row "REC-202607-00034 1/7/2026 Martín López, María C Mayor 15 2º A Julio 2026 720,00 € - Pendiente Cobrar ✉ FAC" [ref=e486]:
+                - cell "REC-202607-00034 1/7/2026" [ref=e487]:
+                  - strong [ref=e488]: REC-202607-00034
+                  - text: 1/7/2026
+                - cell "Martín López, María" [ref=e489]
+                - cell "C Mayor 15 2º A" [ref=e490]
+                - cell "Julio 2026" [ref=e491]
+                - cell "720,00 €" [ref=e492]:
+                  - strong [ref=e493]: 720,00 €
+                - cell "-" [ref=e494]
+                - cell "Pendiente" [ref=e495]:
+                  - generic [ref=e496]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e497]:
+                  - button "Cobrar" [ref=e498] [cursor=pointer]
+                  - button "✉" [ref=e499] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e500] [cursor=pointer]:
+                    - img [ref=e501]
+                  - button "Imprimir" [ref=e503] [cursor=pointer]:
+                    - img [ref=e504]
+                  - button "Editar" [ref=e508] [cursor=pointer]:
+                    - img [ref=e509]
+                  - button "Anular" [ref=e512] [cursor=pointer]:
+                    - img [ref=e513]
+                  - button "FAC" [ref=e517] [cursor=pointer]:
+                    - img [ref=e518]
+                    - text: FAC
+              - row "REC-202607-00035 1/7/2026 Torres Ruiz, Carlos C Mayor 15 2º B Julio 2026 680,00 € - Pendiente Cobrar ✉ FAC" [ref=e520]:
+                - cell "REC-202607-00035 1/7/2026" [ref=e521]:
+                  - strong [ref=e522]: REC-202607-00035
+                  - text: 1/7/2026
+                - cell "Torres Ruiz, Carlos" [ref=e523]
+                - cell "C Mayor 15 2º B" [ref=e524]
+                - cell "Julio 2026" [ref=e525]
+                - cell "680,00 €" [ref=e526]:
+                  - strong [ref=e527]: 680,00 €
+                - cell "-" [ref=e528]
+                - cell "Pendiente" [ref=e529]:
+                  - generic [ref=e530]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e531]:
+                  - button "Cobrar" [ref=e532] [cursor=pointer]
+                  - button "✉" [ref=e533] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e534] [cursor=pointer]:
+                    - img [ref=e535]
+                  - button "Imprimir" [ref=e537] [cursor=pointer]:
+                    - img [ref=e538]
+                  - button "Editar" [ref=e542] [cursor=pointer]:
+                    - img [ref=e543]
+                  - button "Anular" [ref=e546] [cursor=pointer]:
+                    - img [ref=e547]
+                  - button "FAC" [ref=e551] [cursor=pointer]:
+                    - img [ref=e552]
+                    - text: FAC
+              - row "REC-202606-00031 25/6/2026 Jiménez Vega, Sofía AV Constitución 8 1º A Alquiler junio de 2026 800,00 € 800,00 € Anulado ✉" [ref=e554]:
+                - cell "REC-202606-00031 25/6/2026" [ref=e555]:
+                  - strong [ref=e556]: REC-202606-00031
+                  - text: 25/6/2026
+                - cell "Jiménez Vega, Sofía" [ref=e557]
+                - cell "AV Constitución 8 1º A" [ref=e558]
+                - cell "Alquiler junio de 2026" [ref=e559]
+                - cell "800,00 €" [ref=e560]:
+                  - strong [ref=e561]: 800,00 €
+                - cell "800,00 €" [ref=e562]
+                - cell "Anulado" [ref=e563]:
+                  - generic [ref=e564]: Anulado
+                - cell "✉" [ref=e565]:
+                  - button "✉" [ref=e566] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e567] [cursor=pointer]:
+                    - img [ref=e568]
+                  - button "Imprimir" [ref=e570] [cursor=pointer]:
+                    - img [ref=e571]
+                  - button "Editar" [ref=e575] [cursor=pointer]:
+                    - img [ref=e576]
+                  - button "Anular" [ref=e579] [cursor=pointer]:
+                    - img [ref=e580]
+              - row "REC-202606-00030 1/6/2026 Jiménez Vega, Sofía AV Constitución 8 1º A Junio 2026 800,00 € - Pendiente Cobrar ✉ FAC" [ref=e584]:
+                - cell "REC-202606-00030 1/6/2026" [ref=e585]:
+                  - strong [ref=e586]: REC-202606-00030
+                  - text: 1/6/2026
+                - cell "Jiménez Vega, Sofía" [ref=e587]
+                - cell "AV Constitución 8 1º A" [ref=e588]
+                - cell "Junio 2026" [ref=e589]
+                - cell "800,00 €" [ref=e590]:
+                  - strong [ref=e591]: 800,00 €
+                - cell "-" [ref=e592]
+                - cell "Pendiente" [ref=e593]:
+                  - generic [ref=e594]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e595]:
+                  - button "Cobrar" [ref=e596] [cursor=pointer]
+                  - button "✉" [ref=e597] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e598] [cursor=pointer]:
+                    - img [ref=e599]
+                  - button "Imprimir" [ref=e601] [cursor=pointer]:
+                    - img [ref=e602]
+                  - button "Editar" [ref=e606] [cursor=pointer]:
+                    - img [ref=e607]
+                  - button "Anular" [ref=e610] [cursor=pointer]:
+                    - img [ref=e611]
+                  - button "FAC" [ref=e615] [cursor=pointer]:
+                    - img [ref=e616]
+                    - text: FAC
+              - row "REC-202606-00029 1/6/2026 Comercial Díaz S.L. AV Constitución 8 BAJO A Junio 2026 1452,00 € - Pendiente Cobrar ✉ FAC" [ref=e618]:
+                - cell "REC-202606-00029 1/6/2026" [ref=e619]:
+                  - strong [ref=e620]: REC-202606-00029
+                  - text: 1/6/2026
+                - cell "Comercial Díaz S.L." [ref=e621]
+                - cell "AV Constitución 8 BAJO A" [ref=e622]
+                - cell "Junio 2026" [ref=e623]
+                - cell "1452,00 €" [ref=e624]:
+                  - strong [ref=e625]: 1452,00 €
+                - cell "-" [ref=e626]
+                - cell "Pendiente" [ref=e627]:
+                  - generic [ref=e628]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e629]:
+                  - button "Cobrar" [ref=e630] [cursor=pointer]
+                  - button "✉" [ref=e631] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e632] [cursor=pointer]:
+                    - img [ref=e633]
+                  - button "Imprimir" [ref=e635] [cursor=pointer]:
+                    - img [ref=e636]
+                  - button "Editar" [ref=e640] [cursor=pointer]:
+                    - img [ref=e641]
+                  - button "Anular" [ref=e644] [cursor=pointer]:
+                    - img [ref=e645]
+                  - button "FAC" [ref=e649] [cursor=pointer]:
+                    - img [ref=e650]
+                    - text: FAC
+              - row "REC-202606-00025 1/6/2026 Rodríguez Pérez, Laura C Mayor 15 1º A Junio 2026 700,00 € - Pendiente Cobrar ✉ FAC" [ref=e652]:
+                - cell "REC-202606-00025 1/6/2026" [ref=e653]:
+                  - strong [ref=e654]: REC-202606-00025
+                  - text: 1/6/2026
+                - cell "Rodríguez Pérez, Laura" [ref=e655]
+                - cell "C Mayor 15 1º A" [ref=e656]
+                - cell "Junio 2026" [ref=e657]
+                - cell "700,00 €" [ref=e658]:
+                  - strong [ref=e659]: 700,00 €
+                - cell "-" [ref=e660]
+                - cell "Pendiente" [ref=e661]:
+                  - generic [ref=e662]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e663]:
+                  - button "Cobrar" [ref=e664] [cursor=pointer]
+                  - button "✉" [ref=e665] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e666] [cursor=pointer]:
+                    - img [ref=e667]
+                  - button "Imprimir" [ref=e669] [cursor=pointer]:
+                    - img [ref=e670]
+                  - button "Editar" [ref=e674] [cursor=pointer]:
+                    - img [ref=e675]
+                  - button "Anular" [ref=e678] [cursor=pointer]:
+                    - img [ref=e679]
+                  - button "FAC" [ref=e683] [cursor=pointer]:
+                    - img [ref=e684]
+                    - text: FAC
+              - row "REC-202606-00026 1/6/2026 González Sánchez, Pedro C Mayor 15 1º B Junio 2026 650,00 € - Pendiente Cobrar ✉ FAC" [ref=e686]:
+                - cell "REC-202606-00026 1/6/2026" [ref=e687]:
+                  - strong [ref=e688]: REC-202606-00026
+                  - text: 1/6/2026
+                - cell "González Sánchez, Pedro" [ref=e689]
+                - cell "C Mayor 15 1º B" [ref=e690]
+                - cell "Junio 2026" [ref=e691]
+                - cell "650,00 €" [ref=e692]:
+                  - strong [ref=e693]: 650,00 €
+                - cell "-" [ref=e694]
+                - cell "Pendiente" [ref=e695]:
+                  - generic [ref=e696]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e697]:
+                  - button "Cobrar" [ref=e698] [cursor=pointer]
+                  - button "✉" [ref=e699] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e700] [cursor=pointer]:
+                    - img [ref=e701]
+                  - button "Imprimir" [ref=e703] [cursor=pointer]:
+                    - img [ref=e704]
+                  - button "Editar" [ref=e708] [cursor=pointer]:
+                    - img [ref=e709]
+                  - button "Anular" [ref=e712] [cursor=pointer]:
+                    - img [ref=e713]
+                  - button "FAC" [ref=e717] [cursor=pointer]:
+                    - img [ref=e718]
+                    - text: FAC
+              - row "REC-202606-00027 1/6/2026 Martín López, María C Mayor 15 2º A Junio 2026 720,00 € - Pendiente Cobrar ✉ FAC" [ref=e720]:
+                - cell "REC-202606-00027 1/6/2026" [ref=e721]:
+                  - strong [ref=e722]: REC-202606-00027
+                  - text: 1/6/2026
+                - cell "Martín López, María" [ref=e723]
+                - cell "C Mayor 15 2º A" [ref=e724]
+                - cell "Junio 2026" [ref=e725]
+                - cell "720,00 €" [ref=e726]:
+                  - strong [ref=e727]: 720,00 €
+                - cell "-" [ref=e728]
+                - cell "Pendiente" [ref=e729]:
+                  - generic [ref=e730]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e731]:
+                  - button "Cobrar" [ref=e732] [cursor=pointer]
+                  - button "✉" [ref=e733] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e734] [cursor=pointer]:
+                    - img [ref=e735]
+                  - button "Imprimir" [ref=e737] [cursor=pointer]:
+                    - img [ref=e738]
+                  - button "Editar" [ref=e742] [cursor=pointer]:
+                    - img [ref=e743]
+                  - button "Anular" [ref=e746] [cursor=pointer]:
+                    - img [ref=e747]
+                  - button "FAC" [ref=e751] [cursor=pointer]:
+                    - img [ref=e752]
+                    - text: FAC
+              - row "REC-202606-00028 1/6/2026 Torres Ruiz, Carlos C Mayor 15 2º B Junio 2026 680,00 € - Pendiente Cobrar ✉ FAC" [ref=e754]:
+                - cell "REC-202606-00028 1/6/2026" [ref=e755]:
+                  - strong [ref=e756]: REC-202606-00028
+                  - text: 1/6/2026
+                - cell "Torres Ruiz, Carlos" [ref=e757]
+                - cell "C Mayor 15 2º B" [ref=e758]
+                - cell "Junio 2026" [ref=e759]
+                - cell "680,00 €" [ref=e760]:
+                  - strong [ref=e761]: 680,00 €
+                - cell "-" [ref=e762]
+                - cell "Pendiente" [ref=e763]:
+                  - generic [ref=e764]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e765]:
+                  - button "Cobrar" [ref=e766] [cursor=pointer]
+                  - button "✉" [ref=e767] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e768] [cursor=pointer]:
+                    - img [ref=e769]
+                  - button "Imprimir" [ref=e771] [cursor=pointer]:
+                    - img [ref=e772]
+                  - button "Editar" [ref=e776] [cursor=pointer]:
+                    - img [ref=e777]
+                  - button "Anular" [ref=e780] [cursor=pointer]:
+                    - img [ref=e781]
+                  - button "FAC" [ref=e785] [cursor=pointer]:
+                    - img [ref=e786]
+                    - text: FAC
+              - row "REC-202605-00024 1/5/2026 Jiménez Vega, Sofía AV Constitución 8 1º A Mayo 2026 800,00 € - Pendiente Cobrar ✉ FAC" [ref=e788]:
+                - cell "REC-202605-00024 1/5/2026" [ref=e789]:
+                  - strong [ref=e790]: REC-202605-00024
+                  - text: 1/5/2026
+                - cell "Jiménez Vega, Sofía" [ref=e791]
+                - cell "AV Constitución 8 1º A" [ref=e792]
+                - cell "Mayo 2026" [ref=e793]
+                - cell "800,00 €" [ref=e794]:
+                  - strong [ref=e795]: 800,00 €
+                - cell "-" [ref=e796]
+                - cell "Pendiente" [ref=e797]:
+                  - generic [ref=e798]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e799]:
+                  - button "Cobrar" [ref=e800] [cursor=pointer]
+                  - button "✉" [ref=e801] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e802] [cursor=pointer]:
+                    - img [ref=e803]
+                  - button "Imprimir" [ref=e805] [cursor=pointer]:
+                    - img [ref=e806]
+                  - button "Editar" [ref=e810] [cursor=pointer]:
+                    - img [ref=e811]
+                  - button "Anular" [ref=e814] [cursor=pointer]:
+                    - img [ref=e815]
+                  - button "FAC" [ref=e819] [cursor=pointer]:
+                    - img [ref=e820]
+                    - text: FAC
+              - row "REC-202605-00023 1/5/2026 Comercial Díaz S.L. AV Constitución 8 BAJO A Mayo 2026 1452,00 € - Pendiente Cobrar ✉ FAC" [ref=e822]:
+                - cell "REC-202605-00023 1/5/2026" [ref=e823]:
+                  - strong [ref=e824]: REC-202605-00023
+                  - text: 1/5/2026
+                - cell "Comercial Díaz S.L." [ref=e825]
+                - cell "AV Constitución 8 BAJO A" [ref=e826]
+                - cell "Mayo 2026" [ref=e827]
+                - cell "1452,00 €" [ref=e828]:
+                  - strong [ref=e829]: 1452,00 €
+                - cell "-" [ref=e830]
+                - cell "Pendiente" [ref=e831]:
+                  - generic [ref=e832]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e833]:
+                  - button "Cobrar" [ref=e834] [cursor=pointer]
+                  - button "✉" [ref=e835] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e836] [cursor=pointer]:
+                    - img [ref=e837]
+                  - button "Imprimir" [ref=e839] [cursor=pointer]:
+                    - img [ref=e840]
+                  - button "Editar" [ref=e844] [cursor=pointer]:
+                    - img [ref=e845]
+                  - button "Anular" [ref=e848] [cursor=pointer]:
+                    - img [ref=e849]
+                  - button "FAC" [ref=e853] [cursor=pointer]:
+                    - img [ref=e854]
+                    - text: FAC
+              - row "REC-202605-00019 1/5/2026 Rodríguez Pérez, Laura C Mayor 15 1º A Mayo 2026 700,00 € - Pendiente Cobrar ✉ FAC" [ref=e856]:
+                - cell "REC-202605-00019 1/5/2026" [ref=e857]:
+                  - strong [ref=e858]: REC-202605-00019
+                  - text: 1/5/2026
+                - cell "Rodríguez Pérez, Laura" [ref=e859]
+                - cell "C Mayor 15 1º A" [ref=e860]
+                - cell "Mayo 2026" [ref=e861]
+                - cell "700,00 €" [ref=e862]:
+                  - strong [ref=e863]: 700,00 €
+                - cell "-" [ref=e864]
+                - cell "Pendiente" [ref=e865]:
+                  - generic [ref=e866]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e867]:
+                  - button "Cobrar" [ref=e868] [cursor=pointer]
+                  - button "✉" [ref=e869] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e870] [cursor=pointer]:
+                    - img [ref=e871]
+                  - button "Imprimir" [ref=e873] [cursor=pointer]:
+                    - img [ref=e874]
+                  - button "Editar" [ref=e878] [cursor=pointer]:
+                    - img [ref=e879]
+                  - button "Anular" [ref=e882] [cursor=pointer]:
+                    - img [ref=e883]
+                  - button "FAC" [ref=e887] [cursor=pointer]:
+                    - img [ref=e888]
+                    - text: FAC
+              - row "REC-202605-00020 1/5/2026 González Sánchez, Pedro C Mayor 15 1º B Mayo 2026 650,00 € - Pendiente Cobrar ✉ FAC" [ref=e890]:
+                - cell "REC-202605-00020 1/5/2026" [ref=e891]:
+                  - strong [ref=e892]: REC-202605-00020
+                  - text: 1/5/2026
+                - cell "González Sánchez, Pedro" [ref=e893]
+                - cell "C Mayor 15 1º B" [ref=e894]
+                - cell "Mayo 2026" [ref=e895]
+                - cell "650,00 €" [ref=e896]:
+                  - strong [ref=e897]: 650,00 €
+                - cell "-" [ref=e898]
+                - cell "Pendiente" [ref=e899]:
+                  - generic [ref=e900]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e901]:
+                  - button "Cobrar" [ref=e902] [cursor=pointer]
+                  - button "✉" [ref=e903] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e904] [cursor=pointer]:
+                    - img [ref=e905]
+                  - button "Imprimir" [ref=e907] [cursor=pointer]:
+                    - img [ref=e908]
+                  - button "Editar" [ref=e912] [cursor=pointer]:
+                    - img [ref=e913]
+                  - button "Anular" [ref=e916] [cursor=pointer]:
+                    - img [ref=e917]
+                  - button "FAC" [ref=e921] [cursor=pointer]:
+                    - img [ref=e922]
+                    - text: FAC
+              - row "REC-202605-00021 1/5/2026 Martín López, María C Mayor 15 2º A Mayo 2026 720,00 € 360,00 € Parcial Cobrar ✉ FAC" [ref=e924]:
+                - cell "REC-202605-00021 1/5/2026" [ref=e925]:
+                  - strong [ref=e926]: REC-202605-00021
+                  - text: 1/5/2026
+                - cell "Martín López, María" [ref=e927]
+                - cell "C Mayor 15 2º A" [ref=e928]
+                - cell "Mayo 2026" [ref=e929]
+                - cell "720,00 €" [ref=e930]:
+                  - strong [ref=e931]: 720,00 €
+                - cell "360,00 €" [ref=e932]
+                - cell "Parcial" [ref=e933]:
+                  - generic [ref=e934]: Parcial
+                - cell "Cobrar ✉ FAC" [ref=e935]:
+                  - button "Cobrar" [ref=e936] [cursor=pointer]
+                  - button "✉" [ref=e937] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e938] [cursor=pointer]:
+                    - img [ref=e939]
+                  - button "Imprimir" [ref=e941] [cursor=pointer]:
+                    - img [ref=e942]
+                  - button "Editar" [ref=e946] [cursor=pointer]:
+                    - img [ref=e947]
+                  - button "Anular" [ref=e950] [cursor=pointer]:
+                    - img [ref=e951]
+                  - button "FAC" [ref=e955] [cursor=pointer]:
+                    - img [ref=e956]
+                    - text: FAC
+              - row "REC-202605-00022 1/5/2026 Torres Ruiz, Carlos C Mayor 15 2º B Mayo 2026 680,00 € - Pendiente Cobrar ✉ FAC" [ref=e958]:
+                - cell "REC-202605-00022 1/5/2026" [ref=e959]:
+                  - strong [ref=e960]: REC-202605-00022
+                  - text: 1/5/2026
+                - cell "Torres Ruiz, Carlos" [ref=e961]
+                - cell "C Mayor 15 2º B" [ref=e962]
+                - cell "Mayo 2026" [ref=e963]
+                - cell "680,00 €" [ref=e964]:
+                  - strong [ref=e965]: 680,00 €
+                - cell "-" [ref=e966]
+                - cell "Pendiente" [ref=e967]:
+                  - generic [ref=e968]: Pendiente
+                - cell "Cobrar ✉ FAC" [ref=e969]:
+                  - button "Cobrar" [ref=e970] [cursor=pointer]
+                  - button "✉" [ref=e971] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e972] [cursor=pointer]:
+                    - img [ref=e973]
+                  - button "Imprimir" [ref=e975] [cursor=pointer]:
+                    - img [ref=e976]
+                  - button "Editar" [ref=e980] [cursor=pointer]:
+                    - img [ref=e981]
+                  - button "Anular" [ref=e984] [cursor=pointer]:
+                    - img [ref=e985]
+                  - button "FAC" [ref=e989] [cursor=pointer]:
+                    - img [ref=e990]
+                    - text: FAC
+              - row "REC-202604-00018 1/4/2026 Jiménez Vega, Sofía AV Constitución 8 1º A Abril 2026 800,00 € 800,00 € Cobrado Ver cobros ✉ FAC" [ref=e992]:
+                - cell "REC-202604-00018 1/4/2026" [ref=e993]:
+                  - strong [ref=e994]: REC-202604-00018
+                  - text: 1/4/2026
+                - cell "Jiménez Vega, Sofía" [ref=e995]
+                - cell "AV Constitución 8 1º A" [ref=e996]
+                - cell "Abril 2026" [ref=e997]
+                - cell "800,00 €" [ref=e998]:
+                  - strong [ref=e999]: 800,00 €
+                - cell "800,00 €" [ref=e1000]
+                - cell "Cobrado" [ref=e1001]:
+                  - generic [ref=e1002]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1003]:
+                  - button "Ver cobros" [ref=e1004] [cursor=pointer]
+                  - button "✉" [ref=e1005] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1006] [cursor=pointer]:
+                    - img [ref=e1007]
+                  - button "Imprimir" [ref=e1009] [cursor=pointer]:
+                    - img [ref=e1010]
+                  - button "Editar" [ref=e1014] [cursor=pointer]:
+                    - img [ref=e1015]
+                  - button "Anular" [ref=e1018] [cursor=pointer]:
+                    - img [ref=e1019]
+                  - button "FAC" [ref=e1023] [cursor=pointer]:
+                    - img [ref=e1024]
+                    - text: FAC
+              - row "REC-202604-00017 1/4/2026 Comercial Díaz S.L. AV Constitución 8 BAJO A Abril 2026 1452,00 € 1452,00 € Cobrado Ver cobros ✉ FAC" [ref=e1028]:
+                - cell "REC-202604-00017 1/4/2026" [ref=e1029]:
+                  - strong [ref=e1030]: REC-202604-00017
+                  - text: 1/4/2026
+                - cell "Comercial Díaz S.L." [ref=e1031]
+                - cell "AV Constitución 8 BAJO A" [ref=e1032]
+                - cell "Abril 2026" [ref=e1033]
+                - cell "1452,00 €" [ref=e1034]:
+                  - strong [ref=e1035]: 1452,00 €
+                - cell "1452,00 €" [ref=e1036]
+                - cell "Cobrado" [ref=e1037]:
+                  - generic [ref=e1038]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1039]:
+                  - button "Ver cobros" [ref=e1040] [cursor=pointer]
+                  - button "✉" [ref=e1041] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1042] [cursor=pointer]:
+                    - img [ref=e1043]
+                  - button "Imprimir" [ref=e1045] [cursor=pointer]:
+                    - img [ref=e1046]
+                  - button "Editar" [ref=e1050] [cursor=pointer]:
+                    - img [ref=e1051]
+                  - button "Anular" [ref=e1054] [cursor=pointer]:
+                    - img [ref=e1055]
+                  - button "FAC" [ref=e1059] [cursor=pointer]:
+                    - img [ref=e1060]
+                    - text: FAC
+              - row "REC-202604-00013 1/4/2026 Rodríguez Pérez, Laura C Mayor 15 1º A Abril 2026 700,00 € 700,00 € Cobrado Ver cobros ✉ FAC" [ref=e1062]:
+                - cell "REC-202604-00013 1/4/2026" [ref=e1063]:
+                  - strong [ref=e1064]: REC-202604-00013
+                  - text: 1/4/2026
+                - cell "Rodríguez Pérez, Laura" [ref=e1065]
+                - cell "C Mayor 15 1º A" [ref=e1066]
+                - cell "Abril 2026" [ref=e1067]
+                - cell "700,00 €" [ref=e1068]:
+                  - strong [ref=e1069]: 700,00 €
+                - cell "700,00 €" [ref=e1070]
+                - cell "Cobrado" [ref=e1071]:
+                  - generic [ref=e1072]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1073]:
+                  - button "Ver cobros" [ref=e1074] [cursor=pointer]
+                  - button "✉" [ref=e1075] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1076] [cursor=pointer]:
+                    - img [ref=e1077]
+                  - button "Imprimir" [ref=e1079] [cursor=pointer]:
+                    - img [ref=e1080]
+                  - button "Editar" [ref=e1084] [cursor=pointer]:
+                    - img [ref=e1085]
+                  - button "Anular" [ref=e1088] [cursor=pointer]:
+                    - img [ref=e1089]
+                  - button "FAC" [ref=e1093] [cursor=pointer]:
+                    - img [ref=e1094]
+                    - text: FAC
+              - row "REC-202604-00014 1/4/2026 González Sánchez, Pedro C Mayor 15 1º B Abril 2026 650,00 € 650,00 € Cobrado Ver cobros ✉ FAC" [ref=e1096]:
+                - cell "REC-202604-00014 1/4/2026" [ref=e1097]:
+                  - strong [ref=e1098]: REC-202604-00014
+                  - text: 1/4/2026
+                - cell "González Sánchez, Pedro" [ref=e1099]
+                - cell "C Mayor 15 1º B" [ref=e1100]
+                - cell "Abril 2026" [ref=e1101]
+                - cell "650,00 €" [ref=e1102]:
+                  - strong [ref=e1103]: 650,00 €
+                - cell "650,00 €" [ref=e1104]
+                - cell "Cobrado" [ref=e1105]:
+                  - generic [ref=e1106]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1107]:
+                  - button "Ver cobros" [ref=e1108] [cursor=pointer]
+                  - button "✉" [ref=e1109] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1110] [cursor=pointer]:
+                    - img [ref=e1111]
+                  - button "Imprimir" [ref=e1113] [cursor=pointer]:
+                    - img [ref=e1114]
+                  - button "Editar" [ref=e1118] [cursor=pointer]:
+                    - img [ref=e1119]
+                  - button "Anular" [ref=e1122] [cursor=pointer]:
+                    - img [ref=e1123]
+                  - button "FAC" [ref=e1127] [cursor=pointer]:
+                    - img [ref=e1128]
+                    - text: FAC
+              - row "REC-202604-00015 1/4/2026 Martín López, María C Mayor 15 2º A Abril 2026 720,00 € 720,00 € Cobrado Ver cobros ✉ FAC" [ref=e1130]:
+                - cell "REC-202604-00015 1/4/2026" [ref=e1131]:
+                  - strong [ref=e1132]: REC-202604-00015
+                  - text: 1/4/2026
+                - cell "Martín López, María" [ref=e1133]
+                - cell "C Mayor 15 2º A" [ref=e1134]
+                - cell "Abril 2026" [ref=e1135]
+                - cell "720,00 €" [ref=e1136]:
+                  - strong [ref=e1137]: 720,00 €
+                - cell "720,00 €" [ref=e1138]
+                - cell "Cobrado" [ref=e1139]:
+                  - generic [ref=e1140]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1141]:
+                  - button "Ver cobros" [ref=e1142] [cursor=pointer]
+                  - button "✉" [ref=e1143] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1144] [cursor=pointer]:
+                    - img [ref=e1145]
+                  - button "Imprimir" [ref=e1147] [cursor=pointer]:
+                    - img [ref=e1148]
+                  - button "Editar" [ref=e1152] [cursor=pointer]:
+                    - img [ref=e1153]
+                  - button "Anular" [ref=e1156] [cursor=pointer]:
+                    - img [ref=e1157]
+                  - button "FAC" [ref=e1161] [cursor=pointer]:
+                    - img [ref=e1162]
+                    - text: FAC
+              - row "REC-202604-00016 1/4/2026 Torres Ruiz, Carlos C Mayor 15 2º B Abril 2026 680,00 € 680,00 € Cobrado Ver cobros ✉ FAC" [ref=e1164]:
+                - cell "REC-202604-00016 1/4/2026" [ref=e1165]:
+                  - strong [ref=e1166]: REC-202604-00016
+                  - text: 1/4/2026
+                - cell "Torres Ruiz, Carlos" [ref=e1167]
+                - cell "C Mayor 15 2º B" [ref=e1168]
+                - cell "Abril 2026" [ref=e1169]
+                - cell "680,00 €" [ref=e1170]:
+                  - strong [ref=e1171]: 680,00 €
+                - cell "680,00 €" [ref=e1172]
+                - cell "Cobrado" [ref=e1173]:
+                  - generic [ref=e1174]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1175]:
+                  - button "Ver cobros" [ref=e1176] [cursor=pointer]
+                  - button "✉" [ref=e1177] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1178] [cursor=pointer]:
+                    - img [ref=e1179]
+                  - button "Imprimir" [ref=e1181] [cursor=pointer]:
+                    - img [ref=e1182]
+                  - button "Editar" [ref=e1186] [cursor=pointer]:
+                    - img [ref=e1187]
+                  - button "Anular" [ref=e1190] [cursor=pointer]:
+                    - img [ref=e1191]
+                  - button "FAC" [ref=e1195] [cursor=pointer]:
+                    - img [ref=e1196]
+                    - text: FAC
+              - row "REC-202603-00012 1/3/2026 Jiménez Vega, Sofía AV Constitución 8 1º A Marzo 2026 800,00 € 800,00 € Cobrado Ver cobros ✉ FAC" [ref=e1198]:
+                - cell "REC-202603-00012 1/3/2026" [ref=e1199]:
+                  - strong [ref=e1200]: REC-202603-00012
+                  - text: 1/3/2026
+                - cell "Jiménez Vega, Sofía" [ref=e1201]
+                - cell "AV Constitución 8 1º A" [ref=e1202]
+                - cell "Marzo 2026" [ref=e1203]
+                - cell "800,00 €" [ref=e1204]:
+                  - strong [ref=e1205]: 800,00 €
+                - cell "800,00 €" [ref=e1206]
+                - cell "Cobrado" [ref=e1207]:
+                  - generic [ref=e1208]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1209]:
+                  - button "Ver cobros" [ref=e1210] [cursor=pointer]
+                  - button "✉" [ref=e1211] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1212] [cursor=pointer]:
+                    - img [ref=e1213]
+                  - button "Imprimir" [ref=e1215] [cursor=pointer]:
+                    - img [ref=e1216]
+                  - button "Editar" [ref=e1220] [cursor=pointer]:
+                    - img [ref=e1221]
+                  - button "Anular" [ref=e1224] [cursor=pointer]:
+                    - img [ref=e1225]
+                  - button "FAC" [ref=e1229] [cursor=pointer]:
+                    - img [ref=e1230]
+                    - text: FAC
+              - row "REC-202603-00011 1/3/2026 Comercial Díaz S.L. AV Constitución 8 BAJO A Marzo 2026 1452,00 € 1452,00 € Cobrado Ver cobros ✉ FAC" [ref=e1232]:
+                - cell "REC-202603-00011 1/3/2026" [ref=e1233]:
+                  - strong [ref=e1234]: REC-202603-00011
+                  - text: 1/3/2026
+                - cell "Comercial Díaz S.L." [ref=e1235]
+                - cell "AV Constitución 8 BAJO A" [ref=e1236]
+                - cell "Marzo 2026" [ref=e1237]
+                - cell "1452,00 €" [ref=e1238]:
+                  - strong [ref=e1239]: 1452,00 €
+                - cell "1452,00 €" [ref=e1240]
+                - cell "Cobrado" [ref=e1241]:
+                  - generic [ref=e1242]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1243]:
+                  - button "Ver cobros" [ref=e1244] [cursor=pointer]
+                  - button "✉" [ref=e1245] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1246] [cursor=pointer]:
+                    - img [ref=e1247]
+                  - button "Imprimir" [ref=e1249] [cursor=pointer]:
+                    - img [ref=e1250]
+                  - button "Editar" [ref=e1254] [cursor=pointer]:
+                    - img [ref=e1255]
+                  - button "Anular" [ref=e1258] [cursor=pointer]:
+                    - img [ref=e1259]
+                  - button "FAC" [ref=e1263] [cursor=pointer]:
+                    - img [ref=e1264]
+                    - text: FAC
+              - row "REC-202603-00007 1/3/2026 Rodríguez Pérez, Laura C Mayor 15 1º A Marzo 2026 700,00 € 700,00 € Cobrado Ver cobros ✉ FAC" [ref=e1266]:
+                - cell "REC-202603-00007 1/3/2026" [ref=e1267]:
+                  - strong [ref=e1268]: REC-202603-00007
+                  - text: 1/3/2026
+                - cell "Rodríguez Pérez, Laura" [ref=e1269]
+                - cell "C Mayor 15 1º A" [ref=e1270]
+                - cell "Marzo 2026" [ref=e1271]
+                - cell "700,00 €" [ref=e1272]:
+                  - strong [ref=e1273]: 700,00 €
+                - cell "700,00 €" [ref=e1274]
+                - cell "Cobrado" [ref=e1275]:
+                  - generic [ref=e1276]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1277]:
+                  - button "Ver cobros" [ref=e1278] [cursor=pointer]
+                  - button "✉" [ref=e1279] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1280] [cursor=pointer]:
+                    - img [ref=e1281]
+                  - button "Imprimir" [ref=e1283] [cursor=pointer]:
+                    - img [ref=e1284]
+                  - button "Editar" [ref=e1288] [cursor=pointer]:
+                    - img [ref=e1289]
+                  - button "Anular" [ref=e1292] [cursor=pointer]:
+                    - img [ref=e1293]
+                  - button "FAC" [ref=e1297] [cursor=pointer]:
+                    - img [ref=e1298]
+                    - text: FAC
+              - row "REC-202603-00008 1/3/2026 González Sánchez, Pedro C Mayor 15 1º B Marzo 2026 650,00 € 650,00 € Cobrado Ver cobros ✉ FAC" [ref=e1300]:
+                - cell "REC-202603-00008 1/3/2026" [ref=e1301]:
+                  - strong [ref=e1302]: REC-202603-00008
+                  - text: 1/3/2026
+                - cell "González Sánchez, Pedro" [ref=e1303]
+                - cell "C Mayor 15 1º B" [ref=e1304]
+                - cell "Marzo 2026" [ref=e1305]
+                - cell "650,00 €" [ref=e1306]:
+                  - strong [ref=e1307]: 650,00 €
+                - cell "650,00 €" [ref=e1308]
+                - cell "Cobrado" [ref=e1309]:
+                  - generic [ref=e1310]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1311]:
+                  - button "Ver cobros" [ref=e1312] [cursor=pointer]
+                  - button "✉" [ref=e1313] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1314] [cursor=pointer]:
+                    - img [ref=e1315]
+                  - button "Imprimir" [ref=e1317] [cursor=pointer]:
+                    - img [ref=e1318]
+                  - button "Editar" [ref=e1322] [cursor=pointer]:
+                    - img [ref=e1323]
+                  - button "Anular" [ref=e1326] [cursor=pointer]:
+                    - img [ref=e1327]
+                  - button "FAC" [ref=e1331] [cursor=pointer]:
+                    - img [ref=e1332]
+                    - text: FAC
+              - row "REC-202603-00009 1/3/2026 Martín López, María C Mayor 15 2º A Marzo 2026 720,00 € 720,00 € Cobrado Ver cobros ✉ FAC" [ref=e1334]:
+                - cell "REC-202603-00009 1/3/2026" [ref=e1335]:
+                  - strong [ref=e1336]: REC-202603-00009
+                  - text: 1/3/2026
+                - cell "Martín López, María" [ref=e1337]
+                - cell "C Mayor 15 2º A" [ref=e1338]
+                - cell "Marzo 2026" [ref=e1339]
+                - cell "720,00 €" [ref=e1340]:
+                  - strong [ref=e1341]: 720,00 €
+                - cell "720,00 €" [ref=e1342]
+                - cell "Cobrado" [ref=e1343]:
+                  - generic [ref=e1344]: Cobrado
+                - cell "Ver cobros ✉ FAC" [ref=e1345]:
+                  - button "Ver cobros" [ref=e1346] [cursor=pointer]
+                  - button "✉" [ref=e1347] [cursor=pointer]
+                  - button "Enviar por WhatsApp" [ref=e1348] [cursor=pointer]:
+                    - img [ref=e1349]
+                  - button "Imprimir" [ref=e1351] [cursor=pointer]:
+                    - img [ref=e1352]
+                  - button "Editar" [ref=e1356] [cursor=pointer]:
+                    - img [ref=e1357]
+                  - button "Anular" [ref=e1360] [cursor=pointer]:
+                    - img [ref=e1361]
+                  - button "FAC" [ref=e1365] [cursor=pointer]:
+                    - img [ref=e1366]
+                    - text: FAC
+          - generic [ref=e1368]:
+            - button "‹ Ant." [disabled] [ref=e1369]
+            - generic [ref=e1370]: Página 1 de 2 · 37 recibos
+            - button "Sig. ›" [ref=e1371] [cursor=pointer]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

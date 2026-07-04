@@ -1,0 +1,249 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Configuración del sistema
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - button "Guardar" [ref=e528] [cursor=pointer]:
+            - img [ref=e529]
+            - text: Guardar
+      - generic [ref=e531]:
+        - generic [ref=e532]:
+          - button "Dashboard" [ref=e533] [cursor=pointer]:
+            - img [ref=e534]
+            - generic [ref=e539]: Dashboard
+          - button "Paginación" [ref=e540] [cursor=pointer]:
+            - img [ref=e541]
+            - generic [ref=e545]: Paginación
+          - button "Botones" [ref=e546] [cursor=pointer]:
+            - img [ref=e547]
+            - generic [ref=e550]: Botones
+          - button "WhatsApp" [ref=e551] [cursor=pointer]:
+            - img [ref=e552]
+            - generic [ref=e554]: WhatsApp
+          - button "VERI*FACTU" [ref=e555] [cursor=pointer]:
+            - img [ref=e556]
+            - generic [ref=e558]: VERI*FACTU
+          - button "Documentos" [ref=e559] [cursor=pointer]:
+            - img [ref=e560]
+            - generic [ref=e563]: Documentos
+          - button "Menú" [ref=e564] [cursor=pointer]:
+            - img [ref=e565]
+            - generic [ref=e566]: Menú
+        - generic [ref=e567]:
+          - generic [ref=e569]:
+            - img [ref=e570]
+            - generic [ref=e571]:
+              - generic [ref=e572]: Menú
+              - generic [ref=e573]: Decide qué opciones aparecen en el menú lateral. Dashboard y Parámetros son siempre visibles.
+          - generic [ref=e574]:
+            - generic [ref=e576]: Maestros
+            - generic [ref=e577]:
+              - generic [ref=e578]:
+                - generic [ref=e579]: Propietarios
+                - generic [ref=e580]: Muestra la opción Propietarios en el menú lateral.
+              - generic [ref=e581]:
+                - generic "Activo" [ref=e582]:
+                  - checkbox [checked]
+                - button "?" [ref=e584] [cursor=pointer]
+            - generic [ref=e585]:
+              - generic [ref=e586]:
+                - generic [ref=e587]: Fincas / Edificios
+                - generic [ref=e588]: Muestra la opción Fincas / Edificios en el menú lateral.
+              - generic [ref=e589]:
+                - generic "Activo" [ref=e590]:
+                  - checkbox [checked]
+                - button "?" [ref=e592] [cursor=pointer]
+            - generic [ref=e593]:
+              - generic [ref=e594]:
+                - generic [ref=e595]: Pisos / Locales
+                - generic [ref=e596]: Muestra la opción Pisos / Locales en el menú lateral.
+              - generic [ref=e597]:
+                - generic "Activo" [ref=e598]:
+                  - checkbox [checked]
+                - button "?" [ref=e600] [cursor=pointer]
+            - generic [ref=e601]:
+              - generic [ref=e602]:
+                - generic [ref=e603]: Inquilinos
+                - generic [ref=e604]: Muestra la opción Inquilinos en el menú lateral.
+              - generic [ref=e605]:
+                - generic "Activo" [ref=e606]:
+                  - checkbox [checked]
+                - button "?" [ref=e608] [cursor=pointer]
+            - generic [ref=e610]: Alquileres
+            - generic [ref=e611]:
+              - generic [ref=e612]:
+                - generic [ref=e613]: Contratos
+                - generic [ref=e614]: Muestra la opción Contratos en el menú lateral.
+              - generic [ref=e615]:
+                - generic "Activo" [ref=e616]:
+                  - checkbox [checked]
+                - button "?" [ref=e618] [cursor=pointer]
+            - generic [ref=e619]:
+              - generic [ref=e620]:
+                - generic [ref=e621]: Recibos
+                - generic [ref=e622]: Muestra la opción Recibos en el menú lateral.
+              - generic [ref=e623]:
+                - generic "Activo" [ref=e624]:
+                  - checkbox [checked]
+                - button "?" [ref=e626] [cursor=pointer]
+            - generic [ref=e627]:
+              - generic [ref=e628]:
+                - generic [ref=e629]: Facturas
+                - generic [ref=e630]: Muestra la opción Facturas en el menú lateral.
+              - generic [ref=e631]:
+                - generic "Activo" [ref=e632]:
+                  - checkbox [checked]
+                - button "?" [ref=e634] [cursor=pointer]
+            - generic [ref=e635]:
+              - generic [ref=e636]:
+                - generic [ref=e637]: Generar Recibos
+                - generic [ref=e638]: Muestra la opción Generar Recibos en el menú lateral.
+              - generic [ref=e639]:
+                - generic "Activo" [ref=e640]:
+                  - checkbox [checked]
+                - button "?" [ref=e642] [cursor=pointer]
+            - generic [ref=e644]: Informes
+            - generic [ref=e645]:
+              - generic [ref=e646]:
+                - generic [ref=e647]: Informes Excel
+                - generic [ref=e648]: Muestra la opción Informes Excel en el menú lateral.
+              - generic [ref=e649]:
+                - generic "Activo" [ref=e650]:
+                  - checkbox [checked]
+                - button "?" [ref=e652] [cursor=pointer]
+            - generic [ref=e653]:
+              - generic [ref=e654]:
+                - generic [ref=e655]: Calendario Cobros
+                - generic [ref=e656]: Muestra la opción Calendario de Cobros en el menú lateral.
+              - generic [ref=e657]:
+                - generic "Activo" [ref=e658]:
+                  - checkbox [checked]
+                - button "?" [ref=e660] [cursor=pointer]
+            - generic [ref=e661]:
+              - generic [ref=e662]:
+                - generic [ref=e663]: Morosidad
+                - generic [ref=e664]: Muestra la opción Informe de Morosidad en el menú lateral.
+              - generic [ref=e665]:
+                - generic "Activo" [ref=e666]:
+                  - checkbox [checked]
+                - button "?" [ref=e668] [cursor=pointer]
+            - generic [ref=e669]:
+              - generic [ref=e670]:
+                - generic [ref=e671]: Actividad
+                - generic [ref=e672]: Muestra la opción Historial de Actividad en el menú lateral.
+              - generic [ref=e673]:
+                - generic "Activo" [ref=e674]:
+                  - checkbox [checked]
+                - button "?" [ref=e676] [cursor=pointer]
+            - generic [ref=e678]: Configuración
+            - generic [ref=e679]:
+              - generic [ref=e680]:
+                - generic [ref=e681]: Mi Empresa
+                - generic [ref=e682]: Muestra la opción Mi Empresa en el menú lateral.
+              - generic [ref=e683]:
+                - generic "Activo" [ref=e684]:
+                  - checkbox [checked]
+                - button "?" [ref=e686] [cursor=pointer]
+            - generic [ref=e687]:
+              - generic [ref=e688]:
+                - generic [ref=e689]: VERI*FACTU
+                - generic [ref=e690]: Muestra la opción VERI*FACTU en el menú lateral.
+              - generic [ref=e691]:
+                - generic "Activo" [ref=e692]:
+                  - checkbox [checked]
+                - button "?" [ref=e694] [cursor=pointer]
+            - generic [ref=e695]:
+              - generic [ref=e696]:
+                - generic [ref=e697]: Plantillas
+                - generic [ref=e698]: Muestra la opción Plantillas DOCX en el menú lateral.
+              - generic [ref=e699]:
+                - generic "Activo" [ref=e700]:
+                  - checkbox [checked]
+                - button "?" [ref=e702] [cursor=pointer]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

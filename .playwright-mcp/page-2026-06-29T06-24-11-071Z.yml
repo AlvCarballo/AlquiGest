@@ -1,0 +1,283 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Informes Excel
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [active] [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+      - generic [ref=e2143]:
+        - generic [ref=e2145]: Informes Excel
+        - generic [ref=e2146]:
+          - generic [ref=e2147]:
+            - generic [ref=e2148]: Año del informe
+            - spinbutton [ref=e2149]: "2026"
+          - generic [ref=e2150]: Informes de gestión
+          - generic [ref=e2151]:
+            - generic [ref=e2152]:
+              - generic [ref=e2153]: 📋
+              - generic [ref=e2154]: Todos los recibos del año
+              - generic [ref=e2155]: Listado completo con base, IVA, IRPF, total, cobrado y pendiente.
+              - button "Descargar Excel" [ref=e2156] [cursor=pointer]:
+                - img [ref=e2157]
+                - text: Descargar Excel
+            - generic [ref=e2160]:
+              - generic [ref=e2161]: 🏢
+              - generic [ref=e2162]: Ingresos por finca
+              - generic [ref=e2163]: Ingresos mensuales agrupados por edificio o finca, con total anual.
+              - button "Descargar Excel" [ref=e2164] [cursor=pointer]:
+                - img [ref=e2165]
+                - text: Descargar Excel
+            - generic [ref=e2168]:
+              - generic [ref=e2169]: 🏠
+              - generic [ref=e2170]: Ingresos por piso/unidad
+              - generic [ref=e2171]: Detalle mensual de cada inmueble, con inquilino y total anual.
+              - button "Descargar Excel" [ref=e2172] [cursor=pointer]:
+                - img [ref=e2173]
+                - text: Descargar Excel
+            - generic [ref=e2176]:
+              - generic [ref=e2177]: ⏳
+              - generic [ref=e2178]: Recibos pendientes
+              - generic [ref=e2179]: Todos los recibos sin cobrar o con pago parcial, con importes.
+              - button "Descargar Excel" [ref=e2180] [cursor=pointer]:
+                - img [ref=e2181]
+                - text: Descargar Excel
+            - generic [ref=e2184]:
+              - generic [ref=e2185]: 💰
+              - generic [ref=e2186]: Histórico de cobros
+              - generic [ref=e2187]: Todos los pagos recibidos con fecha, método y cuenta.
+              - button "Descargar Excel" [ref=e2188] [cursor=pointer]:
+                - img [ref=e2189]
+                - text: Descargar Excel
+            - generic [ref=e2192]:
+              - generic [ref=e2193]: 👤
+              - generic [ref=e2194]: Resumen por propietario
+              - generic [ref=e2195]: Ingresos facturados y cobrados agrupados por propietario y finca.
+              - button "Descargar Excel" [ref=e2196] [cursor=pointer]:
+                - img [ref=e2197]
+                - text: Descargar Excel
+          - generic [ref=e2201]: Informes fiscales · Hacienda España
+          - generic [ref=e2202]:
+            - img [ref=e2203]
+            - generic [ref=e2205]:
+              - strong [ref=e2206]: Basados en normativa IRPF española (LIRPF, arts. 22-24).
+              - text: Estos informes son una ayuda para preparar la documentación.
+              - strong [ref=e2207]: Revise siempre los datos con su asesor fiscal o gestor
+              - text: antes de presentar cualquier declaración. Los
+              - emphasis [ref=e2208]: gastos deducibles
+              - text: no están registrados en la aplicación y deben añadirse manualmente en el Excel.
+          - generic [ref=e2209]:
+            - generic [ref=e2210]:
+              - generic [ref=e2211]: 📊
+              - generic [ref=e2212]: Rendimientos trimestrales (IRPF)
+              - generic [ref=e2213]: Ingresos por inmueble desglosados en T1-T4, con reducción del 60 % para arrendamiento de vivienda (art. 23.2 LIRPF). Base para la Declaración de la Renta.
+              - button "Descargar Excel" [ref=e2214] [cursor=pointer]:
+                - img [ref=e2215]
+                - text: Descargar Excel
+            - generic [ref=e2218]:
+              - generic [ref=e2219]: 📄
+              - generic [ref=e2220]: Declaración de la Renta — Cap. Inmobiliario
+              - generic [ref=e2221]: "Informe completo para la sección F del Modelo 100 (Rendimientos del Capital Inmobiliario): ingresos íntegros, reducción 60 %, columna para gastos deducibles y recordatorio de cada gasto aplicable."
+              - button "Descargar Excel" [ref=e2222] [cursor=pointer]:
+                - img [ref=e2223]
+                - text: Descargar Excel
+            - generic [ref=e2226]:
+              - generic [ref=e2227]: 🏛️
+              - generic [ref=e2228]: Modelo 115 / 180 — Retenciones arrendamiento
+              - generic [ref=e2229]: Base imponible y cuota de retención (19 %) por trimestre para el Modelo 115 (trimestral) y el Modelo 180 (resumen anual). Solo aplica si el arrendatario es empresa o autónomo.
+              - button "Descargar Excel" [ref=e2230] [cursor=pointer]:
+                - img [ref=e2231]
+                - text: Descargar Excel
+            - generic [ref=e2234]:
+              - generic [ref=e2235]: 📑
+              - generic [ref=e2236]: Modelo 303 — IVA trimestral (arrendamientos)
+              - generic [ref=e2237]: Desglose por trimestre de la base imponible y cuotas de IVA repercutido en recibos de arrendamiento. Aplicable cuando el arrendamiento está sujeto a IVA (locales, oficinas, naves).
+              - button "Descargar Excel" [ref=e2238] [cursor=pointer]:
+                - img [ref=e2239]
+                - text: Descargar Excel
+  - generic:
+    - generic:
+      - generic:
+        - generic: Nuevo contrato de alquiler
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Inquilino *
+            - combobox:
+              - option "-- Seleccionar --" [selected]
+              - option "Rodríguez Pérez, Laura"
+              - option "González Sánchez, Pedro"
+              - option "Martín López, María"
+              - option "Torres Ruiz, Carlos"
+              - option "Comercial Díaz S.L."
+              - option "Jiménez Vega, Sofía"
+          - generic:
+            - generic: Inmueble *
+            - combobox:
+              - option "-- Seleccionar --" [selected]
+              - option "C Mayor 15 1º A"
+              - option "C Mayor 15 1º B"
+              - option "C Mayor 15 2º A"
+              - option "C Mayor 15 2º B"
+              - option "AV Constitución 8 BAJO A"
+              - option "AV Constitución 8 1º A"
+          - generic:
+            - generic: Fecha inicio *
+            - textbox
+          - generic:
+            - generic: Fecha fin
+            - textbox
+          - generic:
+            - generic: Estado
+            - combobox:
+              - option "Activo" [selected]
+              - option "Finalizado"
+              - option "Rescindido"
+          - generic:
+            - generic: Duración
+            - generic:
+              - spinbutton
+              - combobox:
+                - option "años" [selected]
+                - option "meses"
+                - option "días"
+          - generic:
+            - generic: Condiciones económicas
+          - generic:
+            - generic: Renta base mensual (€) *
+            - spinbutton
+          - generic:
+            - generic: IVA (%)
+            - spinbutton: "0"
+          - generic:
+            - generic: IRPF (%)
+            - spinbutton: "0"
+          - generic:
+            - generic: Fianza (€)
+            - spinbutton
+          - generic:
+            - generic: Revisión anual
+            - combobox:
+              - option "IPC (INE)" [selected]
+              - option "IRAV (INE)"
+              - option "Subida fija %"
+              - option "Sin revisión"
+          - generic:
+            - generic: Día de pago
+            - spinbutton: "5"
+          - generic:
+            - generic: Observaciones / Cláusulas adicionales
+            - textbox
+          - generic:
+            - generic:
+              - text: Inquilinos secundarios
+              - generic:
+                - text: (firmantes adicionales — bloque
+                - code: "{{#INQUILINOS_SECUNDARIOS}}"
+                - text: en plantillas)
+          - generic:
+            - generic: Guarda el contrato primero para añadir inquilinos secundarios.
+          - generic:
+            - generic: "Fiador solidario (opcional — variables {{NombreFiador}}, {{NIFFiador}}, {{DireccionFiador}} en plantillas)"
+          - generic:
+            - generic: Nombre del fiador
+            - textbox "García Ruiz, José"
+          - generic:
+            - generic: NIF del fiador
+            - textbox "11223344C"
+          - generic:
+            - generic: Dirección del fiador
+            - textbox "Calle Ejemplo 3, 28001 Madrid"
+          - generic:
+            - generic:
+              - 'checkbox "Mostrar aviso en recibo: \"Recibo no válido sin el correspondiente justificante bancario\"" [checked]'
+              - text: "Mostrar aviso en recibo:"
+              - emphasis: "\"Recibo no válido sin el correspondiente justificante bancario\""
+          - generic:
+            - generic:
+              - 'checkbox "Mostrar aviso en factura: \"Esta factura no constituye justificante de pago sin el correspondiente justificante bancario\""'
+              - text: "Mostrar aviso en factura:"
+              - emphasis: "\"Esta factura no constituye justificante de pago sin el correspondiente justificante bancario\""
+      - generic:
+        - button "Cancelar"
+        - button "Guardar"

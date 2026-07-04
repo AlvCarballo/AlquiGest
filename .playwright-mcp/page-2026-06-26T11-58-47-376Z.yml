@@ -1,0 +1,154 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+      - generic [ref=e87]: AlquiGest v2.2.3 · 2026
+    - generic [ref=e88]:
+      - banner [ref=e89]:
+        - generic [ref=e90]: Importar datos (CSV / Excel)
+        - generic [ref=e91]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e92]
+        - generic [ref=e93]:
+          - button "Alternar modo oscuro" [ref=e94] [cursor=pointer]:
+            - img [ref=e95]
+          - button "Avisos de revisión anual" [ref=e102] [cursor=pointer]:
+            - img [ref=e103]
+      - generic [ref=e106]:
+        - generic [ref=e680]:
+          - heading "Importar datos" [level=2] [ref=e681]
+          - text: CSV o Excel (.xlsx)
+        - generic [ref=e682]:
+          - generic [ref=e684]:
+            - generic [ref=e685]: ¿Qué importar?
+            - combobox [ref=e686]:
+              - option "Inquilinos" [selected]
+              - option "Propietarios"
+          - generic [ref=e687] [cursor=pointer]:
+            - img [ref=e688]
+            - generic [ref=e691]: Arrastra tu fichero aquí
+            - generic [ref=e692]: o haz clic para seleccionar
+            - generic [ref=e693]:
+              - generic [ref=e694]: .CSV
+              - generic [ref=e695]: .XLSX
+          - generic [ref=e698]:
+            - generic [ref=e699]:
+              - generic [ref=e700]: 3 registros detectados
+              - generic [ref=e701]: Excel
+            - table [ref=e703]:
+              - rowgroup [ref=e704]:
+                - row "nombre nif telefono movil email" [ref=e705]:
+                  - columnheader "nombre" [ref=e706]
+                  - columnheader "nif" [ref=e707]
+                  - columnheader "telefono" [ref=e708]
+                  - columnheader "movil" [ref=e709]
+                  - columnheader "email" [ref=e710]
+              - rowgroup [ref=e711]:
+                - row "García López, Ana 12345678A 910000001 600000001 ana@test.com" [ref=e712]:
+                  - cell "García López, Ana" [ref=e713]
+                  - cell "12345678A" [ref=e714]
+                  - cell "910000001" [ref=e715]
+                  - cell "600000001" [ref=e716]
+                  - cell "ana@test.com" [ref=e717]
+                - row "Martínez Ruiz, Pedro 87654321B 910000002 600000002 pedro@test.com" [ref=e718]:
+                  - cell "Martínez Ruiz, Pedro" [ref=e719]
+                  - cell "87654321B" [ref=e720]
+                  - cell "910000002" [ref=e721]
+                  - cell "600000002" [ref=e722]
+                  - cell "pedro@test.com" [ref=e723]
+                - row "Fernández, Carmen 11111111C 600000003" [ref=e724]:
+                  - cell "Fernández, Carmen" [ref=e725]
+                  - cell "11111111C" [ref=e726]
+                  - cell [ref=e727]
+                  - cell "600000003" [ref=e728]
+                  - cell [ref=e729]
+          - generic [ref=e730]:
+            - button "Importar registros" [ref=e731] [cursor=pointer]:
+              - img [ref=e732]
+              - text: Importar registros
+            - button "Cancelar" [ref=e735] [cursor=pointer]
+          - group [ref=e696]:
+            - generic "Ver formato esperado" [ref=e697] [cursor=pointer]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Recibo de entrega de fianza
+        - button:
+          - img
+      - generic:
+        - paragraph: Genera un justificante de entrega de fianza para entregar al inquilino. No crea ningún recibo ni registro en la base de datos.
+        - generic:
+          - generic: Fecha de entrega
+          - textbox: 2026-06-26
+      - generic:
+        - button "Imprimir / Guardar PDF":
+          - img
+          - text: Imprimir / Guardar PDF
+        - button "Cancelar"

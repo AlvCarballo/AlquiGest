@@ -1,0 +1,251 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Inquilinos
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - button "Nuevo inquilino" [ref=e2386] [cursor=pointer]:
+            - img [ref=e2387]
+            - text: Nuevo inquilino
+      - generic [ref=e2388]:
+        - generic [ref=e2389]:
+          - generic [ref=e2390]: Inquilinos (6)
+          - generic [ref=e2391]:
+            - img
+            - searchbox "Buscar..." [ref=e2392]
+        - table [ref=e2394]:
+          - rowgroup [ref=e2395]:
+            - row "Nombre ▲ NIF Teléfono Email Estado" [ref=e2396]:
+              - columnheader "Nombre ▲" [ref=e2397] [cursor=pointer]
+              - columnheader "NIF" [ref=e2398] [cursor=pointer]
+              - columnheader "Teléfono" [ref=e2399] [cursor=pointer]
+              - columnheader "Email" [ref=e2400] [cursor=pointer]
+              - columnheader "Estado" [ref=e2401] [cursor=pointer]
+              - columnheader [ref=e2402]
+          - rowgroup [ref=e2403]:
+            - row "Comercial Díaz S.L. B98765432 91 700 1234 admin@comercialdiaz.es Activo Pagos Historial" [ref=e2404]:
+              - cell "Comercial Díaz S.L." [ref=e2405]:
+                - strong [ref=e2406]: Comercial Díaz S.L.
+              - cell "B98765432" [ref=e2407]
+              - cell "91 700 1234" [ref=e2408]
+              - cell "admin@comercialdiaz.es" [ref=e2409]
+              - cell "Activo" [ref=e2410]:
+                - generic [ref=e2411]: Activo
+              - cell "Pagos Historial" [ref=e2412]:
+                - button "Pagos" [ref=e2413] [cursor=pointer]
+                - button "Historial" [ref=e2414] [cursor=pointer]
+                - button "Editar" [ref=e2415] [cursor=pointer]:
+                  - img [ref=e2416]
+                - button "Eliminar" [ref=e2419] [cursor=pointer]:
+                  - img [ref=e2420]
+            - row "González Sánchez, Pedro 22222222D 622 200 300 pedro.gonzalez@gmail.com Activo Pagos Historial" [ref=e2423]:
+              - cell "González Sánchez, Pedro" [ref=e2424]:
+                - strong [ref=e2425]: González Sánchez, Pedro
+              - cell "22222222D" [ref=e2426]
+              - cell "622 200 300" [ref=e2427]
+              - cell "pedro.gonzalez@gmail.com" [ref=e2428]
+              - cell "Activo" [ref=e2429]:
+                - generic [ref=e2430]: Activo
+              - cell "Pagos Historial" [ref=e2431]:
+                - button "Pagos" [ref=e2432] [cursor=pointer]
+                - button "Historial" [ref=e2433] [cursor=pointer]
+                - button "Editar" [ref=e2434] [cursor=pointer]:
+                  - img [ref=e2435]
+                - button "Eliminar" [ref=e2438] [cursor=pointer]:
+                  - img [ref=e2439]
+            - row "Jiménez Vega, Sofía 55555555G 655 500 600 sofia.jimenez@gmail.com Activo Pagos Historial" [ref=e2442]:
+              - cell "Jiménez Vega, Sofía" [ref=e2443]:
+                - strong [ref=e2444]: Jiménez Vega, Sofía
+              - cell "55555555G" [ref=e2445]
+              - cell "655 500 600" [ref=e2446]
+              - cell "sofia.jimenez@gmail.com" [ref=e2447]
+              - cell "Activo" [ref=e2448]:
+                - generic [ref=e2449]: Activo
+              - cell "Pagos Historial" [ref=e2450]:
+                - button "Pagos" [ref=e2451] [cursor=pointer]
+                - button "Historial" [ref=e2452] [cursor=pointer]
+                - button "Editar" [ref=e2453] [cursor=pointer]:
+                  - img [ref=e2454]
+                - button "Eliminar" [ref=e2457] [cursor=pointer]:
+                  - img [ref=e2458]
+            - row "Martín López, María 33333333E 633 300 400 maria.martin@outlook.com Activo Pagos Historial" [ref=e2461]:
+              - cell "Martín López, María" [ref=e2462]:
+                - strong [ref=e2463]: Martín López, María
+              - cell "33333333E" [ref=e2464]
+              - cell "633 300 400" [ref=e2465]
+              - cell "maria.martin@outlook.com" [ref=e2466]
+              - cell "Activo" [ref=e2467]:
+                - generic [ref=e2468]: Activo
+              - cell "Pagos Historial" [ref=e2469]:
+                - button "Pagos" [ref=e2470] [cursor=pointer]
+                - button "Historial" [ref=e2471] [cursor=pointer]
+                - button "Editar" [ref=e2472] [cursor=pointer]:
+                  - img [ref=e2473]
+                - button "Eliminar" [ref=e2476] [cursor=pointer]:
+                  - img [ref=e2477]
+            - row "Rodríguez Pérez, Laura 11111111C 611 100 200 laura.rodriguez@gmail.com Activo Pagos Historial" [ref=e2480]:
+              - cell "Rodríguez Pérez, Laura" [ref=e2481]:
+                - strong [ref=e2482]: Rodríguez Pérez, Laura
+              - cell "11111111C" [ref=e2483]
+              - cell "611 100 200" [ref=e2484]
+              - cell "laura.rodriguez@gmail.com" [ref=e2485]
+              - cell "Activo" [ref=e2486]:
+                - generic [ref=e2487]: Activo
+              - cell "Pagos Historial" [ref=e2488]:
+                - button "Pagos" [ref=e2489] [cursor=pointer]
+                - button "Historial" [ref=e2490] [cursor=pointer]
+                - button "Editar" [ref=e2491] [cursor=pointer]:
+                  - img [ref=e2492]
+                - button "Eliminar" [ref=e2495] [cursor=pointer]:
+                  - img [ref=e2496]
+            - row "Torres Ruiz, Carlos 44444444F 644 400 500 carlos.torres@gmail.com Activo Pagos Historial" [ref=e2499]:
+              - cell "Torres Ruiz, Carlos" [ref=e2500]:
+                - strong [ref=e2501]: Torres Ruiz, Carlos
+              - cell "44444444F" [ref=e2502]
+              - cell "644 400 500" [ref=e2503]
+              - cell "carlos.torres@gmail.com" [ref=e2504]
+              - cell "Activo" [ref=e2505]:
+                - generic [ref=e2506]: Activo
+              - cell "Pagos Historial" [ref=e2507]:
+                - button "Pagos" [ref=e2508] [cursor=pointer]
+                - button "Historial" [ref=e2509] [cursor=pointer]
+                - button "Editar" [ref=e2510] [cursor=pointer]:
+                  - img [ref=e2511]
+                - button "Eliminar" [ref=e2514] [cursor=pointer]:
+                  - img [ref=e2515]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Nuevo propietario
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Datos personales
+          - generic:
+            - generic: Nombre completo *
+            - textbox "Apellidos, Nombre o Razón Social"
+          - generic:
+            - generic: NIF / CIF
+            - textbox "12345678A"
+          - generic:
+            - generic: Teléfono
+            - textbox "600 000 000"
+          - generic:
+            - generic: Email
+            - textbox "propietario@email.com"
+          - generic:
+            - generic: Tipo IRPF
+            - combobox:
+              - option "Sin IRPF" [selected]
+              - option "Física"
+              - option "Jurídica"
+          - generic:
+            - generic: Dirección
+          - generic:
+            - generic: Dirección
+            - textbox "Calle, número, piso..."
+          - generic:
+            - generic: C.P.
+            - textbox "28001"
+          - generic:
+            - generic: Municipio
+            - textbox "Madrid"
+          - generic:
+            - generic: Provincia
+            - textbox "Madrid"
+          - generic:
+            - generic: País
+            - textbox "España"
+          - generic:
+            - generic: Datos bancarios
+          - generic:
+            - generic: IBAN
+            - textbox "ES00 0000 0000 0000 0000 0000"
+          - generic:
+            - generic: Observaciones
+            - textbox
+      - generic:
+        - button "Cancelar"
+        - button "Guardar"

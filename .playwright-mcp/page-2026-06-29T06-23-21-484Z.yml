@@ -1,0 +1,224 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Inquilinos
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [active] [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - button "Nuevo inquilino" [ref=e1687] [cursor=pointer]:
+            - img [ref=e1688]
+            - text: Nuevo inquilino
+      - generic [ref=e1689]:
+        - generic [ref=e1690]:
+          - generic [ref=e1691]: Inquilinos (6)
+          - generic [ref=e1692]:
+            - img
+            - searchbox "Buscar..." [ref=e1693]
+        - table [ref=e1695]:
+          - rowgroup [ref=e1696]:
+            - row "Nombre ▲ NIF Teléfono Email Estado" [ref=e1697]:
+              - columnheader "Nombre ▲" [ref=e1698] [cursor=pointer]
+              - columnheader "NIF" [ref=e1699] [cursor=pointer]
+              - columnheader "Teléfono" [ref=e1700] [cursor=pointer]
+              - columnheader "Email" [ref=e1701] [cursor=pointer]
+              - columnheader "Estado" [ref=e1702] [cursor=pointer]
+              - columnheader [ref=e1703]
+          - rowgroup [ref=e1704]:
+            - row "Comercial Díaz S.L. B98765432 91 700 1234 admin@comercialdiaz.es Activo Pagos Historial" [ref=e1705]:
+              - cell "Comercial Díaz S.L." [ref=e1706]:
+                - strong [ref=e1707]: Comercial Díaz S.L.
+              - cell "B98765432" [ref=e1708]
+              - cell "91 700 1234" [ref=e1709]
+              - cell "admin@comercialdiaz.es" [ref=e1710]
+              - cell "Activo" [ref=e1711]:
+                - generic [ref=e1712]: Activo
+              - cell "Pagos Historial" [ref=e1713]:
+                - button "Pagos" [ref=e1714] [cursor=pointer]
+                - button "Historial" [ref=e1715] [cursor=pointer]
+                - button "Editar" [ref=e1716] [cursor=pointer]:
+                  - img [ref=e1717]
+                - button "Eliminar" [ref=e1720] [cursor=pointer]:
+                  - img [ref=e1721]
+            - row "González Sánchez, Pedro 22222222D 622 200 300 pedro.gonzalez@gmail.com Activo Pagos Historial" [ref=e1724]:
+              - cell "González Sánchez, Pedro" [ref=e1725]:
+                - strong [ref=e1726]: González Sánchez, Pedro
+              - cell "22222222D" [ref=e1727]
+              - cell "622 200 300" [ref=e1728]
+              - cell "pedro.gonzalez@gmail.com" [ref=e1729]
+              - cell "Activo" [ref=e1730]:
+                - generic [ref=e1731]: Activo
+              - cell "Pagos Historial" [ref=e1732]:
+                - button "Pagos" [ref=e1733] [cursor=pointer]
+                - button "Historial" [ref=e1734] [cursor=pointer]
+                - button "Editar" [ref=e1735] [cursor=pointer]:
+                  - img [ref=e1736]
+                - button "Eliminar" [ref=e1739] [cursor=pointer]:
+                  - img [ref=e1740]
+            - row "Jiménez Vega, Sofía 55555555G 655 500 600 sofia.jimenez@gmail.com Activo Pagos Historial" [ref=e1743]:
+              - cell "Jiménez Vega, Sofía" [ref=e1744]:
+                - strong [ref=e1745]: Jiménez Vega, Sofía
+              - cell "55555555G" [ref=e1746]
+              - cell "655 500 600" [ref=e1747]
+              - cell "sofia.jimenez@gmail.com" [ref=e1748]
+              - cell "Activo" [ref=e1749]:
+                - generic [ref=e1750]: Activo
+              - cell "Pagos Historial" [ref=e1751]:
+                - button "Pagos" [ref=e1752] [cursor=pointer]
+                - button "Historial" [ref=e1753] [cursor=pointer]
+                - button "Editar" [ref=e1754] [cursor=pointer]:
+                  - img [ref=e1755]
+                - button "Eliminar" [ref=e1758] [cursor=pointer]:
+                  - img [ref=e1759]
+            - row "Martín López, María 33333333E 633 300 400 maria.martin@outlook.com Activo Pagos Historial" [ref=e1762]:
+              - cell "Martín López, María" [ref=e1763]:
+                - strong [ref=e1764]: Martín López, María
+              - cell "33333333E" [ref=e1765]
+              - cell "633 300 400" [ref=e1766]
+              - cell "maria.martin@outlook.com" [ref=e1767]
+              - cell "Activo" [ref=e1768]:
+                - generic [ref=e1769]: Activo
+              - cell "Pagos Historial" [ref=e1770]:
+                - button "Pagos" [ref=e1771] [cursor=pointer]
+                - button "Historial" [ref=e1772] [cursor=pointer]
+                - button "Editar" [ref=e1773] [cursor=pointer]:
+                  - img [ref=e1774]
+                - button "Eliminar" [ref=e1777] [cursor=pointer]:
+                  - img [ref=e1778]
+            - row "Rodríguez Pérez, Laura 11111111C 611 100 200 laura.rodriguez@gmail.com Activo Pagos Historial" [ref=e1781]:
+              - cell "Rodríguez Pérez, Laura" [ref=e1782]:
+                - strong [ref=e1783]: Rodríguez Pérez, Laura
+              - cell "11111111C" [ref=e1784]
+              - cell "611 100 200" [ref=e1785]
+              - cell "laura.rodriguez@gmail.com" [ref=e1786]
+              - cell "Activo" [ref=e1787]:
+                - generic [ref=e1788]: Activo
+              - cell "Pagos Historial" [ref=e1789]:
+                - button "Pagos" [ref=e1790] [cursor=pointer]
+                - button "Historial" [ref=e1791] [cursor=pointer]
+                - button "Editar" [ref=e1792] [cursor=pointer]:
+                  - img [ref=e1793]
+                - button "Eliminar" [ref=e1796] [cursor=pointer]:
+                  - img [ref=e1797]
+            - row "Torres Ruiz, Carlos 44444444F 644 400 500 carlos.torres@gmail.com Activo Pagos Historial" [ref=e1800]:
+              - cell "Torres Ruiz, Carlos" [ref=e1801]:
+                - strong [ref=e1802]: Torres Ruiz, Carlos
+              - cell "44444444F" [ref=e1803]
+              - cell "644 400 500" [ref=e1804]
+              - cell "carlos.torres@gmail.com" [ref=e1805]
+              - cell "Activo" [ref=e1806]:
+                - generic [ref=e1807]: Activo
+              - cell "Pagos Historial" [ref=e1808]:
+                - button "Pagos" [ref=e1809] [cursor=pointer]
+                - button "Historial" [ref=e1810] [cursor=pointer]
+                - button "Editar" [ref=e1811] [cursor=pointer]:
+                  - img [ref=e1812]
+                - button "Eliminar" [ref=e1815] [cursor=pointer]:
+                  - img [ref=e1816]
+  - generic [ref=e889]:
+    - generic [ref=e890]:
+      - generic [ref=e891]: Historial — Comercial Díaz S.L.
+      - button [ref=e892] [cursor=pointer]:
+        - img [ref=e893]
+    - generic [ref=e896]:
+      - generic [ref=e1819]:
+        - button "Contratos (1)" [ref=e1820] [cursor=pointer]
+        - button "Recibos (5)" [ref=e1821] [cursor=pointer]
+        - button "Facturas (0)" [ref=e1822] [cursor=pointer]
+      - table [ref=e1824]:
+        - rowgroup [ref=e1825]:
+          - row "Inmueble Inicio Fin Renta Estado" [ref=e1826]:
+            - columnheader "Inmueble" [ref=e1827]
+            - columnheader "Inicio" [ref=e1828]
+            - columnheader "Fin" [ref=e1829]
+            - columnheader "Renta" [ref=e1830]
+            - columnheader "Estado" [ref=e1831]
+        - rowgroup [ref=e1832]:
+          - row "AV Constitución 8 BAJO A 1/1/2022 31/12/2024 1200,00 € activo" [ref=e1833]:
+            - cell "AV Constitución 8 BAJO A" [ref=e1834]
+            - cell "1/1/2022" [ref=e1835]
+            - cell "31/12/2024" [ref=e1836]
+            - cell "1200,00 €" [ref=e1837]
+            - cell "activo" [ref=e1838]:
+              - generic [ref=e1839]: activo
+    - generic [ref=e1308]:
+      - button "Cerrar" [ref=e1840] [cursor=pointer]
+      - button "Ver recibos" [ref=e1841] [cursor=pointer]

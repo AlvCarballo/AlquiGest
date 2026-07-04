@@ -1,0 +1,281 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+        - generic [ref=e70]:
+          - generic [ref=e71]: Configuración
+          - generic [ref=e72] [cursor=pointer]:
+            - img [ref=e73]
+            - text: Mi Empresa
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: VERI*FACTU
+      - generic [ref=e79]: AlquiGest v2.0.0 · 2026
+    - generic [ref=e80]:
+      - banner [ref=e81]:
+        - generic [ref=e82]: Contratos
+        - generic [ref=e83]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e84]
+        - generic [ref=e85]:
+          - button "Alternar modo oscuro" [ref=e86] [cursor=pointer]:
+            - img [ref=e87]
+          - button "Avisos de revisión anual" [ref=e94] [cursor=pointer]:
+            - img [ref=e95]
+          - button "Nuevo contrato" [ref=e1327] [cursor=pointer]:
+            - img [ref=e1328]
+            - text: Nuevo contrato
+      - generic [ref=e1329]:
+        - generic [ref=e1330]:
+          - generic [ref=e1331]: Contratos (6)
+          - generic [ref=e1332]:
+            - combobox [ref=e1333]:
+              - option "Todos" [selected]
+              - option "Activos"
+              - option "Finalizados"
+              - option "Rescindidos"
+            - generic [ref=e1334]:
+              - img
+              - searchbox "Buscar..." [ref=e1335]
+        - table [ref=e1337]:
+          - rowgroup [ref=e1338]:
+            - row "Inquilino Inmueble Inicio Baja / Fin Renta Estado ▲" [ref=e1339]:
+              - columnheader "Inquilino" [ref=e1340] [cursor=pointer]
+              - columnheader "Inmueble" [ref=e1341] [cursor=pointer]
+              - columnheader "Inicio" [ref=e1342] [cursor=pointer]
+              - columnheader "Baja / Fin" [ref=e1343] [cursor=pointer]
+              - columnheader "Renta" [ref=e1344] [cursor=pointer]
+              - columnheader "Estado ▲" [ref=e1345] [cursor=pointer]
+              - columnheader [ref=e1346]
+          - rowgroup [ref=e1347]:
+            - row "Jiménez Vega, Sofía AV Constitución 8 1º A 1/6/2024 31/5/2025 800,00 € Activo Generar recibo Baja" [ref=e1348]:
+              - cell "Jiménez Vega, Sofía" [ref=e1349]:
+                - strong [ref=e1350]: Jiménez Vega, Sofía
+              - cell "AV Constitución 8 1º A" [ref=e1351]
+              - cell "1/6/2024" [ref=e1352]
+              - cell "31/5/2025" [ref=e1353]
+              - cell "800,00 €" [ref=e1354]:
+                - strong [ref=e1355]: 800,00 €
+              - cell "Activo" [ref=e1356]:
+                - generic [ref=e1357]: Activo
+              - cell "Generar recibo Baja" [ref=e1358]:
+                - button "Generar recibo" [ref=e1359] [cursor=pointer]:
+                  - img [ref=e1360]
+                  - text: Generar recibo
+                - button "Baja" [ref=e1363] [cursor=pointer]
+                - button "Editar" [ref=e1364] [cursor=pointer]:
+                  - img [ref=e1365]
+                - button "Eliminar" [ref=e1368] [cursor=pointer]:
+                  - img [ref=e1369]
+            - row "Comercial Díaz S.L. AV Constitución 8 BAJO A 1/1/2022 31/12/2024 1200,00 € Activo Generar recibo Baja" [ref=e1371]:
+              - cell "Comercial Díaz S.L." [ref=e1372]:
+                - strong [ref=e1373]: Comercial Díaz S.L.
+              - cell "AV Constitución 8 BAJO A" [ref=e1374]
+              - cell "1/1/2022" [ref=e1375]
+              - cell "31/12/2024" [ref=e1376]
+              - cell "1200,00 €" [ref=e1377]:
+                - strong [ref=e1378]: 1200,00 €
+              - cell "Activo" [ref=e1379]:
+                - generic [ref=e1380]: Activo
+              - cell "Generar recibo Baja" [ref=e1381]:
+                - button "Generar recibo" [ref=e1382] [cursor=pointer]:
+                  - img [ref=e1383]
+                  - text: Generar recibo
+                - button "Baja" [ref=e1386] [cursor=pointer]
+                - button "Editar" [ref=e1387] [cursor=pointer]:
+                  - img [ref=e1388]
+                - button "Eliminar" [ref=e1391] [cursor=pointer]:
+                  - img [ref=e1392]
+            - row "Rodríguez Pérez, Laura C Mayor 15 1º A 1/1/2024 31/12/2025 700,00 € Activo Generar recibo Baja" [ref=e1394]:
+              - cell "Rodríguez Pérez, Laura" [ref=e1395]:
+                - strong [ref=e1396]: Rodríguez Pérez, Laura
+              - cell "C Mayor 15 1º A" [ref=e1397]
+              - cell "1/1/2024" [ref=e1398]
+              - cell "31/12/2025" [ref=e1399]
+              - cell "700,00 €" [ref=e1400]:
+                - strong [ref=e1401]: 700,00 €
+              - cell "Activo" [ref=e1402]:
+                - generic [ref=e1403]: Activo
+              - cell "Generar recibo Baja" [ref=e1404]:
+                - button "Generar recibo" [ref=e1405] [cursor=pointer]:
+                  - img [ref=e1406]
+                  - text: Generar recibo
+                - button "Baja" [ref=e1409] [cursor=pointer]
+                - button "Editar" [ref=e1410] [cursor=pointer]:
+                  - img [ref=e1411]
+                - button "Eliminar" [ref=e1414] [cursor=pointer]:
+                  - img [ref=e1415]
+            - row "González Sánchez, Pedro C Mayor 15 1º B 1/3/2024 28/2/2025 650,00 € Activo Generar recibo Baja" [ref=e1417]:
+              - cell "González Sánchez, Pedro" [ref=e1418]:
+                - strong [ref=e1419]: González Sánchez, Pedro
+              - cell "C Mayor 15 1º B" [ref=e1420]
+              - cell "1/3/2024" [ref=e1421]
+              - cell "28/2/2025" [ref=e1422]
+              - cell "650,00 €" [ref=e1423]:
+                - strong [ref=e1424]: 650,00 €
+              - cell "Activo" [ref=e1425]:
+                - generic [ref=e1426]: Activo
+              - cell "Generar recibo Baja" [ref=e1427]:
+                - button "Generar recibo" [ref=e1428] [cursor=pointer]:
+                  - img [ref=e1429]
+                  - text: Generar recibo
+                - button "Baja" [ref=e1432] [cursor=pointer]
+                - button "Editar" [ref=e1433] [cursor=pointer]:
+                  - img [ref=e1434]
+                - button "Eliminar" [ref=e1437] [cursor=pointer]:
+                  - img [ref=e1438]
+            - row "Martín López, María C Mayor 15 2º A 1/6/2023 31/5/2024 720,00 € Activo Generar recibo Baja" [ref=e1440]:
+              - cell "Martín López, María" [ref=e1441]:
+                - strong [ref=e1442]: Martín López, María
+              - cell "C Mayor 15 2º A" [ref=e1443]
+              - cell "1/6/2023" [ref=e1444]
+              - cell "31/5/2024" [ref=e1445]
+              - cell "720,00 €" [ref=e1446]:
+                - strong [ref=e1447]: 720,00 €
+              - cell "Activo" [ref=e1448]:
+                - generic [ref=e1449]: Activo
+              - cell "Generar recibo Baja" [ref=e1450]:
+                - button "Generar recibo" [ref=e1451] [cursor=pointer]:
+                  - img [ref=e1452]
+                  - text: Generar recibo
+                - button "Baja" [ref=e1455] [cursor=pointer]
+                - button "Editar" [ref=e1456] [cursor=pointer]:
+                  - img [ref=e1457]
+                - button "Eliminar" [ref=e1460] [cursor=pointer]:
+                  - img [ref=e1461]
+            - row "Torres Ruiz, Carlos C Mayor 15 2º B 1/9/2024 31/8/2025 680,00 € Activo Generar recibo Baja" [ref=e1463]:
+              - cell "Torres Ruiz, Carlos" [ref=e1464]:
+                - strong [ref=e1465]: Torres Ruiz, Carlos
+              - cell "C Mayor 15 2º B" [ref=e1466]
+              - cell "1/9/2024" [ref=e1467]
+              - cell "31/8/2025" [ref=e1468]
+              - cell "680,00 €" [ref=e1469]:
+                - strong [ref=e1470]: 680,00 €
+              - cell "Activo" [ref=e1471]:
+                - generic [ref=e1472]: Activo
+              - cell "Generar recibo Baja" [ref=e1473]:
+                - button "Generar recibo" [ref=e1474] [cursor=pointer]:
+                  - img [ref=e1475]
+                  - text: Generar recibo
+                - button "Baja" [ref=e1478] [cursor=pointer]
+                - button "Editar" [ref=e1479] [cursor=pointer]:
+                  - img [ref=e1480]
+                - button "Eliminar" [ref=e1483] [cursor=pointer]:
+                  - img [ref=e1484]
+  - generic [ref=e385]:
+    - generic [ref=e386]:
+      - generic [ref=e387]: Generar recibo de alquiler
+      - button [ref=e388] [cursor=pointer]:
+        - img [ref=e389]
+    - generic [ref=e1486]:
+      - generic [ref=e1488]:
+        - text: "Contrato:"
+        - strong [ref=e1489]: Jiménez Vega, Sofía
+        - text: →
+        - strong [ref=e1490]: "-"
+      - generic [ref=e1491]:
+        - generic [ref=e1492]: Número de recibo
+        - textbox [ref=e1493]: REC2026-0031
+      - generic [ref=e1494]:
+        - generic [ref=e1495]: Fecha emisión
+        - textbox [ref=e1496]: 2026-06-25
+      - generic [ref=e1497]:
+        - generic [ref=e1498]: Período desde
+        - textbox [ref=e1499]: 2026-05-31
+      - generic [ref=e1500]:
+        - generic [ref=e1501]: Período hasta
+        - textbox [ref=e1502]: 2026-06-29
+      - generic [ref=e1503]:
+        - generic [ref=e1504]: Concepto período
+        - textbox [ref=e1505]: Alquiler junio de 2026
+      - generic [ref=e1506]:
+        - generic [ref=e1507]: Fecha límite pago
+        - textbox [ref=e1508]: 2026-06-04
+      - generic [ref=e1510]: Importes
+      - generic [ref=e1511]:
+        - generic [ref=e1512]: Renta base (€)
+        - spinbutton [ref=e1513]: "800"
+      - generic [ref=e1514]:
+        - generic [ref=e1515]: IVA (%)
+        - generic [ref=e1516]:
+          - spinbutton [ref=e1517]: "0"
+          - generic [ref=e1518]:
+            - text: =
+            - strong [ref=e1519]: "0.00"
+            - text: €
+      - generic [ref=e1520]:
+        - generic [ref=e1521]: IRPF (%) a deducir
+        - generic [ref=e1522]:
+          - spinbutton [ref=e1523]: "0"
+          - generic [ref=e1524]:
+            - text: =
+            - strong [ref=e1525]: "0.00"
+            - text: €
+      - generic [ref=e1526]:
+        - generic [ref=e1527]: TOTAL A COBRAR (€)
+        - spinbutton [ref=e1528]: "800.00"
+      - generic [ref=e1529]:
+        - generic [ref=e1530]: Conceptos adicionales (uno por línea)
+        - 'textbox "Comunidad: 45,00€ Seguro: 12,00€" [ref=e1531]':
+          - /placeholder: "Comunidad: 45,00€\nSeguro: 12,00€"
+      - generic [ref=e1532]:
+        - generic [ref=e1533]: Notas internas
+        - textbox "Notas internas del recibo..." [ref=e1534]
+    - generic [ref=e436]:
+      - button "Cancelar" [ref=e1535] [cursor=pointer]
+      - button "Crear recibo" [ref=e1536] [cursor=pointer]:
+        - img [ref=e1537]
+        - text: Crear recibo

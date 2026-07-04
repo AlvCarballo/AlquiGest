@@ -1,0 +1,8 @@
+[    3042ms] [LOG] [PDF] Iniciando: REC-202602-00001.pdf @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625k:189
+[    3043ms] [LOG] [PDF] b64 longitud: 311716 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625k:191
+[    3049ms] [LOG] [PDF] POST status: 200 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625k:203
+[    3049ms] [LOG] [PDF] Token recibido: 455aac7e5fc2b0db79a633edc2e28e3d @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625k:208
+[  103032ms] [LOG] [PDF] Iniciando: REC-202607-00037.pdf @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625k:189
+[  103032ms] [LOG] [PDF] b64 longitud: 258520 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625k:191
+[  103040ms] [LOG] [PDF] POST status: 200 @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625k:203
+[  103040ms] [LOG] [PDF] Token recibido: 4671dec9dacb8853291bd6b1cafac82f @ http://localhost/AlquiGest_v2/assets/js/helpers.js?v=20260625k:208

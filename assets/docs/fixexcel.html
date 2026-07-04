@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlquiGest – Solución: Error al exportar Excel</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue:#1a56db; --blue-dark:#1242a8; --blue-light:#e8f0fe;
+  --green:#057a55; --green-light:#def7ec;
+  --red:#c81e1e; --red-light:#fde8e8;
+  --orange:#c27803; --orange-light:#fdf6b2;
+  --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb;
+  --gray-300:#d1d5db; --gray-400:#9ca3af; --gray-500:#6b7280;
+  --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937; --gray-900:#111827;
+}
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; font-size:15px; line-height:1.7; color:var(--gray-800); background:var(--gray-50); }
+a { color:var(--blue); }
+.page { display:flex; min-height:100vh; }
+nav { width:240px; background:var(--gray-900); color:var(--gray-300); position:fixed; top:0; left:0; height:100vh; overflow-y:auto; display:flex; flex-direction:column; z-index:10; }
+.nav-logo { padding:20px; border-bottom:1px solid var(--gray-700); }
+.nav-logo-title { font-size:14px; font-weight:700; color:white; }
+.nav-logo-sub { font-size:11px; color:var(--gray-500); margin-top:2px; }
+.nav-section-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--gray-500); padding:10px 20px 4px; }
+.nav-item { display:block; padding:8px 20px; color:var(--gray-400); text-decoration:none; font-size:13px; border-left:3px solid transparent; }
+.nav-item:hover { background:var(--gray-800); color:white; }
+.nav-item.active { background:rgba(26,86,219,.25); color:#93c5fd; border-left-color:var(--blue); }
+main { margin-left:240px; flex:1; padding:40px 52px; max-width:900px; }
+h1 { font-size:30px; font-weight:800; color:var(--gray-900); letter-spacing:-.5px; margin-bottom:8px; }
+h2 { font-size:20px; font-weight:700; color:var(--gray-900); margin:44px 0 14px; padding-top:20px; border-top:2px solid var(--gray-200); scroll-margin-top:20px; }
+h3 { font-size:15px; font-weight:700; color:var(--gray-800); margin:24px 0 8px; }
+p { color:var(--gray-700); margin-bottom:12px; }
+ul { padding-left:20px; margin-bottom:12px; }
+li { color:var(--gray-700); margin-bottom:5px; }
+code { font-family:'SFMono-Regular',Consolas,monospace; font-size:13px; background:var(--gray-100); border:1px solid var(--gray-200); border-radius:4px; padding:1px 5px; color:var(--red); }
+.hero { background:linear-gradient(135deg,var(--gray-900) 0%,#7c2d12 100%); border-radius:14px; padding:36px 40px; color:white; margin-bottom:36px; }
+.hero-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:#fca5a5; margin-bottom:8px; }
+.hero h1 { color:white; }
+.hero p { color:#fed7aa; font-size:15px; margin:8px 0 0; }
+.callout { border-radius:10px; padding:14px 18px; margin:18px 0; display:flex; gap:12px; align-items:flex-start; }
+.callout-danger { background:var(--red-light); border-left:4px solid var(--red); }
+.callout-warning { background:var(--orange-light); border-left:4px solid var(--orange); }
+.callout-success { background:var(--green-light); border-left:4px solid var(--green); }
+.callout-info { background:var(--blue-light); border-left:4px solid var(--blue); }
+.callout-icon { font-size:18px; line-height:1.5; flex-shrink:0; }
+.callout-body strong { display:block; margin-bottom:3px; font-size:14px; }
+.callout-body p { margin:0; font-size:14px; }
+.code-block { background:var(--gray-900); border-radius:10px; overflow:hidden; margin:14px 0; }
+.code-header { background:var(--gray-800); padding:8px 14px; display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--gray-400); border-bottom:1px solid var(--gray-700); }
+.code-header-file { font-weight:600; color:var(--gray-300); }
+.code-tag { font-size:10px; padding:2px 7px; border-radius:4px; font-weight:600; }
+.tag-add { background:var(--green-light); color:var(--green); }
+.tag-modify { background:var(--orange-light); color:var(--orange); }
+pre { padding:18px; overflow-x:auto; color:#e2e8f0; line-height:1.6; font-family:'SFMono-Regular',Consolas,monospace; font-size:13px; }
+.line-del { color:#fca5a5; background:rgba(200,30,30,.15); display:block; }
+.line-add { color:#86efac; background:rgba(5,122,85,.15); display:block; }
+.line-cmt { color:#64748b; }
+.diagram { background:white; border:1px solid var(--gray-200); border-radius:12px; padding:24px; margin:20px 0; text-align:center; overflow-x:auto; }
+.steps { counter-reset:step; margin:18px 0; }
+.step { display:flex; gap:14px; margin-bottom:24px; align-items:flex-start; }
+.step-num { counter-increment:step; width:30px; height:30px; border-radius:50%; background:var(--blue); color:white; font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+.step-body h3 { margin-top:0; }
+.step-body p { margin-bottom:6px; }
+.os-tabs { display:flex; gap:8px; margin:16px 0 0; }
+.os-tab { padding:8px 18px; border-radius:8px 8px 0 0; font-size:13px; font-weight:600; cursor:pointer; border:1px solid var(--gray-200); border-bottom:none; background:var(--gray-100); color:var(--gray-500); }
+.os-tab.active { background:white; color:var(--gray-800); border-color:var(--gray-200); }
+.os-panel { display:none; background:white; border:1px solid var(--gray-200); border-radius:0 8px 8px 8px; padding:20px; }
+.os-panel.active { display:block; }
+@media(max-width:800px){ nav{display:none;} main{margin-left:0;padding:20px;} }
+</style>
+</head>
+<body>
+<div class="page">
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-title">AlquiGest</div>
+    <div class="nav-logo-sub">Solución: Error Excel</div>
+  </div>
+  <div style="padding:12px 0">
+    <a class="nav-item" href="../../index.html" style="color:#9ca3af;margin-bottom:4px">← Inicio</a>
+    <div style="height:1px;background:#374151;margin:4px 16px 8px"></div>
+    <div class="nav-section-title">Diagnóstico</div>
+    <a class="nav-item" href="#sintomas">Síntomas del error</a>
+    <a class="nav-item" href="#causa">Causa del problema</a>
+    <div class="nav-section-title" style="margin-top:8px">Solución</div>
+    <a class="nav-item" href="#xampp">XAMPP (Windows)</a>
+    <a class="nav-item" href="#mamp">MAMP (Mac/Win)</a>
+    <a class="nav-item" href="#verificar">Verificar la solución</a>
+    <div class="nav-section-title" style="margin-top:8px">Otros errores</div>
+    <a class="nav-item" href="#otros">Otros problemas comunes</a>
+  </div>
+</nav>
+<main>
+
+<div class="hero">
+  <div class="hero-label">Solución de problemas</div>
+  <h1>Error al exportar Excel</h1>
+  <p>Guía paso a paso para resolver el problema de descarga de archivos .xlsx en AlquiGest.</p>
+</div>
+
+<!-- SÍNTOMAS -->
+<h2 id="sintomas">Síntomas del error</h2>
+<p>Cuando el problema está presente, al pulsar cualquier botón de exportación Excel en AlquiGest ocurre una de estas cosas:</p>
+<ul>
+  <li>El navegador muestra un mensaje de error en texto plano en vez de descargar el archivo</li>
+  <li>Se descarga un archivo .xlsx pero Excel no puede abrirlo ("el archivo está dañado")</li>
+  <li>El servidor devuelve un error HTTP 500</li>
+</ul>
+
+<div class="callout callout-info">
+  <div class="callout-icon">🔍</div>
+  <div class="callout-body">
+    <strong>Cómo ver el mensaje de error exacto</strong>
+    <p>Abre las herramientas de desarrollador del navegador (F12), ve a la pestaña <strong>Red</strong>, haz clic en el botón de exportar y busca la petición a <code>export.php</code>. Haz clic en ella y mira la pestaña <strong>Respuesta</strong>.</p>
+  </div>
+</div>
+
+<!-- CAUSA -->
+<h2 id="causa">Causa del problema</h2>
+<p>AlquiGest genera archivos Excel (.xlsx) usando la extensión <strong>ZipArchive</strong> de PHP, que construye el fichero zip internamente sin necesitar librerías externas. El problema es que esta extensión viene <strong>desactivada por defecto</strong> en XAMPP para Windows.</p>
+
+<div class="diagram">
+  <svg width="580" height="180" viewBox="0 0 580 180" font-family="-apple-system,sans-serif">
+    <defs>
+      <marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1a56db"/></marker>
+      <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c81e1e"/></marker>
+      <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#057a55"/></marker>
+    </defs>
+    <!-- Navegador -->
+    <rect x="10" y="40" width="120" height="50" rx="8" fill="#e8f0fe" stroke="#1a56db" stroke-width="1.5"/>
+    <text x="70" y="62" font-size="12" font-weight="700" fill="#1a56db" text-anchor="middle">Navegador</text>
+    <text x="70" y="80" font-size="11" fill="#374151" text-anchor="middle">Botón "Exportar"</text>
+    <!-- Flecha 1 -->
+    <line x1="131" y1="65" x2="179" y2="65" stroke="#1a56db" stroke-width="1.5" marker-end="url(#arr1)"/>
+    <!-- Export.php -->
+    <rect x="180" y="40" width="120" height="50" rx="8" fill="#e8f0fe" stroke="#1a56db" stroke-width="1.5"/>
+    <text x="240" y="62" font-size="12" font-weight="700" fill="#1a56db" text-anchor="middle">export.php</text>
+    <text x="240" y="80" font-size="11" fill="#374151" text-anchor="middle">PHP procesa</text>
+    <!-- Flecha 2 -->
+    <line x1="301" y1="65" x2="349" y2="65" stroke="#1a56db" stroke-width="1.5" marker-end="url(#arr1)"/>
+    <!-- ZipArchive -->
+    <rect x="350" y="40" width="120" height="50" rx="8" fill="#fde8e8" stroke="#c81e1e" stroke-width="1.5"/>
+    <text x="410" y="58" font-size="12" font-weight="700" fill="#c81e1e" text-anchor="middle">ZipArchive</text>
+    <text x="410" y="72" font-size="10" fill="#c81e1e" text-anchor="middle">extensión PHP</text>
+    <text x="410" y="84" font-size="10" fill="#c81e1e" text-anchor="middle">❌ DESACTIVADA</text>
+    <!-- Error -->
+    <line x1="410" y1="91" x2="410" y2="120" stroke="#c81e1e" stroke-width="1.5" marker-end="url(#arr2)"/>
+    <rect x="340" y="121" width="140" height="32" rx="6" fill="#fde8e8" stroke="#c81e1e" stroke-width="1.5"/>
+    <text x="410" y="141" font-size="12" font-weight="600" fill="#c81e1e" text-anchor="middle">Error 500 / sin descarga</text>
+    <!-- Flecha solución OK (flecha verde hacia abajo a la derecha) -->
+    <rect x="490" y="40" width="78" height="50" rx="8" fill="#def7ec" stroke="#057a55" stroke-width="1.5"/>
+    <text x="529" y="60" font-size="11" font-weight="700" fill="#057a55" text-anchor="middle">ZipArchive</text>
+    <text x="529" y="74" font-size="10" fill="#057a55" text-anchor="middle">✅ ACTIVADA</text>
+    <text x="529" y="84" font-size="10" fill="#374151" text-anchor="middle">→ OK</text>
+    <text x="410" y="16" font-size="12" font-weight="700" fill="#374151" text-anchor="middle">Sin activar</text>
+    <text x="529" y="16" font-size="12" font-weight="700" fill="#057a55" text-anchor="middle">Solución</text>
+    <line x1="469" y1="65" x2="488" y2="65" stroke="#057a55" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr3)"/>
+  </svg>
+</div>
+
+<!-- SOLUCIÓN XAMPP -->
+<h2 id="xampp">Solución en XAMPP (Windows)</h2>
+<p>Sigue estos pasos exactamente en el orden indicado:</p>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>Abre el Panel de Control de XAMPP</h3>
+      <p>Busca el icono de XAMPP en la barra de tareas o en el escritorio y ábrelo. Verás los servicios Apache, MySQL, etc.</p>
+      <div class="diagram">
+        <svg width="500" height="160" viewBox="0 0 500 160" font-family="-apple-system,sans-serif">
+          <!-- Ventana XAMPP -->
+          <rect x="10" y="10" width="480" height="140" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+          <rect x="10" y="10" width="480" height="28" rx="6" fill="#e5e7eb"/>
+          <rect x="10" y="25" width="480" height="13" fill="#e5e7eb"/>
+          <text x="250" y="28" font-size="12" font-weight="600" fill="#374151" text-anchor="middle">XAMPP Control Panel</text>
+          <!-- Filas -->
+          <rect x="20" y="48" width="460" height="28" rx="4" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="32" y="65" font-size="12" fill="#374151">Module</text>
+          <text x="140" y="65" font-size="11" fill="#6b7280">Apache</text>
+          <!-- Start/Stop buttons -->
+          <rect x="290" y="52" width="50" height="20" rx="4" fill="#def7ec" stroke="#057a55" stroke-width="1"/>
+          <text x="315" y="65" font-size="10" font-weight="600" fill="#057a55" text-anchor="middle">Start</text>
+          <!-- Config button destacado -->
+          <rect x="348" y="52" width="50" height="20" rx="4" fill="#1a56db"/>
+          <text x="373" y="65" font-size="10" font-weight="700" fill="white" text-anchor="middle">Config</text>
+          <!-- Flecha señalando Config -->
+          <line x1="420" y1="62" x2="402" y2="62" stroke="#c81e1e" stroke-width="2" marker-end="url(#arr2)"/>
+          <text x="440" y="66" font-size="11" font-weight="700" fill="#c81e1e">← clic aquí</text>
+          <!-- MySQL row -->
+          <rect x="20" y="82" width="460" height="28" rx="4" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="140" y="98" font-size="11" fill="#6b7280">MySQL</text>
+          <rect x="290" y="86" width="50" height="20" rx="4" fill="#def7ec" stroke="#057a55" stroke-width="1"/>
+          <text x="315" y="99" font-size="10" font-weight="600" fill="#057a55" text-anchor="middle">Start</text>
+          <rect x="348" y="86" width="50" height="20" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+          <text x="373" y="99" font-size="10" fill="#6b7280" text-anchor="middle">Config</text>
+          <!-- Dropdown hint -->
+          <rect x="250" y="115" width="150" height="30" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" filter="drop-shadow(0 2px 4px rgba(0,0,0,.1))"/>
+          <text x="265" y="132" font-size="11" font-weight="600" fill="#1a56db">PHP (php.ini)</text>
+          <line x1="373" y1="72" x2="340" y2="115" stroke="#c81e1e" stroke-width="1.5" stroke-dasharray="4,2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Selecciona "PHP (php.ini)"</h3>
+      <p>En el menú desplegable del botón <strong>Config</strong> de Apache, selecciona <strong>PHP (php.ini)</strong>. Se abrirá el archivo de configuración de PHP en el Bloc de notas o en tu editor de texto predeterminado.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h3>Busca la línea de la extensión zip</h3>
+      <p>Dentro del Bloc de notas, pulsa <strong>Ctrl + F</strong> y busca el texto <code>extension=zip</code>. Encontrarás la línea con un punto y coma al inicio, que la desactiva:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-header-file">php.ini — antes</span>
+          <span class="code-tag tag-modify">Buscar esto</span>
+        </div>
+        <pre><span class="line-del">;extension=zip</span></pre>
+      </div>
+      <div class="callout callout-info">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <strong>El punto y coma es un comentario</strong>
+          <p>En php.ini, las líneas que empiezan con <code>;</code> están desactivadas (comentadas). Quitarlo activa la extensión.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <h3>Elimina el punto y coma y guarda</h3>
+      <p>Borra el <code>;</code> del inicio de la línea. Debe quedar exactamente así:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-header-file">php.ini — después</span>
+          <span class="code-tag tag-add">Resultado final</span>
+        </div>
+        <pre><span class="line-add">extension=zip</span></pre>
+      </div>
+      <p>Guarda el archivo con <strong>Ctrl + S</strong>. Si el sistema pide permisos de administrador, acéptalos.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <h3>Reinicia Apache en el Panel de XAMPP</h3>
+      <p>Vuelve al Panel de Control de XAMPP. Pulsa el botón <strong>Stop</strong> junto a Apache y luego <strong>Start</strong>. Los cambios en php.ini solo se aplican al reiniciar el servidor.</p>
+      <div class="callout callout-warning">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-body">
+          <strong>Es obligatorio reiniciar Apache</strong>
+          <p>Si no reinicias Apache, php.ini no se recarga y el cambio no tendrá efecto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOLUCIÓN MAMP -->
+<h2 id="mamp">Solución en MAMP</h2>
+<p>En MAMP la extensión ZipArchive suele estar activa por defecto. Si aun así falla, comprueba en <strong>MAMP → Preferencias → PHP</strong> la versión de PHP seleccionada y busca en el php.ini correspondiente.</p>
+
+<p>La ubicación del php.ini en MAMP (Mac) suele ser:</p>
+<div class="code-block">
+  <div class="code-header"><span class="code-header-file">Terminal Mac</span></div>
+  <pre>/Applications/MAMP/bin/php/phpX.X.X/conf/php.ini</pre>
+</div>
+<p>En MAMP para Windows:</p>
+<div class="code-block">
+  <div class="code-header"><span class="code-header-file">Ruta Windows</span></div>
+  <pre>C:\MAMP\bin\php\phpX.X.X\php.ini</pre>
+</div>
+
+<!-- VERIFICAR -->
+<h2 id="verificar">Verificar que la solución funciona</h2>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>Comprueba ZipArchive con phpinfo()</h3>
+      <p>Crea un archivo llamado <code>test.php</code> en la carpeta de AlquiGest con este contenido:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-header-file">test.php — temporal</span></div>
+        <pre>&lt;?php
+if (class_exists('ZipArchive')) {
+    echo '✅ ZipArchive ACTIVADO — La exportación Excel funcionará.';
+} else {
+    echo '❌ ZipArchive NO está disponible. Revisa los pasos anteriores.';
+}
+phpinfo();</pre>
+      </div>
+      <p>Accede a <code>http://localhost/AlquiGest_v3/test.php</code> en el navegador. Si ves el mensaje verde, está solucionado. <strong>Elimina test.php después de la prueba.</strong></p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Prueba la exportación en AlquiGest</h3>
+      <p>Vuelve a AlquiGest, ve a la pestaña de Informes y pulsa cualquier botón de exportación Excel. El archivo se debería descargar correctamente.</p>
+      <div class="callout callout-success">
+        <div class="callout-icon">✅</div>
+        <div class="callout-body">
+          <strong>Solución completada</strong>
+          <p>Si el archivo .xlsx se descarga y Excel puede abrirlo, el problema está resuelto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OTROS ERRORES -->
+<h2 id="otros">Otros problemas comunes con la exportación</h2>
+
+<h3>El archivo se descarga pero Excel dice "archivo dañado"</h3>
+<p>Esto ocurre cuando PHP emite algún aviso o mensaje de error antes de los bytes binarios del archivo Excel. Causas frecuentes:</p>
+<ul>
+  <li>PHP muestra un <strong>Warning</strong> o <strong>Notice</strong> al principio de la respuesta</li>
+  <li>El archivo php.ini tiene <code>display_errors = On</code> y PHP está mostrando errores en la salida</li>
+</ul>
+<p>Solución: cambia en php.ini <code>display_errors = Off</code> y reinicia Apache.</p>
+
+<h3>Error de permisos al crear el archivo temporal</h3>
+<p>En algunos sistemas Windows, PHP no tiene permisos para escribir en la carpeta temporal. Comprueba que la carpeta devuelta por <code>sys_get_temp_dir()</code> existe y tiene permisos de escritura para el usuario del servicio Apache.</p>
+
+<h3>La extensión ZipArchive aparece en phpinfo() pero aun así falla</h3>
+<p>Asegúrate de que estás editando el php.ini correcto. XAMPP puede tener varios. Busca en phpinfo() el campo <strong>Loaded Configuration File</strong> para saber cuál está usando realmente.</p>
+
+<p style="margin-top:44px;padding-top:20px;border-top:1px solid var(--gray-200);font-size:12px;color:var(--gray-400);">
+  AlquiGest v2.0.0 · Solución de problemas · Error en exportación Excel
+</p>
+</main>
+</div>
+<script>
+const sections = document.querySelectorAll('h2[id]');
+const links = document.querySelectorAll('nav .nav-item');
+new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const l = document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if (l) l.classList.add('active');
+    }
+  });
+}, { rootMargin:'-20% 0px -70% 0px' }).observe && sections.forEach(s => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const l = document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if (l) l.classList.add('active');
+      }
+    });
+  }, { rootMargin:'-20% 0px -70% 0px' }).observe(s);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Pisos / Locales
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - button "Nuevo piso / local" [ref=e440] [cursor=pointer]:
+            - img [ref=e441]
+            - text: Nuevo piso / local
+      - generic [ref=e442]:
+        - generic [ref=e443]:
+          - generic [ref=e444]: Pisos / Locales (6)
+          - generic [ref=e445]:
+            - img
+            - searchbox "Buscar..." [ref=e446]
+        - table [ref=e448]:
+          - rowgroup [ref=e449]:
+            - row "Inmueble Finca ▲ Tipo Ref. catastral Estado" [ref=e450]:
+              - columnheader "Inmueble" [ref=e451] [cursor=pointer]
+              - columnheader "Finca ▲" [ref=e452] [cursor=pointer]
+              - columnheader "Tipo" [ref=e453] [cursor=pointer]
+              - columnheader "Ref. catastral" [ref=e454] [cursor=pointer]
+              - columnheader "Estado" [ref=e455] [cursor=pointer]
+              - columnheader [ref=e456]
+          - rowgroup [ref=e457]:
+            - row "AV Constitución 8 1º A Av. Constitución 8 vivienda - Alquilado Jiménez Vega, Sofía" [ref=e458]:
+              - cell "AV Constitución 8 1º A" [ref=e459]:
+                - strong [ref=e460]: AV Constitución 8 1º A
+              - cell "Av. Constitución 8" [ref=e461]
+              - cell "vivienda" [ref=e462]
+              - cell "-" [ref=e463]
+              - cell "Alquilado Jiménez Vega, Sofía" [ref=e464]:
+                - generic [ref=e465]: Alquilado
+                - text: Jiménez Vega, Sofía
+              - cell [ref=e466]:
+                - button "Editar" [ref=e467] [cursor=pointer]:
+                  - img [ref=e468]
+                - button "Eliminar" [ref=e471] [cursor=pointer]:
+                  - img [ref=e472]
+            - row "AV Constitución 8 BAJO A Av. Constitución 8 local - Alquilado Comercial Díaz S.L." [ref=e474]:
+              - cell "AV Constitución 8 BAJO A" [ref=e475]:
+                - strong [ref=e476]: AV Constitución 8 BAJO A
+              - cell "Av. Constitución 8" [ref=e477]
+              - cell "local" [ref=e478]
+              - cell "-" [ref=e479]
+              - cell "Alquilado Comercial Díaz S.L." [ref=e480]:
+                - generic [ref=e481]: Alquilado
+                - text: Comercial Díaz S.L.
+              - cell [ref=e482]:
+                - button "Editar" [ref=e483] [cursor=pointer]:
+                  - img [ref=e484]
+                - button "Eliminar" [ref=e487] [cursor=pointer]:
+                  - img [ref=e488]
+            - row "C Mayor 15 1º A C/ Mayor 15 vivienda - Alquilado Rodríguez Pérez, Laura" [ref=e490]:
+              - cell "C Mayor 15 1º A" [ref=e491]:
+                - strong [ref=e492]: C Mayor 15 1º A
+              - cell "C/ Mayor 15" [ref=e493]
+              - cell "vivienda" [ref=e494]
+              - cell "-" [ref=e495]
+              - cell "Alquilado Rodríguez Pérez, Laura" [ref=e496]:
+                - generic [ref=e497]: Alquilado
+                - text: Rodríguez Pérez, Laura
+              - cell [ref=e498]:
+                - button "Editar" [ref=e499] [cursor=pointer]:
+                  - img [ref=e500]
+                - button "Eliminar" [ref=e503] [cursor=pointer]:
+                  - img [ref=e504]
+            - row "C Mayor 15 1º B C/ Mayor 15 vivienda - Alquilado González Sánchez, Pedro" [ref=e506]:
+              - cell "C Mayor 15 1º B" [ref=e507]:
+                - strong [ref=e508]: C Mayor 15 1º B
+              - cell "C/ Mayor 15" [ref=e509]
+              - cell "vivienda" [ref=e510]
+              - cell "-" [ref=e511]
+              - cell "Alquilado González Sánchez, Pedro" [ref=e512]:
+                - generic [ref=e513]: Alquilado
+                - text: González Sánchez, Pedro
+              - cell [ref=e514]:
+                - button "Editar" [ref=e515] [cursor=pointer]:
+                  - img [ref=e516]
+                - button "Eliminar" [ref=e519] [cursor=pointer]:
+                  - img [ref=e520]
+            - row "C Mayor 15 2º A C/ Mayor 15 vivienda - Alquilado Martín López, María" [ref=e522]:
+              - cell "C Mayor 15 2º A" [ref=e523]:
+                - strong [ref=e524]: C Mayor 15 2º A
+              - cell "C/ Mayor 15" [ref=e525]
+              - cell "vivienda" [ref=e526]
+              - cell "-" [ref=e527]
+              - cell "Alquilado Martín López, María" [ref=e528]:
+                - generic [ref=e529]: Alquilado
+                - text: Martín López, María
+              - cell [ref=e530]:
+                - button "Editar" [ref=e531] [cursor=pointer]:
+                  - img [ref=e532]
+                - button "Eliminar" [ref=e535] [cursor=pointer]:
+                  - img [ref=e536]
+            - row "C Mayor 15 2º B C/ Mayor 15 vivienda - Alquilado Torres Ruiz, Carlos" [ref=e538]:
+              - cell "C Mayor 15 2º B" [ref=e539]:
+                - strong [ref=e540]: C Mayor 15 2º B
+              - cell "C/ Mayor 15" [ref=e541]
+              - cell "vivienda" [ref=e542]
+              - cell "-" [ref=e543]
+              - cell "Alquilado Torres Ruiz, Carlos" [ref=e544]:
+                - generic [ref=e545]: Alquilado
+                - text: Torres Ruiz, Carlos
+              - cell [ref=e546]:
+                - button "Editar" [ref=e547] [cursor=pointer]:
+                  - img [ref=e548]
+                - button "Eliminar" [ref=e551] [cursor=pointer]:
+                  - img [ref=e552]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Nuevo propietario
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Datos personales
+          - generic:
+            - generic: Nombre completo *
+            - textbox "Apellidos, Nombre o Razón Social"
+          - generic:
+            - generic: NIF / CIF
+            - textbox "12345678A"
+          - generic:
+            - generic: Teléfono
+            - textbox "600 000 000"
+          - generic:
+            - generic: Email
+            - textbox "propietario@email.com"
+          - generic:
+            - generic: Tipo IRPF
+            - combobox:
+              - option "Sin IRPF" [selected]
+              - option "Física"
+              - option "Jurídica"
+          - generic:
+            - generic: Dirección
+          - generic:
+            - generic: Dirección
+            - textbox "Calle, número, piso..."
+          - generic:
+            - generic: C.P.
+            - textbox "28001"
+          - generic:
+            - generic: Municipio
+            - textbox "Madrid"
+          - generic:
+            - generic: Provincia
+            - textbox "Madrid"
+          - generic:
+            - generic: País
+            - textbox "España"
+          - generic:
+            - generic: Datos bancarios
+          - generic:
+            - generic: IBAN
+            - textbox "ES00 0000 0000 0000 0000 0000"
+          - generic:
+            - generic: Observaciones
+            - textbox
+      - generic:
+        - button "Cancelar"
+        - button "Guardar"

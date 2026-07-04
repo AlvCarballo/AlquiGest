@@ -1,0 +1,248 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.7 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Calendario de Cobros
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [active] [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+      - generic [ref=e110]:
+        - generic [ref=e2249]:
+          - generic [ref=e2250]:
+            - heading "Junio 2026" [level=2] [ref=e2251]
+            - generic [ref=e2252]: 6 recibos pendientes este mes
+          - generic [ref=e2253]:
+            - button "‹ Anterior" [ref=e2254] [cursor=pointer]
+            - button "Hoy" [ref=e2255] [cursor=pointer]
+            - button "Siguiente ›" [ref=e2256] [cursor=pointer]
+        - generic [ref=e2257]:
+          - generic [ref=e2258]: Lun
+          - generic [ref=e2259]: Mar
+          - generic [ref=e2260]: Mié
+          - generic [ref=e2261]: Jue
+          - generic [ref=e2262]: Vie
+          - generic [ref=e2263]: Sáb
+          - generic [ref=e2264]: Dom
+          - generic [ref=e2266]: "1"
+          - generic [ref=e2268]: "2"
+          - generic [ref=e2270]: "3"
+          - generic [ref=e2272]: "4"
+          - generic [ref=e2273]:
+            - generic [ref=e2274]: "5"
+            - generic "Rodríguez Pérez, Laura · REC-202606-00025" [ref=e2275] [cursor=pointer]: Rodríguez 700,00 €
+            - generic "González Sánchez, Pedro · REC-202606-00026" [ref=e2276] [cursor=pointer]: González 650,00 €
+            - generic "Martín López, María · REC-202606-00027" [ref=e2277] [cursor=pointer]: Martín 720,00 €
+            - generic "Torres Ruiz, Carlos · REC-202606-00028" [ref=e2278] [cursor=pointer]: Torres 680,00 €
+            - generic "Comercial Díaz S.L. · REC-202606-00029" [ref=e2279] [cursor=pointer]: Comercial 1452,00 €
+            - generic "Jiménez Vega, Sofía · REC-202606-00030" [ref=e2280] [cursor=pointer]: Jiménez 800,00 €
+          - generic [ref=e2282]: "6"
+          - generic [ref=e2284]: "7"
+          - generic [ref=e2286]: "8"
+          - generic [ref=e2288]: "9"
+          - generic [ref=e2290]: "10"
+          - generic [ref=e2292]: "11"
+          - generic [ref=e2294]: "12"
+          - generic [ref=e2296]: "13"
+          - generic [ref=e2298]: "14"
+          - generic [ref=e2300]: "15"
+          - generic [ref=e2302]: "16"
+          - generic [ref=e2304]: "17"
+          - generic [ref=e2306]: "18"
+          - generic [ref=e2308]: "19"
+          - generic [ref=e2310]: "20"
+          - generic [ref=e2312]: "21"
+          - generic [ref=e2314]: "22"
+          - generic [ref=e2316]: "23"
+          - generic [ref=e2318]: "24"
+          - generic [ref=e2320]: "25"
+          - generic [ref=e2322]: "26"
+          - generic [ref=e2324]: "27"
+          - generic [ref=e2326]: "28"
+          - generic [ref=e2328]: "29"
+          - generic [ref=e2330]: "30"
+  - generic:
+    - generic:
+      - generic:
+        - generic: Nuevo contrato de alquiler
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Inquilino *
+            - combobox:
+              - option "-- Seleccionar --" [selected]
+              - option "Rodríguez Pérez, Laura"
+              - option "González Sánchez, Pedro"
+              - option "Martín López, María"
+              - option "Torres Ruiz, Carlos"
+              - option "Comercial Díaz S.L."
+              - option "Jiménez Vega, Sofía"
+          - generic:
+            - generic: Inmueble *
+            - combobox:
+              - option "-- Seleccionar --" [selected]
+              - option "C Mayor 15 1º A"
+              - option "C Mayor 15 1º B"
+              - option "C Mayor 15 2º A"
+              - option "C Mayor 15 2º B"
+              - option "AV Constitución 8 BAJO A"
+              - option "AV Constitución 8 1º A"
+          - generic:
+            - generic: Fecha inicio *
+            - textbox
+          - generic:
+            - generic: Fecha fin
+            - textbox
+          - generic:
+            - generic: Estado
+            - combobox:
+              - option "Activo" [selected]
+              - option "Finalizado"
+              - option "Rescindido"
+          - generic:
+            - generic: Duración
+            - generic:
+              - spinbutton
+              - combobox:
+                - option "años" [selected]
+                - option "meses"
+                - option "días"
+          - generic:
+            - generic: Condiciones económicas
+          - generic:
+            - generic: Renta base mensual (€) *
+            - spinbutton
+          - generic:
+            - generic: IVA (%)
+            - spinbutton: "0"
+          - generic:
+            - generic: IRPF (%)
+            - spinbutton: "0"
+          - generic:
+            - generic: Fianza (€)
+            - spinbutton
+          - generic:
+            - generic: Revisión anual
+            - combobox:
+              - option "IPC (INE)" [selected]
+              - option "IRAV (INE)"
+              - option "Subida fija %"
+              - option "Sin revisión"
+          - generic:
+            - generic: Día de pago
+            - spinbutton: "5"
+          - generic:
+            - generic: Observaciones / Cláusulas adicionales
+            - textbox
+          - generic:
+            - generic:
+              - text: Inquilinos secundarios
+              - generic:
+                - text: (firmantes adicionales — bloque
+                - code: "{{#INQUILINOS_SECUNDARIOS}}"
+                - text: en plantillas)
+          - generic:
+            - generic: Guarda el contrato primero para añadir inquilinos secundarios.
+          - generic:
+            - generic: "Fiador solidario (opcional — variables {{NombreFiador}}, {{NIFFiador}}, {{DireccionFiador}} en plantillas)"
+          - generic:
+            - generic: Nombre del fiador
+            - textbox "García Ruiz, José"
+          - generic:
+            - generic: NIF del fiador
+            - textbox "11223344C"
+          - generic:
+            - generic: Dirección del fiador
+            - textbox "Calle Ejemplo 3, 28001 Madrid"
+          - generic:
+            - generic:
+              - 'checkbox "Mostrar aviso en recibo: \"Recibo no válido sin el correspondiente justificante bancario\"" [checked]'
+              - text: "Mostrar aviso en recibo:"
+              - emphasis: "\"Recibo no válido sin el correspondiente justificante bancario\""
+          - generic:
+            - generic:
+              - 'checkbox "Mostrar aviso en factura: \"Esta factura no constituye justificante de pago sin el correspondiente justificante bancario\""'
+              - text: "Mostrar aviso en factura:"
+              - emphasis: "\"Esta factura no constituye justificante de pago sin el correspondiente justificante bancario\""
+      - generic:
+        - button "Cancelar"
+        - button "Guardar"

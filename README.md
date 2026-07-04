@@ -1,0 +1,561 @@
+# AlquiGest v2.2.7
+
+Aplicación web de gestión de alquileres para administradores de fincas y propietarios particulares. Funciona en local con MAMP o XAMPP sobre Windows; no requiere conexión a internet para ninguna función principal.
+
+---
+
+## Tabla de contenidos
+
+1. [Descripción del proyecto](#1-descripción-del-proyecto)
+2. [Arquitectura](#2-arquitectura)
+3. [Instalación](#3-instalación)
+4. [Configuración inicial](#4-configuración-inicial)
+5. [Estructura del proyecto](#5-estructura-del-proyecto)
+6. [Funcionalidades](#6-funcionalidades)
+7. [Generación de contratos con plantillas Word](#7-generación-de-contratos-con-plantillas-word)
+8. [Variables de plantilla disponibles](#8-variables-de-plantilla-disponibles)
+9. [Fotografías en contratos (FotosContrato)](#9-fotografías-en-contratos-fotoscontrato)
+10. [Propietarios y fincas](#10-propietarios-y-fincas)
+11. [Inmuebles](#11-inmuebles)
+12. [Inquilinos](#12-inquilinos)
+13. [Contratos](#13-contratos)
+14. [Recibos y cobros](#14-recibos-y-cobros)
+15. [Facturas legales](#15-facturas-legales)
+16. [Revisiones de renta](#16-revisiones-de-renta)
+17. [Informes y exportación Excel](#17-informes-y-exportación-excel)
+18. [VERI*FACTU — Facturación electrónica AEAT](#18-verifactu--facturación-electrónica-aeat)
+19. [Parámetros de configuración](#19-parámetros-de-configuración)
+20. [Preguntas frecuentes](#20-preguntas-frecuentes)
+21. [Limitaciones](#21-limitaciones)
+22. [Futuras mejoras propuestas](#22-futuras-mejoras-propuestas)
+
+---
+
+## 1. Descripción del proyecto
+
+AlquiGest es un sistema de gestión de alquileres diseñado para administradores de fincas y propietarios que gestionan varios inmuebles. Permite llevar el control completo del ciclo de vida de un alquiler: desde el alta del propietario hasta el cobro mensual de los recibos y la emisión de facturas con cumplimiento legal.
+
+**Características principales:**
+- Gestión multi-propietario y multi-finca desde una única aplicación
+- Generación automática de recibos mensuales individuales y masivos
+- Motor de plantillas Word con 42 variables dinámicas
+- Inserción de fotografías en documentos Word (tablas OOXML embebidas)
+- Facturas legales conforme al RD 1619/2012
+- Integración opcional con VERI*FACTU / AEAT (RD 1007/2023)
+- Informes Excel para gestión e IRPF (6 tipos + 3 informes fiscales)
+- Envío de recibos y facturas por email (Gmail) y WhatsApp
+- Dashboard con KPIs, gráficos, alertas IPC y morosidad
+- Funciona 100% en local, sin dependencias de servicios externos
+
+---
+
+## 2. Arquitectura
+
+### Stack técnico
+
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | HTML5, CSS3, JavaScript vanilla (ES2015+) |
+| Backend | PHP 7.4 (compatible con MAMP/XAMPP Windows) |
+| Base de datos | MySQL 5.7+ / MariaDB |
+| Servidor | Apache (MAMP/XAMPP) |
+| Generación DOCX | PHP ZipArchive + manipulación OOXML directa |
+| PDF | html2canvas + jsPDF (en cliente, sin backend) |
+| Gráficos | Chart.js (local, sin CDN) |
+| Excel | ZipArchive + OpenXML (.xlsx, generado en PHP) |
+
+### Patrón arquitectónico
+
+```
+AlquiGest.php            ← Shell SPA (Single Page Application)
+  ↓ incluye
+assets/js/*.js           ← Módulos JS por sección (propietarios, contratos, recibos…)
+  ↓ llama a
+assets/php/api.php       ← API PHP unificada (JSON) para datos de negocio
+assets/php/plantillas.php ← Motor de plantillas DOCX (multipart/form-data)
+assets/php/verifactu.php ← Integración AEAT VERI*FACTU
+```
+
+### Base de datos — Tablas principales
+
+| Tabla | Descripción |
+|-------|-------------|
+| `propietarios` | Propietarios de fincas |
+| `fincas` | Edificios / conjuntos de inmuebles |
+| `inmuebles` | Inmuebles individuales (pisos, locales, garajes) |
+| `inquilinos` | Inquilinos / arrendatarios |
+| `contratos` | Contratos de arrendamiento |
+| `contratos_inq_sec` | Inquilinos secundarios por contrato |
+| `historial_rentas` | Histórico de revisiones de renta (IPC/IRAV/fija) por contrato |
+| `recibos` | Recibos mensuales de alquiler. Los cobros se guardan como JSON en la columna `pagos` (sin tabla `cobros` separada) |
+| `facturas` | Facturas legales emitidas, incluidas las rectificativas (serie `RET`). Los datos VERI*FACTU (hash, QR, estado AEAT) son columnas de esta misma tabla, no una tabla aparte |
+| `empresa` | Datos de la empresa/administrador (registro único) |
+| `configuracion` | Parámetros de configuración clave-valor |
+| `plantillas` | Plantillas DOCX (motor de generación de documentos) |
+| `doc_secuencias` | Contador atómico de numeración mensual por tipo de documento (`REC`, `FAC`, `RET`, `RER`) |
+| `log_actividad` | Log de auditoría (activable/desactivable en `config.php`) |
+
+### Seguridad
+
+- Toda la API exige `requireLocalhost()` — rechaza peticiones externas a `127.0.0.1`/`::1`
+- Uploads validados: extensión + MIME ZIP real (DOCX), UUID en disco, anti-path-traversal
+- Sin autenticación de usuario (aplicación de uso local exclusivo)
+- Certificados VERI*FACTU en `certs/` protegidos con `.htaccess`
+
+---
+
+## 3. Instalación
+
+### Requisitos previos
+
+- **MAMP** (Windows/macOS) o **XAMPP** (Windows/Linux)
+- Apache y MySQL activos
+- PHP 7.4+ con extensiones: `pdo_mysql`, `zip`, `gd`, `openssl`, `mbstring`
+- Navegador moderno (Chrome, Firefox, Edge, Safari)
+
+### Pasos
+
+1. Copia la carpeta `AlquiGest_v2/` en el directorio web:
+   - MAMP: `C:\MAMP\htdocs\AlquiGest_v2\`
+   - XAMPP: `C:\xampp\htdocs\AlquiGest_v2\`
+
+2. Inicia Apache y MySQL desde el panel de MAMP/XAMPP.
+
+3. Abre en el navegador: `http://localhost/AlquiGest_v2/install.php`
+
+4. Elige una opción:
+   - **Instalación limpia** — BD vacía lista para producción
+   - **Instalación con datos de ejemplo** — carga datos de prueba
+
+5. Accede a la aplicación: `http://localhost/AlquiGest_v2/AlquiGest.php`
+
+> `install.php` puede ejecutarse de nuevo para aplicar migraciones (nuevas columnas) sin destruir datos existentes. Solo destruye datos si eliges "instalación limpia".
+
+---
+
+## 4. Configuración inicial
+
+Flujo recomendado en el primer uso:
+
+1. **Mi Empresa** → Rellena nombre, CIF, dirección, teléfono, email e IBAN.
+2. **Propietarios** → Crea al menos un propietario.
+3. **Fincas / Edificios** → Asigna la finca al propietario.
+4. **Pisos / Locales** → Añade los inmuebles de cada finca.
+5. **Inquilinos** → Registra los inquilinos con email.
+6. **Contratos** → Vincula inquilino + inmueble + condiciones económicas.
+7. **Generar Recibos** → Genera los recibos del mes en curso.
+
+---
+
+## 5. Estructura del proyecto
+
+```
+AlquiGest_v2/
+├── AlquiGest.php           ← Punto de entrada principal (SPA shell)
+├── index.php               ← Pantalla de bienvenida / instalación
+├── install.php             ← Instalador y migrador de BD
+├── README.md               ← Este documento
+│
+├── assets/
+│   ├── css/
+│   │   └── main.css        ← Hoja de estilos principal (modo claro + oscuro)
+│   ├── js/
+│   │   ├── config.js       ← Constantes y configuración JS
+│   │   ├── helpers.js      ← Utilidades globales y navegación SPA
+│   │   ├── dashboard.js    ← Dashboard y widgets
+│   │   ├── propietarios.js ← Módulo propietarios
+│   │   ├── fincas.js       ← Módulo fincas
+│   │   ├── inmuebles.js    ← Módulo inmuebles
+│   │   ├── inquilinos.js   ← Módulo inquilinos
+│   │   ├── contratos.js    ← Módulo contratos (incl. fiador, inq. sec.)
+│   │   ├── contratos-pdf.js← PDF de contratos y fianza
+│   │   ├── recibos-lista.js← Listado y filtros de recibos
+│   │   ├── recibos-cobro.js← Modal de cobro y gestión de pagos
+│   │   ├── recibos-pdf.js  ← PDF e impresión de recibos
+│   │   ├── generar.js      ← Generación masiva de recibos
+│   │   ├── facturas.js     ← Módulo facturas
+│   │   ├── informes.js     ← Exportación Excel e informes IRPF
+│   │   ├── email.js        ← Envío por correo (Gmail)
+│   │   ├── configuracion.js← Parámetros y configuración
+│   │   ├── plantillas.js   ← Motor de plantillas DOCX (UI + lógica)
+│   │   ├── verifactu.js    ← VERI*FACTU (UI)
+│   │   ├── actividad.js    ← Log de actividad
+│   │   ├── ux.js           ← Modales, toasts, temas, búsqueda global
+│   │   ├── extras.js       ← Funciones auxiliares
+│   │   ├── tabla.js        ← Componente de tabla reutilizable
+│   │   ├── notificaciones.js← Campana de notificaciones
+│   │   └── vendor/         ← Librerías locales (sin CDN)
+│   │       ├── chart.umd.min.js
+│   │       ├── html2canvas.min.js
+│   │       └── jspdf.umd.min.js
+│   ├── php/
+│   │   ├── api.php         ← API REST principal (JSON)
+│   │   ├── plantillas.php  ← Motor DOCX backend (ZipArchive + OOXML)
+│   │   └── verifactu.php   ← Backend VERI*FACTU (SHA-256, SOAP, AEAT)
+│   ├── docs/
+│   │   ├── ayuda.php           ← Manual de usuario completo (versión dinámica desde config.php)
+│   │   ├── ayuda_verifactu.php ← Guía técnica VERI*FACTU/AEAT (versión dinámica desde config.php)
+│   │   ├── fixexcel.html       ← Solución error Excel en XAMPP
+│   │   └── cors.html           ← Guía seguridad y CORS
+│   └── img/                ← Capturas de pantalla para documentación
+│       ├── dashboard/
+│       ├── propietarios/
+│       ├── fincas/
+│       ├── inmuebles/
+│       ├── inquilinos/
+│       ├── contratos/
+│       ├── recibos/
+│       ├── facturas/
+│       ├── generar_recibos/
+│       ├── informes/
+│       ├── configuracion/
+│       └── plantillas/
+│
+├── uploads/
+│   └── plantillas/         ← Archivos DOCX subidos (UUID en disco)
+│
+└── certs/                  ← Certificados digitales VERI*FACTU (.p12/.pfx)
+```
+
+---
+
+## 6. Funcionalidades
+
+| Módulo | Descripción |
+|--------|-------------|
+| Dashboard | KPIs, gráficos Chart.js, alertas IPC, próximas renovaciones, previsión de cobros, morosidad |
+| Propietarios | Alta, edición, eliminación, informe IRPF por propietario |
+| Fincas | Alta, edición, eliminación; agrupan inmuebles por dirección |
+| Inmuebles | Alta, edición; estado automático ocupado/libre |
+| Inquilinos | Alta, edición, historial completo de contratos, recibos y facturación |
+| Contratos | Alta, edición, baja, renovación; campos: renta, IVA, IRPF, fianza, revisión, motivo temporada, fiador solidario, inquilinos secundarios |
+| Recibos | Listado filtrado (estado/propietario/inquilino/fecha), cobro parcial/total, anulación, PDF, email, WhatsApp, generación de factura |
+| Facturas | Emisión, PDF A4/A5, email, anulación lógica, integración VERI*FACTU |
+| Generar Recibos | Generación masiva por mes + ámbito (cartera/finca/piso), protección anti-duplicados |
+| Informes Excel | 6 informes de gestión + 3 informes fiscales IRPF (Modelo 100, 115, 180) |
+| Calendario Cobros | Vista mensual de recibos por día (pendiente/cobrado/parcial) |
+| Morosidad | Recibos vencidos > 30 días, exportación PDF formal |
+| Actividad | Log de auditoría de todas las acciones del sistema |
+| Mi Empresa | Datos del administrador, SMTP Gmail, IBAN, plantillas de correo |
+| Parámetros | 6 pestañas: Dashboard, Paginación, Botones, WhatsApp, VERI*FACTU, Documentos |
+| VERI*FACTU | Facturación electrónica AEAT (opcional, desactivado por defecto) |
+| Plantillas DOCX | Motor de plantillas Word: 42 variables, bloques repetitivos, tabla de fotos |
+
+---
+
+## 7. Generación de contratos con plantillas Word
+
+El motor de plantillas genera archivos .docx reales con los datos del contrato sustituidos en el lugar correcto.
+
+### Flujo de uso
+
+1. Crea la plantilla Word con las variables en dobles llaves: `{{NombreInquilino}}`.
+2. Súbela desde **Plantillas → Subir plantilla** y asígnale un tipo de documento.
+3. Desde **Contratos**, pulsa el botón **DOCX** en la fila del contrato.
+4. Si hay una sola plantilla activa del tipo correcto, se usa directamente sin selector.
+5. Si hay varias, aparece un selector; si una está marcada como "por defecto", se usa automáticamente.
+6. Si la plantilla contiene `{{FotosContrato}}`, se abre el diálogo de fotografías.
+7. Se descarga el .docx generado.
+
+### Tipos de documento
+
+`contrato_arrendamiento` · `fianza` · `renovacion` · `comunicacion` · `otro`
+
+### Vista previa
+
+El botón **Vista previa** en la sección Plantillas muestra el documento con todas las variables sustituidas (variables no resueltas se muestran en rojo para ayudar a detectar errores).
+
+---
+
+## 8. Variables de plantilla disponibles
+
+Escribe las variables exactamente con su capitalización: `{{NombreInquilino}}` (no `{{nombreinquilino}}`).
+
+**Empresa:** `{{NombreEmpresa}}` · `{{CIFEmpresa}}` · `{{DireccionEmpresa}}` · `{{TelefonoEmpresa}}` · `{{EmailEmpresa}}` · `{{IBANEmpresa}}`
+
+**Propietario:** `{{NombrePropietario}}` · `{{NIFPropietario}}` · `{{DireccionPropietario}}`
+
+**Inquilino principal:** `{{NombreInquilino}}` · `{{NIFInquilino}}` · `{{TelefonoInquilino}}` · `{{EmailInquilino}}` · `{{DireccionInquilino}}`
+
+**Inmueble:** `{{DireccionInmueble}}` · `{{RefCatastral}}` · `{{TipoInmueble}}` · `{{MunicipioInmueble}}` · `{{ProvinciaInmueble}}`
+
+**Contrato:** `{{FechaInicio}}` · `{{FechaFin}}` · `{{Duracion}}` · `{{MotivoTemporada}}` · `{{MetodoRevision}}` · `{{DiaPago}}`
+
+**Facturación:** `{{Renta}}` · `{{RentaLetras}}` · `{{IVA}}` · `{{IRPF}}`
+
+**Fianza:** `{{Fianza}}` · `{{FianzaLetras}}`
+
+**Fiador solidario:** `{{NombreFiador}}` · `{{NIFFiador}}` · `{{DireccionFiador}}`
+
+**Fotos:** `{{FotosContrato}}`
+
+**Sistema:** `{{FechaActual}}` · `{{AnioActual}}` · `{{MesActual}}`
+
+### Bloque de inquilinos secundarios
+
+```
+{{#INQUILINOS_SECUNDARIOS}}
+{{InqNombre}}, con NIF {{InqNIF}}, domiciliado en {{InqDireccion}}.
+{{/INQUILINOS_SECUNDARIOS}}
+```
+
+Variables dentro del bloque: `{{InqNombre}}` · `{{InqNIF}}` · `{{InqDireccion}}` · `{{InqTelefono}}` · `{{InqEmail}}`
+
+Si el contrato no tiene inquilinos secundarios, el bloque completo desaparece del documento.
+
+---
+
+## 9. Fotografías en contratos (FotosContrato)
+
+Permite incrustar una galería de fotos directamente en el DOCX como tabla OOXML nativa de Word.
+
+### Uso
+
+1. En la plantilla Word, escribe `{{FotosContrato}}` solo en su párrafo (sin otro texto).
+2. Al pulsar DOCX en un contrato, se detecta automáticamente la variable.
+3. Aparece el diálogo: sube imágenes, elige columnas (1/2/3) y ordénalas.
+4. El DOCX incluye las fotos embebidas con proporciones preservadas.
+
+### Detalles técnicos
+
+- Formatos admitidos: JPG, JPEG, PNG (nativos); WebP (convertido a JPEG vía PHP GD)
+- Las imágenes se almacenan en `word/media/foto_N.ext` dentro del DOCX (ZIP)
+- Ancho por columna en A4 con márgenes 2,5 cm: 1 col = 22,5 cm · 2 col = 9,8 cm · 3 col = 6,4 cm
+- Unidades internas: EMUs. Fórmula: `heightEmu = widthEmu × (imgH / imgW)` (aspecto exacto)
+
+---
+
+## 10. Propietarios y fincas
+
+Jerarquía de datos:
+
+```
+Mi Empresa (1)
+  └── Propietario (N)
+        └── Finca / Edificio (N)
+              └── Inmueble / Piso (N)
+                    └── Contrato activo (0-1)
+                          └── Inquilino principal + Inquilinos secundarios
+```
+
+No hay relación directa propietario-inquilino; siempre pasan a través del contrato. El informe IRPF por propietario resume todos sus ingresos de alquiler para la declaración anual.
+
+---
+
+## 11. Inmuebles
+
+Tipos: Vivienda, Local comercial, Garaje, Trastero, Oficina, Nave industrial, Otro.
+
+La tabla muestra automáticamente el estado: **Ocupado** (nombre del inquilino) o **Libre**. Solo puede haber un contrato activo por inmueble.
+
+---
+
+## 12. Inquilinos
+
+El botón **Historial** en la tabla abre tres pestañas: contratos, recibos y resumen financiero (total facturado, cobrado, pendiente).
+
+El botón **Pagos** lleva directamente a los recibos del contrato activo del inquilino.
+
+---
+
+## 13. Contratos
+
+### Campos del formulario
+
+| Campo | Descripción |
+|-------|-------------|
+| Inquilino | Inquilino principal firmante |
+| Inmueble | Solo se listan los que están libres |
+| Fecha inicio / fin | Período del contrato |
+| Renta base | Importe mensual sin impuestos |
+| IVA / IRPF | Porcentajes (0% IVA para vivienda; 19% IRPF si aplica) |
+| Fianza | Importe depositado |
+| Día de pago | Habitualmente 1 o 5 del mes |
+| Revisión anual | IPC, % fijo, IPC con límite, IRAV… |
+| Motivo de temporada | Obligatorio para contratos < 1 año (`{{MotivoTemporada}}`) |
+| Fiador solidario | Nombre, NIF, dirección (variables `{{NombreFiador}}` etc.) |
+| Inquilinos secundarios | Tabla editable dentro del modal (bloque `{{#INQUILINOS_SECUNDARIOS}}`) |
+
+### Acciones por contrato en la tabla
+
+`Generar recibo` · `⚠ IPC` (cuando procede) · `Renovar` · `Historial` · `Baja` · `PDF` · `Fianza` · `DOCX` · Editar · Eliminar
+
+---
+
+## 14. Recibos y cobros
+
+### Numeración
+
+`{PREFIJO}-{AAAAMM}-{NNNNN}` — Ejemplo: `REC-202601-00001`. El prefijo se configura en Mi Empresa. El secuencial se reinicia cada mes (y por tanto también al cambiar de año). La reserva del número es atómica: la genera el servidor (`nextNumeroDoc`, tabla `doc_secuencias`), nunca se calcula solo en el navegador.
+
+### Estados
+
+| Estado | Descripción |
+|--------|-------------|
+| Pendiente | Emitido, sin cobro registrado |
+| Parcial | Con uno o más cobros parciales |
+| Cobrado | Pagado en su totalidad |
+| Anulado | Cancelado lógicamente; el registro original se conserva íntegro para auditoría |
+| Rectificativo | Documento de corrección generado automáticamente al anular un recibo sin factura (ver más abajo) |
+
+### Anulación de un recibo
+
+La anulación de un recibo es siempre **lógica**: nunca se borra físicamente, el registro original permanece en la base de datos con estado `anulado` y una nota indicando qué documento lo rectifica (si aplica). El comportamiento exacto depende de si el recibo ya generó factura:
+
+- **Recibo sin factura emitida:** el recibo pasa a `anulado` y se genera automáticamente un **recibo rectificativo** con la nueva numeración `RER-AAAAMM-NNNNN` (ej. `RER-202607-00001`), con los mismos importes en negativo, que compensa al original en los totales. No se toca ni se genera ninguna factura ni factura rectificativa.
+- **Recibo con factura ya emitida:** el recibo pasa a `anulado`, pero **no** se genera ningún recibo rectificativo. La factura asociada permanece en estado "emitida": la rectificación fiscal de una factura es un acto explícito y separado que debe iniciarse desde el módulo **Facturas** (ver siguiente sección), nunca automáticamente desde el recibo.
+
+Un recibo ya anulado, o un recibo que es en sí mismo un rectificativo (`RER-...`), no se puede volver a anular.
+
+### Métodos de cobro
+
+Transferencia · Domiciliación · Efectivo · Bizum · Cheque
+
+### Filtros disponibles
+
+Estado (incl. Rectificativos) + Propietario + Inquilino + Fecha desde/hasta. Paginación configurable en Parámetros.
+
+---
+
+## 15. Facturas legales
+
+Conformes al **RD 1619/2012** (Reglamento de Facturación):
+- Numeración correlativa única: `FAC-AAAAMM-NNNNN`
+- Inmutabilidad: no se editan tras emisión
+- Anulación lógica: la factura original pasa a estado "rectificada" (se conserva íntegra) y se genera automáticamente una **factura rectificativa** con la nueva numeración `RET-AAAAMM-NNNNN` (ej. `RET-202607-00001`), con todos los importes negados, conforme al art. 15 del RD 1619/2012
+- Si VERI*FACTU está activo: la factura rectificativa también se registra ante la AEAT como cualquier otra factura
+
+### Factura rectificativa vs. recibo rectificativo
+
+| Documento | Cuándo se genera | Numeración | Efecto |
+|-----------|-------------------|------------|--------|
+| Factura rectificativa (`RET`) | Al anular una factura ya emitida, desde el módulo Facturas | `RET-AAAAMM-NNNNN` | Cancela fiscalmente la factura original (importes negados); la original queda "rectificada" |
+| Recibo rectificativo (`RER`) | Al anular un recibo que **no** tiene factura emitida | `RER-AAAAMM-NNNNN` | Compensa el recibo original en los totales internos (importes negados); no tiene efecto fiscal ante la AEAT |
+
+Un recibo nunca genera una factura rectificativa por sí mismo: solo existe factura rectificativa cuando ya existía una factura previa que rectificar.
+
+---
+
+## 16. Revisiones de renta
+
+El asistente IPC/IRAV se activa automáticamente cuando el contrato tiene cláusula de revisión y han pasado más de 11 meses desde la última actualización. Consulta el IPC del INE en tiempo real y calcula la nueva renta sugerida. El historial de subidas queda registrado y visible desde el botón **Historial** del contrato.
+
+---
+
+## 17. Informes y exportación Excel
+
+### Informes de gestión (por año)
+
+| Informe | Contenido |
+|---------|-----------|
+| Todos los recibos del año | Listado completo con desglose IVA/IRPF |
+| Ingresos por finca | Tabla mensual por edificio |
+| Ingresos por piso | Detalle por inmueble con inquilino |
+| Recibos pendientes | Solo Pendiente o Parcial |
+| Histórico de cobros | Pagos con fecha, método y cuenta |
+| Resumen por propietario | Facturado, cobrado, pendiente por propietario |
+
+### Informes fiscales
+
+| Informe | Normativa |
+|---------|-----------|
+| Rendimientos trimestrales IRPF | Art. 23.2 LIRPF (reducción 60% vivienda habitual) |
+| Modelo 100 — Capital Inmobiliario | Declaración anual de la renta |
+| Modelo 115/180 — Retenciones | Solo contratos con IRPF > 0 |
+
+---
+
+## 18. VERI*FACTU — Facturación electrónica AEAT
+
+Integración completa con el SIF (Sistema de Información de Facturación) de la AEAT según el **RD 1007/2023**:
+
+- Desactivado por defecto — sin envíos a la AEAT hasta activación explícita
+- Hash SHA-256 encadenado por factura
+- XML SOAP conforme al esquema oficial AEAT
+- Código QR de verificación en el PDF de factura
+- Entornos: pruebas (`prewww1.aeat.es`) y producción (`www1.aeat.es`)
+- Certificado digital (.p12/.pfx) almacenado en `certs/`
+
+Ver `assets/docs/ayuda_verifactu.php` para la guía técnica completa.
+
+---
+
+## 19. Parámetros de configuración
+
+Menú lateral → **Parámetros**. Seis pestañas:
+
+| Pestaña | Contenido |
+|---------|-----------|
+| Dashboard | Activa/desactiva cada widget del panel principal |
+| Paginación | Filas por página en cada sección |
+| Botones | Muestra/oculta botones de acción por módulo |
+| WhatsApp | Envío por WhatsApp + generación automática de PDF |
+| VERI*FACTU | Certificado, entorno, NIF del obligado de emisión |
+| Documentos | Módulo de plantillas DOCX |
+
+Cada opción incluye un botón `?` con descripción detallada y consejo de uso.
+
+---
+
+## 20. Preguntas frecuentes
+
+**¿Puedo instalar AlquiGest en un servidor real (no localhost)?**  
+Sí, pero hay que eliminar la restricción `requireLocalhost()` en los backends PHP y añadir autenticación de usuario antes de exponerlo.
+
+**¿Cómo hago una copia de seguridad?**  
+Mi Empresa → *Descargar backup JSON*. El archivo puede restaurarse desde `install.php`.
+
+**¿Por qué las plantillas pierden el formato de las variables?**  
+Al sustituir variables, el motor reconstruye el párrafo completo. Aplica los formatos al párrafo entero en lugar de solo a la variable para evitar que se pierdan.
+
+**¿Puedo tener dos contratos activos en el mismo inmueble?**  
+No. Dar de baja el contrato actual antes de crear otro.
+
+**¿Cómo convierto el DOCX generado a PDF?**  
+Abrir con Word o LibreOffice y exportar. AlquiGest no incluye conversión en servidor (requiere LibreOffice, no disponible en MAMP/Windows).
+
+**¿WebP funciona en FotosContrato?**  
+Sí si PHP GD tiene soporte WebP compilado. En MAMP suele estar disponible. Si no, convierte las imágenes a JPG/PNG antes de subirlas.
+
+**¿Qué pasa si el inquilino no tiene email?**  
+El botón de envío por email aparece deshabilitado. Añadir el email en la ficha del inquilino para habilitarlo.
+
+---
+
+## 21. Limitaciones
+
+| Limitación | Alternativa |
+|-----------|-------------|
+| Sin conversión DOCX → PDF en servidor | Exportar desde Word/LibreOffice |
+| Un solo contrato activo por inmueble | Dar de baja el anterior primero |
+| Email solo vía Gmail (contraseña de aplicación) | Editar SMTP en `api.php` |
+| WebP requiere GD con soporte WebP | Convertir imágenes a JPG/PNG |
+| Solo funciona en localhost por defecto | Editar `requireLocalhost()` en backends |
+| Sin multi-usuario ni roles | Acceso restringido por diseño a red local |
+| Sin app móvil nativa | Funciona en navegador móvil (optimizado escritorio) |
+| Sin sincronización en la nube | Backup JSON manual periódico |
+
+---
+
+## 22. Futuras mejoras propuestas
+
+### Alta prioridad
+- **Portal del inquilino**: acceso web para descargar recibos sin necesitar al administrador
+- **Notificaciones automáticas**: email/SMS al inquilino X días antes del vencimiento del recibo
+- **Importación CSV**: carga masiva de propietarios, inquilinos y contratos
+
+### Media prioridad
+- **Multi-empresa**: varias empresas administradoras en una instalación
+- **Renovación automática de contratos indefinidos**
+- **Exportar/importar plantillas de email**
+- **Informe de rentabilidad** por inmueble (incluyendo gastos manuales)
+
+### Baja prioridad
+- **Widgets del dashboard reordenables** (drag-and-drop)
+- **API REST pública documentada** para integración con herramientas externas
+- **Tema de color personalizable**
+
+---
+
+*Versión: 2.2.1 · Última actualización: junio 2026*  
+*Documentación de usuario: `assets/docs/ayuda.php`*

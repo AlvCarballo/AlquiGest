@@ -1,0 +1,6 @@
+# Bloquear acceso directo a los ficheros DOCX desde el navegador.
+# Solo plantillas.php puede leerlos y servirlos como descarga.
+<FilesMatch "\.docx$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

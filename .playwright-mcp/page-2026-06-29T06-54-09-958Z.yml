@@ -1,0 +1,620 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e6]
+        - generic [ref=e8]: AlquiGest
+      - generic [ref=e9]: Guía VERI*FACTU / AEAT
+    - generic [ref=e10]:
+      - link "← Manual general" [ref=e11] [cursor=pointer]:
+        - /url: ayuda.php
+      - link "← Abrir AlquiGest" [ref=e12] [cursor=pointer]:
+        - /url: ../../AlquiGest.php
+      - generic [ref=e14]: Contenido
+      - link "¿Qué es VERI*FACTU?" [ref=e15] [cursor=pointer]:
+        - /url: "#que-es"
+      - link "Estado en AlquiGest" [ref=e16] [cursor=pointer]:
+        - /url: "#estado-actual"
+      - link "Configurar AlquiGest" [ref=e17] [cursor=pointer]:
+        - /url: "#configurar"
+      - link "Activar / desactivar" [ref=e18] [cursor=pointer]:
+        - /url: "#activar"
+      - link "Flujo de una factura" [ref=e19] [cursor=pointer]:
+        - /url: "#flujo"
+      - link "Estructura en BD" [ref=e20] [cursor=pointer]:
+        - /url: "#estructura-bd"
+      - link "Hash encadenado" [ref=e21] [cursor=pointer]:
+        - /url: "#hash"
+      - link "Envío SOAP a AEAT" [ref=e22] [cursor=pointer]:
+        - /url: "#soap"
+      - link "QR de verificación" [ref=e23] [cursor=pointer]:
+        - /url: "#qr"
+      - link "Certificado digital" [ref=e24] [cursor=pointer]:
+        - /url: "#certificado"
+      - link "Archivos clave" [ref=e25] [cursor=pointer]:
+        - /url: "#donde-modificar"
+      - link "Referencias oficiales" [ref=e26] [cursor=pointer]:
+        - /url: "#referencias"
+  - main [ref=e27]:
+    - generic [ref=e28]:
+      - generic [ref=e29]: AlquiGest v2.0.0 · Integración fiscal avanzada
+      - heading "Guía de integración VERI*FACTU y AEAT" [level=1] [ref=e30]
+      - paragraph [ref=e31]: Cómo funciona la integración de AlquiGest con el sistema de verificación de facturas de la Agencia Tributaria española.
+    - generic [ref=e32]:
+      - generic [ref=e33]: ✅
+      - generic [ref=e34]:
+        - strong [ref=e35]: Implementación completa disponible en AlquiGest v2.0.0
+        - paragraph [ref=e36]: AlquiGest tiene implementado el hash SHA-256 encadenado, el envío SOAP a la AEAT, la firma con certificado digital (.p12/.pfx), el QR de verificación en el PDF y la pantalla completa de configuración. Solo tienes que subir tu certificado y activarlo.
+    - heading "¿Qué es VERI*FACTU?" [level=2] [ref=e37]
+    - paragraph [ref=e38]:
+      - strong [ref=e39]: VERI*FACTU
+      - text: (también llamado SIF – Sistema de Información de Facturación) es un sistema de la AEAT española que permite a los contribuyentes registrar facturas electrónicas directamente en la Agencia Tributaria en tiempo real.
+    - paragraph [ref=e40]:
+      - text: Está regulado por el
+      - strong [ref=e41]: Real Decreto 1007/2023
+      - text: y afecta a empresarios y profesionales que emitan facturas según el Reglamento de Facturación (RD 1619/2012).
+    - heading "¿A quién afecta?" [level=3] [ref=e42]
+    - list [ref=e43]:
+      - listitem [ref=e44]: Empresas y autónomos que emitan facturas completas.
+      - listitem [ref=e45]: Arrendadores de locales y oficinas (IVA 21%) dados de alta en actividades económicas.
+      - listitem [ref=e46]:
+        - strong [ref=e47]: Arrendadores de vivienda habitual (sin IVA) no empresarios
+        - text: ": en principio no están obligados (consulta con tu asesor fiscal)."
+    - generic [ref=e48]:
+      - generic [ref=e49]: 💡
+      - generic [ref=e50]:
+        - strong [ref=e51]: ¿Necesito esto para alquiler de vivienda?
+        - paragraph [ref=e52]: Para alquiler de vivienda habitual sin IVA y sin actividad empresarial, VERI*FACTU probablemente no es obligatorio. Para locales comerciales con IVA o gestión como actividad económica, consulta con un asesor fiscal.
+    - heading "¿Qué hace VERI*FACTU técnicamente?" [level=3] [ref=e53]
+    - list [ref=e54]:
+      - listitem [ref=e55]:
+        - text: Cada factura se firma con un
+        - strong [ref=e56]: hash SHA-256
+        - text: encadenado con la factura anterior (inmutabilidad).
+      - listitem [ref=e57]:
+        - text: Se envía un registro XML a la API de la AEAT usando
+        - strong [ref=e58]: HTTPS/SOAP con certificado digital
+        - text: .
+      - listitem [ref=e59]: La AEAT devuelve una confirmación.
+      - listitem [ref=e60]:
+        - text: Se genera un
+        - strong [ref=e61]: código QR
+        - text: de verificación que se imprime en la factura.
+      - listitem [ref=e62]: El receptor puede escanear el QR para verificar la factura en la sede electrónica de la AEAT.
+    - heading "Estado en AlquiGest" [level=2] [ref=e63]
+    - table [ref=e64]:
+      - rowgroup [ref=e65]:
+        - row "Componente Estado Descripción" [ref=e66]:
+          - columnheader "Componente" [ref=e67]
+          - columnheader "Estado" [ref=e68]
+          - columnheader "Descripción" [ref=e69]
+      - rowgroup [ref=e70]:
+        - row "Tabla facturas en BD con campos VERI*FACTU ✅ Listo Campos hash_factura, hash_anterior, qr_url, verifactu_estado, verifactu_respuesta" [ref=e71]:
+          - cell "Tabla facturas en BD con campos VERI*FACTU" [ref=e72]:
+            - text: Tabla
+            - code [ref=e73]: facturas
+            - text: en BD con campos VERI*FACTU
+          - cell "✅ Listo" [ref=e74]:
+            - generic [ref=e75]: ✅ Listo
+          - cell "Campos hash_factura, hash_anterior, qr_url, verifactu_estado, verifactu_respuesta" [ref=e76]:
+            - text: Campos
+            - code [ref=e77]: hash_factura
+            - text: ","
+            - code [ref=e78]: hash_anterior
+            - text: ","
+            - code [ref=e79]: qr_url
+            - text: ","
+            - code [ref=e80]: verifactu_estado
+            - text: ","
+            - code [ref=e81]: verifactu_respuesta
+        - row "Variable verifactu_activo en configuracion ✅ Listo Valor 0 = desactivado por defecto. Activar desde la pantalla VERI*FACTU" [ref=e82]:
+          - cell "Variable verifactu_activo en configuracion" [ref=e83]:
+            - text: Variable
+            - code [ref=e84]: verifactu_activo
+            - text: en configuracion
+          - cell "✅ Listo" [ref=e85]:
+            - generic [ref=e86]: ✅ Listo
+          - cell "Valor 0 = desactivado por defecto. Activar desde la pantalla VERI*FACTU" [ref=e87]:
+            - text: Valor
+            - code [ref=e88]: "0"
+            - text: = desactivado por defecto. Activar desde la pantalla VERI*FACTU
+        - row "Hash SHA-256 encadenado al crear factura ✅ Implementado En api.php (INSERT) y verifactu.php (recálculo en envío)" [ref=e89]:
+          - cell "Hash SHA-256 encadenado al crear factura" [ref=e90]
+          - cell "✅ Implementado" [ref=e91]:
+            - generic [ref=e92]: ✅ Implementado
+          - cell "En api.php (INSERT) y verifactu.php (recálculo en envío)" [ref=e93]:
+            - text: En
+            - code [ref=e94]: api.php
+            - text: (INSERT) y
+            - code [ref=e95]: verifactu.php
+            - text: (recálculo en envío)
+        - row "Envío XML SOAP a AEAT con certificado ✅ Implementado En verifactu.php — acciones enviar y reenviar" [ref=e96]:
+          - cell "Envío XML SOAP a AEAT con certificado" [ref=e97]
+          - cell "✅ Implementado" [ref=e98]:
+            - generic [ref=e99]: ✅ Implementado
+          - cell "En verifactu.php — acciones enviar y reenviar" [ref=e100]:
+            - text: En
+            - code [ref=e101]: verifactu.php
+            - text: — acciones
+            - code [ref=e102]: enviar
+            - text: "y"
+            - code [ref=e103]: reenviar
+        - row "Generación QR de verificación ✅ Implementado URL construida y QR generado con qrious.js, impreso en el PDF de la factura" [ref=e104]:
+          - cell "Generación QR de verificación" [ref=e105]
+          - cell "✅ Implementado" [ref=e106]:
+            - generic [ref=e107]: ✅ Implementado
+          - cell "URL construida y QR generado con qrious.js, impreso en el PDF de la factura" [ref=e108]
+        - row "Firma con certificado digital PKCS12 ✅ Implementado curl con CURLOPT_SSLCERTTYPE=P12 — sube tu .p12/.pfx desde la pantalla de configuración" [ref=e109]:
+          - cell "Firma con certificado digital PKCS12" [ref=e110]
+          - cell "✅ Implementado" [ref=e111]:
+            - generic [ref=e112]: ✅ Implementado
+          - cell "curl con CURLOPT_SSLCERTTYPE=P12 — sube tu .p12/.pfx desde la pantalla de configuración" [ref=e113]:
+            - text: curl con
+            - code [ref=e114]: CURLOPT_SSLCERTTYPE=P12
+            - text: — sube tu .p12/.pfx desde la pantalla de configuración
+        - row "Pantalla de configuración en AlquiGest ✅ Implementado Menú lateral → Configuración → VERI*FACTU" [ref=e115]:
+          - cell "Pantalla de configuración en AlquiGest" [ref=e116]
+          - cell "✅ Implementado" [ref=e117]:
+            - generic [ref=e118]: ✅ Implementado
+          - cell "Menú lateral → Configuración → VERI*FACTU" [ref=e119]
+        - row "Test de conexión con AEAT ✅ Implementado Botón \"Test conexión\" en la pantalla de configuración" [ref=e120]:
+          - cell "Test de conexión con AEAT" [ref=e121]
+          - cell "✅ Implementado" [ref=e122]:
+            - generic [ref=e123]: ✅ Implementado
+          - cell "Botón \"Test conexión\" en la pantalla de configuración" [ref=e124]
+    - heading "Configurar AlquiGest para VERI*FACTU" [level=2] [ref=e125]
+    - paragraph [ref=e126]:
+      - text: Todo se gestiona desde
+      - strong [ref=e127]: Menú lateral → Configuración → 🛡️ VERI*FACTU
+      - text: . No hace falta editar código ni la base de datos manualmente.
+    - generic [ref=e128]:
+      - generic [ref=e129]:
+        - generic [ref=e130]: "1"
+        - generic [ref=e131]: Datos del emisor
+        - generic [ref=e132]: Rellena el NIF del obligado de emisión y el nombre del sistema. Guarda la configuración.
+      - generic [ref=e133]:
+        - generic [ref=e134]: "2"
+        - generic [ref=e135]: Certificado digital
+        - generic [ref=e136]: Sube tu archivo .p12 o .pfx y guarda la contraseña. AlquiGest verifica la fecha de caducidad.
+      - generic [ref=e137]:
+        - generic [ref=e138]: "3"
+        - generic [ref=e139]: Test en pruebas
+        - generic [ref=e140]: Selecciona entorno Pruebas, pulsa "Test conexión" y envía una factura de prueba a la AEAT.
+      - generic [ref=e141]:
+        - generic [ref=e142]: "4"
+        - generic [ref=e143]: Activar en producción
+        - generic [ref=e144]: Cuando todo funcione, cambia a entorno Producción y pulsa Activar. Desde ese momento es automático.
+    - heading "Activar / desactivar VERI*FACTU" [level=2] [ref=e145]
+    - paragraph [ref=e146]:
+      - text: La variable
+      - code [ref=e147]: verifactu_activo
+      - text: en la tabla
+      - code [ref=e148]: configuracion
+      - text: "controla si el sistema envía facturas a AEAT:"
+    - list [ref=e149]:
+      - listitem [ref=e150]:
+        - code [ref=e151]: "0"
+        - text: —
+        - strong [ref=e152]: Desactivado
+        - text: (valor por defecto). AlquiGest guarda las facturas localmente. No se genera hash ni se envía nada a la AEAT.
+      - listitem [ref=e153]:
+        - code [ref=e154]: "1"
+        - text: —
+        - strong [ref=e155]: Activado
+        - text: . Cada factura nueva se firma automáticamente y se registra en el SIF de la AEAT.
+    - paragraph [ref=e156]:
+      - text: Puedes cambiar este valor desde la pantalla
+      - strong [ref=e157]: VERI*FACTU
+      - text: pulsando el botón
+      - strong [ref=e158]: Activar / Desactivar
+      - text: . AlquiGest comprueba que tengas NIF y certificado configurados antes de permitir la activación.
+    - generic [ref=e159]:
+      - generic [ref=e160]: 🚨
+      - generic [ref=e161]:
+        - strong [ref=e162]: Comprobación de seguridad
+        - paragraph [ref=e163]:
+          - text: Aunque actives la variable, si el certificado o el NIF no están configurados, el envío a la AEAT devolverá error. La factura se guardará igualmente en BD con estado
+          - code [ref=e164]: error
+          - text: y podrás reintentarlo desde la pantalla VERI*FACTU.
+    - heading "Flujo de una factura con VERI*FACTU activo" [level=2] [ref=e165]
+    - generic [ref=e166]:
+      - generic [ref=e167]:
+        - generic [ref=e168]: 🧾
+        - generic [ref=e169]:
+          - text: 1. Generar
+          - text: factura
+      - generic [ref=e170]: →
+      - generic [ref=e171]:
+        - generic [ref=e172]: "#️⃣"
+        - generic [ref=e173]:
+          - text: 2. Calcular
+          - text: hash SHA-256
+      - generic [ref=e174]: →
+      - generic [ref=e175]:
+        - generic [ref=e176]: 📤
+        - generic [ref=e177]:
+          - text: 3. Enviar
+          - text: XML a AEAT
+      - generic [ref=e178]: →
+      - generic [ref=e179]:
+        - generic [ref=e180]: ✅
+        - generic [ref=e181]:
+          - text: 4. AEAT
+          - text: confirma
+      - generic [ref=e182]: →
+      - generic [ref=e183]:
+        - generic [ref=e184]: 📱
+        - generic [ref=e185]:
+          - text: 5. QR en
+          - text: el PDF
+    - list [ref=e186]:
+      - listitem [ref=e187]: El usuario genera una factura desde un recibo (botón FAC en la tabla de Recibos).
+      - listitem [ref=e188]:
+        - text: En el momento del INSERT,
+        - code [ref=e189]: api.php
+        - text: calcula el hash SHA-256 encadenado con la factura anterior.
+      - listitem [ref=e190]:
+        - text: AlquiGest llama automáticamente a
+        - code [ref=e191]: verifactu.php?action=enviar
+        - text: en segundo plano.
+      - listitem [ref=e192]: Se construye el XML SOAP, se firma con el certificado .p12/.pfx y se envía a la AEAT.
+      - listitem [ref=e193]: Si la AEAT acepta la factura, se guarda el hash y la URL del QR en BD.
+      - listitem [ref=e194]: Al imprimir o generar el PDF de la factura, el QR aparece automáticamente en el documento.
+    - paragraph [ref=e195]:
+      - text: Si hay un error en el envío, la factura queda guardada con estado
+      - code [ref=e196]: error
+      - text: . Puedes reintentarla desde la tabla de facturas (botón
+      - strong [ref=e197]: 🛡 AEAT
+      - text: ) o desde la pantalla de configuración VERI*FACTU.
+    - heading "Estructura de la tabla facturas — campos VERI*FACTU" [level=2] [ref=e198]
+    - table [ref=e199]:
+      - rowgroup [ref=e200]:
+        - row "Campo Tipo Uso en VERI*FACTU" [ref=e201]:
+          - columnheader "Campo" [ref=e202]
+          - columnheader "Tipo" [ref=e203]
+          - columnheader "Uso en VERI*FACTU" [ref=e204]
+      - rowgroup [ref=e205]:
+        - row "hash_factura VARCHAR(255) Hash SHA-256 de esta factura (campos obligatorios + hash_anterior). Se calcula al insertar si verifactu_activo=1, y siempre al enviar" [ref=e206]:
+          - cell "hash_factura" [ref=e207]:
+            - code [ref=e208]: hash_factura
+          - cell "VARCHAR(255)" [ref=e209]
+          - cell "Hash SHA-256 de esta factura (campos obligatorios + hash_anterior). Se calcula al insertar si verifactu_activo=1, y siempre al enviar" [ref=e210]
+        - 'row "hash_anterior VARCHAR(255) Hash de la factura anterior de la misma serie. Primera factura: 0 (literal, según RD 1007/2023)" [ref=e211]':
+          - cell "hash_anterior" [ref=e212]:
+            - code [ref=e213]: hash_anterior
+          - cell "VARCHAR(255)" [ref=e214]
+          - 'cell "Hash de la factura anterior de la misma serie. Primera factura: 0 (literal, según RD 1007/2023)" [ref=e215]':
+            - text: "Hash de la factura anterior de la misma serie. Primera factura:"
+            - code [ref=e216]: "0"
+            - text: (literal, según RD 1007/2023)
+        - row "qr_url TEXT URL de verificación en la sede electrónica de la AEAT. Se genera y guarda tras el envío exitoso" [ref=e217]:
+          - cell "qr_url" [ref=e218]:
+            - code [ref=e219]: qr_url
+          - cell "TEXT" [ref=e220]
+          - cell "URL de verificación en la sede electrónica de la AEAT. Se genera y guarda tras el envío exitoso" [ref=e221]
+        - row "verifactu_estado VARCHAR(50) no_enviado / pendiente_envio / enviado / error" [ref=e222]:
+          - cell "verifactu_estado" [ref=e223]:
+            - code [ref=e224]: verifactu_estado
+          - cell "VARCHAR(50)" [ref=e225]
+          - cell "no_enviado / pendiente_envio / enviado / error" [ref=e226]:
+            - code [ref=e227]: no_enviado
+            - text: /
+            - code [ref=e228]: pendiente_envio
+            - text: /
+            - code [ref=e229]: enviado
+            - text: /
+            - code [ref=e230]: error
+        - row "verifactu_respuesta TEXT XML completo de la respuesta de la AEAT (para auditoría y diagnóstico de errores)" [ref=e231]:
+          - cell "verifactu_respuesta" [ref=e232]:
+            - code [ref=e233]: verifactu_respuesta
+          - cell "TEXT" [ref=e234]
+          - cell "XML completo de la respuesta de la AEAT (para auditoría y diagnóstico de errores)" [ref=e235]
+        - row "tipo_factura VARCHAR(20) F1 = factura completa (por defecto), R1–R5 = rectificativa" [ref=e236]:
+          - cell "tipo_factura" [ref=e237]:
+            - code [ref=e238]: tipo_factura
+          - cell "VARCHAR(20)" [ref=e239]
+          - cell "F1 = factura completa (por defecto), R1–R5 = rectificativa" [ref=e240]:
+            - code [ref=e241]: F1
+            - text: = factura completa (por defecto),
+            - code [ref=e242]: R1
+            - text: –
+            - code [ref=e243]: R5
+            - text: = rectificativa
+        - 'row "serie VARCHAR(20) Serie de numeración (por defecto: FAC)" [ref=e244]':
+          - cell "serie" [ref=e245]:
+            - code [ref=e246]: serie
+          - cell "VARCHAR(20)" [ref=e247]
+          - 'cell "Serie de numeración (por defecto: FAC)" [ref=e248]':
+            - text: "Serie de numeración (por defecto:"
+            - code [ref=e249]: FAC
+            - text: )
+        - row "factura_rectificada_id INT ID de la factura que rectifica esta (para facturas rectificativas futuras)" [ref=e250]:
+          - cell "factura_rectificada_id" [ref=e251]:
+            - code [ref=e252]: factura_rectificada_id
+          - cell "INT" [ref=e253]
+          - cell "ID de la factura que rectifica esta (para facturas rectificativas futuras)" [ref=e254]
+    - heading "Hash SHA-256 encadenado" [level=2] [ref=e255]
+    - paragraph [ref=e256]: El SIF exige que cada factura tenga un hash SHA-256 calculado sobre sus campos obligatorios, encadenado con el hash de la factura anterior de la misma serie. Esto hace imposible insertar o modificar facturas retroactivamente sin invalidar toda la cadena.
+    - heading "Cadena de hash (según Anexo I del RD 1007/2023)" [level=3] [ref=e257]
+    - paragraph [ref=e258]:
+      - text: Los campos se concatenan separados por
+      - code [ref=e259]: "|"
+      - text: "en este orden exacto:"
+    - code [ref=e261]: IDEmisorFactura=B12345678|NumSerieFactura=FAC-202606-00001|FechaExpedicionFactura=17-06-2026|TipoFactura=F1|CuotaTotal=252.00|ImporteTotal=1452.00|Huella=<HASH_ANTERIOR>|FechaHoraHuella=17-06-2026T14:30:00
+    - paragraph [ref=e262]: El resultado se pasa por SHA-256 y se convierte a hexadecimal en mayúsculas.
+    - generic [ref=e263]:
+      - generic [ref=e264]: 💡
+      - generic [ref=e265]:
+        - strong [ref=e266]: Primera factura de la serie
+        - paragraph [ref=e267]:
+          - text: Para la primera factura de cada serie, el campo
+          - code [ref=e268]: Huella
+          - text: de la cadena de hash debe ser literalmente
+          - code [ref=e269]: "0"
+          - text: (no NULL, no cadena vacía). Esto marca el inicio de la cadena.
+    - heading "Dónde se calcula en el código" [level=3] [ref=e270]
+    - list [ref=e271]:
+      - listitem [ref=e272]:
+        - strong [ref=e273]:
+          - code [ref=e274]: api.php
+        - text: — bloque especial en el action
+        - code [ref=e275]: save
+        - text: para
+        - code [ref=e276]: $table === 'facturas'
+        - text: ": calcula el hash en el INSERT si"
+        - code [ref=e277]: verifactu_activo = '1'
+        - text: .
+      - listitem [ref=e278]:
+        - strong [ref=e279]:
+          - code [ref=e280]: verifactu.php
+        - text: — función
+        - code [ref=e281]: calcularHashFactura()
+        - text: ": recalcula el hash en el momento del envío para garantizar integridad. Si hay discrepancia, se usa el recalculado."
+    - heading "Envío SOAP a la AEAT" [level=2] [ref=e282]
+    - paragraph [ref=e283]:
+      - text: La comunicación con la AEAT usa
+      - strong [ref=e284]: HTTPS/SOAP
+      - text: con autenticación de cliente TLS mediante certificado digital PKCS12.
+    - heading "Endpoints" [level=3] [ref=e285]
+    - table [ref=e286]:
+      - rowgroup [ref=e287]:
+        - row "Entorno URL" [ref=e288]:
+          - columnheader "Entorno" [ref=e289]
+          - columnheader "URL" [ref=e290]
+        - row "Pruebas https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSistemaFacturacion" [ref=e291]:
+          - cell "Pruebas" [ref=e292]:
+            - strong [ref=e293]: Pruebas
+          - cell "https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSistemaFacturacion" [ref=e294]:
+            - code [ref=e295]: https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSistemaFacturacion
+        - row "Producción https://www1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSistemaFacturacion" [ref=e296]:
+          - cell "Producción" [ref=e297]:
+            - strong [ref=e298]: Producción
+          - cell "https://www1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSistemaFacturacion" [ref=e299]:
+            - code [ref=e300]: https://www1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSistemaFacturacion
+    - heading "Estructura del XML de envío (simplificada)" [level=3] [ref=e301]
+    - code [ref=e303]: <?xml version="1.0" encoding="UTF-8"?> <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"> <soapenv:Body> <sum:RegFactuSistemaFacturacion> <Cabecera> <ObligadoEmision> <NombreRazon>Tu Empresa S.L.</NombreRazon> <NIF>B12345678</NIF> </ObligadoEmision> </Cabecera> <RegistroFacturacion> <RegistroAlta> <IDVersion>1.0</IDVersion> <IDFactura> <IDEmisorFactura>B12345678</IDEmisorFactura> <NumSerieFactura>FAC-202606-00001</NumSerieFactura> <FechaExpedicionFactura>17-06-2026</FechaExpedicionFactura> </IDFactura> <TipoFactura>F1</TipoFactura> <Desglose> <DetalleIVA> <TipoImpositivo>21.00</TipoImpositivo> <BaseImponibleOImporteNoSujeto>1200.00</BaseImponibleOImporteNoSujeto> <CuotaRepercutida>252.00</CuotaRepercutida> </DetalleIVA> </Desglose> <ImporteTotal>1452.00</ImporteTotal> <Encadenamiento> <PrimerRegistro>N</PrimerRegistro> <RegistroAnterior> <Huella>ABCDEF1234...</Huella> </RegistroAnterior> </Encadenamiento> <HuellaSQL>3F7A...</HuellaSQL> </RegistroAlta> </RegistroFacturacion> </sum:RegFactuSistemaFacturacion> </soapenv:Body> </soapenv:Envelope>
+    - generic [ref=e304]:
+      - generic [ref=e305]: 💡
+      - generic [ref=e306]:
+        - strong [ref=e307]: Facturas exentas de IVA (vivienda habitual)
+        - paragraph [ref=e308]:
+          - text: Para arrendamientos sin IVA, el bloque
+          - code [ref=e309]: DetalleIVA
+          - text: usa
+          - code [ref=e310]: <CausaExencion>E2</CausaExencion>
+          - text: (exención art. 20.Uno.23 LIVA) en lugar de
+          - code [ref=e311]: TipoImpositivo
+          - text: . AlquiGest lo construye automáticamente según el porcentaje de IVA del contrato.
+    - heading "Vista previa del XML" [level=3] [ref=e312]
+    - paragraph [ref=e313]:
+      - text: Antes de enviar, puedes ver el XML que se construiría para cualquier factura pulsando el botón
+      - strong [ref=e314]: </>
+      - text: (ver XML) en la tabla de facturas enviadas. Esto ayuda a diagnosticar problemas sin enviar nada a la AEAT.
+    - heading "QR de verificación" [level=2] [ref=e315]
+    - paragraph [ref=e316]: Cuando la AEAT confirma el registro de una factura, AlquiGest construye la URL de verificación y la codifica como código QR. Esta URL permite a cualquier receptor verificar la factura en la sede electrónica de la AEAT.
+    - heading "Formato de la URL de verificación" [level=3] [ref=e317]
+    - code [ref=e319]: https://www2.agenciatributaria.gob.es/wlpl/TIKE-CONT/ValidarQR?nif=B12345678&numserie=FAC-202606-00001&fecha=17-06-2026&importe=1452.00
+    - paragraph [ref=e320]:
+      - text: (En el entorno de pruebas usa
+      - code [ref=e321]: prewww2.agenciatributaria.gob.es
+      - text: .)
+    - heading "Dónde aparece el QR" [level=3] [ref=e322]
+    - list [ref=e323]:
+      - listitem [ref=e324]:
+        - strong [ref=e325]: "En el PDF de la factura:"
+        - text: se imprime automáticamente si la factura tiene
+        - code [ref=e326]: qr_url
+        - text: guardada. El QR se genera con la librería JavaScript
+        - strong [ref=e327]: qrious
+        - text: (cargada vía CDN) como imagen embebida, compatible con la generación de PDF mediante html2canvas.
+      - listitem [ref=e328]:
+        - strong [ref=e329]: "En la pantalla de Facturas:"
+        - text: aparece el enlace "Verificar AEAT →" en la columna QR de la tabla de facturas enviadas.
+      - listitem [ref=e330]:
+        - strong [ref=e331]: "En la pantalla VERI*FACTU:"
+        - text: tabla de historial de envíos con enlace directo.
+    - heading "Certificado digital" [level=2] [ref=e332]
+    - paragraph [ref=e333]:
+      - text: La autenticación con la AEAT requiere el certificado digital del emisor en formato
+      - strong [ref=e334]: PKCS12
+      - text: (.p12 o .pfx). Es el mismo tipo de certificado que se usa para la firma digital de documentos y la sede electrónica.
+    - heading "Cómo subir el certificado" [level=3] [ref=e335]
+    - list [ref=e336]:
+      - listitem [ref=e337]:
+        - text: Desde la pantalla
+        - strong [ref=e338]: VERI*FACTU
+        - text: en AlquiGest, sección "Certificado digital".
+      - listitem [ref=e339]: Selecciona tu archivo .p12 o .pfx e introduce la contraseña.
+      - listitem [ref=e340]:
+        - text: Pulsa
+        - strong [ref=e341]: Subir certificado
+        - text: . AlquiGest lo guarda en
+        - code [ref=e342]: certs/
+        - text: y verifica que la contraseña es correcta.
+      - listitem [ref=e343]:
+        - text: Guarda la contraseña pulsando
+        - strong [ref=e344]: Guardar contraseña
+        - text: .
+    - generic [ref=e345]:
+      - generic [ref=e346]: ⚠️
+      - generic [ref=e347]:
+        - strong [ref=e348]: Seguridad del certificado
+        - paragraph [ref=e349]:
+          - text: El directorio
+          - code [ref=e350]: certs/
+          - text: está protegido con un archivo
+          - code [ref=e351]: .htaccess
+          - text: que bloquea el acceso HTTP directo. Solo
+          - code [ref=e352]: verifactu.php
+          - text: puede leer el certificado desde el servidor. La contraseña se guarda en la base de datos (tabla
+          - code [ref=e353]: configuracion
+          - text: ) — considera cifrar la columna si el servidor es compartido.
+    - heading "Extensiones PHP necesarias" [level=3] [ref=e354]
+    - paragraph [ref=e355]:
+      - text: "Asegúrate de que MAMP o XAMPP tienen activas:"
+      - code [ref=e356]: openssl
+      - text: ","
+      - code [ref=e357]: curl
+      - text: ","
+      - code [ref=e358]: dom
+      - text: . Puedes comprobarlo en
+      - code [ref=e359]: phpinfo()
+      - text: .
+    - heading "Archivos clave de la implementación" [level=2] [ref=e360]
+    - table [ref=e361]:
+      - rowgroup [ref=e362]:
+        - row "Archivo Rol en VERI*FACTU" [ref=e363]:
+          - columnheader "Archivo" [ref=e364]
+          - columnheader "Rol en VERI*FACTU" [ref=e365]
+      - rowgroup [ref=e366]:
+        - row "api.php Calcula el hash encadenado en el INSERT de facturas si verifactu_activo = '1'" [ref=e367]:
+          - cell "api.php" [ref=e368]:
+            - code [ref=e369]: api.php
+          - cell "Calcula el hash encadenado en el INSERT de facturas si verifactu_activo = '1'" [ref=e370]:
+            - text: Calcula el hash encadenado en el INSERT de facturas si
+            - code [ref=e371]: verifactu_activo = '1'
+        - 'row "verifactu.php Backend completo: acciones enviar, reenviar, test_conexion, upload_cert, estado, xml_preview" [ref=e372]':
+          - cell "verifactu.php" [ref=e373]:
+            - code [ref=e374]: verifactu.php
+          - 'cell "Backend completo: acciones enviar, reenviar, test_conexion, upload_cert, estado, xml_preview" [ref=e375]':
+            - text: "Backend completo: acciones"
+            - code [ref=e376]: enviar
+            - text: ","
+            - code [ref=e377]: reenviar
+            - text: ","
+            - code [ref=e378]: test_conexion
+            - text: ","
+            - code [ref=e379]: upload_cert
+            - text: ","
+            - code [ref=e380]: estado
+            - text: ","
+            - code [ref=e381]: xml_preview
+        - 'row "AlquiGest.html Frontend: pantalla renderVerifactu(), botón 🛡 AEAT en tabla de facturas, QR en buildFacturaHTML(), llamada automática a verifactu.php al generar una factura" [ref=e382]':
+          - cell "AlquiGest.html" [ref=e383]:
+            - code [ref=e384]: AlquiGest.html
+          - 'cell "Frontend: pantalla renderVerifactu(), botón 🛡 AEAT en tabla de facturas, QR en buildFacturaHTML(), llamada automática a verifactu.php al generar una factura" [ref=e385]':
+            - text: "Frontend: pantalla"
+            - code [ref=e386]: renderVerifactu()
+            - text: ", botón"
+            - strong [ref=e387]: 🛡 AEAT
+            - text: en tabla de facturas, QR en
+            - code [ref=e388]: buildFacturaHTML()
+            - text: ", llamada automática a"
+            - code [ref=e389]: verifactu.php
+            - text: al generar una factura
+        - row "install.php Crea las 8 variables de configuración VERI*FACTU en la tabla configuracion en instalaciones nuevas" [ref=e390]:
+          - cell "install.php" [ref=e391]:
+            - code [ref=e392]: install.php
+          - cell "Crea las 8 variables de configuración VERI*FACTU en la tabla configuracion en instalaciones nuevas" [ref=e393]:
+            - text: Crea las 8 variables de configuración VERI*FACTU en la tabla
+            - code [ref=e394]: configuracion
+            - text: en instalaciones nuevas
+        - row "migration_facturas.sql Script idempotente para añadir las variables VERI*FACTU en instalaciones existentes (sin borrar datos)" [ref=e395]:
+          - cell "migration_facturas.sql" [ref=e396]:
+            - code [ref=e397]: migration_facturas.sql
+          - cell "Script idempotente para añadir las variables VERI*FACTU en instalaciones existentes (sin borrar datos)" [ref=e398]
+        - row "certs/ Directorio protegido donde se guarda el certificado .p12/.pfx. Acceso HTTP bloqueado por .htaccess" [ref=e399]:
+          - cell "certs/" [ref=e400]:
+            - code [ref=e401]: certs/
+          - cell "Directorio protegido donde se guarda el certificado .p12/.pfx. Acceso HTTP bloqueado por .htaccess" [ref=e402]:
+            - text: Directorio protegido donde se guarda el certificado .p12/.pfx. Acceso HTTP bloqueado por
+            - code [ref=e403]: .htaccess
+    - heading "Variables de configuración en BD" [level=3] [ref=e404]
+    - table [ref=e405]:
+      - rowgroup [ref=e406]:
+        - row "Variable Valor por defecto Descripción" [ref=e407]:
+          - columnheader "Variable" [ref=e408]
+          - columnheader "Valor por defecto" [ref=e409]
+          - columnheader "Descripción" [ref=e410]
+      - rowgroup [ref=e411]:
+        - 'row "verifactu_activo 0 Interruptor principal: 0=inactivo, 1=activo" [ref=e412]':
+          - cell "verifactu_activo" [ref=e413]:
+            - code [ref=e414]: verifactu_activo
+          - cell "0" [ref=e415]:
+            - code [ref=e416]: "0"
+          - 'cell "Interruptor principal: 0=inactivo, 1=activo" [ref=e417]'
+        - 'row "verifactu_entorno pruebas Entorno AEAT: pruebas o produccion" [ref=e418]':
+          - cell "verifactu_entorno" [ref=e419]:
+            - code [ref=e420]: verifactu_entorno
+          - cell "pruebas" [ref=e421]:
+            - code [ref=e422]: pruebas
+          - 'cell "Entorno AEAT: pruebas o produccion" [ref=e423]':
+            - text: "Entorno AEAT:"
+            - code [ref=e424]: pruebas
+            - text: o
+            - code [ref=e425]: produccion
+        - row "verifactu_cert_path (vacío) Ruta relativa al certificado .p12/.pfx" [ref=e426]:
+          - cell "verifactu_cert_path" [ref=e427]:
+            - code [ref=e428]: verifactu_cert_path
+          - cell "(vacío)" [ref=e429]
+          - cell "Ruta relativa al certificado .p12/.pfx" [ref=e430]
+        - row "verifactu_cert_pass (vacío) Contraseña del certificado" [ref=e431]:
+          - cell "verifactu_cert_pass" [ref=e432]:
+            - code [ref=e433]: verifactu_cert_pass
+          - cell "(vacío)" [ref=e434]
+          - cell "Contraseña del certificado" [ref=e435]
+        - row "verifactu_nif_sif (vacío) NIF del obligado de emisión ante el SIF" [ref=e436]:
+          - cell "verifactu_nif_sif" [ref=e437]:
+            - code [ref=e438]: verifactu_nif_sif
+          - cell "(vacío)" [ref=e439]
+          - cell "NIF del obligado de emisión ante el SIF" [ref=e440]
+        - row "verifactu_sistema_nombre AlquiGest Nombre del sistema informático" [ref=e441]:
+          - cell "verifactu_sistema_nombre" [ref=e442]:
+            - code [ref=e443]: verifactu_sistema_nombre
+          - cell "AlquiGest" [ref=e444]:
+            - code [ref=e445]: AlquiGest
+          - cell "Nombre del sistema informático" [ref=e446]
+        - row "verifactu_sistema_version 3.3 Versión del sistema" [ref=e447]:
+          - cell "verifactu_sistema_version" [ref=e448]:
+            - code [ref=e449]: verifactu_sistema_version
+          - cell "3.3" [ref=e450]:
+            - code [ref=e451]: "3.3"
+          - cell "Versión del sistema" [ref=e452]
+        - row "verifactu_num_instalacion 1 Número de instalación" [ref=e453]:
+          - cell "verifactu_num_instalacion" [ref=e454]:
+            - code [ref=e455]: verifactu_num_instalacion
+          - cell "1" [ref=e456]:
+            - code [ref=e457]: "1"
+          - cell "Número de instalación" [ref=e458]
+    - heading "Referencias oficiales" [level=2] [ref=e459]
+    - list [ref=e460]:
+      - listitem [ref=e461]:
+        - link "AEAT — Información general sobre VERI*FACTU" [ref=e462] [cursor=pointer]:
+          - /url: https://sede.agenciatributaria.gob.es/Sede/iva/facturacion-registro/verifactu.html
+      - listitem [ref=e463]:
+        - link "Real Decreto 1007/2023 — texto completo en BOE" [ref=e464] [cursor=pointer]:
+          - /url: https://www.boe.es/buscar/doc.php?id=BOE-A-2023-22710
+      - listitem [ref=e465]: Documentación técnica del WS SOAP de la AEAT (disponible en la sede electrónica, sección "Desarrolladores")
+      - listitem [ref=e466]: Esquemas XSD del SIF — publicados por la AEAT junto con el WSDL del servicio
+    - generic [ref=e467]:
+      - generic [ref=e468]: 📌
+      - generic [ref=e469]:
+        - strong [ref=e470]: Prueba siempre en el entorno de preproducción primero
+        - paragraph [ref=e471]:
+          - text: El entorno de pruebas de la AEAT (
+          - code [ref=e472]: prewww1.aeat.es
+          - text: ) está disponible para validar la integración sin consecuencias fiscales. Los errores en producción pueden generar facturas mal registradas que son difíciles de corregir. Usa el botón "Test conexión" de AlquiGest para verificar el acceso antes de activar.
+    - paragraph [ref=e473]:
+      - text: AlquiGest v2.2.7 · Guía VERI*FACTU / AEAT · Junio 2026 ·
+      - link "← Volver al manual general" [ref=e474] [cursor=pointer]:
+        - /url: ayuda.php

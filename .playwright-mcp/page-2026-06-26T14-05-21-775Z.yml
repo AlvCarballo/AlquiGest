@@ -1,0 +1,151 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.3 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Plantillas DOCX
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - generic [ref=e111]:
+            - button "Subir plantilla" [active] [ref=e112] [cursor=pointer]:
+              - img [ref=e113]
+              - text: Subir plantilla
+            - 'button "{ } Variables" [ref=e114] [cursor=pointer]'
+      - generic [ref=e110]:
+        - generic [ref=e116]:
+          - heading "Plantillas DOCX" [level=2] [ref=e117]
+          - generic [ref=e118]:
+            - text: Gestiona plantillas Word con variables dinámicas como
+            - code [ref=e119]: "{{Renta}}"
+            - text: ","
+            - code [ref=e120]: "{{NombreInquilino}}"
+            - text: ", etc."
+        - generic [ref=e122]:
+          - img [ref=e123]
+          - generic [ref=e126]: No hay plantillas todavía
+          - generic [ref=e127]:
+            - text: Sube tu primera plantilla DOCX con variables como
+            - code [ref=e128]: "{{Renta}}"
+          - button "Subir primera plantilla" [ref=e129] [cursor=pointer]
+  - generic [ref=e131]:
+    - generic [ref=e132]:
+      - generic [ref=e133]: Subir plantilla DOCX
+      - button [ref=e134] [cursor=pointer]:
+        - img [ref=e135]
+    - generic [ref=e138]:
+      - generic [ref=e139]:
+        - strong [ref=e140]: "Cómo crear una plantilla:"
+        - text: Escribe tus variables en el documento Word usando la sintaxis
+        - code [ref=e141]: "{{NombreVariable}}"
+        - text: .
+        - text: "Ejemplo:"
+        - code [ref=e142]:
+          - text: El contrato de
+          - strong [ref=e143]: "{{DireccionInmueble}}"
+          - text: tiene una renta de
+          - strong [ref=e144]: "{{Renta}}"
+          - text: .
+      - generic [ref=e145]:
+        - generic [ref=e146]: Fichero DOCX *
+        - generic [ref=e147] [cursor=pointer]:
+          - img [ref=e148]
+          - generic [ref=e151]: Arrastra el DOCX aquí o haz clic
+          - generic [ref=e152]: Solo ficheros .docx · Máximo 10 MB
+      - generic [ref=e153]:
+        - generic [ref=e154]: Nombre de la plantilla *
+        - 'textbox "Ej: Contrato de arrendamiento estándar" [ref=e155]'
+      - generic [ref=e156]:
+        - generic [ref=e157]: Tipo de documento
+        - combobox [ref=e158]:
+          - option "Contrato de arrendamiento" [selected]
+          - option "Fianza"
+          - option "Renovación / Prórroga"
+          - option "Comunicación"
+          - option "Otro"
+      - generic [ref=e159]:
+        - generic [ref=e160]: Descripción (opcional)
+        - textbox "Descripción breve de cuándo usar esta plantilla" [ref=e161]
+      - generic [ref=e162]:
+        - checkbox "Marcar como plantilla por defecto para este tipo" [ref=e163]
+        - generic [ref=e164]: Marcar como plantilla por defecto para este tipo
+    - generic [ref=e165]:
+      - button "Subir plantilla" [ref=e166] [cursor=pointer]
+      - button "Cancelar" [ref=e167] [cursor=pointer]

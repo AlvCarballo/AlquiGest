@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlquiGest – Guía de seguridad para servidor web</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue:       #1a56db;
+  --blue-dark:  #1242a8;
+  --blue-light: #e8f0fe;
+  --green:      #057a55;
+  --green-light:#def7ec;
+  --red:        #c81e1e;
+  --red-light:  #fde8e8;
+  --orange:     #c27803;
+  --orange-light:#fdf6b2;
+  --gray-50:    #f9fafb;
+  --gray-100:   #f3f4f6;
+  --gray-200:   #e5e7eb;
+  --gray-300:   #d1d5db;
+  --gray-400:   #9ca3af;
+  --gray-500:   #6b7280;
+  --gray-600:   #4b5563;
+  --gray-700:   #374151;
+  --gray-800:   #1f2937;
+  --gray-900:   #111827;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--gray-800);
+  background: var(--gray-50);
+}
+a { color: var(--blue); }
+
+/* ── Layout ── */
+.page { display: flex; min-height: 100vh; }
+
+nav {
+  width: 260px;
+  background: var(--gray-900);
+  color: var(--gray-300);
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+.nav-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--gray-700);
+}
+.nav-logo-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.3;
+}
+.nav-logo-sub {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-top: 2px;
+}
+.nav-list { padding: 12px 0; flex: 1; }
+.nav-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--gray-500);
+  padding: 10px 20px 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  color: var(--gray-400);
+  text-decoration: none;
+  font-size: 13px;
+  border-left: 3px solid transparent;
+  transition: all .12s;
+}
+.nav-item:hover { background: var(--gray-800); color: white; }
+.nav-item.active { background: rgba(26,86,219,.25); color: #93c5fd; border-left-color: var(--blue); }
+.nav-badge {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.badge-red   { background: var(--red-light);    color: var(--red); }
+.badge-green { background: var(--green-light);  color: var(--green); }
+.badge-orange{ background: var(--orange-light); color: var(--orange); }
+.badge-blue  { background: var(--blue-light);   color: var(--blue); }
+
+main {
+  margin-left: 260px;
+  flex: 1;
+  padding: 48px 56px;
+  max-width: 980px;
+}
+
+/* ── Typography ── */
+h1 { font-size: 32px; font-weight: 800; color: var(--gray-900); letter-spacing: -.5px; margin-bottom: 8px; }
+h2 { font-size: 22px; font-weight: 700; color: var(--gray-900); margin: 48px 0 16px; padding-top: 24px; border-top: 2px solid var(--gray-200); scroll-margin-top: 24px; }
+h3 { font-size: 16px; font-weight: 700; color: var(--gray-800); margin: 28px 0 10px; }
+p  { color: var(--gray-700); margin-bottom: 14px; }
+ul, ol { padding-left: 20px; margin-bottom: 14px; }
+li { color: var(--gray-700); margin-bottom: 6px; }
+code {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 13px;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--red);
+}
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, var(--gray-900) 0%, #1e3a8a 100%);
+  border-radius: 16px;
+  padding: 40px 44px;
+  color: white;
+  margin-bottom: 40px;
+}
+.hero-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+.hero h1 { color: white; margin-bottom: 12px; }
+.hero p  { color: #cbd5e1; font-size: 16px; margin: 0; }
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+.hero-tag {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.1);
+  color: #cbd5e1;
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+/* ── Callouts ── */
+.callout {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 20px 0;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.callout-danger  { background: var(--red-light);    border-left: 4px solid var(--red); }
+.callout-warning { background: var(--orange-light); border-left: 4px solid var(--orange); }
+.callout-success { background: var(--green-light);  border-left: 4px solid var(--green); }
+.callout-info    { background: var(--blue-light);   border-left: 4px solid var(--blue); }
+.callout-icon { font-size: 20px; line-height: 1.4; flex-shrink: 0; }
+.callout-body strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.callout-body p { margin: 0; font-size: 14px; }
+
+/* ── Code blocks ── */
+.code-block {
+  background: var(--gray-900);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 16px 0;
+  font-size: 13px;
+}
+.code-header {
+  background: var(--gray-800);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--gray-400);
+  border-bottom: 1px solid var(--gray-700);
+}
+.code-header-file { font-weight: 600; color: var(--gray-300); }
+.code-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.tag-delete  { background: var(--red-light); color: var(--red); }
+.tag-add     { background: var(--green-light); color: var(--green); }
+.tag-modify  { background: var(--orange-light); color: var(--orange); }
+pre {
+  padding: 20px;
+  overflow-x: auto;
+  color: #e2e8f0;
+  line-height: 1.6;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 13px;
+}
+.line-del { color: #fca5a5; background: rgba(200,30,30,.15); display: block; }
+.line-add { color: #86efac; background: rgba(5,122,85,.15); display: block; }
+.line-cmt { color: #64748b; }
+.line-key { color: #93c5fd; }
+.line-str { color: #a5f3fc; }
+.line-fn  { color: #c084fc; }
+
+/* ── Diagrams (SVG containers) ── */
+.diagram {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 28px;
+  margin: 24px 0;
+  text-align: center;
+  overflow-x: auto;
+}
+.diagram svg { max-width: 100%; }
+
+/* ── Comparison table ── */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+.compare-col {
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid var(--gray-200);
+}
+.compare-col.bad  { background: var(--red-light);   border-color: #fca5a5; }
+.compare-col.good { background: var(--green-light);  border-color: #6ee7b7; }
+.compare-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 10px;
+}
+.compare-label.bad  { color: var(--red); }
+.compare-label.good { color: var(--green); }
+.compare-col ul { margin: 0; }
+.compare-col li { font-size: 13px; color: var(--gray-700); margin-bottom: 4px; }
+
+/* ── Steps ── */
+.steps { counter-reset: step; margin: 20px 0; }
+.step {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+  align-items: flex-start;
+}
+.step-num {
+  counter-increment: step;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.step-body h3 { margin-top: 0; }
+.step-body p  { margin-bottom: 8px; }
+
+/* ── File checklist ── */
+.file-list {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: 13px;
+}
+.file-item:last-child { border-bottom: none; }
+.file-name { font-family: monospace; font-weight: 600; color: var(--gray-800); min-width: 180px; }
+.file-action { color: var(--gray-500); flex: 1; }
+.file-severity {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.sev-critical { background: #fee2e2; color: #b91c1c; }
+.sev-high     { background: #fef3c7; color: #92400e; }
+.sev-medium   { background: var(--blue-light); color: var(--blue-dark); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  nav { display: none; }
+  main { margin-left: 0; padding: 24px 20px; }
+  .compare-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ── Sidebar ── -->
+<nav>
+  <div class="nav-logo">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a56db" stroke-width="1.8">
+        <path d="M3 22V9l9-7 9 7v13"/><rect x="9" y="14" width="6" height="8"/>
+      </svg>
+      <div>
+        <div class="nav-logo-title">AlquiGest</div>
+        <div class="nav-logo-sub">Guía de seguridad</div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-list">
+    <a class="nav-item" href="../../index.html" style="color:#9ca3af;margin-bottom:4px">← Inicio</a>
+    <div style="height:1px;background:#374151;margin:4px 16px 8px"></div>
+    <div class="nav-section-title">Introducción</div>
+    <a class="nav-item" href="#intro">¿Qué cambia en producción?</a>
+    <a class="nav-item" href="#cors-que-es">Qué es CORS</a>
+
+    <div class="nav-section-title" style="margin-top:8px">Cambios obligatorios</div>
+    <a class="nav-item" href="#paso-https">1. Activar HTTPS <span class="nav-badge badge-red">Crítico</span></a>
+    <a class="nav-item" href="#paso-auth">2. Añadir autenticación <span class="nav-badge badge-red">Crítico</span></a>
+    <a class="nav-item" href="#paso-cors">3. Configurar CORS <span class="nav-badge badge-orange">Alto</span></a>
+    <a class="nav-item" href="#paso-install">4. Proteger install.php <span class="nav-badge badge-red">Crítico</span></a>
+    <a class="nav-item" href="#paso-bd">5. Credenciales de BD <span class="nav-badge badge-orange">Alto</span></a>
+    <a class="nav-item" href="#paso-ip">6. Eliminar restricción IP <span class="nav-badge badge-blue">Medio</span></a>
+    <a class="nav-item" href="#paso-errores">7. Errores en producción <span class="nav-badge badge-blue">Medio</span></a>
+
+    <div class="nav-section-title" style="margin-top:8px">Resumen</div>
+    <a class="nav-item" href="#checklist">Checklist de archivos</a>
+    <a class="nav-item" href="#orden">Orden recomendado</a>
+  </div>
+</nav>
+
+<!-- ── Main ── -->
+<main>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-label">AlquiGest v2.0.0 · Guía técnica</div>
+    <h1>Migrar a un servidor web</h1>
+    <p>Todo lo que debes cambiar en el código antes de publicar AlquiGest en internet o en una red corporativa.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">CORS</span>
+      <span class="hero-tag">Autenticación</span>
+      <span class="hero-tag">HTTPS</span>
+      <span class="hero-tag">PHP</span>
+      <span class="hero-tag">Seguridad</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 1 — ¿Qué cambia?
+  ══════════════════════════════════════════ -->
+  <h2 id="intro">¿Qué cambia al pasar a un servidor web?</h2>
+
+  <p>Actualmente AlquiGest está diseñado para funcionar <strong>solo en localhost</strong>. El código tiene varias capas de protección que asumen que nadie más puede acceder a la máquina. Al moverlo a un servidor público esas suposiciones dejan de ser válidas.</p>
+
+  <div class="compare-grid">
+    <div class="compare-col bad">
+      <div class="compare-label bad">⚠ En localhost (actual)</div>
+      <ul>
+        <li>Solo tú tienes acceso a la máquina</li>
+        <li>No hay contraseñas de usuario en la app</li>
+        <li>La API solo responde a 127.0.0.1</li>
+        <li>HTTP sin cifrar es aceptable</li>
+        <li><code>install.php</code> solo lo ves tú</li>
+        <li>Credenciales root/root en la BD</li>
+      </ul>
+    </div>
+    <div class="compare-col good">
+      <div class="compare-label good">✓ En servidor web (objetivo)</div>
+      <ul>
+        <li>Cualquiera puede intentar acceder</li>
+        <li>Login obligatorio para usar la app</li>
+        <li>CORS restringido a tu dominio</li>
+        <li>HTTPS obligatorio (certificado SSL)</li>
+        <li><code>install.php</code> eliminado o bloqueado</li>
+        <li>Usuario de BD con permisos mínimos</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 2 — Qué es CORS
+  ══════════════════════════════════════════ -->
+  <h2 id="cors-que-es">Qué es CORS y por qué importa</h2>
+
+  <p><strong>CORS</strong> (Cross-Origin Resource Sharing) es un mecanismo del navegador que controla qué dominios pueden llamar a tu API desde JavaScript.</p>
+
+  <p>Cuando AlquiGest está en <code>https://tuapp.com</code> y su JavaScript llama a <code>https://tuapp.com/api.php</code>, es una petición del <em>mismo origen</em> y no necesita CORS. El problema surge cuando el cabecero <code>Access-Control-Allow-Origin</code> es demasiado permisivo.</p>
+
+  <!-- Diagrama 1: Mismo origen vs cross-origin -->
+  <div class="diagram">
+    <svg width="700" height="260" viewBox="0 0 700 260" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+
+      <!-- MISMO ORIGEN -->
+      <text x="170" y="22" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Mismo origen (correcto)</text>
+
+      <!-- Browser box -->
+      <rect x="20" y="38" width="120" height="56" rx="8" fill="#e8f0fe" stroke="#1a56db" stroke-width="1.5"/>
+      <text x="80" y="62" font-size="11" font-weight="600" fill="#1a56db" text-anchor="middle">Navegador</text>
+      <text x="80" y="78" font-size="10" fill="#374151" text-anchor="middle">tuapp.com</text>
+
+      <!-- Arrow right -->
+      <line x1="141" y1="66" x2="199" y2="66" stroke="#057a55" stroke-width="2" marker-end="url(#arr-green)"/>
+      <text x="170" y="58" font-size="10" fill="#057a55" text-anchor="middle">llamada API</text>
+
+      <!-- Server box -->
+      <rect x="200" y="38" width="120" height="56" rx="8" fill="#def7ec" stroke="#057a55" stroke-width="1.5"/>
+      <text x="260" y="62" font-size="11" font-weight="600" fill="#057a55" text-anchor="middle">api.php</text>
+      <text x="260" y="78" font-size="10" fill="#374151" text-anchor="middle">tuapp.com ✓</text>
+
+      <!-- Response -->
+      <line x1="200" y1="76" x2="142" y2="76" stroke="#057a55" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr-green2)"/>
+      <text x="170" y="92" font-size="10" fill="#057a55" text-anchor="middle">200 OK ✓</text>
+
+      <!-- CROSS ORIGIN MALO -->
+      <text x="530" y="22" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Origen cruzado con * (peligroso)</text>
+
+      <!-- Attacker browser -->
+      <rect x="380" y="38" width="120" height="56" rx="8" fill="#fde8e8" stroke="#c81e1e" stroke-width="1.5"/>
+      <text x="440" y="56" font-size="11" font-weight="600" fill="#c81e1e" text-anchor="middle">Navegador</text>
+      <text x="440" y="70" font-size="10" fill="#374151" text-anchor="middle">maliciosa.com</text>
+      <text x="440" y="83" font-size="9" fill="#c81e1e" text-anchor="middle">sitio atacante</text>
+
+      <!-- Arrow -->
+      <line x1="501" y1="66" x2="559" y2="66" stroke="#c81e1e" stroke-width="2" marker-end="url(#arr-red)"/>
+      <text x="530" y="58" font-size="10" fill="#c81e1e" text-anchor="middle">petición CORS</text>
+
+      <!-- API with wildcard -->
+      <rect x="560" y="38" width="120" height="56" rx="8" fill="#fde8e8" stroke="#c81e1e" stroke-width="1.5"/>
+      <text x="620" y="56" font-size="11" font-weight="600" fill="#c81e1e" text-anchor="middle">api.php</text>
+      <text x="620" y="70" font-size="10" fill="#c81e1e" text-anchor="middle">Allow-Origin: *</text>
+      <text x="620" y="83" font-size="9" fill="#374151" text-anchor="middle">acepta cualquiera</text>
+
+      <!-- Response with data -->
+      <line x1="560" y1="76" x2="502" y2="76" stroke="#c81e1e" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr-red2)"/>
+      <text x="530" y="92" font-size="10" fill="#c81e1e" text-anchor="middle">200 OK + tus datos ✗</text>
+
+      <!-- Separator -->
+      <line x1="350" y1="30" x2="350" y2="140" stroke="#e5e7eb" stroke-width="1.5" stroke-dasharray="6,3"/>
+
+      <!-- ── PANEL EXPLICATIVO ── -->
+      <rect x="20" y="150" width="660" height="94" rx="10" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+      <text x="40" y="172" font-size="12" font-weight="700" fill="#111827">¿Qué puede hacer maliciosa.com si la API acepta * ?</text>
+      <text x="40" y="192" font-size="12" fill="#374151">Si el usuario tiene sesión activa en tuapp.com, el sitio atacante puede leer todos sus datos (inquilinos, contratos,</text>
+      <text x="40" y="208" font-size="12" fill="#374151">recibos, IBANs...) e incluso modificarlos o borrarlos, sin que el usuario lo note.</text>
+      <rect x="40" y="220" width="640" height="16" rx="4" fill="#fde8e8"/>
+      <text x="50" y="232" font-size="11" font-weight="600" fill="#c81e1e">Solución: reemplazar * por tu dominio exacto → Access-Control-Allow-Origin: https://tuapp.com</text>
+
+      <!-- Markers -->
+      <defs>
+        <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#057a55"/>
+        </marker>
+        <marker id="arr-green2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#057a55"/>
+        </marker>
+        <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#c81e1e"/>
+        </marker>
+        <marker id="arr-red2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#c81e1e"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 1 — HTTPS
+  ══════════════════════════════════════════ -->
+  <h2 id="paso-https">Paso 1 — Activar HTTPS <span style="font-size:13px;font-weight:400;color:var(--red);margin-left:8px">Crítico</span></h2>
+
+  <div class="callout callout-danger">
+    <div class="callout-icon">🔒</div>
+    <div class="callout-body">
+      <strong>Sin HTTPS todo lo demás da igual.</strong>
+      <p>Sin cifrado, las credenciales de acceso, los datos de inquilinos y los IBANs viajan en texto plano por la red. Cualquiera en la misma red (WiFi de oficina, router corporativo) puede interceptarlos.</p>
+    </div>
+  </div>
+
+  <h3>Cómo obtener HTTPS gratuito con Let's Encrypt</h3>
+  <p>Si tu servidor es Linux con Apache o Nginx, <strong>Certbot</strong> instala un certificado SSL válido en menos de 5 minutos:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">Terminal del servidor</span>
+      <span class="code-tag tag-add">Shell</span>
+    </div>
+    <pre><span class="line-cmt"># Ubuntu / Debian con Apache</span>
+sudo apt install certbot python3-certbot-apache
+sudo certbot --apache -d tudominio.com -d www.tudominio.com
+
+<span class="line-cmt"># Ubuntu / Debian con Nginx</span>
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d tudominio.com -d www.tudominio.com</pre>
+  </div>
+
+  <h3>Forzar HTTPS con .htaccess (Apache)</h3>
+  <p>Crea o edita el archivo <code>.htaccess</code> en la raíz del proyecto para redirigir todo el tráfico HTTP a HTTPS:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">.htaccess</span>
+      <span class="code-tag tag-add">Nuevo / Editar</span>
+    </div>
+    <pre><span class="line-key">RewriteEngine On</span>
+
+<span class="line-cmt"># Redirigir HTTP → HTTPS</span>
+<span class="line-key">RewriteCond</span> %{HTTPS} off
+<span class="line-key">RewriteRule</span> ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+<span class="line-cmt"># Bloquear acceso directo a install.php desde navegador</span>
+<span class="line-key">RewriteRule</span> ^install\.php$ - [F,L]
+
+<span class="line-cmt"># Cabeceras de seguridad HTTP</span>
+<span class="line-key">Header</span> always set Strict-Transport-Security <span class="line-str">"max-age=31536000"</span>
+<span class="line-key">Header</span> always set X-Content-Type-Options <span class="line-str">"nosniff"</span>
+<span class="line-key">Header</span> always set X-Frame-Options <span class="line-str">"DENY"</span></pre>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 2 — AUTENTICACIÓN
+  ══════════════════════════════════════════ -->
+  <h2 id="paso-auth">Paso 2 — Añadir autenticación <span style="font-size:13px;font-weight:400;color:var(--red);margin-left:8px">Crítico</span></h2>
+
+  <div class="callout callout-danger">
+    <div class="callout-icon">🚨</div>
+    <div class="callout-body">
+      <strong>La app actualmente no tiene ningún sistema de login.</strong>
+      <p>En un servidor público, cualquier persona que conozca la URL puede ver y modificar todos los datos. Debes añadir autenticación antes de cualquier otra cosa.</p>
+    </div>
+  </div>
+
+  <!-- Diagrama: flujo de autenticación -->
+  <div class="diagram">
+    <svg width="660" height="200" viewBox="0 0 660 200" font-family="-apple-system,sans-serif">
+      <defs>
+        <marker id="arr-b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#1a56db"/>
+        </marker>
+        <marker id="arr-g3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#057a55"/>
+        </marker>
+        <marker id="arr-r3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#c81e1e"/>
+        </marker>
+      </defs>
+
+      <text x="330" y="18" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Flujo de autenticación recomendado</text>
+
+      <!-- Paso 1: Usuario -->
+      <rect x="10" y="35" width="110" height="52" rx="8" fill="#e8f0fe" stroke="#1a56db" stroke-width="1.5"/>
+      <text x="65" y="58" font-size="11" font-weight="600" fill="#1a56db" text-anchor="middle">Usuario</text>
+      <text x="65" y="74" font-size="10" fill="#374151" text-anchor="middle">abre la app</text>
+
+      <!-- Flecha 1 -->
+      <line x1="121" y1="61" x2="169" y2="61" stroke="#1a56db" stroke-width="1.5" marker-end="url(#arr-b)"/>
+      <text x="145" y="53" font-size="9" fill="#1a56db" text-anchor="middle">solicita</text>
+
+      <!-- Paso 2: login.php -->
+      <rect x="170" y="35" width="110" height="52" rx="8" fill="#e8f0fe" stroke="#1a56db" stroke-width="1.5"/>
+      <text x="225" y="55" font-size="11" font-weight="600" fill="#1a56db" text-anchor="middle">login.php</text>
+      <text x="225" y="70" font-size="10" fill="#374151" text-anchor="middle">formulario</text>
+      <text x="225" y="82" font-size="10" fill="#374151" text-anchor="middle">usuario+clave</text>
+
+      <!-- Flecha 2 -->
+      <line x1="281" y1="61" x2="329" y2="61" stroke="#1a56db" stroke-width="1.5" marker-end="url(#arr-b)"/>
+      <text x="305" y="53" font-size="9" fill="#1a56db" text-anchor="middle">verifica</text>
+
+      <!-- Paso 3: BD Usuarios -->
+      <rect x="330" y="35" width="110" height="52" rx="8" fill="#def7ec" stroke="#057a55" stroke-width="1.5"/>
+      <text x="385" y="55" font-size="11" font-weight="600" fill="#057a55" text-anchor="middle">tabla</text>
+      <text x="385" y="70" font-size="10" fill="#374151" text-anchor="middle">usuarios</text>
+      <text x="385" y="82" font-size="10" fill="#374151" text-anchor="middle">(password_hash)</text>
+
+      <!-- Flecha OK -->
+      <line x1="441" y1="55" x2="489" y2="55" stroke="#057a55" stroke-width="1.5" marker-end="url(#arr-g3)"/>
+      <text x="465" y="47" font-size="9" fill="#057a55" text-anchor="middle">OK ✓</text>
+
+      <!-- Flecha Error -->
+      <line x1="441" y1="70" x2="489" y2="70" stroke="#c81e1e" stroke-width="1.5" marker-end="url(#arr-r3)"/>
+      <text x="465" y="82" font-size="9" fill="#c81e1e" text-anchor="middle">Error ✗</text>
+
+      <!-- Sesión -->
+      <rect x="490" y="35" width="110" height="32" rx="8" fill="#def7ec" stroke="#057a55" stroke-width="1.5"/>
+      <text x="545" y="55" font-size="11" font-weight="600" fill="#057a55" text-anchor="middle">Sesión creada</text>
+
+      <!-- Error -->
+      <rect x="490" y="58" width="110" height="32" rx="8" fill="#fde8e8" stroke="#c81e1e" stroke-width="1.5"/>
+      <text x="545" y="78" font-size="11" font-weight="600" fill="#c81e1e" text-anchor="middle">401 Denegado</text>
+
+      <!-- Guard en API -->
+      <rect x="170" y="130" width="320" height="48" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+      <text x="330" y="150" font-size="11" font-weight="600" fill="#374151" text-anchor="middle">Guardia en api.php — cada petición</text>
+      <text x="330" y="167" font-size="10" fill="#6b7280" text-anchor="middle">if (!isset($_SESSION['user'])) → 401 No autenticado</text>
+
+      <!-- Flecha hacia guard -->
+      <line x1="225" y1="88" x2="225" y2="129" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr-b)"/>
+      <line x1="545" y1="88" x2="435" y2="129" stroke="#057a55" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr-g3)"/>
+    </svg>
+  </div>
+
+  <h3>1. Crear la tabla de usuarios en MySQL</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">install.php — añadir a los CREATE TABLE</span>
+      <span class="code-tag tag-add">Añadir</span>
+    </div>
+    <pre><span class="line-key">CREATE TABLE</span> `usuarios` (
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `nombre`     VARCHAR(100) NOT NULL,
+    `email`      VARCHAR(150) NOT NULL UNIQUE,
+    `password`   VARCHAR(255) NOT NULL,  <span class="line-cmt">-- hash bcrypt</span>
+    `rol`        ENUM(<span class="line-str">'admin'</span>,<span class="line-str">'lectura'</span>) DEFAULT <span class="line-str">'admin'</span>,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</pre>
+  </div>
+
+  <h3>2. Crear login.php</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">login.php</span>
+      <span class="code-tag tag-add">Nuevo archivo</span>
+    </div>
+    <pre><span class="line-key">&lt;?php</span>
+session_start();
+<span class="line-fn">header</span>(<span class="line-str">'Content-Type: application/json; charset=utf-8'</span>);
+
+<span class="line-key">if</span> (<span class="line-fn">isset</span>($_SESSION[<span class="line-str">'user_id'</span>])) {
+    <span class="line-fn">echo json_encode</span>([<span class="line-str">'ok'</span> => true]);
+    exit;
+}
+
+<span class="line-key">if</span> ($_SERVER[<span class="line-str">'REQUEST_METHOD'</span>] === <span class="line-str">'POST'</span>) {
+    $cfg   = require __DIR__ . <span class="line-str">'/assets/php/config.php'</span>;
+    $input = <span class="line-fn">json_decode</span>(<span class="line-fn">file_get_contents</span>(<span class="line-str">'php://input'</span>), true) ?: [];
+    $email = <span class="line-fn">trim</span>($input[<span class="line-str">'email'</span>] ?? <span class="line-str">''</span>);
+    $pass  = $input[<span class="line-str">'password'</span>] ?? <span class="line-str">''</span>;
+
+    $pdo = new PDO(
+        <span class="line-str">"mysql:host={$cfg['host']};dbname={$cfg['name']};charset=utf8mb4"</span>,
+        $cfg[<span class="line-str">'user'</span>], $cfg[<span class="line-str">'pass'</span>],
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+    $st = $pdo->prepare(<span class="line-str">'SELECT * FROM usuarios WHERE email = ? LIMIT 1'</span>);
+    $st->execute([$email]);
+    $user = $st->fetch(PDO::FETCH_ASSOC);
+
+    <span class="line-key">if</span> ($user && <span class="line-fn">password_verify</span>($pass, $user[<span class="line-str">'password'</span>])) {
+        session_regenerate_id(true); <span class="line-cmt">// previene session fixation</span>
+        $_SESSION[<span class="line-str">'user_id'</span>]  = $user[<span class="line-str">'id'</span>];
+        $_SESSION[<span class="line-str">'user_rol'</span>] = $user[<span class="line-str">'rol'</span>];
+        <span class="line-fn">echo json_encode</span>([<span class="line-str">'ok'</span> => true]);
+    } else {
+        http_response_code(401);
+        <span class="line-fn">echo json_encode</span>([<span class="line-str">'error'</span> => <span class="line-str">'Credenciales incorrectas'</span>]);
+    }
+    exit;
+}</pre>
+  </div>
+
+  <h3>3. Proteger api.php con sesión</h3>
+  <p>Sustituye el bloque de restricción de IP por la comprobación de sesión. El bloque actual dice <em>"solo localhost"</em>; en producción debe decir <em>"solo usuarios autenticados"</em>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">api.php — parte superior</span>
+      <span class="code-tag tag-modify">Sustituir</span>
+    </div>
+    <pre><span class="line-del">// Bloque ACTUAL — eliminar en producción:
+// $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+// if (!in_array($ip, ['127.0.0.1', '::1'], true)) { ... }</span>
+
+<span class="line-add">// NUEVO — añadir esto en su lugar:
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['error' => 'No autenticado. Inicia sesión primero.']);
+    exit;
+}</span></pre>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Crear el primer usuario administrador</strong>
+      <p>Ejecuta esto una sola vez desde la línea de comandos del servidor para crear el usuario inicial. <strong>Nunca uses la contraseña en texto plano en el código.</strong></p>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">crear_admin.php — ejecutar una vez y luego eliminar</span>
+      <span class="code-tag tag-add">Temporal</span>
+    </div>
+    <pre><span class="line-key">&lt;?php</span>
+$cfg  = require __DIR__ . <span class="line-str">'/assets/php/config.php'</span>;
+$pdo  = new PDO(<span class="line-str">"mysql:host={$cfg['host']};dbname={$cfg['name']}"</span>, $cfg[<span class="line-str">'user'</span>], $cfg[<span class="line-str">'pass'</span>]);
+
+$email  = <span class="line-str">'admin@tuempresa.com'</span>;        <span class="line-cmt">// ← cambia esto</span>
+$pass   = <span class="line-str">'una_contrasena_segura_2025!'</span>; <span class="line-cmt">// ← cambia esto</span>
+$hash   = <span class="line-fn">password_hash</span>($pass, PASSWORD_BCRYPT);
+
+$st = $pdo->prepare(<span class="line-str">'INSERT INTO usuarios (nombre,email,password) VALUES (?,?,?)'</span>);
+$st->execute([<span class="line-str">'Administrador'</span>, $email, $hash]);
+echo <span class="line-str">"Usuario creado. Elimina este archivo ahora."</span>;</pre>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 3 — CORS
+  ══════════════════════════════════════════ -->
+  <h2 id="paso-cors">Paso 3 — Configurar CORS correctamente <span style="font-size:13px;font-weight:400;color:var(--orange);margin-left:8px">Alto</span></h2>
+
+  <p>El bloque de CORS actual de <code>api.php</code> permite el origen <code>localhost</code>. En producción debes sustituirlo por tu dominio real.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">api.php y email.php — bloque CORS</span>
+      <span class="code-tag tag-modify">Sustituir</span>
+    </div>
+    <pre><span class="line-del">// ACTUAL — permite localhost (solo válido para desarrollo):
+// $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+// if ($origin && (strpos($origin, '//localhost') !== false || ...)) {
+//     header("Access-Control-Allow-Origin: $origin");
+// }</span>
+
+<span class="line-add">// PRODUCCIÓN — lista blanca con tu dominio exacto:
+$allowedOrigins = [
+    'https://tudominio.com',
+    'https://www.tudominio.com',
+    // añade aquí subdominios adicionales si los necesitas
+];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+    header("Vary: Origin");  // importante para caché HTTP
+} else {
+    http_response_code(403);
+    echo json_encode(['error' => 'Origen no permitido']);
+    exit;
+}</span></pre>
+  </div>
+
+  <div class="callout callout-warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>Aplica el mismo cambio en email.php</strong>
+      <p>Ambos archivos (<code>api.php</code> y <code>email.php</code>) tienen el bloque CORS. Modifícalos los dos.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 4 — INSTALL.PHP
+  ══════════════════════════════════════════ -->
+  <h2 id="paso-install">Paso 4 — Proteger o eliminar install.php <span style="font-size:13px;font-weight:400;color:var(--red);margin-left:8px">Crítico</span></h2>
+
+  <div class="callout callout-danger">
+    <div class="callout-icon">💣</div>
+    <div class="callout-body">
+      <strong>install.php en producción = botón de borrar toda la base de datos.</strong>
+      <p>Cualquier persona que acceda a <code>https://tudominio.com/install.php</code> puede reiniciar y borrar toda la base de datos con un clic. <strong>La opción más segura es eliminarlo.</strong></p>
+    </div>
+  </div>
+
+  <h3>Opción A — Eliminarlo (recomendado)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">Terminal del servidor</span>
+      <span class="code-tag tag-delete">Eliminar</span>
+    </div>
+    <pre>rm /var/www/html/alquigest/install.php</pre>
+  </div>
+
+  <h3>Opción B — Protegerlo con contraseña HTTP (si necesitas conservarlo)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">.htaccess — en la raíz del proyecto</span>
+      <span class="code-tag tag-add">Añadir</span>
+    </div>
+    <pre><span class="line-key">&lt;Files "install.php"&gt;</span>
+    AuthType Basic
+    AuthName <span class="line-str">"Zona restringida"</span>
+    AuthUserFile /ruta/segura/fuera/de/web/.htpasswd
+    Require valid-user
+<span class="line-key">&lt;/Files&gt;</span></pre>
+  </div>
+
+  <p>Para generar el fichero <code>.htpasswd</code>:</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">Terminal</span>
+      <span class="code-tag tag-add">Shell</span>
+    </div>
+    <pre>htpasswd -c /ruta/segura/.htpasswd admin</pre>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 5 — CREDENCIALES BD
+  ══════════════════════════════════════════ -->
+  <h2 id="paso-bd">Paso 5 — Credenciales de base de datos <span style="font-size:13px;font-weight:400;color:var(--orange);margin-left:8px">Alto</span></h2>
+
+  <p>El archivo <code>config.php</code> usa <code>root / root</code>. En un servidor de producción el usuario <code>root</code> de MySQL tiene acceso total a todas las bases de datos del servidor.</p>
+
+  <h3>Crear un usuario MySQL con permisos mínimos</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">MySQL — como root</span>
+      <span class="code-tag tag-add">Ejecutar una vez</span>
+    </div>
+    <pre><span class="line-cmt">-- Crear usuario específico para AlquiGest</span>
+<span class="line-key">CREATE USER</span> <span class="line-str">'alquigest_user'</span>@<span class="line-str">'localhost'</span>
+    IDENTIFIED BY <span class="line-str">'contraseña_muy_segura_aqui'</span>;
+
+<span class="line-cmt">-- Dar solo los permisos necesarios (solo en su BD)</span>
+<span class="line-key">GRANT SELECT, INSERT, UPDATE, DELETE</span>
+    ON alquigest.*
+    TO <span class="line-str">'alquigest_user'</span>@<span class="line-str">'localhost'</span>;
+
+<span class="line-key">FLUSH PRIVILEGES</span>;</pre>
+  </div>
+
+  <h3>Actualizar config.php</h3>
+  <div class="callout callout-info" style="margin-bottom:12px">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <strong>Nueva ubicación en v2.1+</strong>
+      <p>El fichero de configuración se ha movido a <code>assets/php/config.php</code>. Todos los archivos PHP lo cargan automáticamente con la ruta correcta.</p>
+    </div>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">assets/php/config.php</span>
+      <span class="code-tag tag-modify">Editar</span>
+    </div>
+    <pre>return [
+    <span class="line-str">'host'</span>    => <span class="line-str">'localhost'</span>,
+    <span class="line-str">'port'</span>    => 3306,
+<span class="line-del">    'user'    => 'root',        // ← CAMBIAR</span>
+<span class="line-del">    'pass'    => 'root',        // ← CAMBIAR</span>
+<span class="line-add">    'user'    => 'alquigest_user',
+    'pass'    => 'contraseña_muy_segura_aqui',</span>
+    <span class="line-str">'name'</span>    => <span class="line-str">'alquigest'</span>,
+    <span class="line-str">'charset'</span> => <span class="line-str">'utf8mb4'</span>,
+];</pre>
+  </div>
+
+  <div class="callout callout-warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>No subas assets/php/config.php a un repositorio Git público.</strong>
+      <p>Añade <code>assets/php/config.php</code> a tu <code>.gitignore</code> y usa variables de entorno del servidor o un archivo de configuración fuera del directorio web para guardar las credenciales.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 6 — ELIMINAR RESTRICCIÓN IP
+  ══════════════════════════════════════════ -->
+  <h2 id="paso-ip">Paso 6 — Eliminar la restricción de IP <span style="font-size:13px;font-weight:400;color:var(--blue);margin-left:8px">Medio</span></h2>
+
+  <p>El bloque actual rechaza peticiones que no vengan de <code>127.0.0.1</code>. En un servidor web los usuarios acceden desde IPs externas, así que hay que <strong>eliminar ese bloque</strong> y confiar en la autenticación de sesión (paso 2).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">api.php, email.php y export.php</span>
+      <span class="code-tag tag-delete">Eliminar este bloque</span>
+    </div>
+    <pre><span class="line-del">// ELIMINAR en producción:
+$_ip = $_SERVER['REMOTE_ADDR'] ?? '';
+if (!in_array($_ip, ['127.0.0.1', '::1'], true)) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Acceso solo permitido desde localhost']);
+    exit;
+}</span>
+
+<span class="line-add">// La protección ahora viene de la sesión (ver Paso 2)
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['error' => 'No autenticado']);
+    exit;
+}</span></pre>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 7 — ERRORES
+  ══════════════════════════════════════════ -->
+  <h2 id="paso-errores">Paso 7 — Configuración de errores PHP <span style="font-size:13px;font-weight:400;color:var(--blue);margin-left:8px">Medio</span></h2>
+
+  <p>PHP en modo desarrollo muestra errores en pantalla. En producción esto expone información interna al usuario. El bloque de errores en <code>api.php</code> ya oculta los mensajes de excepción; asegúrate también de que el <code>php.ini</code> del servidor esté configurado correctamente.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-header-file">php.ini — ajustes de producción</span>
+      <span class="code-tag tag-modify">Verificar</span>
+    </div>
+    <pre><span class="line-cmt">; Ocultar errores al usuario</span>
+display_errors = Off
+display_startup_errors = Off
+
+<span class="line-cmt">; Registrar errores en el log del servidor (para depurar)</span>
+log_errors = On
+error_log = /var/log/php/alquigest_errors.log
+
+<span class="line-cmt">; Nivel de reporte (mantener alto para que queden en el log)</span>
+error_reporting = E_ALL</pre>
+  </div>
+
+  <div class="callout callout-success">
+    <div class="callout-icon">✓</div>
+    <div class="callout-body">
+      <strong>api.php ya está protegido</strong>
+      <p>Los mensajes de error de base de datos ya usan <code>error_log()</code> en el servidor y devuelven solo "Error de base de datos" al cliente. Este comportamiento es correcto para producción.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CHECKLIST
+  ══════════════════════════════════════════ -->
+  <h2 id="checklist">Checklist de archivos a modificar</h2>
+
+  <div class="file-list">
+    <div class="file-item">
+      <span class="file-name">api.php</span>
+      <span class="file-action">Eliminar bloque IP · Añadir sesión · Actualizar CORS con dominio real</span>
+      <span class="file-severity sev-critical">Crítico</span>
+    </div>
+    <div class="file-item">
+      <span class="file-name">email.php</span>
+      <span class="file-action">Eliminar bloque IP · Añadir sesión · Actualizar CORS con dominio real</span>
+      <span class="file-severity sev-critical">Crítico</span>
+    </div>
+    <div class="file-item">
+      <span class="file-name">export.php</span>
+      <span class="file-action">Eliminar bloque IP · Añadir sesión</span>
+      <span class="file-severity sev-critical">Crítico</span>
+    </div>
+    <div class="file-item">
+      <span class="file-name">install.php</span>
+      <span class="file-action">Eliminar el archivo después de la instalación</span>
+      <span class="file-severity sev-critical">Crítico</span>
+    </div>
+    <div class="file-item">
+      <span class="file-name">assets/php/config.php</span>
+      <span class="file-action">Cambiar root/root por usuario MySQL con permisos mínimos · Añadir a .gitignore</span>
+      <span class="file-severity sev-high">Alto</span>
+    </div>
+    <div class="file-item">
+      <span class="file-name">.htaccess</span>
+      <span class="file-action">Crear o actualizar: HTTPS forzado · cabeceras de seguridad · bloquear install.php</span>
+      <span class="file-severity sev-high">Alto</span>
+    </div>
+    <div class="file-item">
+      <span class="file-name">login.php</span>
+      <span class="file-action">Crear nuevo archivo con formulario y lógica de autenticación</span>
+      <span class="file-severity sev-critical">Nuevo</span>
+    </div>
+    <div class="file-item">
+      <span class="file-name">AlquiGest.html</span>
+      <span class="file-action">Añadir lógica de comprobación de sesión al cargar · redirigir a login si no hay sesión</span>
+      <span class="file-severity sev-high">Alto</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ORDEN RECOMENDADO
+  ══════════════════════════════════════════ -->
+  <h2 id="orden">Orden recomendado de implementación</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Obtén el certificado SSL antes de tocar el código</h3>
+        <p>Sin HTTPS el resto no sirve de nada. Usa Certbot en el servidor o el panel de control de tu hosting para activarlo. Verifica que <code>https://tudominio.com</code> funciona antes de continuar.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Crea el usuario MySQL y actualiza config.php</h3>
+        <p>Hazlo antes de instalar la BD. Comprueba que la conexión funciona ejecutando <code>install.php</code> con las nuevas credenciales.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Implementa login.php y la tabla de usuarios</h3>
+        <p>Crea la tabla de usuarios, ejecuta <code>crear_admin.php</code> para crear el primer administrador, y luego <strong>elimina</strong> <code>crear_admin.php</code> inmediatamente.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Actualiza api.php, email.php y export.php</h3>
+        <p>Elimina el bloque de restricción de IP, añade <code>session_start()</code> y la comprobación de sesión, y actualiza el CORS con tu dominio real.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h3>Actualiza AlquiGest.html para redirigir si no hay sesión</h3>
+        <p>Al principio del script, comprueba si la API responde con 401. Si es así, redirige a <code>login.html</code>. La app ya gestiona el error de conexión; amplíalo para detectar la respuesta 401 específicamente.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h3>Crea .htaccess y elimina install.php</h3>
+        <p>Activa el redireccionamiento HTTPS y las cabeceras de seguridad. Elimina <code>install.php</code> definitivamente. Verifica con <a href="https://securityheaders.com" target="_blank">securityheaders.com</a> que las cabeceras están correctas.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <h3>Haz una prueba de penetración básica</h3>
+        <p>Intenta acceder a <code>/api.php?action=getAll</code> sin iniciar sesión: debe devolver 401. Intenta acceder a <code>/install.php</code>: debe devolver 403 o 404. Intenta hacer una petición desde otro dominio: debe ser bloqueada por CORS.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-success">
+    <div class="callout-icon">🎉</div>
+    <div class="callout-body">
+      <strong>Una vez completados todos los pasos, AlquiGest estará listo para producción.</strong>
+      <p>Los cambios en el código son relativamente pequeños. La mayor parte del trabajo es infraestructura (SSL, usuario BD, configuración del servidor). El código de la aplicación ya usa consultas preparadas, escapa HTML en las tablas y oculta errores internos.</p>
+    </div>
+  </div>
+
+  <p style="margin-top:48px;padding-top:24px;border-top:1px solid var(--gray-200);font-size:12px;color:var(--gray-400);">
+    AlquiGest v2.0.0 · Guía de seguridad para migración a servidor web · Generada junto a Claude Code
+  </p>
+
+</main>
+</div>
+
+<script>
+// Resaltar el enlace activo en la nav según el scroll
+const sections = document.querySelectorAll('h2[id]');
+const navLinks  = document.querySelectorAll('nav .nav-item');
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

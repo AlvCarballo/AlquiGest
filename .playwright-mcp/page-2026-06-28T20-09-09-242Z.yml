@@ -1,0 +1,390 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - generic [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - generic [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - generic [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - generic [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - generic [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - generic [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - generic [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - generic [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - generic [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - generic [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - generic [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - generic [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - generic [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - generic [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v2.2.3 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Contratos
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "Avisos de revisión anual" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+          - button "Nuevo contrato" [ref=e490] [cursor=pointer]:
+            - img [ref=e491]
+            - text: Nuevo contrato
+      - generic [ref=e492]:
+        - generic [ref=e493]:
+          - generic [ref=e494]: Contratos (6)
+          - generic [ref=e495]:
+            - combobox [ref=e496]:
+              - option "Todos" [selected]
+              - option "Activos"
+              - option "Finalizados"
+              - option "Rescindidos"
+            - generic [ref=e497] [cursor=pointer]:
+              - checkbox "⚠ Revisión pendiente (2)" [ref=e498]
+              - generic [ref=e499]: ⚠ Revisión pendiente (2)
+            - generic [ref=e500]:
+              - img
+              - searchbox "Buscar..." [ref=e501]
+        - table [ref=e503]:
+          - rowgroup [ref=e504]:
+            - row "Inquilino Inmueble Inicio Baja / Fin Renta Estado ▲" [ref=e505]:
+              - columnheader "Inquilino" [ref=e506] [cursor=pointer]
+              - columnheader "Inmueble" [ref=e507] [cursor=pointer]
+              - columnheader "Inicio" [ref=e508] [cursor=pointer]
+              - columnheader "Baja / Fin" [ref=e509] [cursor=pointer]
+              - columnheader "Renta" [ref=e510] [cursor=pointer]
+              - columnheader "Estado ▲" [ref=e511] [cursor=pointer]
+              - columnheader [ref=e512]
+          - rowgroup [ref=e513]:
+            - row "Jiménez Vega, Sofía AV Constitución 8 1º A 1/6/2024 31/5/2025 800,00 € IPC ⚠ Activo ⚠ IPC Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e514]:
+              - cell "Jiménez Vega, Sofía" [ref=e515]:
+                - strong [ref=e516]: Jiménez Vega, Sofía
+              - cell "AV Constitución 8 1º A" [ref=e517]
+              - cell "1/6/2024" [ref=e518]
+              - cell "31/5/2025" [ref=e519]
+              - cell "800,00 € IPC ⚠" [ref=e520]:
+                - strong [ref=e521]: 800,00 €
+                - text: IPC ⚠
+              - cell "Activo" [ref=e522]:
+                - generic [ref=e523]: Activo
+              - cell "⚠ IPC Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e524]:
+                - button "⚠ IPC" [ref=e525] [cursor=pointer]
+                - button "Generar recibo" [ref=e526] [cursor=pointer]:
+                  - img [ref=e527]
+                  - text: Generar recibo
+                - button "Renovar" [ref=e530] [cursor=pointer]
+                - button "Historial" [ref=e531] [cursor=pointer]
+                - button "Baja" [ref=e532] [cursor=pointer]
+                - button "PDF" [ref=e533] [cursor=pointer]:
+                  - img [ref=e534]
+                  - text: PDF
+                - button "Fianza" [ref=e537] [cursor=pointer]
+                - button "DOCX" [ref=e538] [cursor=pointer]:
+                  - img [ref=e539]
+                  - text: DOCX
+                - button "Editar" [ref=e542] [cursor=pointer]:
+                  - img [ref=e543]
+                - button "Eliminar" [ref=e546] [cursor=pointer]:
+                  - img [ref=e547]
+            - row "Comercial Díaz S.L. AV Constitución 8 BAJO A 1/1/2022 31/12/2024 1200,00 € Activo Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e549]:
+              - cell "Comercial Díaz S.L." [ref=e550]:
+                - strong [ref=e551]: Comercial Díaz S.L.
+              - cell "AV Constitución 8 BAJO A" [ref=e552]
+              - cell "1/1/2022" [ref=e553]
+              - cell "31/12/2024" [ref=e554]
+              - cell "1200,00 €" [ref=e555]:
+                - strong [ref=e556]: 1200,00 €
+              - cell "Activo" [ref=e557]:
+                - generic [ref=e558]: Activo
+              - cell "Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e559]:
+                - button "Generar recibo" [ref=e560] [cursor=pointer]:
+                  - img [ref=e561]
+                  - text: Generar recibo
+                - button "Renovar" [ref=e564] [cursor=pointer]
+                - button "Historial" [ref=e565] [cursor=pointer]
+                - button "Baja" [ref=e566] [cursor=pointer]
+                - button "PDF" [ref=e567] [cursor=pointer]:
+                  - img [ref=e568]
+                  - text: PDF
+                - button "Fianza" [ref=e571] [cursor=pointer]
+                - button "DOCX" [ref=e572] [cursor=pointer]:
+                  - img [ref=e573]
+                  - text: DOCX
+                - button "Editar" [ref=e576] [cursor=pointer]:
+                  - img [ref=e577]
+                - button "Eliminar" [ref=e580] [cursor=pointer]:
+                  - img [ref=e581]
+            - row "Rodríguez Pérez, Laura C Mayor 15 1º A 1/1/2024 31/12/2025 700,00 € Activo Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e583]:
+              - cell "Rodríguez Pérez, Laura" [ref=e584]:
+                - strong [ref=e585]: Rodríguez Pérez, Laura
+              - cell "C Mayor 15 1º A" [ref=e586]
+              - cell "1/1/2024" [ref=e587]
+              - cell "31/12/2025" [ref=e588]
+              - cell "700,00 €" [ref=e589]:
+                - strong [ref=e590]: 700,00 €
+              - cell "Activo" [ref=e591]:
+                - generic [ref=e592]: Activo
+              - cell "Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e593]:
+                - button "Generar recibo" [ref=e594] [cursor=pointer]:
+                  - img [ref=e595]
+                  - text: Generar recibo
+                - button "Renovar" [ref=e598] [cursor=pointer]
+                - button "Historial" [ref=e599] [cursor=pointer]
+                - button "Baja" [ref=e600] [cursor=pointer]
+                - button "PDF" [ref=e601] [cursor=pointer]:
+                  - img [ref=e602]
+                  - text: PDF
+                - button "Fianza" [ref=e605] [cursor=pointer]
+                - button "DOCX" [ref=e606] [cursor=pointer]:
+                  - img [ref=e607]
+                  - text: DOCX
+                - button "Editar" [ref=e610] [cursor=pointer]:
+                  - img [ref=e611]
+                - button "Eliminar" [ref=e614] [cursor=pointer]:
+                  - img [ref=e615]
+            - row "González Sánchez, Pedro C Mayor 15 1º B 1/3/2024 28/2/2025 650,00 € Activo Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e617]:
+              - cell "González Sánchez, Pedro" [ref=e618]:
+                - strong [ref=e619]: González Sánchez, Pedro
+              - cell "C Mayor 15 1º B" [ref=e620]
+              - cell "1/3/2024" [ref=e621]
+              - cell "28/2/2025" [ref=e622]
+              - cell "650,00 €" [ref=e623]:
+                - strong [ref=e624]: 650,00 €
+              - cell "Activo" [ref=e625]:
+                - generic [ref=e626]: Activo
+              - cell "Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e627]:
+                - button "Generar recibo" [ref=e628] [cursor=pointer]:
+                  - img [ref=e629]
+                  - text: Generar recibo
+                - button "Renovar" [ref=e632] [cursor=pointer]
+                - button "Historial" [ref=e633] [cursor=pointer]
+                - button "Baja" [ref=e634] [cursor=pointer]
+                - button "PDF" [ref=e635] [cursor=pointer]:
+                  - img [ref=e636]
+                  - text: PDF
+                - button "Fianza" [ref=e639] [cursor=pointer]
+                - button "DOCX" [ref=e640] [cursor=pointer]:
+                  - img [ref=e641]
+                  - text: DOCX
+                - button "Editar" [ref=e644] [cursor=pointer]:
+                  - img [ref=e645]
+                - button "Eliminar" [ref=e648] [cursor=pointer]:
+                  - img [ref=e649]
+            - row "Martín López, María C Mayor 15 2º A 1/6/2023 31/5/2024 720,00 € IPC ⚠ Activo ⚠ IPC Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e651]:
+              - cell "Martín López, María" [ref=e652]:
+                - strong [ref=e653]: Martín López, María
+              - cell "C Mayor 15 2º A" [ref=e654]
+              - cell "1/6/2023" [ref=e655]
+              - cell "31/5/2024" [ref=e656]
+              - cell "720,00 € IPC ⚠" [ref=e657]:
+                - strong [ref=e658]: 720,00 €
+                - text: IPC ⚠
+              - cell "Activo" [ref=e659]:
+                - generic [ref=e660]: Activo
+              - cell "⚠ IPC Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e661]:
+                - button "⚠ IPC" [ref=e662] [cursor=pointer]
+                - button "Generar recibo" [ref=e663] [cursor=pointer]:
+                  - img [ref=e664]
+                  - text: Generar recibo
+                - button "Renovar" [ref=e667] [cursor=pointer]
+                - button "Historial" [ref=e668] [cursor=pointer]
+                - button "Baja" [ref=e669] [cursor=pointer]
+                - button "PDF" [ref=e670] [cursor=pointer]:
+                  - img [ref=e671]
+                  - text: PDF
+                - button "Fianza" [ref=e674] [cursor=pointer]
+                - button "DOCX" [ref=e675] [cursor=pointer]:
+                  - img [ref=e676]
+                  - text: DOCX
+                - button "Editar" [ref=e679] [cursor=pointer]:
+                  - img [ref=e680]
+                - button "Eliminar" [ref=e683] [cursor=pointer]:
+                  - img [ref=e684]
+            - row "Torres Ruiz, Carlos C Mayor 15 2º B 1/9/2024 31/8/2025 680,00 € Activo Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e686]:
+              - cell "Torres Ruiz, Carlos" [ref=e687]:
+                - strong [ref=e688]: Torres Ruiz, Carlos
+              - cell "C Mayor 15 2º B" [ref=e689]
+              - cell "1/9/2024" [ref=e690]
+              - cell "31/8/2025" [ref=e691]
+              - cell "680,00 €" [ref=e692]:
+                - strong [ref=e693]: 680,00 €
+              - cell "Activo" [ref=e694]:
+                - generic [ref=e695]: Activo
+              - cell "Generar recibo Renovar Historial Baja PDF Fianza DOCX" [ref=e696]:
+                - button "Generar recibo" [ref=e697] [cursor=pointer]:
+                  - img [ref=e698]
+                  - text: Generar recibo
+                - button "Renovar" [ref=e701] [cursor=pointer]
+                - button "Historial" [ref=e702] [cursor=pointer]
+                - button "Baja" [ref=e703] [cursor=pointer]
+                - button "PDF" [ref=e704] [cursor=pointer]:
+                  - img [ref=e705]
+                  - text: PDF
+                - button "Fianza" [ref=e708] [cursor=pointer]
+                - button "DOCX" [ref=e709] [cursor=pointer]:
+                  - img [ref=e710]
+                  - text: DOCX
+                - button "Editar" [ref=e713] [cursor=pointer]:
+                  - img [ref=e714]
+                - button "Eliminar" [ref=e717] [cursor=pointer]:
+                  - img [ref=e718]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Editar contrato
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Inquilino *
+            - combobox:
+              - option "-- Seleccionar --"
+              - option "Rodríguez Pérez, Laura"
+              - option "González Sánchez, Pedro"
+              - option "Martín López, María"
+              - option "Torres Ruiz, Carlos"
+              - option "Comercial Díaz S.L."
+              - option "Jiménez Vega, Sofía" [selected]
+          - generic:
+            - generic: Inmueble *
+            - combobox:
+              - option "-- Seleccionar --"
+              - option "C Mayor 15 1º A"
+              - option "C Mayor 15 1º B"
+              - option "C Mayor 15 2º A"
+              - option "C Mayor 15 2º B"
+              - option "AV Constitución 8 BAJO A"
+              - option "AV Constitución 8 1º A" [selected]
+          - generic:
+            - generic: Fecha inicio *
+            - textbox: 2024-06-01
+          - generic:
+            - generic: Fecha fin
+            - textbox: 2025-05-31
+          - generic:
+            - generic: Estado
+            - combobox:
+              - option "Activo" [selected]
+              - option "Finalizado"
+              - option "Rescindido"
+          - generic:
+            - generic: Duración
+            - generic:
+              - spinbutton: "1"
+              - combobox:
+                - option "años" [selected]
+                - option "meses"
+                - option "días"
+          - generic:
+            - generic: "Motivo de temporada (variable {{MotivoTemporada}} en plantillas)"
+            - 'textbox "Ej: Estudios universitarios 2024-2025"'
+            - generic: Requerido en contratos de temporada (duración inferior a 1 año) según la Ley de Arrendamientos Urbanos.
+          - generic:
+            - generic: Condiciones económicas
+          - generic:
+            - generic: Renta base mensual (€) *
+            - spinbutton: "800"
+          - generic:
+            - generic: IVA (%)
+            - spinbutton: "0"
+          - generic:
+            - generic: IRPF (%)
+            - spinbutton: "0"
+          - generic:
+            - generic: Fianza (€)
+            - spinbutton: "1600"
+          - generic:
+            - generic: Revisión anual
+            - combobox:
+              - option "IPC (INE)" [selected]
+              - option "IRAV (INE)"
+              - option "Subida fija %"
+              - option "Sin revisión"
+          - generic:
+            - generic: Día de pago
+            - spinbutton: "5"
+          - generic:
+            - generic: Observaciones / Cláusulas adicionales
+            - textbox
+          - generic:
+            - generic: "Fiador solidario (opcional — variables {{NombreFiador}}, {{NIFFiador}}, {{DireccionFiador}} en plantillas)"
+          - generic:
+            - generic: Nombre del fiador
+            - textbox "García Ruiz, José": López Sánchez, María
+          - generic:
+            - generic: NIF del fiador
+            - textbox "11223344C": 55667788D
+          - generic:
+            - generic: Dirección del fiador
+            - textbox "Calle Ejemplo 3, 28001 Madrid": Calle Real 15, 28002 Madrid
+          - generic:
+            - generic:
+              - 'checkbox "Mostrar aviso en recibo: \"Recibo no válido sin el correspondiente justificante bancario\"" [checked]'
+              - text: "Mostrar aviso en recibo:"
+              - emphasis: "\"Recibo no válido sin el correspondiente justificante bancario\""
+          - generic:
+            - generic:
+              - 'checkbox "Mostrar aviso en factura: \"Esta factura no constituye justificante de pago sin el correspondiente justificante bancario\""'
+              - text: "Mostrar aviso en factura:"
+              - emphasis: "\"Esta factura no constituye justificante de pago sin el correspondiente justificante bancario\""
+      - generic:
+        - button "Cancelar" [active]
+        - button "Guardar"
