@@ -163,7 +163,7 @@ function renderRecibos(params) {
                 <td>${esc(inm ? getInmuebleNombre(inm) : '-')}</td>
                 <td style="font-size:12px">${esc(r.concepto_periodo||'-')}</td>
                 <td><strong>${fmtMoney(r.importe_total)}</strong></td>
-                <td>${pagado > 0 ? fmtMoney(pagado) : '-'}</td>
+                <td>${pagado !== 0 ? fmtMoney(pagado) : '-'}</td>
                 <td>${badgeEstadoRecibo(r.estado)}</td>
                 <td class="td-actions">
                   ${_cfgVisi('VisiCobrarReci') ? (puedeCobrarse ? `<button class="btn btn-sm btn-success" style="font-size:11px" onclick="modalDarCobro(${r.id})">Cobrar</button>` : (r.estado === 'cobrado' ? `<button class="btn btn-sm btn-secondary" style="font-size:11px" onclick="modalDarCobro(${r.id})">Ver cobros</button>` : '')) : ''}

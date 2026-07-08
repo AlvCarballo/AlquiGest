@@ -186,12 +186,12 @@
 <script src="assets/js/propietarios.js?v=20260626z"></script>
 <script src="assets/js/fincas.js?v=20260625o"></script>
 <script src="assets/js/inmuebles.js?v=20260625o"></script>
-<script src="assets/js/inquilinos.js?v=20260626z"></script>
+<script src="assets/js/inquilinos.js?v=20260708a"></script>
 <script src="assets/js/contratos.js?v=20260628a"></script>
 <script src="assets/js/contratos-pdf.js?v=20260626w"></script>
-<script src="assets/js/recibos-lista.js?v=20260704a"></script>
+<script src="assets/js/recibos-lista.js?v=20260708a"></script>
 <script src="assets/js/recibos-cobro.js?v=20260705b"></script>
-<script src="assets/js/recibos-pdf.js?v=20260630a"></script>
+<script src="assets/js/recibos-pdf.js?v=20260708a"></script>
 <script src="assets/js/generar.js?v=20260630a"></script>
 <script src="assets/js/informes.js?v=20260626p"></script>
 <script src="assets/js/email.js?v=20260630a"></script>

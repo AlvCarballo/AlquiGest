@@ -318,7 +318,7 @@ function renderPagosInquilinoTabla(id) {
       <td style="font-size:11px">${inm ? getInmuebleNombre(inm) : '-'}</td>
       <td>${r.concepto_periodo||'-'}</td>
       <td style="text-align:right">${fmtMoney(r.importe_total)}</td>
-      <td style="text-align:right">${pagado > 0 ? fmtMoney(pagado) : '-'}</td>
+      <td style="text-align:right">${pagado !== 0 ? fmtMoney(pagado) : '-'}</td>
       <td>${badgeEstadoRecibo(r.estado)}</td>
     </tr>`;
   }).join('');

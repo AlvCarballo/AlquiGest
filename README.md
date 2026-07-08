@@ -121,7 +121,7 @@ assets/php/verifactu.php ← Integración AEAT VERI*FACTU
 
 2. Inicia Apache y MySQL desde el panel de MAMP/XAMPP.
 
-3. Abre en el navegador: `http://localhost/AlquiGest_v2/install.php`
+3. Abre en el navegador: `http://localhost/AlquiGest_v2/assets/php/install.php`
 
 4. Elige una opción:
    - **Instalación limpia** — BD vacía lista para producción
@@ -164,7 +164,6 @@ Flujo recomendado en el primer uso:
 AlquiGest_v2/
 ├── AlquiGest.php           ← Punto de entrada principal (SPA shell)
 ├── index.php               ← Pantalla de bienvenida / instalación
-├── install.php             ← Instalador y migrador de BD
 ├── README.md               ← Este documento
 │
 ├── assets/
@@ -201,6 +200,7 @@ AlquiGest_v2/
 │   │       └── jspdf.umd.min.js
 │   ├── php/
 │   │   ├── api.php         ← API REST principal (JSON)
+│   │   ├── install.php     ← Instalador y migrador de BD
 │   │   ├── plantillas.php  ← Motor DOCX backend (ZipArchive + OOXML)
 │   │   └── verifactu.php   ← Backend VERI*FACTU (SHA-256, SOAP, AEAT)
 │   ├── docs/

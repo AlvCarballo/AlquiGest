@@ -57,7 +57,7 @@ function buildReciboHTML(id, formato) {
   // Sección de pagos: solo se renderiza si el recibo tiene al menos un pago registrado.
   // Muestra cada cobro (fecha, método, cuenta/referencia e importe),
   // el total ya pagado y, si queda saldo pendiente, el importe restante en rojo.
-  const _pagos = Array.isArray(r.pagos) ? r.pagos.filter(p => p && (p.importe > 0)) : [];
+  const _pagos = Array.isArray(r.pagos) ? r.pagos.filter(p => p && p.importe !== 0) : [];
   const _metodoLabel = { transferencia:'Transferencia', efectivo:'Efectivo', bizum:'Bizum', cheque:'Cheque', domiciliacion:'Domiciliación', otro:'Otro' };
   const pagosHtml = _pagos.length === 0 ? '' : (() => {
     const filas = _pagos.map(p => `

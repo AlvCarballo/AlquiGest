@@ -17,7 +17,7 @@ return [
     'charset' => 'utf8mb4',
 
     // ── Aplicación ────────────────────────────────────────────
-    'version' => '2.2.7',       // Versión que aparece en el pie del sidebar
+    'version' => '2.2.8',       // Versión que aparece en el pie del sidebar
     'year'    => '2026',        // Año que aparece junto a la versión
 
     // ── Log de actividad / auditoría ──────────────────────────
