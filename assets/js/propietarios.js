@@ -43,15 +43,13 @@ function renderPropietarios() {
                 <td>${esc(p.telefono||'-')}</td>
                 <td>${esc(p.email||'-')}</td>
                 <td><span class="badge badge-blue">${ninm}</span></td>
-                <td class="td-actions">
-                  ${_cfgVisi('VisiIRPFProp') ? `<button class="btn btn-sm btn-secondary" style="font-size:11px" title="Informe IRPF anual" onclick="modalInformeIRPFProp(${p.id})">IRPF</button>` : ''}
-                  <button class="btn btn-sm btn-secondary btn-icon" title="Editar" onclick="modalPropietario(${p.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  </button>
-                  ${_cfgVisi('VisiBorrarProp') ? `<button class="btn btn-sm btn-danger btn-icon" title="Eliminar" onclick="deletePropietario(${p.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-                  </button>` : ''}
-                </td>
+                <td class="td-actions">${accionesFila(
+                  { label:'Editar', cls:'btn-secondary', onclick:`modalPropietario(${p.id})` },
+                  [{ titulo:'Gestión', items:[
+                    { label:'Informe IRPF anual', icon:'📊', onclick:`modalInformeIRPFProp(${p.id})`, oculto: !_cfgVisi('VisiIRPFProp') },
+                    { label:'Eliminar', icon:'🗑', danger:true, onclick:`deletePropietario(${p.id})`, oculto: !_cfgVisi('VisiBorrarProp') },
+                  ]}]
+                )}</td>
               </tr>`;
               }).join('');
             })() : '<tr><td colspan="6"><div class="empty-state"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><p>Sin propietarios</p><small>Pulsa "Nuevo propietario" para comenzar</small></div></td></tr>'}

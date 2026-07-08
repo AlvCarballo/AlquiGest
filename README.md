@@ -1,4 +1,4 @@
-# AlquiGest v2.2.7
+# AlquiGest v3.0.0
 
 Aplicación web de gestión de alquileres para administradores de fincas y propietarios particulares. Funciona en local con MAMP o XAMPP sobre Windows; no requiere conexión a internet para ninguna función principal.
 
@@ -367,9 +367,9 @@ La tabla muestra automáticamente el estado: **Ocupado** (nombre del inquilino) 
 
 ## 12. Inquilinos
 
-El botón **Historial** en la tabla abre tres pestañas: contratos, recibos y resumen financiero (total facturado, cobrado, pendiente).
+El botón **Pagos** (acción principal de la fila) lleva directamente a los recibos del contrato activo del inquilino.
 
-El botón **Pagos** lleva directamente a los recibos del contrato activo del inquilino.
+El botón **Historial** (dentro del menú **Más ▾**, junto con Editar y Eliminar) abre tres pestañas: contratos, recibos y resumen financiero (total facturado, cobrado, pendiente).
 
 ---
 
@@ -393,7 +393,10 @@ El botón **Pagos** lleva directamente a los recibos del contrato activo del inq
 
 ### Acciones por contrato en la tabla
 
-`Generar recibo` · `⚠ IPC` (cuando procede) · `Renovar` · `Historial` · `Baja` · `PDF` · `Fianza` · `DOCX` · Editar · Eliminar
+Desde v3.0.0 cada fila muestra una única acción principal — **Generar recibo** (contratos activos) o **Ver PDF** (finalizados/rescindidos) — más el aviso **⚠ IPC/IRAV** cuando procede (se mantiene siempre visible fuera del menú, por ser una alerta temporal y no una acción rutinaria). El resto de acciones vive en el menú **Más ▾**, agrupadas en:
+- **Contrato:** Renovar · Historial de rentas · Dar de baja (solo contratos activos)
+- **Documentos:** PDF del contrato · Justificante de fianza (si hay fianza) · Contrato en DOCX
+- **Gestión:** Editar · Eliminar
 
 ---
 
@@ -412,6 +415,20 @@ El botón **Pagos** lleva directamente a los recibos del contrato activo del inq
 | Cobrado | Pagado en su totalidad |
 | Anulado | Cancelado lógicamente; el registro original se conserva íntegro para auditoría |
 | Rectificativo | Documento de corrección generado automáticamente al anular un recibo sin factura (ver más abajo) |
+
+### Acciones por recibo en la tabla
+
+Desde v3.0.0 cada fila muestra una única acción principal según el estado, más un menú **Más ▾** agrupado en Comunicación (Email, WhatsApp) / Documentos (PDF, Factura) / Gestión (Ver detalle, Editar, Anular):
+
+| Estado | Acción principal | Menú "Más" |
+|--------|-------------------|------------|
+| Pendiente | Cobrar | Email · WhatsApp · PDF · Generar factura · Ver detalle · Editar · Anular |
+| Parcial | Completar cobro | (igual que Pendiente) |
+| Cobrado | Ver cobro | (igual que Pendiente, con "Ver/Generar factura" según corresponda) |
+| Anulado | Ver | Solo PDF (documento cerrado: sin Email/WhatsApp/Editar/Anular/Factura) |
+| Rectificativo | Ver | Solo PDF (documento interno cerrado, sin efecto fiscal — ver sección 15) |
+
+El botón "Ver" (Anulado/Rectificativo) y "Ver detalle" (resto de estados) abren un panel lateral con el resumen del recibo, historial de cobros y documentos asociados. La tabla admite selección múltiple (casilla por fila) con una barra de acciones masivas para descargar el PDF de varios recibos a la vez.
 
 ### Anulación de un recibo
 
@@ -434,7 +451,7 @@ Transferencia · Domiciliación · Efectivo · Bizum · Cheque
 
 ### Filtros disponibles
 
-Estado (incl. Rectificativos) + Propietario + Inquilino + Fecha desde/hasta. Paginación configurable en Parámetros.
+Búsqueda de texto siempre visible + filtros avanzados (Estado incl. Rectificativos, Propietario, Inquilino, Fecha desde/hasta) plegados en un desplegable "Filtros avanzados" que se abre automáticamente si ya hay alguno activo. Paginación configurable en Parámetros.
 
 ---
 
@@ -445,6 +462,10 @@ Conformes al **RD 1619/2012** (Reglamento de Facturación):
 - Inmutabilidad: no se editan tras emisión
 - Anulación lógica: la factura original pasa a estado "rectificada" (se conserva íntegra) y se genera automáticamente una **factura rectificativa** con la nueva numeración `RET-AAAAMM-NNNNN` (ej. `RET-202607-00001`), con todos los importes negados, conforme al art. 15 del RD 1619/2012
 - Si VERI*FACTU está activo: la factura rectificativa también se registra ante la AEAT como cualquier otra factura
+
+### Acciones por factura en la tabla
+
+Igual que en Recibos, cada fila muestra una acción principal — **Imprimir / PDF** (emitida) o **Ver** (rectificada/anulada, estados cerrados sin más acciones posibles) — y un menú **Más ▾** con Email (Comunicación), Ver recibo origen y envío/estado AEAT (Documentos y VERI*FACTU), y Anular factura (Gestión, solo si está emitida).
 
 ### Factura rectificativa vs. recibo rectificativo
 
@@ -621,5 +642,5 @@ El botón de envío por email aparece deshabilitado. Añadir el email en la fich
 
 ---
 
-*Versión: 2.2.7 · Última actualización: julio 2026*  
+*Versión: 3.0.0 · Última actualización: julio 2026*  
 *Documentación de usuario: `assets/docs/ayuda.php`*

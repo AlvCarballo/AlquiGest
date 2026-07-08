@@ -44,20 +44,22 @@ function modalGenerarRecibo(contratoId) {
       const rentaActual = contrato.renta_base;
       _ipcTipoFetch = tipo;
       alertaIPCHtml = `
-        <div id="alerta-ipc-recibo" style="background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;padding:12px;margin-bottom:16px">
-          <div style="font-weight:700;color:#92400e;margin-bottom:8px">⚠ Revisión ${tipo} anual — ${anosVigencia}º aniversario del contrato</div>
+        <div id="alerta-ipc-recibo" style="background:var(--orange-light);border:1px solid var(--color-warn-muted);border-radius:8px;padding:12px;margin-bottom:16px">
+          <div style="font-weight:700;color:var(--orange);margin-bottom:8px">⚠ Revisión ${tipo} anual — ${anosVigencia}º aniversario del contrato</div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-            <label style="font-size:13px;color:#78350f;white-space:nowrap">Porcentaje ${tipo} (%):</label>
+            <label style="font-size:13px;color:var(--orange);white-space:nowrap">Porcentaje ${tipo} (%):</label>
             <input id="inp-ipc-pct-recibo" type="number" step="0.01" min="-10" max="25" value="0"
-                   style="width:90px;padding:4px 8px;border:1px solid #fbbf24;border-radius:4px;background:#fff"
+                   style="width:90px;padding:4px 8px;border:1px solid var(--color-warn-muted);border-radius:4px;background:var(--bg-surface);color:var(--text-primary)"
                    oninput="(function(){const pct=parseFloat(document.getElementById('inp-ipc-pct-recibo').value)||0;const nueva=Math.round(${rentaActual}*(1+pct/100)*100)/100;const el=document.getElementById('ipc-nueva-renta-recibo');if(el)el.textContent=nueva.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';})()">
-            <span id="ipc-fuente-recibo" style="font-size:11px;color:#92400e;font-style:italic">⏳ Consultando INE…</span>
+            <span id="ipc-fuente-recibo" style="font-size:11px;color:var(--orange);font-style:italic">⏳ Consultando INE…</span>
           </div>
-          <div style="font-size:13px;color:#78350f;margin-bottom:8px">
+          <div style="font-size:13px;color:var(--orange);margin-bottom:8px">
             Renta actual: <strong>${fmtMoney(rentaActual)}</strong> →
             Nueva renta: <strong id="ipc-nueva-renta-recibo">${fmtMoney(rentaActual)}</strong>
           </div>
-          <button type="button" class="btn btn-sm" style="background:#c27803;color:white;border:none"
+          <!-- Sólido con ámbar fijo a propósito, igual que el botón ⚠IPC de Contratos:
+               var(--orange) en oscuro es demasiado claro para texto blanco encima. -->
+          <button type="button" class="btn btn-sm" style="background:#f59e0b;color:#fff;border:none"
                   onclick="aplicarIPCDesdeRecibo(${contratoId})">
             Aplicar al recibo
           </button>
@@ -190,7 +192,7 @@ async function aplicarIPCDesdeRecibo(contratoId) {
   const fuenteEl = document.getElementById('ipc-fuente-recibo');
   if (fuenteEl) fuenteEl.textContent = `✓ Aplicado ${pct}% · Nueva renta: ${fmtMoney(nueva)}`;
   const btn = document.querySelector('#alerta-ipc-recibo button');
-  if (btn) { btn.disabled = true; btn.textContent = '✓ Aplicado'; btn.style.background = '#15803d'; }
+  if (btn) { btn.disabled = true; btn.textContent = '✓ Aplicado'; btn.style.background = 'var(--green)'; }
 }
 
 // Recalcula los importes del formulario de generación de recibo en tiempo real.

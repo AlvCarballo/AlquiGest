@@ -8,6 +8,35 @@
 let _contratosPag = 1;
 let _contFiltroIPC = false;
 
+// ============================================================
+// Acciones de fila de Contratos: acción principal + menú "Más" agrupado.
+// Propuesta UX 08/07/2026, ver UX_UI_ANALISIS_PROPUESTA.md §3.
+// El aviso ⚠IPC se mantiene siempre visible fuera de este componente
+// (es una alerta temporal, no una acción rutinaria más).
+// ============================================================
+function _accionesContrato(c, esActivo) {
+  const grupos = [
+    { titulo:'Contrato', items:[
+      { label:'Renovar', icon:'🔄', onclick:`modalRenovarContrato(${c.id})`, oculto: !_cfgVisi('VisiRenovarCont') || !esActivo },
+      { label:'Historial de rentas', icon:'🕓', onclick:`modalHistorialRentas(${c.id})`, oculto: !_cfgVisi('VisiHistorialCont') || !esActivo },
+      { label:'Dar de baja', icon:'⛔', danger:true, onclick:`modalBajaContrato(${c.id})`, oculto: !_cfgVisi('VisiBajaCont') || !esActivo },
+    ]},
+    { titulo:'Documentos', items:[
+      { label:'PDF del contrato', icon:'🖶', onclick:`pdfContrato(${c.id})`, oculto: !_cfgVisi('VisiPDFCont') || !esActivo },
+      { label:'Justificante de fianza', icon:'🖶', onclick:`pdfFianza(${c.id})`, oculto: !_cfgVisi('VisiFianzaCont') || !(parseFloat(c.fianza) > 0) },
+      { label:'Contrato en DOCX', icon:'📄', onclick:`generarDocumentoDesdePlantilla('contrato',${c.id},0)`, oculto: !_cfgVisi('VisiDocxCont') },
+    ]},
+    { titulo:'Gestión', items:[
+      { label:'Editar', icon:'✎', onclick:`modalContrato(${c.id})` },
+      { label:'Eliminar', icon:'🗑', danger:true, onclick:`deleteContrato(${c.id})`, oculto: !_cfgVisi('VisiBorrarCont') },
+    ]},
+  ];
+  const principal = esActivo
+    ? (_cfgVisi('VisiGenerarReciboCont') ? { label:'Generar recibo', cls:'btn-success', onclick:`modalGenerarRecibo(${c.id})` } : null)
+    : (_cfgVisi('VisiPDFCont') ? { label:'Ver PDF', cls:'btn-secondary', onclick:`pdfContrato(${c.id})` } : null);
+  return accionesFila(principal, grupos);
+}
+
 function renderContratos() {
   // Si venimos del dashboard con filtroIPC, activar el filtro
   if (navParams && navParams.filtroIPC) {
@@ -62,13 +91,13 @@ function renderContratos() {
           </select>
           ${ipcPendIds.size > 0 ? `
           <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;margin:0;font-weight:400;
-                        background:${_contFiltroIPC?'#fef3c7':'transparent'};
-                        border:1px solid ${_contFiltroIPC?'#fbbf24':'var(--gray-300)'};
+                        background:${_contFiltroIPC?'var(--orange-light)':'transparent'};
+                        border:1px solid ${_contFiltroIPC?'var(--color-warn-muted)':'var(--gray-300)'};
                         padding:5px 10px;border-radius:6px;white-space:nowrap">
             <input type="checkbox" ${_contFiltroIPC?'checked':''}
                    onchange="_contFiltroIPC=this.checked;_contratosPag=1;renderContratos()"
-                   style="width:auto;margin:0;accent-color:#f59e0b">
-            <span style="color:#92400e;font-weight:600">⚠ Revisión pendiente (${ipcPendIds.size})</span>
+                   style="width:auto;margin:0;accent-color:var(--orange)">
+            <span style="color:var(--orange);font-weight:600">⚠ Revisión pendiente (${ipcPendIds.size})</span>
           </label>` : ''}
           <div class="search-bar" style="width:220px">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -87,9 +116,9 @@ function renderContratos() {
               const _anioAct = new Date().getFullYear();
               const badgeRevision = TIPOS_REVISION_INE.includes(c.revision)
                 ? (parseInt(c.ipc_anio_aplicado) === _anioAct
-                    ? `<br><span style="font-size:10px;background:rgba(5,122,85,.12);color:#057a55;border:1px solid rgba(5,122,85,.3);border-radius:3px;padding:1px 4px">${c.revision} ✓ ${_anioAct}</span>`
+                    ? `<br><span style="font-size:10px;background:var(--green-light);color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 4px">${c.revision} ✓ ${_anioAct}</span>`
                     : (ipcPendIds.has(c.id)
-                        ? `<br><span style="font-size:10px;background:rgba(245,158,11,.12);color:#92400e;border:1px solid rgba(245,158,11,.3);border-radius:3px;padding:1px 4px">${c.revision} ⚠</span>`
+                        ? `<br><span style="font-size:10px;background:var(--orange-light);color:var(--orange);border:1px solid var(--color-warn-muted);border-radius:3px;padding:1px 4px">${c.revision} ⚠</span>`
                         : ''))
                 : '';
               return `<tr>
@@ -100,36 +129,13 @@ function renderContratos() {
                 <td><strong>${fmtMoney(c.renta_base)}</strong>${badgeRevision}</td>
                 <td>${badgeEstadoContrato(c.estado)}</td>
                 <td class="td-actions">
-                  ${esActivo ? `
-                    ${ipcPendIds.has(c.id) ? `
-                    <button class="btn btn-sm" style="background:#f59e0b;color:#fff;border-color:#d97706;font-size:11px;font-weight:700"
-                            title="Aplicar revisión ${c.revision} anual" onclick="modalAplicarIPC(${c.id})">
-                      ⚠ ${c.revision}
-                    </button>` : ''}
-                    ${_cfgVisi('VisiGenerarReciboCont') ? `<button class="btn btn-sm btn-success" onclick="modalGenerarRecibo(${c.id})">
-                      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-                      Generar recibo
-                    </button>` : ''}
-                    ${_cfgVisi('VisiRenovarCont') ? `<button class="btn btn-sm btn-secondary" style="font-size:11px" title="Renovar contrato" onclick="modalRenovarContrato(${c.id})">Renovar</button>` : ''}
-                    ${_cfgVisi('VisiHistorialCont') ? `<button class="btn btn-sm btn-secondary" style="font-size:11px" title="Historial de rentas" onclick="modalHistorialRentas(${c.id})">Historial</button>` : ''}
-                    ${_cfgVisi('VisiBajaCont') ? `<button class="btn btn-sm btn-danger" style="font-size:11px" title="Dar de baja" onclick="modalBajaContrato(${c.id})">Baja</button>` : ''}
-                  ` : ''}
-                  ${_cfgVisi('VisiPDFCont') ? `<button class="btn btn-sm btn-secondary" style="font-size:11px" title="Generar PDF del contrato" onclick="pdfContrato(${c.id})">
-                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    PDF
-                  </button>` : ''}
-                  ${_cfgVisi('VisiFianzaCont') && parseFloat(c.fianza) > 0 ? `
-                  <button class="btn btn-sm btn-secondary" style="font-size:11px" title="Justificante de fianza en PDF" onclick="pdfFianza(${c.id})">Fianza</button>` : ''}
-                  ${_cfgVisi('VisiDocxCont') ? `<button class="btn btn-sm btn-secondary" style="font-size:11px" title="Generar documento DOCX desde plantilla" onclick="generarDocumentoDesdePlantilla('contrato',${c.id},0)">
-                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
-                    DOCX
-                  </button>` : ''}
-                  <button class="btn btn-sm btn-secondary btn-icon" title="Editar" onclick="modalContrato(${c.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  </button>
-                  ${_cfgVisi('VisiBorrarCont') ? `<button class="btn btn-sm btn-danger btn-icon" title="Eliminar" onclick="deleteContrato(${c.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-                  </button>` : ''}
+                  <!-- Botón sólido con ámbar fijo (no var(--orange)) a propósito: en modo
+                       oscuro --orange es un amarillo muy claro (#fbbf24) que da muy poco
+                       contraste con el texto blanco del botón. Al ser color sólido con texto
+                       blanco ya se lee bien en ambos temas tal cual, sin necesitar variable. -->
+                  ${ipcPendIds.has(c.id) ? `<button class="btn btn-sm" style="background:#f59e0b;color:#fff;border-color:#d97706;font-size:11px;font-weight:700"
+                          title="Aplicar revisión ${c.revision} anual" onclick="modalAplicarIPC(${c.id})">⚠ ${c.revision}</button>` : ''}
+                  ${_accionesContrato(c, esActivo)}
                 </td>
               </tr>`;
             }).join('') : `<tr><td colspan="7"><div class="empty-state">
@@ -462,15 +468,15 @@ async function modalAplicarIPC(id) {
   const _renderModal = (pct, fuente, aviso) => {
     const calc = _calcHtml(pct);
     const fuenteHtml = fuente === 'INE'
-      ? `<span style="color:#057a55;font-size:11px">✓ Dato obtenido del INE</span>`
-      : `<span style="color:#b45309;font-size:11px">⚠ ${aviso || 'No se pudo conectar con el INE — introduzca el porcentaje manualmente'}</span>`;
+      ? `<span style="color:var(--green);font-size:11px">✓ Dato obtenido del INE</span>`
+      : `<span style="color:var(--red);font-size:11px">⚠ ${aviso || 'No se pudo conectar con el INE — introduzca el porcentaje manualmente'}</span>`;
     openModal(`Revisión ${tipo} — ${inq?.nombre || ''}`, `
       <div class="alert alert-info" style="margin-bottom:16px">
         <strong>${inq?.nombre || '—'}</strong> · ${getInmuebleNombre(inm)}<br>
         Contrato iniciado el <strong>${fmtDate(c.fecha_inicio)}</strong> · ${anios}º aniversario
       </div>
-      <div style="background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;padding:14px 16px;margin-bottom:20px">
-        <div style="font-size:13px;color:#78350f;margin-bottom:4px">
+      <div style="background:var(--orange-light);border:1px solid var(--color-warn-muted);border-radius:8px;padding:14px 16px;margin-bottom:20px">
+        <div style="font-size:13px;color:var(--orange);margin-bottom:4px">
           Renta actual: <strong style="font-size:16px">${fmtMoney(c.renta_base)}</strong>
         </div>
         <div style="margin-bottom:12px">${fuenteHtml}</div>
@@ -488,12 +494,12 @@ async function modalAplicarIPC(id) {
           </div>
           <div class="form-group" style="margin:0">
             <label>Nueva renta resultante</label>
-            <div style="padding:8px 12px;background:var(--gray-50);border:1px solid var(--gray-300);border-radius:6px;font-size:16px;font-weight:700;color:#057a55">
+            <div style="padding:8px 12px;background:var(--gray-50);border:1px solid var(--gray-300);border-radius:6px;font-size:16px;font-weight:700;color:var(--green)">
               <span id="ipc-nueva-renta">${calc.nueva}</span>
             </div>
           </div>
         </div>
-        <div style="font-size:12px;color:#78350f;margin-top:8px">
+        <div style="font-size:12px;color:var(--orange);margin-top:8px">
           Incremento: <strong><span id="ipc-diferencia">${calc.inc}</span></strong>
         </div>
       </div>

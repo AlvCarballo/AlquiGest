@@ -40,11 +40,14 @@ function qrDataURL(text, size) {
 }
 
 // ── Badge VERI*FACTU ─────────────────────────────────────────
+// Revisado 08/07/2026: 'no_enviado' pasa a gris y 'enviado' a azul, para no
+// competir con el verde de badgeEstadoFactura('emitida') en la misma fila
+// (ver UX_UI_ANALISIS_PROPUESTA.md §6).
 function badgeVF(estado) {
   const map = {
-    no_enviado     : ['badge-blue',   'No enviado'],
+    no_enviado     : ['badge-gray',   'No enviado'],
     pendiente_envio: ['badge-orange', 'Pendiente'],
-    enviado        : ['badge-green',  'Enviado'],
+    enviado        : ['badge-blue',   'Enviado ✓'],
     error          : ['badge-red',    'Error'],
   };
   const [cls, label] = map[estado] || ['badge-blue', estado || '—'];

@@ -1,8 +1,10 @@
 // ===========================
 
-// Badge visual para el estado de una factura
+// Badge visual para el estado de una factura (revisado 08/07/2026: 'rectificada'
+// pasa a gris neutro — estado cerrado/histórico, no un error — para no competir
+// visualmente con el azul de VERI*FACTU en la misma fila, ver UX_UI_ANALISIS_PROPUESTA.md §6).
 function badgeEstadoFactura(estado) {
-  const map    = { emitida:'badge-green', anulada:'badge-red', rectificada:'badge-blue' };
+  const map    = { emitida:'badge-green', anulada:'badge-red', rectificada:'badge-gray' };
   const labels = { emitida:'Emitida', anulada:'Anulada', rectificada:'Rectificada' };
   return `<span class="badge ${map[estado]||'badge-blue'}">${labels[estado]||estado}</span>`;
 }
@@ -74,10 +76,10 @@ async function generarFacturaDesdeRecibo(reciboId) {
 
   if (errores.length) {
     openModal('No se puede generar la factura',
-      `<div style="color:#991b1b">
+      `<div style="color:var(--red)">
          <p style="margin-bottom:10px;font-weight:600">Faltan datos obligatorios para emitir la factura:</p>
          <ul style="padding-left:20px">${errores.map(e => `<li style="margin-bottom:4px">${esc(e)}</li>`).join('')}</ul>
-         <p style="margin-top:12px;font-size:12px;color:#6b7280">Completa estos datos en Mi Empresa o en la ficha del inquilino y vuelve a intentarlo.</p>
+         <p style="margin-top:12px;font-size:12px;color:var(--text-muted)">Completa estos datos en Mi Empresa o en la ficha del inquilino y vuelve a intentarlo.</p>
        </div>`,
       '<button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>');
     return;
@@ -347,6 +349,37 @@ async function anularFactura(id) {
 let _facturasPag = 1;
 let _facListaFiltrada = [];   // lista completa tras filtros, usada por imprimir/PDF
 
+// ============================================================
+// Acciones de fila de Facturas: acción principal + menú "Más" agrupado.
+// Propuesta UX 08/07/2026, ver UX_UI_ANALISIS_PROPUESTA.md §6.
+// 'emitida' es el único estado con acciones de gestión (email, AEAT, anular);
+// 'rectificada'/'anulada' son estados cerrados: solo se puede consultar.
+// ============================================================
+function _accionesFactura(f, vfActivo, reciboOrigen) {
+  const esEmitida = f.estado === 'emitida';
+  const grupos = [
+    { titulo:'Comunicación', items:[
+      { label:'Enviar por email', icon:'✉', onclick: f.cliente_email ? `enviarFacturaEmail(${f.id})` : `toast('Esta factura no tiene email de cliente registrado.','error')`, oculto: !_cfgVisi('VisiEmailFact') || !esEmitida },
+    ]},
+    { titulo:'Documentos', items:[
+      { label:'Ver recibo origen', icon:'📄',
+        onclick: reciboOrigen ? `navigate('recibos');setTimeout(()=>{ document.querySelector('[title=\\'Imprimir\\'][onclick*=\\'imprimirReciboModal(${reciboOrigen.id})\\']')?.scrollIntoView({block:'center'}) },400)` : '',
+        oculto: !_cfgVisi('VisiReciboOrigenFact') || !reciboOrigen },
+    ]},
+    { titulo:'VERI*FACTU', items:[
+      { label:'Enviar/reintentar envío a AEAT', icon:'🛡', onclick:`enviarFacturaAEAT(${f.id},this)`, oculto: !_cfgVisi('VisiAEATFact') || !vfActivo || !esEmitida || f.verifactu_estado === 'enviado' },
+      { label:'Ver XML enviado a AEAT', icon:'⤢', onclick:`verXMLFactura(${f.id})`, oculto: !_cfgVisi('VisiXMLFact') || !vfActivo || f.verifactu_estado !== 'enviado' },
+    ]},
+    { titulo:'Gestión', items:[
+      { label:'Anular factura', icon:'⊘', danger:true, onclick:`anularFactura(${f.id})`, oculto: !_cfgVisi('VisiAnularFact') || !esEmitida },
+    ]},
+  ];
+  const principal = _cfgVisi('VisiImprimirFact')
+    ? { label: esEmitida ? 'Imprimir / PDF' : 'Ver', cls: esEmitida ? 'btn-primary' : 'btn-secondary', onclick:`imprimirFacturaModal(${f.id})` }
+    : null;
+  return accionesFila(principal, grupos);
+}
+
 function renderFacturas(params) {
   params = params || {};
   const facturas      = DB.get('facturas');
@@ -455,35 +488,7 @@ function renderFacturas(params) {
                 <td style="text-align:right"><strong>${fmtMoney(f.importe_total)}</strong></td>
                 <td>${badgeEstadoFactura(f.estado)}</td>
                 ${vfActivo ? `<td>${badgeVF(f.verifactu_estado)}</td>` : ''}
-                <td class="td-actions">
-                  ${_cfgVisi('VisiImprimirFact') ? `<button class="btn btn-sm btn-primary btn-icon" title="Imprimir / PDF" onclick="imprimirFacturaModal(${f.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                  </button>` : ''}
-                  ${_cfgVisi('VisiEmailFact') ? (f.cliente_email
-                    ? `<button class="btn btn-sm btn-info" style="font-size:11px" title="Enviar por email" onclick="enviarFacturaEmail(${f.id})">✉</button>`
-                    : `<button class="btn btn-sm btn-icon" style="font-size:11px;background:var(--gray-200);color:var(--gray-500);border-color:var(--gray-300);cursor:not-allowed" title="Sin email registrado" disabled>✉</button>`) : ''}
-                  ${_cfgVisi('VisiReciboOrigenFact') && reciboOrigen
-                    ? `<button class="btn btn-sm btn-secondary" style="font-size:10px" title="Ver recibo origen" onclick="navigate('recibos');setTimeout(()=>{ document.querySelector('[title=\\'Imprimir\\'][onclick*=\\'imprimirReciboModal(${reciboOrigen.id})\\']')?.scrollIntoView({block:'center'}) },400)">
-                         <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-                         REC
-                       </button>`
-                    : ''}
-                  ${_cfgVisi('VisiAEATFact') && vfActivo && f.estado === 'emitida' && f.verifactu_estado !== 'enviado'
-                    ? `<button class="btn btn-sm" style="background:#7c3aed;color:#fff;font-size:10px" title="Enviar/reintentar envío a AEAT" onclick="enviarFacturaAEAT(${f.id},this)">
-                         🛡 AEAT
-                       </button>`
-                    : ''}
-              ${_cfgVisi('VisiXMLFact') && vfActivo && f.verifactu_estado === 'enviado'
-                    ? `<button class="btn btn-sm btn-secondary btn-icon" title="Ver XML enviado a AEAT" onclick="verXMLFactura(${f.id})">
-                         <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                       </button>`
-                    : ''}
-              ${_cfgVisi('VisiAnularFact') && f.estado === 'emitida'
-                    ? `<button class="btn btn-sm btn-danger btn-icon" title="Anular factura" onclick="anularFactura(${f.id})">
-                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                       </button>`
-                    : ''}
-                </td>
+                <td class="td-actions">${_accionesFactura(f, vfActivo, reciboOrigen)}</td>
               </tr>`;
             }).join('') : `<tr><td colspan="${vfActivo ? 12 : 11}"><div class="empty-state">
               <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
@@ -514,7 +519,7 @@ function renderFacturas(params) {
         if (!badge) {
           const b = document.createElement('span');
           b.className = 'vf-badge';
-          b.style.cssText = 'background:#ef4444;color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:auto';
+          b.style.cssText = 'background:var(--red);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:auto';
           b.textContent = pendientes;
           navItem.appendChild(b);
         } else { badge.textContent = pendientes; }
@@ -1015,12 +1020,12 @@ async function confirmarEnvioFacturaEmail(id) {
   let pdfBase64 = '';
   if (window.jspdf) {
     btn.textContent = 'Generando PDF…';
-    div.innerHTML = `<div style="color:#1e40af;background:#dbeafe;border-radius:8px;padding:10px;font-size:13px">⏳ Generando PDF de la factura…</div>`;
+    div.innerHTML = `<div style="color:var(--color-info);background:var(--color-info-light);border-radius:8px;padding:10px;font-size:13px">⏳ Generando PDF de la factura…</div>`;
     try { pdfBase64 = await _generarPDFFacturaBase64(id, 'a4'); } catch(e) { console.warn('PDF factura err:', e); }
   }
 
   btn.textContent = 'Enviando…';
-  div.innerHTML = `<div style="color:#1e40af;background:#dbeafe;border-radius:8px;padding:10px;font-size:13px">⏳ Enviando email…</div>`;
+  div.innerHTML = `<div style="color:var(--color-info);background:var(--color-info-light);border-radius:8px;padding:10px;font-size:13px">⏳ Enviando email…</div>`;
 
   let res;
   try {
@@ -1037,10 +1042,10 @@ async function confirmarEnvioFacturaEmail(id) {
   } catch { res = { error: 'Error de conexión con el servidor' }; }
 
   if (res.ok) {
-    div.innerHTML = `<div style="color:#15803d;background:#dcfce7;border-radius:8px;padding:12px">✅ ${res.mensaje}</div>`;
+    div.innerHTML = `<div style="color:var(--green);background:var(--green-light);border-radius:8px;padding:12px">✅ ${res.mensaje}</div>`;
     btn.textContent = '✓ Enviado';
   } else {
-    div.innerHTML = `<div style="color:#991b1b;background:#fee2e2;border-radius:8px;padding:12px">❌ ${res.error}</div>`;
+    div.innerHTML = `<div style="color:var(--red);background:var(--red-light);border-radius:8px;padding:12px">❌ ${res.error}</div>`;
     btn.disabled = false; btn.textContent = 'Reintentar';
   }
 }

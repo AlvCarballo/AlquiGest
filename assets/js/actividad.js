@@ -18,26 +18,27 @@ var _ACT_TIPOS = {
     subida_ipc:       'Subida IPC / IRAV',
 };
 
-// Colores de badge por tipo
+// Colores de badge por tipo (variables de tema en vez de hex fijos —
+// 08/07/2026, ver UX_UI_MODO_OSCURO_COLORES.md — así se adaptan al modo oscuro)
 var _ACT_COLOR = {
-    cobro:            '#065f46',
-    anulacion_pago:   '#92400e',
-    anulacion_recibo: '#991b1b',
-    generacion_lote:  '#1e40af',
-    factura_generada: '#0e7490',
-    email_enviado:    '#1e40af',
-    baja_contrato:    '#991b1b',
-    subida_ipc:       '#92400e',
+    cobro:            'var(--green)',
+    anulacion_pago:   'var(--orange)',
+    anulacion_recibo: 'var(--red)',
+    generacion_lote:  'var(--blue)',
+    factura_generada: 'var(--color-info)',
+    email_enviado:    'var(--blue)',
+    baja_contrato:    'var(--red)',
+    subida_ipc:       'var(--orange)',
 };
 var _ACT_BG = {
-    cobro:            '#d1fae5',
-    anulacion_pago:   '#fef3c7',
-    anulacion_recibo: '#fee2e2',
-    generacion_lote:  '#dbeafe',
-    factura_generada: '#cffafe',
-    email_enviado:    '#dbeafe',
-    baja_contrato:    '#fee2e2',
-    subida_ipc:       '#fef3c7',
+    cobro:            'var(--green-light)',
+    anulacion_pago:   'var(--orange-light)',
+    anulacion_recibo: 'var(--red-light)',
+    generacion_lote:  'var(--blue-light)',
+    factura_generada: 'var(--color-info-light)',
+    email_enviado:    'var(--blue-light)',
+    baja_contrato:    'var(--red-light)',
+    subida_ipc:       'var(--orange-light)',
 };
 
 // ── registrarActividad ────────────────────────────────────────
@@ -125,7 +126,7 @@ function _actividadBuscar() {
         .catch(function () {
             var el2 = document.getElementById('act-resultados');
             if (el2) el2.innerHTML =
-                '<div style="padding:16px;background:#fee2e2;color:#991b1b;border-radius:8px">' +
+                '<div style="padding:16px;background:var(--red-light);color:var(--red);border-radius:8px">' +
                 '  Error al cargar el historial. Comprueba que la tabla log_actividad existe (reinstala o actualiza la BD).' +
                 '</div>';
         });
@@ -152,8 +153,8 @@ function _actividadRenderTabla(filas) {
 
     var filas_html = filas.map(function (f) {
         var label  = _ACT_TIPOS[f.tipo_accion]  || f.tipo_accion;
-        var color  = _ACT_COLOR[f.tipo_accion]  || '#374151';
-        var bg     = _ACT_BG[f.tipo_accion]     || '#f3f4f6';
+        var color  = _ACT_COLOR[f.tipo_accion]  || 'var(--text-secondary)';
+        var bg     = _ACT_BG[f.tipo_accion]     || 'var(--gray-100)';
         var fecha  = (f.fecha || '').replace('T', ' ').slice(0, 16);
         var entInfo = f.entidad
             ? (f.entidad + (f.entidad_id ? ' #' + f.entidad_id : ''))

@@ -93,41 +93,54 @@ function renderRecibos(params) {
       Nuevo recibo
     </button>`;
 
+  const _filtrosActivos = !!(estadoSel||fechaDesde||fechaHasta||inqFiltroId||propFiltroId);
+
   document.getElementById('content').innerHTML = `
-    <div class="filtros-bar">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
       ${params.finca_id||params.inmueble_id||params.inquilino_id
-        ? `<button class="btn btn-secondary" onclick="navigate('recibos')">← Quitar filtro</button>` : ''}
-      <select id="filtro-estado" onchange="_recibosPag=1;renderRecibos(navParams)">
-        <option value="" ${!estadoSel?'selected':''}>Todos los estados</option>
-        <option value="pendiente" ${estadoSel==='pendiente'?'selected':''}>Pendientes</option>
-        <option value="parcial"   ${estadoSel==='parcial'?'selected':''}>Parciales</option>
-        <option value="cobrado"   ${estadoSel==='cobrado'?'selected':''}>Cobrados</option>
-        <option value="anulado"   ${estadoSel==='anulado'?'selected':''}>Anulados</option>
-        <option value="rectificativo" ${estadoSel==='rectificativo'?'selected':''}>Rectificativos</option>
-      </select>
-      <select id="filtro-propietario" onchange="_recibosPag=1;renderRecibos(navParams)">
-        <option value="0">Todos los propietarios</option>
-        ${propietarios.map(p => `<option value="${p.id}" ${propFiltroId===p.id?'selected':''}>${esc(p.nombre)}</option>`).join('')}
-      </select>
-      <select id="filtro-inquilino" onchange="_recibosPag=1;renderRecibos(navParams)">
-        <option value="0">Todos los inquilinos</option>
-        ${inquilinos.map(i => `<option value="${i.id}" ${inqFiltroId===i.id?'selected':''}>${esc(i.nombre)}</option>`).join('')}
-      </select>
-      <div style="display:flex;align-items:center;gap:6px">
-        <label style="font-size:12px;color:var(--gray-500);margin:0">Desde</label>
-        <input type="date" id="filtro-fecha-desde" value="${esc(fechaDesde)}" onchange="_recibosPag=1;renderRecibos(navParams)" style="width:140px">
-      </div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <label style="font-size:12px;color:var(--gray-500);margin:0">Hasta</label>
-        <input type="date" id="filtro-fecha-hasta" value="${esc(fechaHasta)}" onchange="_recibosPag=1;renderRecibos(navParams)" style="width:140px">
-      </div>
-      ${(estadoSel||fechaDesde||fechaHasta||inqFiltroId||propFiltroId)
-        ? `<button class="btn btn-secondary" onclick="document.getElementById('filtro-estado').value='';document.getElementById('filtro-fecha-desde').value='';document.getElementById('filtro-fecha-hasta').value='';document.getElementById('filtro-inquilino').value='0';document.getElementById('filtro-propietario').value='0';_recibosPag=1;renderRecibos(navParams)">✕ Limpiar</button>` : ''}
-      <div style="margin-left:auto;font-size:13px;color:var(--gray-500)">${totalRec} recibos</div>
-      <div class="search-bar" style="width:200px">
+        ? `<button class="btn btn-sm btn-secondary" onclick="navigate('recibos')">← Quitar filtro</button>` : ''}
+      <div class="search-bar" style="width:260px">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="search" placeholder="Buscar en tabla..." oninput="filterTable(this,'tbl-recibos',[0,1,2])">
+        <input type="search" placeholder="Buscar en tabla..." oninput="filterTable(this,'tbl-recibos',[1,2,3])">
       </div>
+      <div style="font-size:13px;color:var(--gray-500)">${totalRec} recibos</div>
+    </div>
+    <details class="filtros-plegables" ${_filtrosActivos ? 'open' : ''}>
+      <summary>Filtros avanzados${_filtrosActivos ? ' <span class="badge badge-blue" style="margin-left:6px">activos</span>' : ''}</summary>
+      <div class="filtros-bar">
+        <select id="filtro-estado" onchange="_recibosPag=1;renderRecibos(navParams)">
+          <option value="" ${!estadoSel?'selected':''}>Todos los estados</option>
+          <option value="pendiente" ${estadoSel==='pendiente'?'selected':''}>Pendientes</option>
+          <option value="parcial"   ${estadoSel==='parcial'?'selected':''}>Parciales</option>
+          <option value="cobrado"   ${estadoSel==='cobrado'?'selected':''}>Cobrados</option>
+          <option value="anulado"   ${estadoSel==='anulado'?'selected':''}>Anulados</option>
+          <option value="rectificativo" ${estadoSel==='rectificativo'?'selected':''}>Rectificativos</option>
+        </select>
+        <select id="filtro-propietario" onchange="_recibosPag=1;renderRecibos(navParams)">
+          <option value="0">Todos los propietarios</option>
+          ${propietarios.map(p => `<option value="${p.id}" ${propFiltroId===p.id?'selected':''}>${esc(p.nombre)}</option>`).join('')}
+        </select>
+        <select id="filtro-inquilino" onchange="_recibosPag=1;renderRecibos(navParams)">
+          <option value="0">Todos los inquilinos</option>
+          ${inquilinos.map(i => `<option value="${i.id}" ${inqFiltroId===i.id?'selected':''}>${esc(i.nombre)}</option>`).join('')}
+        </select>
+        <div style="display:flex;align-items:center;gap:6px">
+          <label style="font-size:12px;color:var(--gray-500);margin:0">Desde</label>
+          <input type="date" id="filtro-fecha-desde" value="${esc(fechaDesde)}" onchange="_recibosPag=1;renderRecibos(navParams)" style="width:140px">
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <label style="font-size:12px;color:var(--gray-500);margin:0">Hasta</label>
+          <input type="date" id="filtro-fecha-hasta" value="${esc(fechaHasta)}" onchange="_recibosPag=1;renderRecibos(navParams)" style="width:140px">
+        </div>
+        ${_filtrosActivos
+          ? `<button class="btn btn-sm btn-secondary" onclick="document.getElementById('filtro-estado').value='';document.getElementById('filtro-fecha-desde').value='';document.getElementById('filtro-fecha-hasta').value='';document.getElementById('filtro-inquilino').value='0';document.getElementById('filtro-propietario').value='0';_recibosPag=1;renderRecibos(navParams)">✕ Limpiar filtros</button>` : ''}
+      </div>
+    </details>
+    <div class="bulk-bar" id="bulk-bar-recibos">
+      <span id="bulk-count-recibos">0 seleccionados</span>
+      <div class="bulk-spacer"></div>
+      <button class="btn btn-sm" onclick="accionMasivaPDFRecibos()">🖶 Descargar PDF</button>
+      <button class="bulk-clear" onclick="limpiarSeleccionMasiva('chk-recibo','bulk-bar-recibos','bulk-count-recibos')">Deseleccionar todo</button>
     </div>
     <div class="card">
       <div class="card-header">
@@ -135,29 +148,16 @@ function renderRecibos(params) {
       </div>
       <div class="table-wrap">
         <table id="tbl-recibos">
-          <thead><tr><th>Nº Recibo</th><th>Inquilino</th><th>Inmueble</th><th>Período</th><th>Total</th><th>Pagado</th><th>Estado</th><th></th></tr></thead>
+          <thead><tr><th style="width:30px"><input type="checkbox" class="bulk-check chk-recibo-master" title="Seleccionar todos" onclick="toggleTodasFilas(this,'chk-recibo','bulk-bar-recibos','bulk-count-recibos')"></th><th>Nº Recibo</th><th>Inquilino</th><th>Inmueble</th><th>Período</th><th>Total</th><th>Pagado</th><th>Estado</th><th></th></tr></thead>
           <tbody>
             ${sortedPage.length ? sortedPage.map(r => {
               const inq = _inqMapR.get(r.inquilino_id);
               const inm = _inmMapR.get(r.inmueble_id);
               const pagado = (r.pagos||[]).reduce((s,p)=>s+p.importe,0);
-              const puedeCobrarse = ['pendiente','parcial'].includes(r.estado);
               // Buscar si ya existe factura para este recibo
               const facturaDeEsteRecibo = todasFacturas.find(f => f.recibo_id === r.id);
-              // Construir la URL de WhatsApp (protocolo según whatsappNativo en configuración)
-              let _waHref = '';
-              const _telRaw = String(inq?.movil || inq?.telefono || '');
-              if (_telRaw && _cfgVisi('whatsappVis')) {
-                let _tel = _telRaw.replace(/[\s\-()+.]/g, '');
-                if (_tel.startsWith('00')) _tel = _tel.slice(2);
-                if (/^[67]\d{8}$/.test(_tel)) _tel = '34' + _tel;
-                const _emp = DB.getEmpresa() || {};
-                const _msg = `*Recibo de alquiler*\n\nN\xba recibo: ${r.numero_recibo}\nPer\xedodo: ${r.concepto_periodo||''}\nFecha emisi\xf3n: ${fmtDateShort(r.fecha_emision)}\nImporte: ${fmtMoney(r.importe_total)}\nEstado: ${r.estado}` +
-                  (_emp.nombre ? `\n\n${_emp.nombre}` : '') + (_emp.telefono ? `\nTel: ${_emp.telefono}` : '');
-                _waHref = _buildWAUrl(_tel, _msg);
-              }
-              const _waSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
               return `<tr class="tr-${r.estado||'pendiente'}">
+                <td><input type="checkbox" class="bulk-check chk-recibo" value="${r.id}" onclick="actualizarBarraMasiva('chk-recibo','bulk-bar-recibos','bulk-count-recibos')"></td>
                 <td><strong>${esc(r.numero_recibo)}</strong><br><small>${fmtDate(r.fecha_emision)}</small></td>
                 <td>${esc(inq ? inq.nombre : '-')}</td>
                 <td>${esc(inm ? getInmuebleNombre(inm) : '-')}</td>
@@ -165,44 +165,9 @@ function renderRecibos(params) {
                 <td><strong>${fmtMoney(r.importe_total)}</strong></td>
                 <td>${pagado !== 0 ? fmtMoney(pagado) : '-'}</td>
                 <td>${badgeEstadoRecibo(r.estado)}</td>
-                <td class="td-actions">
-                  ${_cfgVisi('VisiCobrarReci') ? (puedeCobrarse ? `<button class="btn btn-sm btn-success" style="font-size:11px" onclick="modalDarCobro(${r.id})">Cobrar</button>` : (r.estado === 'cobrado' ? `<button class="btn btn-sm btn-secondary" style="font-size:11px" onclick="modalDarCobro(${r.id})">Ver cobros</button>` : '')) : ''}
-                  ${_cfgVisi('VisiEmailReci') ? (inq?.email
-                    ? `<button class="btn btn-sm btn-info" style="font-size:11px" title="Enviar por email" onclick="enviarReciboEmail(${r.id})">✉</button>`
-                    : `<button class="btn btn-sm btn-icon" style="font-size:11px;background:var(--gray-200);color:var(--gray-500);border-color:var(--gray-300);cursor:not-allowed" title="Sin email registrado" disabled>✉</button>`) : ''}
-                  ${_cfgVisi('whatsappVis') ? (_waHref
-                    ? (_cfgVisi('whatsappNativo')
-                      ? `<button class="btn btn-sm btn-icon" style="background:#25d366;border-color:#1da851;color:#fff"
-                                 title="Enviar por WhatsApp"
-                                 onclick="enviarReciboWhatsapp(${r.id})">${_waSVG}</button>`
-                      : `<a href="${esc(_waHref)}" target="_blank" rel="noopener noreferrer"
-                                class="btn btn-sm btn-icon" style="background:#25d366;border-color:#1da851;color:#fff"
-                                title="Enviar por WhatsApp"
-                                onclick="if(_cfgVisi('whatsappPDF'))setTimeout(function(){_descargarPDFReciboWA(${r.id})},400)">${_waSVG}</a>`)
-                    : `<button class="btn btn-sm btn-icon" style="background:var(--gray-200);border-color:var(--gray-300);color:var(--gray-500);opacity:.4;cursor:not-allowed" title="Sin teléfono registrado" disabled>${_waSVG}</button>`) : ''}
-                  ${_cfgVisi('VisiImprimirReci') ? `<button class="btn btn-sm btn-primary btn-icon" title="Imprimir" onclick="imprimirReciboModal(${r.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                  </button>` : ''}
-                  <button class="btn btn-sm btn-secondary btn-icon" title="Editar" onclick="modalEditRecibo(${r.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  </button>
-                  ${_cfgVisi('VisiAnularReci') && r.estado !== 'anulado' && r.estado !== 'rectificativo' ? `<button class="btn btn-sm btn-danger btn-icon" title="Anular" onclick="anularRecibo(${r.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                  </button>` : ''}
-                  ${_cfgVisi('VisiFacturaReci') && r.estado !== 'anulado' && r.estado !== 'rectificativo'
-                    ? (!facturaDeEsteRecibo
-                      ? `<button class="btn btn-sm btn-violet btn-icon" style="font-size:10px" title="Generar factura legal" onclick="generarFacturaDesdeRecibo(${r.id})">
-                           <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-                           FAC
-                         </button>`
-                      : `<button class="btn btn-sm btn-navy btn-icon" style="font-size:10px" title="Ver/imprimir factura ${esc(facturaDeEsteRecibo.numero_factura)}" onclick="imprimirFacturaModal(${facturaDeEsteRecibo.id})">
-                           <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                           FAC
-                         </button>`)
-                    : ''}
-                </td>
+                <td class="td-actions">${_accionesRecibo(r, inq, facturaDeEsteRecibo)}</td>
               </tr>`;
-            }).join('') : '<tr><td colspan="7"><div class="empty-state"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p>Sin recibos</p><small>Pulsa "Nuevo recibo" o genera desde Contratos</small></div></td></tr>'}
+            }).join('') : '<tr><td colspan="9"><div class="empty-state"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p>Sin recibos</p><small>Pulsa "Nuevo recibo" o genera desde Contratos</small></div></td></tr>'}
           </tbody>
         </table>
       </div>
@@ -214,7 +179,137 @@ function renderRecibos(params) {
         </div>` : ''}
     </div>
   `;
-  makeTableSortable('tbl-recibos', {col:3, dir:-1});
+  makeTableSortable('tbl-recibos', {col:4, dir:-1});
+}
+
+// ============================================================
+// Acciones de fila de Recibos: acción principal según estado + menú "Más"
+// agrupado (Comunicación / Documentos / Gestión). Propuesta UX 08/07/2026,
+// ver UX_UI_ANALISIS_PROPUESTA.md §6 (matriz de acciones por estado).
+//
+// Nota de alcance: para 'anulado' y 'rectificativo' se dejan de mostrar
+// Email/WhatsApp/Editar/Generar factura (antes se mostraban siempre, sin
+// mirar el estado) — cambio deliberado aprobado en la propuesta, documentado
+// también en el MD. La única acción disponible es "Ver" (PDF + detalle).
+// ============================================================
+function _accionesRecibo(r, inq, facturaDeEsteRecibo) {
+  const esActivo = ['pendiente','parcial','cobrado'].includes(r.estado);
+
+  // WhatsApp: mismo cálculo de URL/teléfono que antes, solo reubicado.
+  let _waHref = '';
+  const _telRaw = String(inq?.movil || inq?.telefono || '');
+  if (_telRaw) {
+    let _tel = _telRaw.replace(/[\s\-()+.]/g, '');
+    if (_tel.startsWith('00')) _tel = _tel.slice(2);
+    if (/^[67]\d{8}$/.test(_tel)) _tel = '34' + _tel;
+    const _emp = DB.getEmpresa() || {};
+    const _msg = `*Recibo de alquiler*\n\nN\xba recibo: ${r.numero_recibo}\nPer\xedodo: ${r.concepto_periodo||''}\nFecha emisi\xf3n: ${fmtDateShort(r.fecha_emision)}\nImporte: ${fmtMoney(r.importe_total)}\nEstado: ${r.estado}` +
+      (_emp.nombre ? `\n\n${_emp.nombre}` : '') + (_emp.telefono ? `\nTel: ${_emp.telefono}` : '');
+    _waHref = _buildWAUrl(_tel, _msg);
+  }
+  const waOnclick = !_waHref
+    ? `toast('Este inquilino no tiene teléfono registrado.','error')`
+    : (_cfgVisi('whatsappNativo')
+        ? `enviarReciboWhatsapp(${r.id})`
+        : `window.open('${esc(_waHref)}','_blank');if(_cfgVisi('whatsappPDF'))setTimeout(function(){_descargarPDFReciboWA(${r.id})},400)`);
+
+  const grupos = [
+    { titulo:'Comunicación', items:[
+      { label:'Enviar por email', icon:'✉', onclick: inq?.email ? `enviarReciboEmail(${r.id})` : `toast('Este inquilino no tiene email registrado.','error')`, oculto: !_cfgVisi('VisiEmailReci') || !esActivo },
+      { label:'Enviar por WhatsApp', icon:'📲', onclick: waOnclick, oculto: !_cfgVisi('whatsappVis') || !esActivo },
+    ]},
+    { titulo:'Documentos', items:[
+      { label:'Descargar / imprimir PDF', icon:'🖶', onclick:`imprimirReciboModal(${r.id})`, oculto: !_cfgVisi('VisiImprimirReci') },
+      facturaDeEsteRecibo
+        ? { label:'Ver factura ' + facturaDeEsteRecibo.numero_factura, icon:'🧾', onclick:`imprimirFacturaModal(${facturaDeEsteRecibo.id})`, oculto: !_cfgVisi('VisiFacturaReci') || !esActivo }
+        : { label:'Generar factura', icon:'🧾', onclick:`generarFacturaDesdeRecibo(${r.id})`, oculto: !_cfgVisi('VisiFacturaReci') || !esActivo },
+    ]},
+    { titulo:'Gestión', items:[
+      { label:'Ver detalle', icon:'ℹ', onclick:`abrirDetalleRecibo(${r.id})`, oculto: !esActivo },
+      { label:'Editar', icon:'✎', onclick:`modalEditRecibo(${r.id})`, oculto: !esActivo },
+      { label:'Anular recibo', icon:'⊘', danger:true, onclick:`anularRecibo(${r.id})`, oculto: !_cfgVisi('VisiAnularReci') || !esActivo },
+    ]},
+  ];
+
+  let principal = null;
+  if (_cfgVisi('VisiCobrarReci') && r.estado === 'pendiente')      principal = { label:'Cobrar', cls:'btn-success', onclick:`modalDarCobro(${r.id})` };
+  else if (_cfgVisi('VisiCobrarReci') && r.estado === 'parcial')   principal = { label:'Completar cobro', cls:'btn-success', onclick:`modalDarCobro(${r.id})` };
+  else if (_cfgVisi('VisiCobrarReci') && r.estado === 'cobrado')   principal = { label:'Ver cobro', cls:'btn-secondary', onclick:`modalDarCobro(${r.id})` };
+  else if (r.estado === 'anulado' || r.estado === 'rectificativo') principal = { label:'Ver', cls:'btn-secondary', onclick:`abrirDetalleRecibo(${r.id})` };
+
+  return accionesFila(principal, grupos);
+}
+
+// Panel lateral de detalle de un recibo: resumen, historial de cobros,
+// documento asociado y las mismas acciones agrupadas (Comunicación /
+// Documentos / Gestión) que el menú "Más" de la fila.
+function abrirDetalleRecibo(id) {
+  const r = DB.getItem('recibos', id);
+  if (!r) return;
+  const inq = DB.getItem('inquilinos', r.inquilino_id) || {};
+  const inm = DB.getItem('inmuebles', r.inmueble_id);
+  const factura = DB.get('facturas').find(f => f.recibo_id === r.id);
+  const pagos = Array.isArray(r.pagos) ? r.pagos : [];
+  const esActivo = ['pendiente','parcial','cobrado'].includes(r.estado);
+  const metodoLabel = { transferencia:'Transferencia', efectivo:'Efectivo', bizum:'Bizum', cheque:'Cheque', domiciliacion:'Domiciliación', otro:'Otro' };
+
+  const pagosHtml = pagos.length
+    ? pagos.map(p => `<div class="panel-kv"><span>${p.fecha ? fmtDateShort(p.fecha) : '—'} · ${metodoLabel[p.metodo] || esc(String(p.metodo||'—'))}</span><b>${fmtMoney(p.importe||0)}</b></div>`).join('')
+    : '<div class="panel-kv"><span style="color:var(--text-muted)">Sin cobros registrados</span></div>';
+
+  const html = `
+    ${badgeEstadoRecibo(r.estado)}
+    <div class="panel-kv"><span>Inquilino</span><b>${esc(inq.nombre||'-')}</b></div>
+    <div class="panel-kv"><span>Inmueble</span><b>${esc(inm ? getInmuebleNombre(inm) : '-')}</b></div>
+    <div class="panel-kv"><span>Período</span><b>${esc(r.concepto_periodo||'-')}</b></div>
+    <div class="panel-kv"><span>Total</span><b>${fmtMoney(r.importe_total)}</b></div>
+    <div class="panel-kv"><span>Pagado</span><b>${fmtMoney(r.importe_pagado||0)}</b></div>
+    ${r.notas ? `<div class="panel-kv"><span>Notas</span><b style="font-weight:400">${esc(r.notas)}</b></div>` : ''}
+
+    <div class="panel-lateral-group-title">Historial de cobros</div>
+    ${pagosHtml}
+
+    <div class="panel-lateral-group-title">Documentos asociados</div>
+    <div class="panel-kv"><span>Factura</span><b>${factura ? esc(factura.numero_factura) : 'No generada'}</b></div>
+
+    ${esActivo ? `
+    <div class="panel-lateral-group-title">Comunicación</div>
+    <div class="panel-lateral-actions">
+      <button class="btn btn-sm btn-secondary" onclick="cerrarPanelDetalle();${inq.email ? `enviarReciboEmail(${r.id})` : `toast('Este inquilino no tiene email registrado.','error')`}">✉ Email</button>
+      <button class="btn btn-sm btn-secondary" onclick="cerrarPanelDetalle();${(inq.telefono||inq.movil) ? `enviarReciboWhatsapp(${r.id})` : `toast('Este inquilino no tiene teléfono registrado.','error')`}">📲 WhatsApp</button>
+    </div>` : ''}
+
+    <div class="panel-lateral-group-title">Documentos</div>
+    <div class="panel-lateral-actions">
+      <button class="btn btn-sm btn-secondary" onclick="imprimirReciboModal(${r.id})">🖶 PDF</button>
+      ${esActivo ? (factura
+        ? `<button class="btn btn-sm btn-secondary" onclick="cerrarPanelDetalle();imprimirFacturaModal(${factura.id})">🧾 Ver factura</button>`
+        : `<button class="btn btn-sm btn-secondary" onclick="cerrarPanelDetalle();generarFacturaDesdeRecibo(${r.id})">🧾 Generar factura</button>`) : ''}
+    </div>
+
+    ${esActivo ? `
+    <div class="panel-lateral-group-title">Gestión</div>
+    <div class="panel-lateral-actions">
+      <button class="btn btn-sm btn-secondary" onclick="cerrarPanelDetalle();modalEditRecibo(${r.id})">✎ Editar</button>
+      <button class="btn btn-sm btn-danger" onclick="cerrarPanelDetalle();anularRecibo(${r.id})">⊘ Anular</button>
+    </div>` : ''}
+  `;
+  abrirPanelDetalle('Recibo', r.numero_recibo, html);
+}
+
+// Acción masiva: descarga el PDF de cada recibo seleccionado, uno a uno
+// (reutiliza guardarReciboPDF() tal cual, sin duplicar lógica de generación).
+async function accionMasivaPDFRecibos() {
+  const ids = _bulkSeleccionados('chk-recibo');
+  if (!ids.length) return;
+  if (ids.length > 15 && !confirm(`Vas a descargar ${ids.length} PDF individuales (uno por recibo). ¿Continuar?`)) return;
+  toast(`Generando ${ids.length} PDF…`, 'info');
+  for (const id of ids) {
+    await guardarReciboPDF(id, 'a4');
+    await new Promise(res => setTimeout(res, 450));
+  }
+  toast('Descarga en lote completada (' + ids.length + ' recibos).', 'success');
+  limpiarSeleccionMasiva('chk-recibo', 'bulk-bar-recibos', 'bulk-count-recibos');
 }
 
 // Lote: constantes de meses y trimestres para el modal de impresión/PDF masiva

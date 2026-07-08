@@ -168,8 +168,8 @@ const _CFG_GRUPOS = [
       },
       {
         v: 'VisiDocxCont', label: 'Generar DOCX', tipo: 'toggle',
-        desc: 'Muestra el botón "DOCX" para generar documentos desde plantillas Word.',
-        ayuda: 'Si está desactivado, el botón "DOCX" no aparece en la fila de cada contrato.\n\nRequiere tener el módulo de plantillas activo (pestaña Documentos) y al menos una plantilla subida.',
+        desc: 'Muestra la opción "Contrato en DOCX" (menú Más) para generar documentos desde plantillas Word.',
+        ayuda: 'Si está desactivado, la opción "Contrato en DOCX" no aparece en el menú "Más" de cada contrato.\n\nRequiere tener el módulo de plantillas activo (pestaña Documentos) y al menos una plantilla subida.',
       },
       {
         v: 'VisiBorrarCont', label: 'Eliminar contrato', tipo: 'toggle',
@@ -376,7 +376,7 @@ const _CFG_GRUPOS = [
       {
         v: 'docs_plantillas_activas', label: 'Sistema de plantillas DOCX', tipo: 'toggle',
         desc: 'Activa o desactiva el módulo de plantillas DOCX en toda la aplicación.',
-        ayuda: 'Cuando está activo, aparece la sección "Plantillas" en el menú de Configuración y el botón "DOCX" en cada contrato para generar documentos personalizados.\n\nDesactivar si no usas plantillas Word o prefieres generar documentos solo mediante la función PDF integrada.',
+        ayuda: 'Cuando está activo, aparece la sección "Plantillas" en el menú de Configuración y la opción "Contrato en DOCX" (menú Más) en cada contrato para generar documentos personalizados.\n\nDesactivar si no usas plantillas Word o prefieres generar documentos solo mediante la función PDF integrada.',
       },
       {
         v: 'docs_permitir_pdf', label: 'Generar PDF desde plantilla (no disponible)', tipo: 'toggle',
@@ -494,10 +494,16 @@ let _cfgTabActual = 0;
     .cfg-tabs {
       display: flex; gap: 2px; margin-bottom: 20px;
       border-bottom: 2px solid var(--gray-200);
-      overflow-x: auto; padding-bottom: 0;
+      overflow-x: auto; overflow-y: hidden; padding-bottom: 0;
+      /* overflow-y:hidden es necesario: al fijar solo overflow-x el eje Y
+         calcula a "auto" (regla CSS de overflow), y basta 1px de más por el
+         icono+texto para que el navegador dibuje una barra vertical con
+         flechas ↑↓ (09/07/2026). */
     }
+    .cfg-tabs::-webkit-scrollbar { height: 6px; width: 0; }
+    .cfg-tabs::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
     .cfg-tab {
-      display: flex; align-items: center; gap: 6px;
+      display: flex; align-items: center; gap: 6px; flex-shrink: 0;
       padding: 8px 16px; border: none; background: transparent;
       color: var(--gray-500); font-size: 13px; font-weight: 500;
       cursor: pointer; border-bottom: 2px solid transparent;

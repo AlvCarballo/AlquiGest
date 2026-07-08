@@ -151,7 +151,7 @@ function _plantillasCargar() {
         .catch(function(e) {
             var el = document.getElementById('plantillas-lista');
             if (el) el.innerHTML =
-                '<div style="padding:16px;background:#fee2e2;color:#991b1b;border-radius:8px">' +
+                '<div style="padding:16px;background:var(--red-light);color:var(--red);border-radius:8px">' +
                 'Error al conectar con el servidor: ' + esc(e.message) + '</div>';
         });
 }
@@ -192,28 +192,33 @@ function _plantillasRenderLista(plantillas) {
 
         grupos[tipo].forEach(function(p) {
             var badgeActiva = p.activa
-                ? '<span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">Activa</span>'
-                : '<span style="background:#f3f4f6;color:#6b7280;padding:2px 8px;border-radius:4px;font-size:11px">Inactiva</span>';
+                ? '<span class="badge badge-green">Activa</span>'
+                : '<span class="badge badge-gray">Inactiva</span>';
             var badgeDefault = p.por_defecto
-                ? '<span style="background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin-left:4px">Por defecto</span>'
+                ? '<span class="badge badge-blue" style="margin-left:4px">Por defecto</span>'
                 : '';
 
             html += '<tr>' +
                 '  <td style="font-weight:500">' + esc(p.nombre) + badgeDefault + '</td>' +
                 '  <td style="color:var(--gray-500);font-size:12px">' + esc(p.descripcion || '—') + '</td>' +
                 '  <td>' + badgeActiva + '</td>' +
-                '  <td>' +
-                '    <div style="display:flex;gap:4px;flex-wrap:wrap">' +
-                '      <button class="btn btn-sm btn-secondary" title="Vista previa" onclick="_plantillaPreview(' + p.id + ',\'' + p.tipo_documento.replace(/'/g,"\\'") + '\')">Vista previa</button>' +
-                '      <button class="btn btn-sm btn-secondary" title="Descargar original" onclick="_plantillaDescargar(' + p.id + ')">⬇ DOCX</button>' +
-                '      <button class="btn btn-sm btn-secondary" title="Renombrar" onclick="_plantillaRenombrar(' + p.id + ',\'' + p.nombre.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')">Renombrar</button>' +
-                '      <button class="btn btn-sm btn-secondary" title="Duplicar" onclick="_plantillaDuplicar(' + p.id + ')">Duplicar</button>' +
-                '      <button class="btn btn-sm btn-secondary" title="' + (p.activa ? 'Desactivar' : 'Activar') + '" onclick="_plantillaSetActiva(' + p.id + ',' + (p.activa ? 0 : 1) + ')">' + (p.activa ? 'Desactivar' : 'Activar') + '</button>' +
-                (p.por_defecto
-                    ? '      <button class="btn btn-sm btn-secondary" title="Quitar por defecto" onclick="_plantillaSetDefault(' + p.id + ',\'' + p.tipo_documento.replace(/'/g,"\\'") + '\',0)">✕ Por defecto</button>'
-                    : '      <button class="btn btn-sm btn-secondary" title="Marcar como por defecto" onclick="_plantillaSetDefault(' + p.id + ',\'' + p.tipo_documento.replace(/'/g,"\\'") + '\',1)">⭐ Por defecto</button>') +
-                '      <button class="btn btn-sm btn-danger" title="Eliminar" onclick="_plantillaEliminar(' + p.id + ',\'' + p.nombre.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')">Eliminar</button>' +
-                '    </div>' +
+                '  <td>' + accionesFila(
+                    { label:'Vista previa', cls:'btn-secondary', onclick:"_plantillaPreview(" + p.id + ",'" + p.tipo_documento.replace(/'/g,"\\'") + "')" },
+                    [
+                      { titulo:'Usar', items:[
+                        { label:'Descargar original', icon:'⬇', onclick:"_plantillaDescargar(" + p.id + ")" },
+                      ]},
+                      { titulo:'Gestionar', items:[
+                        { label:'Renombrar', icon:'✎', onclick:"_plantillaRenombrar(" + p.id + ",'" + p.nombre.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + "')" },
+                        { label:'Duplicar', icon:'⧉', onclick:"_plantillaDuplicar(" + p.id + ")" },
+                        { label: p.activa ? 'Desactivar' : 'Activar', icon: p.activa ? '⏸' : '▶', onclick:"_plantillaSetActiva(" + p.id + "," + (p.activa ? 0 : 1) + ")" },
+                        p.por_defecto
+                          ? { label:'Quitar por defecto', icon:'✕', onclick:"_plantillaSetDefault(" + p.id + ",'" + p.tipo_documento.replace(/'/g,"\\'") + "',0)" }
+                          : { label:'Marcar como por defecto', icon:'⭐', onclick:"_plantillaSetDefault(" + p.id + ",'" + p.tipo_documento.replace(/'/g,"\\'") + "',1)" },
+                        { label:'Eliminar', icon:'🗑', danger:true, onclick:"_plantillaEliminar(" + p.id + ",'" + p.nombre.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + "')" },
+                      ]},
+                    ]
+                  ) +
                 '  </td>' +
                 '</tr>';
         });
@@ -231,13 +236,13 @@ function modalSubirPlantilla() {
     }).join('');
 
     openModal('Subir plantilla DOCX', `
-      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px">
+      <div style="background:var(--color-info-light);border:1px solid var(--color-info-muted);border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px">
         <strong>Cómo crear una plantilla:</strong><br>
         Escribe tus variables en el documento Word usando la sintaxis <code>{{NombreVariable}}</code>.<br>
         Ejemplo: <code>El contrato de <strong>{{DireccionInmueble}}</strong> tiene una renta de <strong>{{Renta}}</strong>.</code>
       </div>
       <div class="form-group">
-        <label>Fichero DOCX <span style="color:#e53e3e">*</span></label>
+        <label>Fichero DOCX <span style="color:var(--red)">*</span></label>
         <div class="csv-dropzone" id="pt-dropzone"
              onclick="document.getElementById('pt-file').click()"
              ondragover="event.preventDefault();this.classList.add('drag-over')"
@@ -250,7 +255,7 @@ function modalSubirPlantilla() {
         </div>
       </div>
       <div class="form-group">
-        <label>Nombre de la plantilla <span style="color:#e53e3e">*</span></label>
+        <label>Nombre de la plantilla <span style="color:var(--red)">*</span></label>
         <input type="text" id="pt-nombre" placeholder="Ej: Contrato de arrendamiento estándar">
       </div>
       <div class="form-group">
@@ -442,12 +447,12 @@ function _plantillaPreview(plantillaId, tipoDoc) {
         var contenido = document.querySelector('.modal-body');
         if (!contenido) return;
         if (!res.ok) {
-            contenido.innerHTML = '<div style="color:#991b1b;padding:12px">' + esc(res.error) + '</div>';
+            contenido.innerHTML = '<div style="color:var(--red);padding:12px">' + esc(res.error) + '</div>';
             return;
         }
 
         var avisoVars = res.variables_desconocidas && res.variables_desconocidas.length
-            ? '<div style="background:#fef3c7;border:1px solid #fbbf24;border-radius:6px;padding:10px;font-size:12px;margin-bottom:12px">' +
+            ? '<div style="background:var(--orange-light);border:1px solid var(--color-warn-muted);border-radius:6px;padding:10px;font-size:12px;margin-bottom:12px">' +
               '<strong>Variables no resueltas (aparecerán como &lt;&lt;…&gt;&gt; en el DOCX):</strong> ' +
               res.variables_desconocidas.map(function(v){ return '<code>' + esc(v) + '</code>'; }).join(', ') +
               '</div>'
@@ -455,15 +460,15 @@ function _plantillaPreview(plantillaId, tipoDoc) {
 
         contenido.innerHTML =
             '<p style="font-size:12px;color:var(--gray-500);margin-bottom:12px">' +
-            'Vista previa con variables de sistema. Las variables en <span style="background:#d1fae5;padding:0 3px">verde</span> están resueltas. ' +
-            'Las variables en <span style="background:#fee2e2;padding:0 3px;color:#991b1b">rojo</span> no están disponibles sin seleccionar una entidad.' +
+            'Vista previa con variables de sistema. Las variables en <span style="background:var(--green-light);padding:0 3px">verde</span> están resueltas. ' +
+            'Las variables en <span style="background:var(--red-light);padding:0 3px;color:var(--red)">rojo</span> no están disponibles sin seleccionar una entidad.' +
             '</p>' +
             avisoVars +
             res.html;
     })
     .catch(function(e) {
         var contenido = document.querySelector('.modal-body');
-        if (contenido) contenido.innerHTML = '<div style="color:#991b1b">Error: ' + esc(e.message) + '</div>';
+        if (contenido) contenido.innerHTML = '<div style="color:var(--red)">Error: ' + esc(e.message) + '</div>';
     });
 }
 
@@ -628,7 +633,7 @@ function _plantillaPreviewConEntidad(plantillaId, tipo, entidadId) {
         if (!cuerpo || !res.ok) return;
 
         var avisoVars = res.variables_desconocidas && res.variables_desconocidas.length
-            ? '<div style="background:#fef3c7;border:1px solid #fbbf24;border-radius:6px;padding:10px;font-size:12px;margin-bottom:10px">' +
+            ? '<div style="background:var(--orange-light);border:1px solid var(--color-warn-muted);border-radius:6px;padding:10px;font-size:12px;margin-bottom:10px">' +
               '<strong>Variables no reconocidas</strong> (se marcarán como &lt;&lt;…&gt;&gt;): ' +
               res.variables_desconocidas.map(function(v){ return '<code>' + esc(v) + '</code>'; }).join(', ') +
               '</div>' : '';
@@ -684,7 +689,7 @@ function _ejecutarGeneracionDocx(tipo, entidadId, plantillaId) {
         '<p style="text-align:center;color:var(--gray-500);font-size:13px;margin-bottom:18px">' +
         'Procesando plantilla y sustituyendo variables…</p>' +
         '<div style="background:var(--gray-200);border-radius:8px;height:10px;overflow:hidden">' +
-        '<div id="docx-pbar" style="height:100%;background:#1a56db;border-radius:8px;width:0%;' +
+        '<div id="docx-pbar" style="height:100%;background:var(--blue);border-radius:8px;width:0%;' +
         'animation:docx-fill 6s ease-out forwards"></div>' +
         '</div>' +
         '<p id="docx-pbar-label" style="text-align:center;font-size:11px;color:var(--gray-400);margin-top:8px">Conectando con el servidor…</p>' +
@@ -770,7 +775,7 @@ function _modalFotosContrato(tipo, entidadId, plantillaId, tieneFotos, tieneMueb
 
     // Sección de fotos (solo si la plantilla tiene {{FotosContrato}})
     var secFotos = tieneFotos ? (
-        '<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;' +
+        '<div style="background:var(--color-info-light);border:1px solid var(--color-info-muted);border-radius:8px;padding:10px 14px;' +
         'margin-bottom:14px;font-size:13px">' +
         'La plantilla contiene <code>{{FotosContrato}}</code>. ' +
         'Sube las imágenes que quieres incluir (JPG, PNG o WebP).' +
@@ -799,7 +804,7 @@ function _modalFotosContrato(tipo, entidadId, plantillaId, tieneFotos, tieneMueb
 
     // Sección de mobiliario (solo si la plantilla tiene {{ListaMuebles}})
     var secMuebles = tieneMuebles ? (
-        '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;' +
+        '<div style="background:var(--green-light);border:1px solid var(--green);border-radius:8px;padding:10px 14px;' +
         'margin-bottom:12px;font-size:13px' + (tieneFotos ? ';margin-top:16px' : '') + '">' +
         'La plantilla contiene <code>{{ListaMuebles}}</code>. ' +
         'Introduce la descripción del mobiliario incluido en el inmueble.' +
@@ -866,7 +871,7 @@ function _fotosRender() {
                     ? '<button onclick="_fotosMover(' + idx + ',1)" title="Mover derecha" style="border:none;background:none;cursor:pointer;padding:1px 4px;font-size:13px;color:var(--gray-600)">►</button>'
                     : '<span style="width:22px"></span>') +
                 '    <button onclick="_fotosEliminar(' + idx + ')" title="Eliminar" ' +
-                '     style="border:none;background:none;cursor:pointer;padding:1px 5px;color:#e53e3e;font-size:15px;font-weight:700">×</button>' +
+                '     style="border:none;background:none;cursor:pointer;padding:1px 5px;color:var(--red);font-size:15px;font-weight:700">×</button>' +
                 '  </div>' +
                 '</div>';
     });
@@ -926,7 +931,7 @@ function _ejecutarGeneracionConFotos() {
         '<p style="text-align:center;color:var(--gray-500);font-size:13px;margin-bottom:18px">' +
         'Insertando ' + n + ' foto' + (n !== 1 ? 's' : '') + ' en el documento…</p>' +
         '<div style="background:var(--gray-200);border-radius:8px;height:10px;overflow:hidden">' +
-        '<div id="docx-pbar" style="height:100%;background:#1a56db;border-radius:8px;width:0%;' +
+        '<div id="docx-pbar" style="height:100%;background:var(--blue);border-radius:8px;width:0%;' +
         'animation:docx-fill 8s ease-out forwards"></div>' +
         '</div>' +
         '<p id="docx-pbar-label" style="text-align:center;font-size:11px;color:var(--gray-400);margin-top:8px">Subiendo…</p>' +

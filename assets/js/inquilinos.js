@@ -40,16 +40,14 @@ function renderInquilinos() {
                 <td>${esc(inq.telefono||'-')}</td>
                 <td>${esc(inq.email||'-')}</td>
                 <td>${contrato ? '<span class="badge badge-green">Activo</span>' : '<span class="badge badge-orange">Sin contrato</span>'}</td>
-                <td class="td-actions">
-                  ${_cfgVisi('VisiPagosInq') ? `<button class="btn btn-sm btn-primary" style="font-size:11px" onclick="modalPagosInquilino(${inq.id})" title="Historial de pagos">Pagos</button>` : ''}
-                  ${_cfgVisi('VisiHistorialInq') ? `<button class="btn btn-sm btn-secondary" style="font-size:11px" onclick="modalHistorialInquilino(${inq.id})" title="Historial completo">Historial</button>` : ''}
-                  <button class="btn btn-sm btn-secondary btn-icon" title="Editar" onclick="modalInquilino(${inq.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  </button>
-                  ${_cfgVisi('VisiBorrarInq') ? `<button class="btn btn-sm btn-danger btn-icon" title="Eliminar" onclick="deleteInquilino(${inq.id})">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-                  </button>` : ''}
-                </td>
+                <td class="td-actions">${accionesFila(
+                  _cfgVisi('VisiPagosInq') ? { label:'Pagos', cls:'btn-primary', onclick:`modalPagosInquilino(${inq.id})` } : null,
+                  [{ titulo:'Gestión', items:[
+                    { label:'Historial completo', icon:'🕓', onclick:`modalHistorialInquilino(${inq.id})`, oculto: !_cfgVisi('VisiHistorialInq') },
+                    { label:'Editar', icon:'✎', onclick:`modalInquilino(${inq.id})` },
+                    { label:'Eliminar', icon:'🗑', danger:true, onclick:`deleteInquilino(${inq.id})`, oculto: !_cfgVisi('VisiBorrarInq') },
+                  ]}]
+                )}</td>
               </tr>`;
             }).join('') : '<tr><td colspan="6"><div class="empty-state"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg><p>Sin inquilinos</p><small>Pulsa "Nuevo inquilino" para comenzar</small></div></td></tr>'}
           </tbody>

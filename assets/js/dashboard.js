@@ -540,10 +540,35 @@ function _dashRenderLog(filas) {
   el.innerHTML = '<div style="padding:4px 0">' + html + '</div>';
 }
 
+// Instancias activas de los gráficos del Dashboard y últimos datos usados
+// para dibujarlos — se guardan para poder redibujar con los colores del
+// tema correcto si el usuario cambia de claro/oscuro sin salir del Dashboard
+// (ver _redibujarGraficosDashboard(), enganchado desde toggleModoOscuro() en ux.js).
+let _dashChartBar  = null;
+let _dashChartDona = null;
+let _dashChartData = null;
+
 // Crea los dos gráficos del Dashboard con Chart.js.
 // Se llama después de renderDashboard() para que los canvas existan en el DOM.
 function initDashboardCharts(mesesLabels, mesesIngresos, ocupados, desocupados) {
   if (!window.Chart) return;
+  _dashChartData = { mesesLabels, mesesIngresos, ocupados, desocupados };
+  _dibujarGraficosDashboard();
+}
+
+// Redibuja los gráficos ya creados con los datos que se usaron la última vez,
+// pero recalculando los colores según el tema activo en este momento. Llamado
+// desde toggleModoOscuro() — si el Dashboard no está abierto (no hay datos
+// cacheados o los canvas no existen), no hace nada.
+function _redibujarGraficosDashboard() {
+  if (_dashChartData) _dibujarGraficosDashboard();
+}
+
+function _dibujarGraficosDashboard() {
+  if (!window.Chart || !_dashChartData) return;
+  const { mesesLabels, mesesIngresos, ocupados, desocupados } = _dashChartData;
+  if (_dashChartBar)  { _dashChartBar.destroy();  _dashChartBar  = null; }
+  if (_dashChartDona) { _dashChartDona.destroy(); _dashChartDona = null; }
   const dark = document.body.classList.contains('dark');
   const colAzul       = dark ? '#4d8ffa' : '#1a56db';
   const colAzulFondo  = dark ? 'rgba(77,143,250,0.15)' : 'rgba(26,86,219,0.15)';
@@ -559,7 +584,7 @@ function initDashboardCharts(mesesLabels, mesesIngresos, ocupados, desocupados) 
   // Gráfico de barras: ingresos cobrados por mes
   const ctxBar = document.getElementById('chart-ingresos');
   if (ctxBar) {
-    new Chart(ctxBar, {
+    _dashChartBar = new Chart(ctxBar, {
       type: 'bar',
       data: {
         labels: mesesLabels,
@@ -590,7 +615,7 @@ function initDashboardCharts(mesesLabels, mesesIngresos, ocupados, desocupados) 
   // Gráfico de dona: porcentaje de inmuebles ocupados
   const ctxDona = document.getElementById('chart-ocupacion');
   if (ctxDona) {
-    new Chart(ctxDona, {
+    _dashChartDona = new Chart(ctxDona, {
       type: 'doughnut',
       data: {
         labels: ['Ocupados', 'Desocupados'],
@@ -615,8 +640,12 @@ function initDashboardCharts(mesesLabels, mesesIngresos, ocupados, desocupados) 
   }
 }
 
+// Paleta de estados de recibo (revisada 08/07/2026, ver UX_UI_ANALISIS_PROPUESTA.md §2/§6):
+// cada color tiene un único significado dentro de este módulo — 'parcial' ya no
+// comparte azul con 'rectificativo', y 'anulado' pasa a gris neutro (estado cerrado,
+// no un error) en vez de rojo.
 function badgeEstadoRecibo(estado) {
-  const map    = { pendiente:'badge-orange', cobrado:'badge-green', anulado:'badge-red', parcial:'badge-blue', devuelto:'badge-orange', rectificativo:'badge-blue' };
+  const map    = { pendiente:'badge-orange', cobrado:'badge-green', anulado:'badge-gray', parcial:'badge-purple', devuelto:'badge-orange', rectificativo:'badge-blue' };
   const labels = { pendiente:'Pendiente', cobrado:'Cobrado', anulado:'Anulado', parcial:'Parcial', devuelto:'Devuelto', rectificativo:'Rectificativo' };
   return `<span class="badge ${map[estado]||'badge-blue'}">${labels[estado]||estado}</span>`;
 }

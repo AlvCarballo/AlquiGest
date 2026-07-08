@@ -1,0 +1,182 @@
+/* ============================================================
+   AlquiGest — Propuesta de paleta / modo oscuro (EXPERIMENTAL)
+   Usado exclusivamente por ux_modo_oscuro_colores.php.
+   No se enlaza desde main.css ni desde ningún otro fichero real.
+   Ver UX_UI_MODO_OSCURO_COLORES.md para el análisis completo.
+   ============================================================ */
+
+.uxc-root {
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+/* ── MODO CLARO (tokens pedidos, mapeados 1:1 a los ya usados en main.css) ── */
+.uxc-root[data-theme="light"] {
+  --color-bg:        #f3f4f6;
+  --color-surface:   #ffffff;
+  --color-elevated:  #f9fafb;
+  --color-text:      #111827;
+  --color-muted:     #4b5563;
+  --color-muted-2:   #6b7280;
+  --color-border:    #e5e7eb;
+  --color-primary:      #1a56db;
+  --color-primary-dark: #1242a8;
+  --color-success:      #057a55;
+  --color-success-bg:   #def7ec;
+  --color-warning:      #92400e;  /* antes #c27803 — oscurecido para pasar AA (ver §5 del MD) */
+  --color-warning-bg:   #fdf6b2;
+  --color-danger:       #c81e1e;
+  --color-danger-bg:    #fde8e8;
+  --color-info:         #0284c7;
+  --color-info-bg:      #e0f2fe;
+  --color-purple:       #6d28d9;
+  --color-purple-bg:    #ede9fe;
+  --color-gray-text:    #4b5563;  /* antes #6b7280 — oscurecido para pasar AA */
+  --color-gray-bg:      #f3f4f6;
+  --shadow: 0 1px 3px rgba(0,0,0,.10), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,.12);
+  --focus-ring: 0 0 0 3px rgba(26,86,219,.35);
+}
+
+/* ── MODO OSCURO (ya bien calibrado en main.css — se mantiene casi igual) ── */
+.uxc-root[data-theme="dark"] {
+  --color-bg:        #0f172a;
+  --color-surface:   #1e293b;
+  --color-elevated:  #263348;
+  --color-text:      #f1f5f9;
+  --color-muted:     #94a3b8;
+  --color-muted-2:   #64748b;
+  --color-border:    #334155;
+  --color-primary:      #4d8ffa;
+  --color-primary-dark: #3b7de8;
+  --color-success:      #22c55e;
+  --color-success-bg:   #14532d;
+  --color-warning:      #fbbf24;  /* ya pasaba AA (8.87:1), sin cambios */
+  --color-warning-bg:   #451a03;
+  --color-danger:       #f87171;
+  --color-danger-bg:    #450a0a;
+  --color-info:         #38bdf8;
+  --color-info-bg:      #0c2033;
+  --color-purple:       #c4b5fd;
+  --color-purple-bg:    #3b0764;
+  --color-gray-text:    #94a3b8;
+  --color-gray-bg:      #334155;
+  --shadow: 0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,.5);
+  --focus-ring: 0 0 0 3px rgba(77,143,250,.4);
+}
+
+.uxc-root {
+  font-family: var(--font);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: background .2s, color .2s;
+}
+
+/* ── Layout de la página de demo ── */
+.uxc-banner { background: #111827; color: #fff; padding: 12px 24px; text-align: center; font-size: 13px; }
+.uxc-banner strong { color: #fbbf24; }
+.uxc-banner a { color: #93c5fd; margin-left: 10px; }
+.uxc-topbar { background: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: 16px 24px; position: sticky; top: 0; z-index: 50; }
+.uxc-topbar h1 { font-size: 19px; font-weight: 700; margin-bottom: 2px; }
+.uxc-topbar p { font-size: 13px; color: var(--color-muted); margin-bottom: 12px; }
+.uxc-nav { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.uxc-nav button { border: 1px solid transparent; background: transparent; padding: 7px 13px; font-size: 13px; font-weight: 600; color: var(--color-muted); border-radius: 6px; cursor: pointer; }
+.uxc-nav button:hover { background: var(--color-elevated); }
+.uxc-nav button.active { background: var(--color-primary); color: #fff; }
+.uxc-theme-switch { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.uxc-theme-switch button { border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: 600; }
+.uxc-wrap { max-width: 1180px; margin: 0 auto; padding: 24px; }
+.uxc-section { display: none; }
+.uxc-section.active { display: block; animation: uxcfade .15s ease; }
+@keyframes uxcfade { from { opacity: 0 } to { opacity: 1 } }
+
+.uxc-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 20px; box-shadow: var(--shadow); }
+.uxc-card h2 { font-size: 16px; margin-bottom: 6px; }
+.uxc-card > p.uxc-desc { font-size: 13px; color: var(--color-muted); margin-bottom: 16px; }
+.uxc-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; margin-bottom: 10px; }
+.uxc-tag.antes { background: var(--color-danger-bg); color: var(--color-danger); }
+.uxc-tag.despues { background: var(--color-success-bg); color: var(--color-success); }
+.uxc-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width:860px) { .uxc-compare { grid-template-columns: 1fr; } }
+.uxc-compare-col { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 16px; background: var(--color-elevated); }
+
+/* ── Tabla ── */
+table.uxc-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--color-surface); }
+table.uxc-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .03em; color: var(--color-muted); padding: 8px 10px; border-bottom: 2px solid var(--color-border); }
+table.uxc-table td { padding: 10px; border-bottom: 1px solid var(--color-border); vertical-align: middle; }
+table.uxc-table tr:last-child td { border-bottom: none; }
+
+/* ── Botones ── */
+.uxc-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; padding: 8px 14px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+.uxc-btn.primary   { background: var(--color-primary); color: #fff; }
+.uxc-btn.secondary { background: var(--color-elevated); color: var(--color-text); border-color: var(--color-border); }
+.uxc-btn.success   { background: var(--color-success); color: #fff; }
+.uxc-btn.danger    { background: var(--color-danger); color: #fff; }
+.uxc-btn.ghost     { background: transparent; border-color: var(--color-border); color: var(--color-muted); }
+.uxc-btn.icon      { padding: 8px; width: 34px; justify-content: center; }
+.uxc-btn:disabled  { opacity: .45; cursor: not-allowed; }
+
+/* ── Badges ── */
+.uxc-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
+.uxc-b-warning { background: var(--color-warning-bg); color: var(--color-warning); }
+.uxc-b-info    { background: var(--color-info-bg);    color: var(--color-info); }
+.uxc-b-success { background: var(--color-success-bg); color: var(--color-success); }
+.uxc-b-gray    { background: var(--color-gray-bg);    color: var(--color-gray-text); }
+.uxc-b-purple  { background: var(--color-purple-bg);  color: var(--color-purple); }
+.uxc-b-danger  { background: var(--color-danger-bg);  color: var(--color-danger); }
+
+/* ── Formulario ── */
+.uxc-form-group { margin-bottom: 14px; }
+.uxc-form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--color-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .04em; }
+.uxc-form-group input:not([type="checkbox"]):not([type="radio"]), .uxc-form-group select, .uxc-form-group textarea {
+  width: 100%; font-family: inherit; font-size: 14px; padding: 8px 10px; border-radius: 6px;
+  border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text);
+}
+.uxc-checkbox-row input[type="checkbox"] { width: auto; }
+.uxc-checkbox-row label { display: inline; }
+.uxc-form-group input::placeholder, .uxc-form-group textarea::placeholder { color: var(--color-muted-2); }
+.uxc-form-group input:focus, .uxc-form-group select:focus, .uxc-form-group textarea:focus {
+  outline: none; border-color: var(--color-primary); box-shadow: var(--focus-ring);
+}
+.uxc-form-group.error input:not([type="checkbox"]) { border-color: var(--color-danger); }
+.uxc-form-error { font-size: 12px; color: var(--color-danger); margin-top: 4px; }
+.uxc-form-help  { font-size: 12px; color: var(--color-muted); margin-top: 4px; }
+.uxc-checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+
+/* ── Modal demo (estático, no overlay real) ── */
+.uxc-modal-demo { border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-lg); overflow: hidden; max-width: 480px; }
+.uxc-modal-demo-head { padding: 16px 20px; border-bottom: 1px solid var(--color-border); font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; }
+.uxc-modal-demo-body { padding: 20px; }
+.uxc-modal-demo-foot { padding: 14px 20px; border-top: 1px solid var(--color-border); display: flex; justify-content: flex-end; gap: 8px; }
+.uxc-status-box { border-radius: 8px; padding: 10px; font-size: 13px; margin-top: 10px; }
+.uxc-status-box.info    { background: var(--color-info-bg);    color: var(--color-info); }
+.uxc-status-box.success { background: var(--color-success-bg); color: var(--color-success); }
+.uxc-status-box.error   { background: var(--color-danger-bg);  color: var(--color-danger); }
+/* Antes: colores fijos que no reaccionan al tema (para la comparativa) */
+.uxc-status-box.hardcoded-info    { background: #dbeafe; color: #1e40af; }
+.uxc-status-box.hardcoded-success { background: #dcfce7; color: #15803d; }
+
+/* ── Dashboard cards ── */
+.uxc-stats-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 14px; }
+.uxc-stat-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+.uxc-stat-value { font-size: 24px; font-weight: 700; }
+.uxc-stat-label { font-size: 12px; color: var(--color-muted); margin-top: 2px; }
+
+/* ── Placeholder de gráfico ── */
+.uxc-chart-placeholder { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 20px; }
+.uxc-chart-bars { display: flex; align-items: flex-end; gap: 10px; height: 140px; margin-top: 10px; }
+.uxc-chart-bar { flex: 1; background: var(--color-primary); opacity: .8; border-radius: 4px 4px 0 0; }
+.uxc-chart-grid-line { border-top: 1px solid var(--color-border); font-size: 10px; color: var(--color-muted); }
+
+/* ── Paleta / swatches ── */
+.uxc-swatch-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(140px,1fr)); gap: 12px; }
+.uxc-swatch { border: 1px solid var(--color-border); border-radius: var(--radius); overflow: hidden; }
+.uxc-swatch-color { height: 52px; }
+.uxc-swatch-label { padding: 6px 8px; font-size: 11px; background: var(--color-surface); }
+.uxc-swatch-label code { font-size: 10px; color: var(--color-muted); display: block; }
+
+.uxc-note { font-size: 12px; color: var(--color-muted); margin-top: 10px; }
+.uxc-rules { font-size: 13px; }
+.uxc-rules li { margin-bottom: 6px; }

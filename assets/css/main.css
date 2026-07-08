@@ -19,8 +19,13 @@
   --green-light:   #def7ec;
   --red:           #c81e1e;
   --red-light:     #fde8e8;
-  --orange:        #c27803;
+  /* Oscurecido desde #c27803 (08/07/2026): a #c27803 el texto sobre --orange-light
+     da 3.12:1 de contraste, por debajo del 4.5:1 que exige WCAG AA para texto
+     normal. Con #92400e sube a 6.30:1. Ver UX_UI_MODO_OSCURO_COLORES.md §5. */
+  --orange:        #92400e;
   --orange-light:  #fdf6b2;
+  --purple:        #6d28d9;
+  --purple-light:  #ede9fe;
 
   /* Escala de grises */
   --gray-50:   #f9fafb;
@@ -111,6 +116,8 @@ body.dark {
   --red-light:    #450a0a;
   --orange:       #fbbf24;
   --orange-light: #451a03;
+  --purple:       #c4b5fd;
+  --purple-light: #3b0764;
 
   /* Tokens semánticos de superficie */
   --bg-app:         #0f172a;
@@ -152,7 +159,7 @@ body.dark input, body.dark select, body.dark textarea {
   background: var(--bg-muted); color: var(--text-primary); border-color: var(--border-default);
 }
 body.dark input:focus, body.dark select:focus, body.dark textarea:focus {
-  border-color: var(--blue); box-shadow: 0 0 0 3px rgba(77,143,250,.2);
+  border-color: var(--blue); box-shadow: 0 0 0 3px rgba(77,143,250,.4);
 }
 body.dark input::placeholder, body.dark textarea::placeholder { color: var(--text-muted); }
 body.dark input[type="date"], body.dark input[type="month"] { color-scheme: dark; }
@@ -202,22 +209,36 @@ body.dark td { border-bottom-color: var(--border-subtle); }
 body.dark tr:hover td { background: var(--bg-muted); }
 
 /* Filas de recibo por estado */
-body.dark .tr-pendiente td { color: #f87171; }
+/* 'Pendiente' mantiene un color distintivo de fila a petición expresa del
+   usuario (08/07/2026) — usa var(--red), el token danger de la paleta, en vez
+   del hex duplicado que llevaba antes. 'Parcial' pasa a neutro: el badge morado
+   ya es la única señal de ese estado, evita competir con el rojo de pendiente. */
+body.dark .tr-pendiente td { color: var(--red); }
 body.dark .tr-cobrado td   { color: var(--text-primary); }
-body.dark .tr-parcial td   { color: #60a5fa; }
+body.dark .tr-parcial td   { color: var(--text-primary); }
 body.dark .tr-devuelto td  { color: var(--orange); }
-body.dark .tr-anulado td   { color: #6b7280; }
-body.dark .tr-selected td  { background: #1e3a5f !important; }
+body.dark .tr-anulado td   { color: var(--text-muted); }
+body.dark .tr-selected td  { background: var(--blue-light) !important; }
 
 /* Panel de detalle */
 body.dark .detail-panel  { background: var(--bg-app); border-color: var(--border-default); }
 body.dark .detail-value  { color: var(--text-primary); }
 
-/* Badges */
-body.dark .badge-green  { background: #14532d; color: #22c55e; }
-body.dark .badge-red    { background: #450a0a; color: #f87171; }
-body.dark .badge-blue   { background: #1e3a5f; color: #4d8ffa; }
-body.dark .badge-orange { background: #451a03; color: #fbbf24; }
+/* Componente acciones de fila / panel lateral / barra masiva */
+body.dark .dd-more-panel  { background: var(--bg-surface); border-color: var(--border-default); }
+body.dark .dd-more-item:hover { background: var(--bg-muted); }
+body.dark .dd-more-item.danger:hover { background: var(--red-light); }
+body.dark .panel-lateral  { background: var(--bg-surface); }
+body.dark .panel-lateral-head { border-color: var(--border-default); }
+body.dark details.filtros-plegables { background: var(--bg-muted); border-color: var(--border-default); }
+body.dark details.filtros-plegables[open] summary { border-color: var(--border-default); }
+
+/* Badges: verde/rojo/azul/naranja/morado ya no necesitan override aquí —
+   la regla base usa var(--*-light)/var(--*) y body.dark redefine esas mismas
+   variables más arriba, así que se adaptan solas por cascada (08/07/2026).
+   El gris sí usa tonos distintos a propósito en oscuro (gray-200/gray-500
+   en vez de gray-100/gray-600), por eso mantiene su override explícito. */
+body.dark .badge-gray { background: var(--gray-200); color: var(--gray-500); }
 
 /* Search */
 body.dark #search-input  { background: var(--bg-muted); color: var(--text-primary); border-color: var(--border-strong); }
@@ -290,12 +311,12 @@ body.dark .revisiones-anuales-header {
 }
 
 /* Filas urgentes */
-body.dark .rev-urgente td { background: #3d0a18; }
-body.dark .rev-urgente td:last-child { color: #f87171; font-weight: 700; }
+body.dark .rev-urgente td { background: var(--red-light); }
+body.dark .rev-urgente td:last-child { color: var(--red); font-weight: 700; }
 body.dark .rev-proximo td:last-child { color: var(--orange); font-weight: 600; }
 
-/* Colores de renovación */
-body.dark .renov-plazo-agotado { color: #fb923c; }
+/* Colores de renovación: sin override — hereda var(--orange) de la regla base
+   (08/07/2026, unificado con renov-aviso, ver UX_UI_MODO_OSCURO_COLORES.md §3) */
 
 /* Tabs */
 body.dark .tab-bar { border-bottom-color: var(--border-default); }
@@ -378,7 +399,7 @@ body.dark label { color: var(--text-secondary); }
 #search-input:focus {
   outline: none;
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(26,86,219,.12);
+  box-shadow: 0 0 0 3px rgba(26,86,219,.35);
   background: var(--bg-surface);
 }
 #search-results {
@@ -605,12 +626,12 @@ body.dark label { color: var(--text-secondary); }
 /* ============================================================
    COLORES DE ESTADO DE LOS RECIBOS EN TABLA
    ============================================================ */
-.tr-pendiente td { color: #c81e1e; }
-.tr-cobrado td   { color: #111827; }
-.tr-parcial td   { color: #1a56db; }
-.tr-devuelto td  { color: #c27803; }
-.tr-anulado td   { color: #9ca3af; text-decoration: line-through; }
-.tr-selected td  { background: #e8f0fe !important; }
+.tr-pendiente td { color: var(--red); }
+.tr-cobrado td   { color: var(--text-primary); }
+.tr-parcial td   { color: var(--text-primary); }
+.tr-devuelto td  { color: var(--orange); }
+.tr-anulado td   { color: var(--text-muted); text-decoration: line-through; }
+.tr-selected td  { background: var(--blue-light) !important; }
 
 
 /* ============================================================
@@ -653,7 +674,10 @@ input, select, textarea {
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(26,86,219,.15);
+  /* Opacidad subida de .15 a .35 (08/07/2026): el anillo de foco era demasiado
+     tenue para verse bien con brillo de pantalla alto — ver
+     UX_UI_MODO_OSCURO_COLORES.md §2/§4 C07. */
+  box-shadow: 0 0 0 3px rgba(26,86,219,.35);
 }
 input:disabled, select:disabled, textarea:disabled {
   background: var(--bg-subtle);
@@ -728,6 +752,14 @@ label {
 .nav-item.active      { background: var(--blue); color: white; border-left-color: #93c5fd; }
 .nav-item svg         { flex-shrink: 0; opacity: .7; }
 .nav-item.active svg  { opacity: 1; }
+/* El menú lateral es siempre oscuro (fondo #0f172a) tanto en modo claro como
+   oscuro de la app — un anillo azul normal se pierde ahí. Se usa un anillo
+   claro con separación, visible en ambos casos (08/07/2026, ver
+   UX_UI_MODO_OSCURO_COLORES.md §4 C06). */
+.nav-item:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: -2px;
+}
 .sidebar-footer {
   padding: 12px 16px;
   border-top: 1px solid var(--gray-700);
@@ -845,7 +877,7 @@ label {
   margin-bottom: 20px;
 }
 .aviso-revision-header {
-  background: #fff7ed;
+  background: var(--orange-light);
   padding: 12px 16px;
   display: flex;
   align-items: center;
@@ -853,7 +885,7 @@ label {
   font-weight: 700;
   color: var(--orange);
   font-size: 14px;
-  border-bottom: 1px solid #fed7aa;
+  border-bottom: 1px solid var(--color-warn-muted);
 }
 
 /* Tarjeta de renovaciones próximas */
@@ -873,13 +905,14 @@ label {
   font-weight: 700;
   color: var(--blue-dark);
   font-size: 14px;
-  border-bottom: 1px solid #bfdbfe;
+  border-bottom: 1px solid var(--border-strong);
 }
 
-/* Colores de renovación */
+/* Colores de renovación (unificados a --orange en vez de un tercer tono
+   de ámbar sin relación — ver UX_UI_MODO_OSCURO_COLORES.md §3) */
 .renov-vencido       { color: var(--red);   font-weight: 700; }
 .renov-urgente       { color: var(--red);   font-weight: 600; }
-.renov-plazo-agotado { color: #9a3412;      font-weight: 600; }
+.renov-plazo-agotado { color: var(--orange);font-weight: 600; }
 .renov-aviso         { color: var(--orange);font-weight: 600; }
 .renov-ok            { color: var(--green); font-weight: 500; }
 
@@ -891,20 +924,20 @@ label {
   overflow: hidden;
 }
 .revisiones-anuales-header {
-  background: linear-gradient(135deg,#f0f9ff,#e0f2fe);
+  background: var(--color-info-light);
   padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 700;
-  color: #0369a1;
+  color: var(--color-info);
   font-size: 14px;
-  border-bottom: 1px solid #bae6fd;
+  border-bottom: 1px solid var(--color-info-muted);
 }
 
 /* Filas de urgencia de revisión */
-.rev-urgente td            { background: #fff5f5; }
-.rev-urgente td:last-child { color: #ef4444; font-weight: 700; }
+.rev-urgente td            { background: var(--red-light); }
+.rev-urgente td:last-child { color: var(--red); font-weight: 700; }
 .rev-proximo td:last-child { color: var(--orange); font-weight: 600; }
 
 /* Paginación de las tarjetas del dashboard */
@@ -1011,6 +1044,87 @@ tr:last-child td { border-bottom: none; }
 tr:hover td   { background: var(--bg-subtle); }
 .td-actions   { display: flex; gap: 4px; justify-content: flex-end; }
 
+/* ============================================================
+   Componente: acción principal + menú "Más" (propuesta UX 08/07/2026)
+   Ver UX_UI_ANALISIS_PROPUESTA.md — usado por tabla.js:accionesFila()
+   ============================================================ */
+.row-actions   { display: flex; gap: 6px; justify-content: flex-end; align-items: center; }
+.dd-more       { position: relative; display: inline-block; }
+.dd-more-panel {
+  display: none; position: fixed; z-index: 900; min-width: 210px;
+  background: var(--bg-surface); border: 1px solid var(--border-default);
+  border-radius: var(--radius); box-shadow: var(--shadow-lg, 0 10px 25px rgba(0,0,0,.15));
+  padding: 6px; text-align: left;
+}
+.dd-more-panel.open { display: block; }
+.dd-more-group-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--text-muted); padding: 8px 10px 4px;
+}
+.dd-more-item {
+  display: flex; align-items: center; gap: 8px; width: 100%; border: none; background: none;
+  text-align: left; padding: 8px 10px; font-size: 13px; color: var(--text-primary);
+  border-radius: 6px; cursor: pointer; white-space: nowrap;
+}
+.dd-more-item:hover  { background: var(--bg-muted); }
+.dd-more-item.danger { color: var(--red); }
+.dd-more-item.danger:hover { background: var(--red-light); }
+.dd-more-item:disabled { color: var(--text-disabled); cursor: not-allowed; }
+.dd-more-item:disabled:hover { background: none; }
+.dd-more-divider { height: 1px; background: var(--border-subtle); margin: 4px 6px; }
+
+/* Panel lateral de detalle */
+.panel-overlay {
+  position: fixed; inset: 0; background: rgba(17,24,39,.35); z-index: 940; display: none;
+}
+.panel-overlay.open { display: block; }
+.panel-lateral {
+  position: fixed; top: 0; right: 0; height: 100%; width: 420px; max-width: 92vw;
+  background: var(--bg-surface); z-index: 950; box-shadow: -8px 0 24px rgba(0,0,0,.18);
+  transform: translateX(100%); transition: transform .22s ease;
+  display: flex; flex-direction: column;
+}
+.panel-lateral.open { transform: translateX(0); }
+.panel-lateral-head {
+  padding: 18px 20px; border-bottom: 1px solid var(--border-default);
+  display: flex; justify-content: space-between; align-items: flex-start; flex-shrink: 0;
+}
+.panel-lateral-eyebrow { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
+.panel-lateral-titulo  { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-top: 2px; }
+.panel-lateral-body { padding: 20px; overflow-y: auto; flex: 1; }
+.panel-lateral-group-title { font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: .04em; margin: 18px 0 8px; }
+.panel-lateral-group-title:first-child { margin-top: 0; }
+.panel-kv { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); font-size: 13px; }
+.panel-kv b { color: var(--text-primary); text-align: right; }
+.panel-lateral-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Barra de acciones masivas */
+.bulk-bar {
+  display: none; align-items: center; gap: 14px; background: var(--blue-dark); color: #fff;
+  padding: 10px 16px; border-radius: var(--radius); margin-bottom: 12px; font-size: 13px; font-weight: 600;
+}
+.bulk-bar.show { display: flex; }
+.bulk-bar .btn { background: rgba(255,255,255,.15); color: #fff; border: none; }
+.bulk-bar .btn:hover { background: rgba(255,255,255,.28); }
+.bulk-bar .bulk-spacer { flex: 1; }
+.bulk-bar .bulk-clear { background: none; border: none; color: #cbd5e1; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0; }
+.bulk-check { width: 16px; height: 16px; cursor: pointer; }
+
+/* Filtros plegables (usa <details> nativo, accesible por teclado) */
+details.filtros-plegables {
+  border: 1px solid var(--border-default); border-radius: var(--radius); background: var(--bg-subtle);
+  margin-bottom: 14px; padding: 0;
+}
+details.filtros-plegables summary {
+  padding: 10px 14px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  list-style: none; display: flex; align-items: center; gap: 8px; user-select: none;
+}
+details.filtros-plegables summary::-webkit-details-marker { display: none; }
+details.filtros-plegables summary::before { content: '▸'; display: inline-block; transition: transform .15s ease; color: var(--text-muted); }
+details.filtros-plegables[open] summary::before { transform: rotate(90deg); }
+details.filtros-plegables[open] summary { border-bottom: 1px solid var(--border-default); }
+details.filtros-plegables .filtros-bar { border: none; margin: 0; border-radius: 0; }
+
 /* Badges */
 .badge {
   display: inline-flex;
@@ -1024,6 +1138,10 @@ tr:hover td   { background: var(--bg-subtle); }
 .badge-red    { background: var(--red-light);    color: var(--red); }
 .badge-blue   { background: var(--blue-light);   color: var(--blue); }
 .badge-orange { background: var(--orange-light); color: var(--orange); }
+.badge-purple { background: var(--purple-light); color: var(--purple); }
+/* gray-600 en vez de gray-500 (08/07/2026): sobre --gray-100 el gray-500 da 4.18:1,
+   por debajo de AA. Con gray-600 sube a 6.74:1. Ver UX_UI_MODO_OSCURO_COLORES.md §5. */
+.badge-gray   { background: var(--gray-100); color: var(--gray-600); }
 
 /* Formularios */
 .form-grid    { display: grid; gap: 16px; }

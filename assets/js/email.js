@@ -40,12 +40,12 @@ async function confirmarEnvioEmail(id) {
   let pdfBase64 = '';
   if (window.jspdf) {
     btn.textContent = 'Generando PDF…';
-    div.innerHTML = `<div style="color:#1e40af;background:#dbeafe;border-radius:8px;padding:10px;font-size:13px">⏳ Generando PDF del recibo…</div>`;
+    div.innerHTML = `<div style="color:var(--color-info);background:var(--color-info-light);border-radius:8px;padding:10px;font-size:13px">⏳ Generando PDF del recibo…</div>`;
     try { pdfBase64 = await _generarPDFBase64(id, 'a4'); } catch(e) { console.warn('PDF err:', e); }
   }
 
   btn.textContent = 'Enviando…';
-  div.innerHTML = `<div style="color:#1e40af;background:#dbeafe;border-radius:8px;padding:10px;font-size:13px">⏳ Enviando email…</div>`;
+  div.innerHTML = `<div style="color:var(--color-info);background:var(--color-info-light);border-radius:8px;padding:10px;font-size:13px">⏳ Enviando email…</div>`;
 
   let res;
   try {
@@ -58,14 +58,14 @@ async function confirmarEnvioEmail(id) {
   } catch { res = { error: 'Error de conexión con el servidor' }; }
 
   if (res.ok) {
-    div.innerHTML = `<div style="color:#15803d;background:#dcfce7;border-radius:8px;padding:12px">✅ ${res.mensaje}</div>`;
+    div.innerHTML = `<div style="color:var(--green);background:var(--green-light);border-radius:8px;padding:12px">✅ ${res.mensaje}</div>`;
     btn.textContent = '✓ Enviado';
     // Registrar envío de email en el log de auditoría (fire-and-forget)
     const _inqEmail = DB.getItem('inquilinos', r?.inquilino_id) || {};
     registrarActividad('email_enviado', 'recibos', id,
       (r?.numero_recibo || '') + ' — ' + (_inqEmail.nombre || '') + ' <' + (_inqEmail.email || '') + '>');
   } else {
-    div.innerHTML = `<div style="color:#991b1b;background:#fee2e2;border-radius:8px;padding:12px">❌ ${res.error}</div>`;
+    div.innerHTML = `<div style="color:var(--red);background:var(--red-light);border-radius:8px;padding:12px">❌ ${res.error}</div>`;
     btn.disabled = false; btn.textContent = 'Reintentar';
   }
 }
@@ -99,8 +99,8 @@ function enviarReciboWhatsapp(id) {
       <strong>${esc(inq.nombre)}</strong><br>
       <span style="color:var(--gray-500)">${esc(telRaw)}</span>
     </p>
-    <div style="background:#f0fdf4;border:1px solid #a7f3d0;border-radius:8px;padding:10px;
-                font-size:12px;white-space:pre-wrap;font-family:monospace;color:#065f46">
+    <div style="background:var(--green-light);border:1px solid var(--green);border-radius:8px;padding:10px;
+                font-size:12px;white-space:pre-wrap;font-family:monospace;color:var(--green)">
 ${esc(msg)}</div>
   `, `
     <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>

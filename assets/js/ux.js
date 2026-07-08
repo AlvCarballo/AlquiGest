@@ -77,6 +77,11 @@ function toggleModoOscuro() {
   localStorage.setItem('ag_dark_mode', isDark ? '1' : '0');
   document.getElementById('dark-icon-sun').style.display  = isDark ? 'none' : '';
   document.getElementById('dark-icon-moon').style.display = isDark ? ''     : 'none';
+  // Los gráficos del Dashboard (Chart.js) llevan sus colores calculados en el
+  // momento de crearse — sin esto, si se cambia de tema estando ya en el
+  // Dashboard, se quedaban con los colores del tema anterior hasta navegar
+  // fuera y volver (08/07/2026, ver UX_UI_MODO_OSCURO_COLORES.md §2/§4).
+  if (typeof _redibujarGraficosDashboard === 'function') _redibujarGraficosDashboard();
 }
 // Restaurar preferencia guardada al arrancar la página
 (function() {
@@ -88,6 +93,21 @@ function toggleModoOscuro() {
     if (moon) moon.style.display = '';
   }
 })();
+
+// ===========================
+// ACCESIBILIDAD DE TECLADO — MENÚ LATERAL
+// Los .nav-item son <div onclick>, no <button>/<a>: con tabindex="0" y
+// role="button" (añadidos en AlquiGest.php) ya entran en el orden de
+// tabulación, pero un div no activa su onclick con Enter/Espacio de forma
+// nativa como sí hace un <button> — hay que simularlo aquí (08/07/2026,
+// ver UX_UI_MODO_OSCURO_COLORES.md §2/§4 C06).
+// ===========================
+document.addEventListener('keydown', function(e) {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('nav-item')) {
+    e.preventDefault();
+    e.target.click();
+  }
+});
 
 // ===========================
 // ATAJOS DE TECLADO (M-UX03)
