@@ -444,7 +444,7 @@ function _plantillaPreview(plantillaId, tipoDoc) {
     })
     .then(function(r) { return r.json(); })
     .then(function(res) {
-        var contenido = document.querySelector('.modal-body');
+        var contenido = document.getElementById('modal-body');
         if (!contenido) return;
         if (!res.ok) {
             contenido.innerHTML = '<div style="color:var(--red);padding:12px">' + esc(res.error) + '</div>';
@@ -467,7 +467,7 @@ function _plantillaPreview(plantillaId, tipoDoc) {
             res.html;
     })
     .catch(function(e) {
-        var contenido = document.querySelector('.modal-body');
+        var contenido = document.getElementById('modal-body');
         if (contenido) contenido.innerHTML = '<div style="color:var(--red)">Error: ' + esc(e.message) + '</div>';
     });
 }
@@ -629,7 +629,7 @@ function _plantillaPreviewConEntidad(plantillaId, tipo, entidadId) {
     })
     .then(function(r) { return r.json(); })
     .then(function(res) {
-        var cuerpo = document.querySelector('.modal-body');
+        var cuerpo = document.getElementById('modal-body');
         if (!cuerpo || !res.ok) return;
 
         var avisoVars = res.variables_desconocidas && res.variables_desconocidas.length

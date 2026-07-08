@@ -624,7 +624,6 @@ El botón de envío por email aparece deshabilitado. Añadir el email en la fich
 
 | Bug | Módulo | Detalle |
 |-----|--------|---------|
-| "Vista previa" de plantilla se queda en "Cargando previsualización…" indefinidamente | Plantillas | `plantillas.js` busca `document.querySelector('.modal-body')`, pero el elemento real usa la clase `ag-modal-body` (el `id`, no la clase, es `modal-body`); el backend responde correctamente, el fallo es solo de selector en el front-end |
 | Colores de resaltado de variables hardcodeados en PHP | Plantillas | `assets/php/plantillas.php` genera `<mark style="background:#d1fae5">` (resuelta) / `<mark style="background:#fee2e2;color:#991b1b">` (no resuelta) directamente en el HTML generado, fuera del sistema de variables CSS — no se adapta al modo oscuro |
 
 ---

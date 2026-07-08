@@ -200,7 +200,7 @@
 <script src="assets/js/ux.js?v=20260709a"></script>
 <script src="assets/js/extras.js?v=20260626w"></script>
 <script src="assets/js/configuracion.js?v=20260709b"></script>
-<script src="assets/js/plantillas.js?v=20260709a"></script>
+<script src="assets/js/plantillas.js?v=20260709b"></script>
 <!-- Librerias externas locales (sin dependencia de internet) -->
 <script src="assets/js/vendor/chart.umd.min.js"></script>
 <script src="assets/js/vendor/html2canvas.min.js"></script>
