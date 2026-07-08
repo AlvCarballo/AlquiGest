@@ -1,3 +1,0 @@
-[      83ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost/AlquiGest_v2/api.php?action=getAll:0
-[      83ms] [ERROR] Error al inicializar AlquiGest: Error: No se puede conectar con api.php. Abre la app desde Apache (localhost), no como fichero local.
-    at Object.init (http://localhost/AlquiGest_v2/assets/js/config.js?v=20260625b:66:13) @ http://localhost/AlquiGest_v2/assets/js/init.js?v=20260625b:8

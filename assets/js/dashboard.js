@@ -259,21 +259,21 @@ function renderDashboard() {
   const _diasLimiteBackup = Math.max(1, parseInt(_cfgGet('dash_backup_dias', '7')) || 7);
   let alertaBackup = '';
   if (!_ultimoBackup) {
-    alertaBackup = `<div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:var(--radius);padding:10px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;font-size:13px">
-      <svg width="18" height="18" fill="none" stroke="#1a56db" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+     alertaBackup = `<div class="backup-alert">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       <div><strong>No hay ningún backup registrado.</strong> Se recomienda descargar una copia de seguridad periódicamente.
-        <button class="btn btn-sm btn-secondary" style="margin-left:10px" onclick="descargarBackup()">Descargar backup</button>
+        <button class="btn btn-sm btn-secondary" onclick="descargarBackup()">Descargar backup</button>
       </div>
     </div>`;
   } else {
     const _diasBackup = Math.floor((new Date() - new Date(_ultimoBackup + 'T00:00:00')) / 86400000);
     if (_diasBackup > _diasLimiteBackup) {
-      alertaBackup = `<div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:var(--radius);padding:10px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;font-size:13px">
-        <svg width="18" height="18" fill="none" stroke="#1a56db" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <div>Último backup: hace <strong>${_diasBackup} días</strong>. Se recomienda hacer backup al menos semanalmente.
-          <button class="btn btn-sm btn-secondary" style="margin-left:10px" onclick="descargarBackup()">Descargar ahora</button>
-        </div>
-      </div>`;
+      alertaBackup = `<div class="backup-alert">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <div>Último backup: hace <strong>${_diasBackup} días</strong>. Se recomienda hacer backup al menos semanalmente.
+        <button class="btn btn-sm btn-secondary" onclick="descargarBackup()">Descargar ahora</button>
+      </div>
+    </div>`;
     }
   }
 

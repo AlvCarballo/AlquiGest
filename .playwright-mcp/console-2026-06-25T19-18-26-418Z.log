@@ -1,7 +1,0 @@
-[   15819ms] [WARNING] [INE] Error al consultar api.php?action=ine_rate: Error: Simulando API caída
-    at window.fetch (eval at <anonymous> (eval at evaluate (:303:30)), <anonymous>:6:57)
-    at modalAplicarIPC (http://localhost/AlquiGest_v2/assets/js/contratos.js?v=20260625r:405:24)
-    at eval (eval at <anonymous> (eval at evaluate (:303:30)), <anonymous>:10:3)
-    at eval (eval at evaluate (:303:30), <anonymous>:4:50)
-    at UtilityScript.evaluate (<anonymous>:305:16)
-    at UtilityScript.<anonymous> (<anonymous>:1:44) @ http://localhost/AlquiGest_v2/assets/js/contratos.js?v=20260625r:410

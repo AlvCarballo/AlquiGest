@@ -1,5 +1,0 @@
-[    3001ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost/AlquiGest_v2/AlquiGest.php:0
-[   16125ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost/AlquiGest_v2/AlquiGest.php:0
-[   58594ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost/AlquiGest_v2/AlquiGest.php:0
-[  554578ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost/AlquiGest_v2/AlquiGest.php:0
-[  571029ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost/AlquiGest_v2/AlquiGest.php:0

@@ -1,2 +1,0 @@
-[    2972ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost/AlquiGest_v2/AlquiGest.php:0
-[  197890ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost/AlquiGest_v2/AlquiGest.php:0

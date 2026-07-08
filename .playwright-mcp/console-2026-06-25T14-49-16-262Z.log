@@ -1,4 +1,0 @@
-[   73736ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost/AlquiGest_v2/assets/php/api.php?action=save&table=facturas:0
-[   73736ms] [ERROR] DB.save error [facturas] Error: HTTP 500
-    at Object.save (http://localhost/AlquiGest_v2/assets/js/config.js?v=20260625o:91:27)
-    at async anularFactura (http://localhost/AlquiGest_v2/assets/js/facturas.js?v=20260625r:282:17) @ http://localhost/AlquiGest_v2/assets/js/config.js?v=20260625o:93
