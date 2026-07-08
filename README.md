@@ -248,7 +248,7 @@ AlquiGest_v2/
 | Morosidad | Recibos vencidos > 30 días, exportación PDF formal |
 | Actividad | Log de auditoría de todas las acciones del sistema |
 | Mi Empresa | Datos del administrador, SMTP Gmail, IBAN, plantillas de correo |
-| Parámetros | 6 pestañas: Dashboard, Paginación, Botones, WhatsApp, VERI*FACTU, Documentos |
+| Parámetros | 7 pestañas: Dashboard, Paginación, Botones, WhatsApp, VERI*FACTU, Documentos, Menú |
 | VERI*FACTU | Facturación electrónica AEAT (opcional, desactivado por defecto) |
 | Plantillas DOCX | Motor de plantillas Word: 42 variables, bloques repetitivos, tabla de fotos |
 
@@ -620,6 +620,13 @@ El botón de envío por email aparece deshabilitado. Añadir el email en la fich
 | Sin sincronización en la nube | Backup JSON manual periódico |
 | Sin transacción SQL real en la cascada "anular recibo con factura" (son 2-3 guardados secuenciales desde JS, igual que el resto del proyecto) | El orden está protegido (la factura se rectifica antes que el recibo; si falla, el recibo no se toca), pero un corte de red justo entre pasos podría dejar el `RET` creado sin completar el resto — caso raro, sin reversión automática |
 
+### Bugs conocidos sin corregir
+
+| Bug | Módulo | Detalle |
+|-----|--------|---------|
+| "Vista previa" de plantilla se queda en "Cargando previsualización…" indefinidamente | Plantillas | `plantillas.js` busca `document.querySelector('.modal-body')`, pero el elemento real usa la clase `ag-modal-body` (el `id`, no la clase, es `modal-body`); el backend responde correctamente, el fallo es solo de selector en el front-end |
+| Colores de resaltado de variables hardcodeados en PHP | Plantillas | `assets/php/plantillas.php` genera `<mark style="background:#d1fae5">` (resuelta) / `<mark style="background:#fee2e2;color:#991b1b">` (no resuelta) directamente en el HTML generado, fuera del sistema de variables CSS — no se adapta al modo oscuro |
+
 ---
 
 ## 22. Futuras mejoras propuestas
@@ -634,6 +641,8 @@ El botón de envío por email aparece deshabilitado. Añadir el email en la fich
 - **Renovación automática de contratos indefinidos**
 - **Exportar/importar plantillas de email**
 - **Informe de rentabilidad** por inmueble (incluyendo gastos manuales)
+- **Formulario de Contratos en secciones colapsables** (datos, económico, revisión, personas adicionales) — hoy es un único modal largo
+- **Resumen previo en Generar Recibos** ("Se van a generar N recibos por valor de X €") antes de confirmar el lote
 
 ### Baja prioridad
 - **Widgets del dashboard reordenables** (drag-and-drop)
