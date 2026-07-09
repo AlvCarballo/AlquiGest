@@ -27,7 +27,9 @@
 
 $cfg = require __DIR__ . '/config.php';
 require __DIR__ . '/helpers.php';
+require __DIR__ . '/auth.php';
 requireLocalhost();
+session_bootstrap();
 
 // ── Constantes ────────────────────────────────────────────────
 define('PLANTILLAS_DIR', realpath(__DIR__ . '/../../uploads/plantillas') . DIRECTORY_SEPARATOR);
@@ -40,6 +42,10 @@ $pdo = new PDO(
     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
 );
 
+// Toda la aplicación de plantillas exige sesión iniciada (cualquier rol:
+// no hay ninguna acción aquí reservada solo a admin).
+requireLoginApi($pdo);
+
 // Auto-crear la tabla si no existe (migración transparente)
 $pdo->exec("CREATE TABLE IF NOT EXISTS `plantillas` (
     `id`             INT AUTO_INCREMENT PRIMARY KEY,
@@ -49,9 +55,20 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS `plantillas` (
     `fichero`        VARCHAR(255) NOT NULL,
     `activa`         TINYINT(1)  DEFAULT 1,
     `por_defecto`    TINYINT(1)  DEFAULT 0,
+    `eliminado`      TINYINT(1)  NOT NULL DEFAULT 0,
+    `eliminado_en`   DATETIME    NULL DEFAULT NULL,
     `created_at`     DATETIME    DEFAULT CURRENT_TIMESTAMP,
     `updated_at`     DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+// Migración: instalaciones existentes cuya tabla plantillas es anterior al borrado lógico.
+$colsPlantillas = array_column($pdo->query("SHOW COLUMNS FROM `plantillas`")->fetchAll(), 'Field');
+if (!in_array('eliminado', $colsPlantillas, true)) {
+    $pdo->exec("ALTER TABLE `plantillas` ADD COLUMN `eliminado` TINYINT(1) NOT NULL DEFAULT 0");
+}
+if (!in_array('eliminado_en', $colsPlantillas, true)) {
+    $pdo->exec("ALTER TABLE `plantillas` ADD COLUMN `eliminado_en` DATETIME NULL DEFAULT NULL");
+}
 
 // ── Dispatcher ────────────────────────────────────────────────
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
@@ -90,7 +107,8 @@ switch ($action) {
 // ── Listar plantillas ─────────────────────────────────────────
 function accionList(PDO $pdo): void {
     setCorsHeaders();
-    $rows = $pdo->query("SELECT * FROM plantillas ORDER BY tipo_documento, nombre")->fetchAll();
+    // Las plantillas marcadas eliminado=1 (borrado lógico) no aparecen en el listado.
+    $rows = $pdo->query("SELECT * FROM plantillas WHERE eliminado = 0 ORDER BY tipo_documento, nombre")->fetchAll();
     json_respond(['ok' => true, 'plantillas' => array_map('normalizarPlantilla', $rows)]);
 }
 
@@ -164,25 +182,21 @@ function accionUpload(PDO $pdo): void {
     json_respond(['ok' => true, 'plantilla' => normalizarPlantilla($plantilla->fetch())]);
 }
 
-// ── Eliminar plantilla ────────────────────────────────────────
+// ── Eliminar plantilla (borrado lógico) ────────────────────────
+// No se borra físicamente ni se elimina el fichero DOCX del disco: se marca
+// eliminado=1 para que deje de aparecer en el listado y en los selectores de
+// Contratos, conservando el registro y el fichero por si hace falta consultarlo.
 function accionDelete(PDO $pdo, array $body): void {
     setCorsHeaders();
     $id = (int)($body['id'] ?? 0);
     if (!$id) { json_respond(['ok' => false, 'error' => 'ID requerido'], 400); return; }
 
-    $stmt = $pdo->prepare("SELECT fichero FROM plantillas WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT id FROM plantillas WHERE id = ? AND eliminado = 0");
     $stmt->execute([$id]);
-    $row = $stmt->fetch();
-    if (!$row) { json_respond(['ok' => false, 'error' => 'Plantilla no encontrada'], 404); return; }
+    if (!$stmt->fetch()) { json_respond(['ok' => false, 'error' => 'Plantilla no encontrada'], 404); return; }
 
-    // Eliminar fichero de disco (solo si existe y está dentro de PLANTILLAS_DIR)
-    $rutaFichero = PLANTILLAS_DIR . basename($row['fichero']);
-    if (file_exists($rutaFichero) && strpos(realpath($rutaFichero), PLANTILLAS_DIR) === 0) {
-        unlink($rutaFichero);
-    }
-
-    $pdo->prepare("DELETE FROM plantillas WHERE id = ?")->execute([$id]);
-    json_respond(['ok' => true]);
+    $pdo->prepare("UPDATE plantillas SET eliminado = 1, eliminado_en = NOW() WHERE id = ?")->execute([$id]);
+    json_respond(['ok' => true, 'message' => 'Plantilla eliminada correctamente.', 'logical_delete' => true]);
 }
 
 // ── Renombrar plantilla ───────────────────────────────────────
@@ -605,37 +619,37 @@ function generarPreviewHtml(string $rutaDocx, array $vars, array $inqSec = [], a
         }
         if (trim($texto) === '') continue;
 
-        // Sustituir variables en preview (verdes=ok, rojas=desconocidas)
+        // Sustituir variables en preview (ok=verde, placeholder=azul, desconocida=rojo).
+        // Los colores viven en assets/css/main.css (clases .tpl-preview-mark-*), no aquí:
+        // así se adaptan automáticamente al modo oscuro sin tocar el backend.
         // Excepción: Inquilinos_Secundarios_*_N sin dato → vacío (no se marca en rojo)
         $textoSust = preg_replace_callback('/\{\{(\w+)\}\}/', function($m) use ($vars, &$desconocidas) {
             $nombre = $m[1];
             if (isset($vars[$nombre])) {
-                return '<mark style="background:#d1fae5;padding:0 3px;border-radius:3px">' .
+                return '<mark class="tpl-preview-mark-ok">' .
                        htmlspecialchars($vars[$nombre], ENT_QUOTES, 'UTF-8') . '</mark>';
             }
             if (preg_match('/^Inquilinos_Secundarios_\w+_\d+$/', $nombre)) {
                 return '';
             }
             if ($nombre === 'FotosContrato') {
-                return '<mark style="background:#dbeafe;padding:2px 8px;border-radius:3px;color:#1e40af;font-size:11px">' .
+                return '<mark class="tpl-preview-mark-placeholder">' .
                        '[📷 Aquí se insertará la tabla de fotos]</mark>';
             }
             if ($nombre === 'ListaMuebles') {
-                return '<mark style="background:#ecfdf5;padding:2px 8px;border-radius:3px;color:#166534;font-size:11px">' .
+                return '<mark class="tpl-preview-mark-placeholder">' .
                        '[📋 Aquí se insertará el listado de mobiliario]</mark>';
             }
             $desconocidas[] = $nombre;
-            return '<mark style="background:#fee2e2;padding:0 3px;border-radius:3px;color:#991b1b">&lt;&lt;' .
+            return '<mark class="tpl-preview-mark-error">&lt;&lt;' .
                    htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8') . '&gt;&gt;</mark>';
         }, htmlspecialchars($texto, ENT_QUOTES, 'UTF-8'));
 
-        $parrafos[] = '<p style="margin:6px 0;line-height:1.6">' . $textoSust . '</p>';
+        $parrafos[] = '<p>' . $textoSust . '</p>';
     }
 
     $html = $parrafos
-        ? '<div style="font-family:Georgia,serif;font-size:13px;max-height:400px;overflow-y:auto;' .
-          'padding:16px;background:#fafafa;border:1px solid var(--gray-200);border-radius:8px">' .
-          implode('', $parrafos) . '</div>'
+        ? '<div class="tpl-preview">' . implode('', $parrafos) . '</div>'
         : '<p><em>No se pudo extraer texto de la plantilla.</em></p>';
 
     return ['html' => $html, 'desconocidas' => array_unique($desconocidas)];

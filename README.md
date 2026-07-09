@@ -1,4 +1,4 @@
-# AlquiGest v3.0.0
+# AlquiGest v3.0.1
 
 Aplicación web de gestión de alquileres para administradores de fincas y propietarios particulares. Funciona en local con MAMP o XAMPP sobre Windows; no requiere conexión a internet para ninguna función principal.
 
@@ -28,6 +28,8 @@ Aplicación web de gestión de alquileres para administradores de fincas y propi
 20. [Preguntas frecuentes](#20-preguntas-frecuentes)
 21. [Limitaciones](#21-limitaciones)
 22. [Futuras mejoras propuestas](#22-futuras-mejoras-propuestas)
+23. [Autenticación, usuarios y permisos](#23-autenticación-usuarios-y-permisos)
+24. [Registro de cambios](#24-registro-de-cambios)
 
 ---
 
@@ -67,13 +69,16 @@ AlquiGest es un sistema de gestión de alquileres diseñado para administradores
 ### Patrón arquitectónico
 
 ```
-AlquiGest.php            ← Shell SPA (Single Page Application)
+login.php                ← Login (sin sesión previa) → AlquiGest.php
+assets/php/auth.php      ← Núcleo de autenticación/sesión, incluido por todos los backends
+  ↓
+AlquiGest.php            ← Shell SPA (Single Page Application); exige sesión (auth.php)
   ↓ incluye
-assets/js/*.js           ← Módulos JS por sección (propietarios, contratos, recibos…)
+assets/js/*.js           ← Módulos JS por sección (propietarios, contratos, recibos, usuarios…)
   ↓ llama a
-assets/php/api.php       ← API PHP unificada (JSON) para datos de negocio
-assets/php/plantillas.php ← Motor de plantillas DOCX (multipart/form-data)
-assets/php/verifactu.php ← Integración AEAT VERI*FACTU
+assets/php/api.php       ← API PHP unificada (JSON) para datos de negocio; exige sesión
+assets/php/plantillas.php ← Motor de plantillas DOCX (multipart/form-data); exige sesión
+assets/php/verifactu.php ← Integración AEAT VERI*FACTU; exige sesión
 ```
 
 ### Base de datos — Tablas principales
@@ -93,13 +98,14 @@ assets/php/verifactu.php ← Integración AEAT VERI*FACTU
 | `configuracion` | Parámetros de configuración clave-valor |
 | `plantillas` | Plantillas DOCX (motor de generación de documentos) |
 | `doc_secuencias` | Contador atómico de numeración mensual por tipo de documento (`REC`, `FAC`, `RET`, `RER`) |
-| `log_actividad` | Log de auditoría (activable/desactivable en `config.php`) |
+| `log_actividad` | Log de auditoría (activable/desactivable en `config.php`), con usuario/IP de cada acción (ver §23) |
+| `usuarios` | Cuentas de acceso a la aplicación: roles `admin`/`user`, contraseña con `password_hash()`, borrado lógico (ver §23) |
 
 ### Seguridad
 
 - Toda la API exige `requireLocalhost()` — rechaza peticiones externas a `127.0.0.1`/`::1`
+- **Autenticación de usuario real** (desde v3.0.1): login con sesión PHP segura, roles `admin`/`user`, CSRF, y `install.php` protegido según el rol (ver [§23](#23-autenticación-usuarios-y-permisos))
 - Uploads validados: extensión + MIME ZIP real (DOCX), UUID en disco, anti-path-traversal
-- Sin autenticación de usuario (aplicación de uso local exclusivo)
 - Certificados VERI*FACTU en `certs/` protegidos con `.htaccess`
 
 ---
@@ -127,15 +133,17 @@ assets/php/verifactu.php ← Integración AEAT VERI*FACTU
    - **Instalación limpia** — BD vacía lista para producción
    - **Instalación con datos de ejemplo** — carga datos de prueba
 
-5. Accede a la aplicación: `http://localhost/AlquiGest_v2/AlquiGest.php`
+5. Crea el primer administrador cuando `install.php` te lo pida (nombre, usuario, email, contraseña) — ver [§23](#23-autenticación-usuarios-y-permisos).
 
-> `install.php` puede ejecutarse de nuevo para aplicar migraciones (nuevas columnas) sin destruir datos existentes. Solo destruye datos si eliges "instalación limpia" o "con datos de ejemplo" (ambas opciones recrean todas las tablas desde cero).
+6. Accede a la aplicación: `http://localhost/AlquiGest_v2/AlquiGest.php` e inicia sesión con el administrador creado.
+
+> `install.php` puede ejecutarse de nuevo para aplicar migraciones (nuevas columnas) sin destruir datos existentes. Solo destruye datos si eliges "instalación limpia" o "con datos de ejemplo" (ambas opciones recrean las tablas de negocio desde cero; las tablas `usuarios` y `log_actividad` nunca se destruyen en una reinstalación). Tras la primera instalación, `install.php` exige haber iniciado sesión como administrador para volver a acceder a él (salvo la sección de copia de seguridad, disponible también para el rol `user`).
 
 ### Qué incluye cada modo
 
 Ambos modos siembran siempre lo **obligatorio para que la aplicación funcione** desde el primer arranque, sin necesitar configuración manual:
 - Las 6 plantillas DOCX de contrato/inventario (normal y multi-inquilino) en la tabla `plantillas`.
-- Los 77 parámetros de `configuracion` con sus valores por defecto (paginación, visibilidad de botones y menús, Dashboard, WhatsApp, VERI*FACTU, documentos).
+- Los 76 parámetros de `configuracion` con sus valores por defecto (paginación, visibilidad de botones y menús, Dashboard, WhatsApp, VERI*FACTU, documentos).
 - La estructura completa de tablas, incluida `doc_secuencias` para la numeración atómica.
 
 La **instalación limpia** no crea ningún propietario, finca, inmueble, inquilino, contrato, recibo ni factura — la BD queda vacía y lista para datos reales.
@@ -148,13 +156,15 @@ La **instalación con datos de ejemplo** añade además un escenario completo de
 
 Flujo recomendado en el primer uso:
 
-1. **Mi Empresa** → Rellena nombre, CIF, dirección, teléfono, email e IBAN.
-2. **Propietarios** → Crea al menos un propietario.
-3. **Fincas / Edificios** → Asigna la finca al propietario.
-4. **Pisos / Locales** → Añade los inmuebles de cada finca.
-5. **Inquilinos** → Registra los inquilinos con email.
-6. **Contratos** → Vincula inquilino + inmueble + condiciones económicas.
-7. **Generar Recibos** → Genera los recibos del mes en curso.
+1. **Iniciar sesión** con el administrador creado durante la instalación (ver [§23](#23-autenticación-usuarios-y-permisos)).
+2. **Usuarios** (solo admin) → Crea cuentas adicionales con rol `user` si otras personas van a usar la aplicación sin necesitar acceso a `install.php`.
+3. **Mi Empresa** → Rellena nombre, CIF, dirección, teléfono, email e IBAN.
+4. **Propietarios** → Crea al menos un propietario.
+5. **Fincas / Edificios** → Asigna la finca al propietario.
+6. **Pisos / Locales** → Añade los inmuebles de cada finca.
+7. **Inquilinos** → Registra los inquilinos con email.
+8. **Contratos** → Vincula inquilino + inmueble + condiciones económicas.
+9. **Generar Recibos** → Genera los recibos del mes en curso.
 
 ---
 
@@ -162,7 +172,8 @@ Flujo recomendado en el primer uso:
 
 ```
 AlquiGest_v2/
-├── AlquiGest.php           ← Punto de entrada principal (SPA shell)
+├── AlquiGest.php           ← Punto de entrada principal (SPA shell, exige sesión)
+├── login.php               ← Pantalla de login
 ├── index.php               ← Pantalla de bienvenida / instalación
 ├── README.md               ← Este documento
 │
@@ -189,8 +200,9 @@ AlquiGest_v2/
 │   │   ├── configuracion.js← Parámetros y configuración
 │   │   ├── plantillas.js   ← Motor de plantillas DOCX (UI + lógica)
 │   │   ├── verifactu.js    ← VERI*FACTU (UI)
-│   │   ├── actividad.js    ← Log de actividad
-│   │   ├── ux.js           ← Modales, toasts, temas, búsqueda global
+│   │   ├── actividad.js    ← Log de actividad (con columna/filtro de usuario)
+│   │   ├── usuarios.js     ← Gestión de usuarios (solo admin)
+│   │   ├── ux.js           ← Modales, toasts, temas, búsqueda global, menú de usuario/sesión
 │   │   ├── extras.js       ← Funciones auxiliares
 │   │   ├── tabla.js        ← Componente de tabla reutilizable
 │   │   ├── notificaciones.js← Campana de notificaciones
@@ -199,8 +211,9 @@ AlquiGest_v2/
 │   │       ├── html2canvas.min.js
 │   │       └── jspdf.umd.min.js
 │   ├── php/
-│   │   ├── api.php         ← API REST principal (JSON)
-│   │   ├── install.php     ← Instalador y migrador de BD
+│   │   ├── api.php         ← API REST principal (JSON); exige sesión salvo login/check
+│   │   ├── auth.php        ← Autenticación, sesión, CSRF, roles, log de actividad
+│   │   ├── install.php     ← Instalador y migrador de BD; acceso según rol (ver §23)
 │   │   ├── plantillas.php  ← Motor DOCX backend (ZipArchive + OOXML)
 │   │   └── verifactu.php   ← Backend VERI*FACTU (SHA-256, SOAP, AEAT)
 │   ├── docs/
@@ -246,11 +259,12 @@ AlquiGest_v2/
 | Informes Excel | 6 informes de gestión + 3 informes fiscales IRPF (Modelo 100, 115, 180) |
 | Calendario Cobros | Vista mensual de recibos por día (pendiente/cobrado/parcial) |
 | Morosidad | Recibos vencidos > 30 días, exportación PDF formal |
-| Actividad | Log de auditoría de todas las acciones del sistema |
+| Actividad | Log de auditoría de todas las acciones del sistema, con usuario/IP (ver §23) |
 | Mi Empresa | Datos del administrador, SMTP Gmail, IBAN, plantillas de correo |
 | Parámetros | 7 pestañas: Dashboard, Paginación, Botones, WhatsApp, VERI*FACTU, Documentos, Menú |
 | VERI*FACTU | Facturación electrónica AEAT (opcional, desactivado por defecto) |
 | Plantillas DOCX | Motor de plantillas Word: 42 variables, bloques repetitivos, tabla de fotos |
+| Usuarios | Alta, edición y baja de cuentas de acceso; roles `admin`/`user` (solo visible para administradores, ver §23) |
 
 **Modo oscuro:** alternable desde el icono de la cabecera; persiste en `localStorage`. Los gráficos del Dashboard (Chart.js) adaptan sus colores automáticamente al tema activo.
 
@@ -396,7 +410,9 @@ El botón **Historial** (dentro del menú **Más ▾**, junto con Editar y Elimi
 Desde v3.0.0 cada fila muestra una única acción principal — **Generar recibo** (contratos activos) o **Ver PDF** (finalizados/rescindidos) — más el aviso **⚠ IPC/IRAV** cuando procede (se mantiene siempre visible fuera del menú, por ser una alerta temporal y no una acción rutinaria). El resto de acciones vive en el menú **Más ▾**, agrupadas en:
 - **Contrato:** Renovar · Historial de rentas · Dar de baja (solo contratos activos)
 - **Documentos:** PDF del contrato · Justificante de fianza (si hay fianza) · Contrato en DOCX
-- **Gestión:** Editar · Eliminar
+- **Gestión:** Editar
+
+Los contratos no se pueden eliminar físicamente: es un documento con trazabilidad legal/contractual (recibos, facturas, histórico de rentas). La única forma de cerrarlo es **Dar de baja**, que conserva el registro y todo su histórico. El backend rechaza cualquier intento de borrado físico de un contrato aunque se llame directamente a la API (`assets/php/api.php`, acción `delete`).
 
 ---
 
@@ -577,14 +593,14 @@ Menú lateral → **Parámetros**. Siete pestañas:
 | Documentos | Módulo de plantillas DOCX |
 | Menú | Muestra/oculta cada opción del menú lateral (`menu_propietarios`, `menu_facturas`, etc.); un grupo entero desaparece si se ocultan todas sus opciones. Dashboard y Parámetros son siempre visibles. |
 
-Cada opción incluye un botón `?` con descripción detallada y consejo de uso. Todos estos parámetros (77 en total) se siembran con sus valores por defecto tanto en la instalación limpia como en la instalación con datos de ejemplo — la aplicación funciona sin configuración manual desde el primer arranque.
+Cada opción incluye un botón `?` con descripción detallada y consejo de uso. Todos estos parámetros (76 en total) se siembran con sus valores por defecto tanto en la instalación limpia como en la instalación con datos de ejemplo — la aplicación funciona sin configuración manual desde el primer arranque.
 
 ---
 
 ## 20. Preguntas frecuentes
 
 **¿Puedo instalar AlquiGest en un servidor real (no localhost)?**  
-Sí, pero hay que eliminar la restricción `requireLocalhost()` en los backends PHP y añadir autenticación de usuario antes de exponerlo.
+Desde v3.0.1 ya existe autenticación de usuario real (ver [§23](#23-autenticación-usuarios-y-permisos)), pero sigue habiendo que eliminar la restricción `requireLocalhost()` en los backends PHP para que sea accesible fuera de la máquina local, y revisar HTTPS (las cookies de sesión no fuerzan `secure` en HTTP plano).
 
 **¿Cómo hago una copia de seguridad?**  
 Mi Empresa → *Descargar backup JSON*. El archivo puede restaurarse desde `install.php`.
@@ -615,16 +631,15 @@ El botón de envío por email aparece deshabilitado. Añadir el email en la fich
 | Email solo vía Gmail (contraseña de aplicación) | Editar SMTP en `api.php` |
 | WebP requiere GD con soporte WebP | Convertir imágenes a JPG/PNG |
 | Solo funciona en localhost por defecto | Editar `requireLocalhost()` en backends |
-| Sin multi-usuario ni roles | Acceso restringido por diseño a red local |
+| Sin límite de intentos de login (rate limiting) | Mitigado por `requireLocalhost()`; añadir si se expone fuera de localhost |
+| Sin recuperación de contraseña por email | Restablecer `password_hash` directamente en la tabla `usuarios` |
 | Sin app móvil nativa | Funciona en navegador móvil (optimizado escritorio) |
 | Sin sincronización en la nube | Backup JSON manual periódico |
 | Sin transacción SQL real en la cascada "anular recibo con factura" (son 2-3 guardados secuenciales desde JS, igual que el resto del proyecto) | El orden está protegido (la factura se rectifica antes que el recibo; si falla, el recibo no se toca), pero un corte de red justo entre pasos podría dejar el `RET` creado sin completar el resto — caso raro, sin reversión automática |
 
 ### Bugs conocidos sin corregir
 
-| Bug | Módulo | Detalle |
-|-----|--------|---------|
-| Colores de resaltado de variables hardcodeados en PHP | Plantillas | `assets/php/plantillas.php` genera `<mark style="background:#d1fae5">` (resuelta) / `<mark style="background:#fee2e2;color:#991b1b">` (no resuelta) directamente en el HTML generado, fuera del sistema de variables CSS — no se adapta al modo oscuro |
+Ninguno pendiente por ahora. El bug de colores hardcodeados en la previsualización de Plantillas (`assets/php/plantillas.php` generaba `<mark style="background:#d1fae5">` fuera del sistema de variables CSS, sin adaptarse al modo oscuro) se corrigió el 2026-07-11 — ver `UX_UI_MODO_OSCURO_COLORES.md` § Corrección de previsualización de Plantillas en modo oscuro.
 
 ---
 
@@ -650,5 +665,69 @@ El botón de envío por email aparece deshabilitado. Añadir el email en la fich
 
 ---
 
-*Versión: 3.0.0 · Última actualización: julio 2026*  
+## 23. Autenticación, usuarios y permisos
+
+Desde la v3.0.1, AlquiGest exige iniciar sesión para usar la aplicación. Análisis completo, matriz de permisos y pruebas realizadas en `ANALISIS_USUARIOS_SEGURIDAD_PERMISOS.md`; resumen operativo aquí.
+
+### Roles
+
+| Rol | Puede |
+|---|---|
+| `admin` | Todo: la aplicación completa, `install.php` completo (instalar/restaurar/backups), gestión de usuarios, ver todos los logs |
+| `user` | La aplicación completa igual que un admin, **excepto**: dentro de `install.php` solo ve la sección de copia de seguridad; no puede gestionar usuarios |
+
+### Primera instalación (sin bloquear a nadie)
+
+1. Si no existe base de datos ni tabla `usuarios`: `install.php` funciona exactamente igual que siempre (sin login), incluida la instalación limpia/con ejemplos.
+2. En cuanto la tabla `usuarios` existe pero está vacía, `install.php` muestra **solo** el formulario "Crear el primer administrador" (con un desplegable para volver a reinstalar la BD si hiciera falta).
+3. Tras crear el primer admin, `install.php` (y toda la aplicación) exige login a partir de ese momento.
+
+### Login / Logout
+
+- `login.php` (raíz del proyecto): formulario de usuario/contraseña, con mensaje claro si el usuario/contraseña es incorrecto o si la cuenta está desactivada.
+- Sesión PHP con cookie `HttpOnly`/`SameSite=Lax`, id regenerado en cada login (protección contra fijación de sesión), cierre automático tras 60 minutos de inactividad.
+- Botón "Cerrar sesión" en el menú de usuario de la cabecera (`assets/js/ux.js`); llama a `api.php?action=logout` y redirige a `login.php`.
+- Un usuario desactivado por un admin mientras tiene la sesión abierta pierde el acceso en su siguiente petición (revalidación contra la BD en cada llamada, no solo al iniciar sesión).
+
+### Gestión de usuarios (solo admin)
+
+Menú lateral → **Usuarios** (oculto para el rol `user`). Permite crear, editar (nombre, email, usuario, rol, contraseña, activo/inactivo) y eliminar (lógicamente) cuentas. El sistema impide que el único administrador activo se quite a sí mismo el rol de admin, se desactive o se elimine, para no quedar nadie sin acceso de administración.
+
+### Protección de `install.php` (backend, no solo visual)
+
+`install.php` bloquea en el propio PHP —antes de ejecutar nada— cualquier modo (`clean`, `sample`, `restore`, `fixzip`) que no sea `backup`/`backup_data` si quien lo solicita no tiene rol `admin`, aunque la petición llegue directamente por POST sin pasar por la interfaz. Todos los formularios llevan además un token CSRF de sesión.
+
+### Registro de actividad por usuario
+
+La pantalla **Actividad** muestra ahora quién ha hecho cada acción (columna y filtro "Usuario"), incluyendo login/logout, intentos fallidos, y alta/edición/baja de usuarios. Los eventos sin usuario asociado (anteriores a este cambio, o intentos de login con un usuario inexistente) se muestran como "Sistema".
+
+---
+
+## 24. Registro de cambios
+
+### 2026-07-11 — Corrección de previsualización de Plantillas en modo oscuro
+- **Problema**: la vista previa del módulo Plantillas usaba colores hardcodeados (`<mark style="background:#d1fae5">` etc.) generados en `assets/php/plantillas.php`, ajenos al sistema de variables CSS — ilegible en modo oscuro.
+- **Causa raíz adicional**: bug latente en el propio sistema de tokens (`--color-success`/`--color-error`/`--color-brand`/`--color-warn` se definían en `:root` como alias `var(--green)` etc. sin redeclararse en `body.dark`, por lo que se congelaban en su valor de modo claro para cualquier descendiente).
+- **Archivos modificados**: `assets/php/plantillas.php`, `assets/js/plantillas.js`, `assets/css/main.css`, `AlquiGest.php` (versión de caché).
+- **Clases CSS nuevas**: `.tpl-preview`, `.tpl-preview-mark-ok/-placeholder/-error`, `.tpl-preview-legend*`, `.tpl-preview-warning`, `.tpl-preview-error-msg`, `.tpl-foto-caption`.
+- **Accesibilidad**: corregido un contraste insuficiente (4.00:1) en la marca de variable resuelta en modo oscuro, ahora 6.12:1.
+- **Sin cambios en**: generación real del DOCX (verificado que sigue produciendo ficheros válidos), escapado de variables (sin XSS).
+- Detalle completo en `UX_UI_MODO_OSCURO_COLORES.md`.
+
+### 2026-07-10 — Sistema de usuarios y permisos
+- **Funcionalidad**: autenticación real (login/logout), roles `admin`/`user`, protección de `install.php` según rol, gestión de usuarios, atribución de usuario en el log de actividad.
+- **Archivos añadidos**: `assets/php/auth.php`, `login.php`, `assets/js/usuarios.js`.
+- **Archivos modificados**: `AlquiGest.php`, `assets/php/api.php`, `assets/php/install.php`, `assets/php/plantillas.php`, `assets/php/verifactu.php`, `assets/php/email.php`, `assets/php/export.php`, `assets/php/import.php`, `assets/php/pdf_download.php`, `assets/js/helpers.js`, `assets/js/ux.js`, `assets/js/actividad.js`, `assets/js/dashboard.js`, `assets/css/main.css`.
+- **Tablas nuevas/modificadas**: `usuarios` (nueva); `log_actividad` (+`usuario_id`, `usuario_nombre`, `usuario_username`, `usuario_rol`, `ip`).
+- **Migraciones**: ambas son `CREATE TABLE IF NOT EXISTS` / `ALTER TABLE ADD COLUMN` idempotentes, aplicadas automáticamente al primer acceso tras actualizar (`api.php`) y también sembradas en `install.php` para instalaciones nuevas. Ninguna es destructiva; `usuarios` y `log_actividad` quedan además excluidas del `DROP TABLE` de una reinstalación limpia/con ejemplos.
+- **Riesgos conocidos**: sin límite de intentos de login, sin recuperación de contraseña por email (ver detalle en `ANALISIS_USUARIOS_SEGURIDAD_PERMISOS.md` §12).
+- **Compatibilidad**: instalaciones existentes migran solas (sin usuarios) al estado "primera instalación" — el primer acceso tras actualizar pedirá crear el administrador antes de continuar.
+
+### 2026-07-09 — Borrado lógico e integridad referencial
+- Ver detalle completo en `ANALISIS_BORRADO_LOGICO_E_INTEGRIDAD.md`. Resumen: fin del borrado físico para propietarios/fincas/inmuebles/inquilinos/plantillas (ahora lógico, columna `eliminado`) y bloqueo total de borrado físico para contratos/recibos/facturas (ya tenían su propio ciclo de vida por `estado`).
+
+---
+
+*Versión: 3.0.1 · Última actualización: julio 2026*  
 *Documentación de usuario: `assets/docs/ayuda.php`*
+*Análisis técnicos: `ANALISIS_BORRADO_LOGICO_E_INTEGRIDAD.md` · `ANALISIS_USUARIOS_SEGURIDAD_PERMISOS.md` · `UX_UI_MODO_OSCURO_COLORES.md`*

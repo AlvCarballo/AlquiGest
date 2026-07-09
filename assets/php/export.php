@@ -30,6 +30,7 @@ ob_start();
 
 $cfg = require __DIR__ . '/config.php';
 require __DIR__ . '/helpers.php';
+require __DIR__ . '/auth.php';
 
 // Restringir acceso a localhost únicamente
 if (!in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true)) {
@@ -37,6 +38,7 @@ if (!in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true)) {
     http_response_code(403);
     die('Acceso solo permitido desde localhost.');
 }
+session_bootstrap();
 
 // ── Generador de XLSX en PHP puro (solo ZipArchive nativa) ───
 // Un archivo XLSX es en realidad un ZIP que contiene ficheros XML siguiendo
@@ -150,6 +152,9 @@ try {
     ob_end_clean();
     http_response_code(503); die('Error BD: ' . $e->getMessage());
 }
+
+// La exportación de informes exige sesión iniciada (cualquier rol).
+requireLoginApi($pdo);
 
 $tipo  = $_GET['tipo']  ?? '';
 $anyo  = (int)($_GET['anyo'] ?? date('Y'));

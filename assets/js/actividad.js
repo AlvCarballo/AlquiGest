@@ -8,38 +8,69 @@
 
 // Mapa de tipos de acción a etiquetas legibles
 var _ACT_TIPOS = {
-    cobro:            'Cobro registrado',
-    anulacion_pago:   'Pago anulado',
-    anulacion_recibo: 'Recibo anulado',
-    generacion_lote:  'Lote generado',
-    factura_generada: 'Factura generada',
-    email_enviado:    'Email enviado',
-    baja_contrato:    'Baja de contrato',
-    subida_ipc:       'Subida IPC / IRAV',
+    cobro:              'Cobro registrado',
+    anulacion_pago:     'Pago anulado',
+    anulacion_recibo:   'Recibo anulado',
+    generacion_lote:    'Lote generado',
+    factura_generada:   'Factura generada',
+    email_enviado:      'Email enviado',
+    baja_contrato:      'Baja de contrato',
+    subida_ipc:         'Subida IPC / IRAV',
+    eliminacion_logica: 'Registro eliminado',
+    login_correcto:     'Inicio de sesión',
+    login_fallido:      'Intento de acceso fallido',
+    logout:             'Cierre de sesión',
+    usuario_creado:     'Usuario creado',
+    usuario_editado:    'Usuario editado',
+    usuario_eliminado:  'Usuario eliminado',
 };
 
 // Colores de badge por tipo (variables de tema en vez de hex fijos —
 // 08/07/2026, ver UX_UI_MODO_OSCURO_COLORES.md — así se adaptan al modo oscuro)
 var _ACT_COLOR = {
-    cobro:            'var(--green)',
-    anulacion_pago:   'var(--orange)',
-    anulacion_recibo: 'var(--red)',
-    generacion_lote:  'var(--blue)',
-    factura_generada: 'var(--color-info)',
-    email_enviado:    'var(--blue)',
-    baja_contrato:    'var(--red)',
-    subida_ipc:       'var(--orange)',
+    cobro:              'var(--green)',
+    anulacion_pago:     'var(--orange)',
+    anulacion_recibo:   'var(--red)',
+    generacion_lote:    'var(--blue)',
+    factura_generada:   'var(--color-info)',
+    email_enviado:      'var(--blue)',
+    baja_contrato:      'var(--red)',
+    subida_ipc:         'var(--orange)',
+    eliminacion_logica: 'var(--red)',
+    login_correcto:     'var(--green)',
+    login_fallido:      'var(--red)',
+    logout:             'var(--text-secondary)',
+    usuario_creado:     'var(--green)',
+    usuario_editado:    'var(--blue)',
+    usuario_eliminado:  'var(--red)',
 };
 var _ACT_BG = {
-    cobro:            'var(--green-light)',
-    anulacion_pago:   'var(--orange-light)',
-    anulacion_recibo: 'var(--red-light)',
-    generacion_lote:  'var(--blue-light)',
-    factura_generada: 'var(--color-info-light)',
-    email_enviado:    'var(--blue-light)',
-    baja_contrato:    'var(--red-light)',
-    subida_ipc:       'var(--orange-light)',
+    cobro:              'var(--green-light)',
+    anulacion_pago:     'var(--orange-light)',
+    anulacion_recibo:   'var(--red-light)',
+    generacion_lote:    'var(--blue-light)',
+    factura_generada:   'var(--color-info-light)',
+    email_enviado:      'var(--blue-light)',
+    baja_contrato:      'var(--red-light)',
+    subida_ipc:         'var(--orange-light)',
+    eliminacion_logica: 'var(--red-light)',
+    login_correcto:     'var(--green-light)',
+    login_fallido:      'var(--red-light)',
+    logout:             'var(--gray-100)',
+    usuario_creado:     'var(--green-light)',
+    usuario_editado:    'var(--blue-light)',
+    usuario_eliminado:  'var(--red-light)',
 };
+
+// Alta/modificación genéricas de entidades de negocio (assets/php/api.php,
+// acción 'save'): tipo_accion llega como "alta_<tabla>" / "modificacion_<tabla>".
+// En vez de listar cada tabla, se deriva la etiqueta a partir del prefijo.
+function _actTipoLabel(tipo) {
+    if (_ACT_TIPOS[tipo]) return _ACT_TIPOS[tipo];
+    if (tipo.indexOf('alta_') === 0)         return 'Alta en ' + tipo.slice(5);
+    if (tipo.indexOf('modificacion_') === 0) return 'Modificación en ' + tipo.slice(13);
+    return tipo;
+}
 
 // ── registrarActividad ────────────────────────────────────────
 // Envía una entrada al log sin bloquear la operación principal.
@@ -97,6 +128,11 @@ function renderActividad() {
         '    </select>' +
         '  </div>' +
 
+        '  <div style="display:flex;flex-direction:column;gap:4px">' +
+        '    <label style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-500)">Usuario</label>' +
+        '    <select id="act-usuario" style="min-width:160px"><option value="">Todos los usuarios</option></select>' +
+        '  </div>' +
+
         '  <button class="btn btn-primary" onclick="_actividadBuscar()">Buscar</button>' +
         '</div>' +
 
@@ -108,21 +144,28 @@ function renderActividad() {
 
 // Consulta al servidor y actualiza la tabla
 function _actividadBuscar() {
-    var desde = (document.getElementById('act-desde') || {}).value || '';
-    var hasta = (document.getElementById('act-hasta') || {}).value || '';
-    var tipo  = (document.getElementById('act-tipo')  || {}).value || '';
+    var desde   = (document.getElementById('act-desde')    || {}).value || '';
+    var hasta   = (document.getElementById('act-hasta')    || {}).value || '';
+    var tipo    = (document.getElementById('act-tipo')     || {}).value || '';
+    var usuario = (document.getElementById('act-usuario')  || {}).value || '';
 
     var url = 'assets/php/api.php?action=getLog&limite=200';
-    if (desde) url += '&desde=' + encodeURIComponent(desde);
-    if (hasta) url += '&hasta=' + encodeURIComponent(hasta);
-    if (tipo)  url += '&tipo='  + encodeURIComponent(tipo);
+    if (desde)   url += '&desde='      + encodeURIComponent(desde);
+    if (hasta)   url += '&hasta='      + encodeURIComponent(hasta);
+    if (tipo)    url += '&tipo='       + encodeURIComponent(tipo);
+    if (usuario !== '') url += '&usuario_id=' + encodeURIComponent(usuario);
 
     var el = document.getElementById('act-resultados');
     if (el) el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray-400)">Cargando…</div>';
 
     fetch(url)
         .then(function (r) { return r.json(); })
-        .then(function (filas) { _actividadRenderTabla(filas); })
+        .then(function (filas) {
+            _actividadRenderTabla(filas);
+            // Solo repoblar el desplegable de usuarios cuando no hay filtro de
+            // usuario activo, para no ir perdiendo opciones a medida que se filtra.
+            if (usuario === '') _actividadPoblarUsuarios(filas);
+        })
         .catch(function () {
             var el2 = document.getElementById('act-resultados');
             if (el2) el2.innerHTML =
@@ -130,6 +173,25 @@ function _actividadBuscar() {
                 '  Error al cargar el historial. Comprueba que la tabla log_actividad existe (reinstala o actualiza la BD).' +
                 '</div>';
         });
+}
+
+// Rellena el desplegable "Usuario" con los usuarios distintos presentes en
+// los resultados cargados (sin depender de un endpoint solo-admin de listado).
+function _actividadPoblarUsuarios(filas) {
+    var sel = document.getElementById('act-usuario');
+    if (!sel) return;
+    var actual = sel.value;
+    var vistos = {};
+    var opciones = ['<option value="">Todos los usuarios</option>'];
+    (filas || []).forEach(function (f) {
+        var id = f.usuario_id || 0;
+        if (vistos[id]) return;
+        vistos[id] = true;
+        var label = id ? (f.usuario_nombre || f.usuario_username || ('Usuario #' + id)) : 'Sistema';
+        opciones.push('<option value="' + id + '">' + esc(label) + '</option>');
+    });
+    sel.innerHTML = opciones.join('');
+    sel.value = actual;
 }
 
 // Renderiza la tabla de resultados
@@ -152,17 +214,21 @@ function _actividadRenderTabla(filas) {
     }
 
     var filas_html = filas.map(function (f) {
-        var label  = _ACT_TIPOS[f.tipo_accion]  || f.tipo_accion;
+        var label  = _actTipoLabel(f.tipo_accion);
         var color  = _ACT_COLOR[f.tipo_accion]  || 'var(--text-secondary)';
         var bg     = _ACT_BG[f.tipo_accion]     || 'var(--gray-100)';
         var fecha  = (f.fecha || '').replace('T', ' ').slice(0, 16);
         var entInfo = f.entidad
             ? (f.entidad + (f.entidad_id ? ' #' + f.entidad_id : ''))
             : '—';
+        var usuario = f.usuario_id
+            ? esc(f.usuario_nombre || f.usuario_username || ('Usuario #' + f.usuario_id))
+            : '<span style="color:var(--gray-400)">Sistema</span>';
         return '<tr>' +
             '<td style="white-space:nowrap;color:var(--gray-500);font-size:12px">' + fecha + '</td>' +
             '<td><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;' +
             'background:' + bg + ';color:' + color + '">' + label + '</span></td>' +
+            '<td style="font-size:12px">' + usuario + '</td>' +
             '<td style="color:var(--gray-500);font-size:12px">' + entInfo + '</td>' +
             '<td style="font-size:13px">' + esc(f.descripcion || '') + '</td>' +
             '</tr>';
@@ -171,7 +237,7 @@ function _actividadRenderTabla(filas) {
     el.innerHTML =
         '<table class="data-table">' +
         '  <thead><tr>' +
-        '    <th>Fecha</th><th>Tipo</th><th>Entidad</th><th>Detalle</th>' +
+        '    <th>Fecha</th><th>Tipo</th><th>Usuario</th><th>Entidad</th><th>Detalle</th>' +
         '  </tr></thead>' +
         '  <tbody>' + filas_html + '</tbody>' +
         '</table>' +

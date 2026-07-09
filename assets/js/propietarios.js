@@ -151,10 +151,14 @@ async function savePropietario(id) {
 }
 
 async function deletePropietario(id) {
-  const inm = DB.get('inmuebles').filter(i => i.propietario_id === id);
-  if (inm.length) { toast('No se puede eliminar: tiene inmuebles asociados', 'error'); return; }
-  if (!confirm('¿Eliminar este propietario?')) return;
-  await DB.delete('propietarios', id);
+  const fincas = DB.get('fincas').filter(f => f.propietario_id === id);
+  if (fincas.length) {
+    toast(`No se puede eliminar: tiene ${fincas.length} finca(s) asociada(s)`, 'error');
+    return;
+  }
+  if (!confirm('Este registro se marcará como eliminado y dejará de aparecer en los listados normales, pero se conservará para mantener el histórico.\n\n¿Desea continuar?')) return;
+  const r = await DB.delete('propietarios', id);
+  if (!r.ok) { toast(r.error || 'No se puede eliminar este propietario', 'error'); return; }
   toast('Propietario eliminado', 'info');
   renderPropietarios();
 }

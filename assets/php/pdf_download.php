@@ -1,6 +1,14 @@
 <?php
 require __DIR__ . '/helpers.php';
+require __DIR__ . '/auth.php';
 requireLocalhost();
+session_bootstrap();
+try {
+    $cfgPdf = require __DIR__ . '/config.php';
+    requireLoginApi(authConnect($cfgPdf));
+} catch (\PDOException $e) {
+    http_response_code(503); exit('No se puede conectar con la base de datos.');
+}
 
 $log = __DIR__ . '/pdf_download.log';
 $ts  = date('Y-m-d H:i:s');

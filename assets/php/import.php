@@ -15,6 +15,7 @@
 
 $cfg = require __DIR__ . '/config.php';
 require __DIR__ . '/helpers.php';
+require __DIR__ . '/auth.php';
 
 // Solo localhost
 if (!in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true)) {
@@ -23,6 +24,17 @@ if (!in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true)) {
 }
 
 header('Content-Type: application/json; charset=utf-8');
+session_bootstrap();
+
+// La importación exige sesión iniciada (cualquier rol). Este endpoint no usa
+// BD para su propia lógica, pero sí necesita una conexión para revalidar el
+// usuario de la sesión contra la tabla `usuarios`.
+try {
+    requireLoginApi(authConnect($cfg));
+} catch (\PDOException $e) {
+    http_response_code(503);
+    die(json_encode(['ok' => false, 'error' => 'No se puede conectar con la base de datos.']));
+}
 
 // ── Validar upload ────────────────────────────────────────────
 if (empty($_FILES['archivo']) || $_FILES['archivo']['error'] !== UPLOAD_ERR_OK) {

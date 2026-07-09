@@ -171,11 +171,6 @@ const _CFG_GRUPOS = [
         desc: 'Muestra la opción "Contrato en DOCX" (menú Más) para generar documentos desde plantillas Word.',
         ayuda: 'Si está desactivado, la opción "Contrato en DOCX" no aparece en el menú "Más" de cada contrato.\n\nRequiere tener el módulo de plantillas activo (pestaña Documentos) y al menos una plantilla subida.',
       },
-      {
-        v: 'VisiBorrarCont', label: 'Eliminar contrato', tipo: 'toggle',
-        desc: 'Muestra el botón Eliminar en la lista de contratos.',
-        ayuda: 'Si está desactivado, el botón rojo "Eliminar" no aparece en la lista de Contratos.',
-      },
       // ── Recibos ────────────────────────────────────────────
       { tipo: 'heading', label: 'Recibos' },
       {

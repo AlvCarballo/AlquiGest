@@ -1,0 +1,27 @@
+- generic [ref=f14e3]:
+  - generic [ref=f14e4]:
+    - generic [ref=f14e5]: 🏠
+    - heading "AlquiGest – Instalación" [level=4] [ref=f14e6]
+  - paragraph [ref=f14e7]:
+    - text: "Host:"
+    - strong [ref=f14e8]: localhost:3306
+    - text: "· BD:"
+    - strong [ref=f14e9]: alquigest
+  - paragraph [ref=f14e10]:
+    - text: "Sesión:"
+    - strong [ref=f14e11]: Gestor de Prueba
+    - text: (usuario) ·
+    - link "cerrar sesión" [ref=f14e12] [cursor=pointer]:
+      - /url: "#"
+  - generic [ref=f14e14]:
+    - text: ✅ Excel XLSX (ZipArchive)
+    - generic [ref=f14e15]: — activo y funcionando
+  - generic [ref=f14e16]:
+    - generic [ref=f14e17]: 💾 Copia de seguridad
+    - paragraph [ref=f14e18]: Descarga una copia de los datos actuales.
+    - generic [ref=f14e19]:
+      - button "⬇ Completa (estructura + datos)" [active] [ref=f14e21] [cursor=pointer]
+      - button "⬇ Solo datos (INSERT)" [ref=f14e23] [cursor=pointer]
+  - generic [ref=f14e24]: No tienes permisos para instalar, restaurar ni ejecutar migraciones desde aquí. Contacta con un administrador si necesitas alguna de esas acciones.
+  - link "← Volver a la aplicación" [ref=f14e26] [cursor=pointer]:
+    - /url: ../../AlquiGest.php

@@ -16,6 +16,101 @@ $log   = [];
 $error = null;
 $meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
+// ── Control de acceso ──────────────────────────────────────────
+// install.php tiene 4 comportamientos posibles (ver README / ANALISIS_USUARIOS_SEGURIDAD_PERMISOS.md):
+//   A) Primera instalación (no hay BD, tabla `usuarios`, o usuarios) → accesible sin login.
+//   B) Hay usuarios pero no hay sesión válida → redirige a login.php.
+//   C) Usuario con rol 'user' → solo puede ver/usar la sección de copia de seguridad.
+//   D) Usuario con rol 'admin' → acceso completo, como hasta ahora.
+require __DIR__ . '/auth.php';
+session_bootstrap();
+
+$primeraInstalacion  = esPrimeraInstalacion($cfg);
+$usuariosTablaExiste = false;
+$usuarioActual       = null;
+$accesoDenegado      = null;
+
+if (!$primeraInstalacion) {
+    try {
+        $pdoAuthCheck = authConnect($cfg);
+        $usuariosTablaExiste = true;
+        $sesion = currentUser();
+        $usuarioActual = $sesion ? revalidarUsuario($pdoAuthCheck, $sesion) : null;
+    } catch (\Throwable $e) {
+        $usuarioActual = null;
+    }
+    if (!$usuarioActual) {
+        header('Location: ../../login.php?next=' . urlencode('assets/php/install.php'));
+        exit;
+    }
+} else {
+    // Puede que la BD y la tabla usuarios ya existan (con 0 filas) aunque
+    // esPrimeraInstalacion() sea true; hace falta saberlo para decidir si se
+    // muestra el formulario de instalación o el de "crear primer administrador".
+    try {
+        $pdoAuthCheck = authConnect($cfg);
+        $usuariosTablaExiste = tablaExiste($pdoAuthCheck, 'usuarios');
+    } catch (\Throwable $e) {
+        $usuariosTablaExiste = false;
+    }
+}
+
+// $esAdmin controla qué modos pueden ejecutarse. En primera instalación se
+// confía por completo (no hay todavía ningún admin al que proteger).
+$esAdmin    = $primeraInstalacion || (($usuarioActual['rol'] ?? '') === 'admin');
+$soloBackup = !$primeraInstalacion && !$esAdmin;
+
+// Bloqueo duro en backend: un usuario sin rol admin NUNCA puede disparar un
+// modo distinto de backup/backup_data, aunque manipule el POST directamente.
+$MODOS_BACKUP_PERMITIDOS = ['backup', 'backup_data'];
+if ($mode !== '' && !$esAdmin && !in_array($mode, $MODOS_BACKUP_PERMITIDOS, true)) {
+    $accesoDenegado = 'No tienes permisos para ejecutar esta acción. Solo un administrador puede hacerlo.';
+    $mode = '';
+}
+
+// CSRF: toda acción por POST debe presentar el token de la sesión actual.
+if ($mode !== '' && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
+    if (!csrfValid($_POST['_csrf'] ?? null)) {
+        $accesoDenegado = 'Token de seguridad inválido o caducado. Recarga la página e inténtalo de nuevo.';
+        $mode = '';
+    }
+}
+
+// ── create_admin: alta del primer administrador (solo primera instalación) ──
+$adminCreado = null;
+if ($mode === 'create_admin' && $primeraInstalacion) {
+    try {
+        $pdoAdmin = authConnect($cfg);
+        if (!tablaExiste($pdoAdmin, 'usuarios')) {
+            $error = 'Todavía no existe la tabla de usuarios. Ejecuta primero una instalación limpia o con datos de ejemplo.';
+        } else {
+            $nombreAdmin   = trim($_POST['nombre'] ?? '');
+            $usernameAdmin = trim($_POST['username'] ?? '');
+            $emailAdmin    = trim($_POST['email'] ?? '');
+            $passAdmin     = (string)($_POST['password'] ?? '');
+            $passAdmin2    = (string)($_POST['password2'] ?? '');
+            if ($nombreAdmin === '' || $usernameAdmin === '') {
+                $error = 'Nombre y usuario son obligatorios.';
+            } elseif (!preg_match('/^[a-zA-Z0-9._-]{3,60}$/', $usernameAdmin)) {
+                $error = 'El usuario solo puede contener letras, números, puntos, guiones y guiones bajos (mínimo 3 caracteres).';
+            } elseif (strlen($passAdmin) < 8) {
+                $error = 'La contraseña debe tener al menos 8 caracteres.';
+            } elseif ($passAdmin !== $passAdmin2) {
+                $error = 'Las contraseñas no coinciden.';
+            } else {
+                $pdoAdmin->prepare(
+                    "INSERT INTO usuarios (nombre, email, username, password_hash, rol, activo) VALUES (?,?,?,?,?,1)"
+                )->execute([$nombreAdmin, $emailAdmin, $usernameAdmin, password_hash($passAdmin, PASSWORD_DEFAULT), 'admin']);
+                $adminCreado = $usernameAdmin;
+                logActividad($pdoAdmin, 'usuario_creado', 'usuarios', (int)$pdoAdmin->lastInsertId(),
+                    "Primer administrador creado desde install.php: \"$usernameAdmin\"");
+            }
+        }
+    } catch (\Throwable $e) {
+        $error = 'Error al crear el administrador: ' . $e->getMessage();
+    }
+}
+
 function insertRow(PDO $pdo, string $table, array $data): int {
     foreach ($data as $k => $v) {
         if (is_array($v)) $data[$k] = json_encode($v, JSON_UNESCAPED_UNICODE);
@@ -256,7 +351,11 @@ if ($mode === 'clean' || $mode === 'sample') {
                 `pais` VARCHAR(100) DEFAULT 'España',
                 `iban` VARCHAR(50) DEFAULT '',
                 `observaciones` TEXT DEFAULT NULL,
-                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                -- Borrado lógico: nunca se borra físicamente un propietario (ver assets/php/api.php, acción 'delete')
+                `eliminado` TINYINT(1) NOT NULL DEFAULT 0,
+                `eliminado_en` DATETIME NULL DEFAULT NULL,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX `idx_propietarios_eliminado` (`eliminado`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
             'fincas' => "CREATE TABLE `fincas` (
@@ -270,7 +369,11 @@ if ($mode === 'clean' || $mode === 'sample') {
                 `provincia` VARCHAR(100) DEFAULT '',
                 `propietario_id` INT DEFAULT NULL,
                 `observaciones` TEXT DEFAULT NULL,
-                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                -- Borrado lógico: nunca se borra físicamente una finca (ver assets/php/api.php, acción 'delete')
+                `eliminado` TINYINT(1) NOT NULL DEFAULT 0,
+                `eliminado_en` DATETIME NULL DEFAULT NULL,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX `idx_fincas_eliminado` (`eliminado`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
             'inmuebles' => "CREATE TABLE `inmuebles` (
@@ -283,7 +386,11 @@ if ($mode === 'clean' || $mode === 'sample') {
                 `referencia_catastral` VARCHAR(50) DEFAULT '',
                 `cedula` VARCHAR(50) DEFAULT '',
                 `observaciones` TEXT DEFAULT NULL,
-                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                -- Borrado lógico: nunca se borra físicamente un inmueble (ver assets/php/api.php, acción 'delete')
+                `eliminado` TINYINT(1) NOT NULL DEFAULT 0,
+                `eliminado_en` DATETIME NULL DEFAULT NULL,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX `idx_inmuebles_eliminado` (`eliminado`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
             'inquilinos' => "CREATE TABLE `inquilinos` (
@@ -300,7 +407,11 @@ if ($mode === 'clean' || $mode === 'sample') {
                 `pais` VARCHAR(100) DEFAULT 'España',
                 `iban` VARCHAR(50) DEFAULT '',
                 `observaciones` TEXT DEFAULT NULL,
-                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                -- Borrado lógico: nunca se borra físicamente un inquilino (ver assets/php/api.php, acción 'delete')
+                `eliminado` TINYINT(1) NOT NULL DEFAULT 0,
+                `eliminado_en` DATETIME NULL DEFAULT NULL,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX `idx_inquilinos_eliminado` (`eliminado`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
             'contratos' => "CREATE TABLE `contratos` (
@@ -497,8 +608,12 @@ if ($mode === 'clean' || $mode === 'sample') {
                 `fichero`        VARCHAR(255) NOT NULL,
                 `activa`         TINYINT(1)  DEFAULT 1,
                 `por_defecto`    TINYINT(1)  DEFAULT 0,
+                -- Borrado lógico: nunca se borra físicamente una plantilla (ver assets/php/plantillas.php, acción 'delete')
+                `eliminado`      TINYINT(1)  NOT NULL DEFAULT 0,
+                `eliminado_en`   DATETIME    NULL DEFAULT NULL,
                 `created_at`     DATETIME    DEFAULT CURRENT_TIMESTAMP,
-                `updated_at`     DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                `updated_at`     DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX `idx_plantillas_eliminado` (`eliminado`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
         ];
 
@@ -511,25 +626,55 @@ if ($mode === 'clean' || $mode === 'sample') {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
           COMMENT='Secuencias de numeracion mensual. Un numero consumido nunca se reutiliza.'";
 
-        // Añadir tabla log_actividad solo si está activada en config.php
+        foreach ($createSqls as $t => $sql) {
+            $pdo->exec("DROP TABLE IF EXISTS `$t`");
+            $pdo->exec($sql);
+            $log[] = "✅ Tabla <code>$t</code> creada";
+        }
+
+        // ── Tablas que NUNCA se destruyen en una reinstalación ────────
+        // `usuarios` y `log_actividad` son transversales a los datos de negocio:
+        // una "instalación limpia" o "con datos de ejemplo" resetea propietarios,
+        // fincas, contratos, etc., pero NO debe borrar las cuentas de usuario
+        // (dejaría a todos fuera) ni el historial de auditoría/login. Por eso usan
+        // CREATE TABLE IF NOT EXISTS en vez de DROP+CREATE, fuera del bucle anterior.
+        $pdo->exec("CREATE TABLE IF NOT EXISTS `usuarios` (
+            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `nombre` VARCHAR(150) NOT NULL,
+            `email` VARCHAR(150) DEFAULT '',
+            `username` VARCHAR(60) NOT NULL,
+            `password_hash` VARCHAR(255) NOT NULL,
+            `rol` VARCHAR(20) NOT NULL DEFAULT 'user',
+            `activo` TINYINT(1) NOT NULL DEFAULT 1,
+            `ultimo_login` DATETIME NULL DEFAULT NULL,
+            `creado_en` DATETIME DEFAULT CURRENT_TIMESTAMP,
+            `actualizado_en` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            `eliminado_en` DATETIME NULL DEFAULT NULL,
+            UNIQUE KEY `uq_usuarios_username` (`username`),
+            INDEX `idx_usuarios_rol` (`rol`),
+            INDEX `idx_usuarios_activo` (`activo`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $log[] = "✅ Tabla <code>usuarios</code> comprobada (no se destruye en reinstalaciones)";
+
         if (!empty($cfg['log_actividad'])) {
-            $createSqls['log_actividad'] = "CREATE TABLE `log_actividad` (
+            $pdo->exec("CREATE TABLE IF NOT EXISTS `log_actividad` (
                 `id` INT AUTO_INCREMENT PRIMARY KEY,
                 `fecha` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `tipo_accion` VARCHAR(100) NOT NULL DEFAULT '',
                 `entidad` VARCHAR(50) DEFAULT '',
                 `entidad_id` INT DEFAULT NULL,
                 `descripcion` TEXT DEFAULT NULL,
+                `usuario_id` INT DEFAULT NULL,
+                `usuario_nombre` VARCHAR(150) DEFAULT NULL,
+                `usuario_username` VARCHAR(60) DEFAULT NULL,
+                `usuario_rol` VARCHAR(20) DEFAULT NULL,
+                `ip` VARCHAR(45) DEFAULT NULL,
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 INDEX `idx_log_fecha` (`fecha`),
-                INDEX `idx_log_tipo` (`tipo_accion`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-        }
-
-        foreach ($createSqls as $t => $sql) {
-            $pdo->exec("DROP TABLE IF EXISTS `$t`");
-            $pdo->exec($sql);
-            $log[] = "✅ Tabla <code>$t</code> creada";
+                INDEX `idx_log_tipo` (`tipo_accion`),
+                INDEX `idx_log_usuario` (`usuario_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+            $log[] = "✅ Tabla <code>log_actividad</code> comprobada (no se destruye en reinstalaciones)";
         }
 
         // ── Valores por defecto de configuración ──────────────
@@ -574,7 +719,8 @@ if ($mode === 'clean' || $mode === 'sample') {
             ['VisiBorrarFinc',   '1', 'Muestra el botón Eliminar en la tabla de Fincas (1=visible, 0=oculto).'],
             ['VisiBorrarInm',    '1', 'Muestra el botón Eliminar en la tabla de Inmuebles (1=visible, 0=oculto).'],
             ['VisiBorrarInq',    '1', 'Muestra el botón Eliminar en la tabla de Inquilinos (1=visible, 0=oculto).'],
-            ['VisiBorrarCont',   '1', 'Muestra el botón Eliminar en la tabla de Contratos (1=visible, 0=oculto).'],
+            // Contratos: no existe botón "Eliminar" (los contratos no se borran físicamente,
+            // solo se dan de baja). Ver assets/php/api.php, acción 'delete'.
             // ── Visibilidad de botones — Recibos ─────────────────
             ['VisiCobrarReci',   '1', 'Muestra los botones "Cobrar" / "Ver cobros" en la tabla de Recibos (1=visible, 0=oculto).'],
             ['VisiEmailReci',    '1', 'Muestra el botón de enviar por email en la tabla de Recibos (1=visible, 0=oculto).'],
@@ -1003,6 +1149,129 @@ if ($mode === 'clean' || $mode === 'sample') {
     } catch (Exception $e) { $error = $e->getMessage(); }
 }
 
+// ── Bloque HTML reutilizable: ZipArchive + backup + restaurar + instalación ──
+// Es el único bloque que puede destruir datos (clean/sample) o sustituirlos
+// (restore); solo se invoca para admins (o durante la primera instalación,
+// antes de que exista ningún admin al que proteger). Se extrae a una función
+// para no duplicar el HTML entre esos dos casos.
+function renderBloqueInstalacionCompleta(string $zipStatus, ?array $zipMsg, ?array $restoreMsg): void {
+    $zipOk    = ($zipStatus === 'ok');
+    $zipClass = $zipOk ? 'zip-ok' : 'zip-bad';
+    $csrf     = htmlspecialchars(csrfToken());
+    ?>
+    <!-- ZipArchive / Excel fix -->
+    <div class="zip-section <?= $zipClass ?>">
+      <div class="zip-section-title">
+        <?= $zipOk ? '✅' : '❌' ?> Excel XLSX (ZipArchive)
+        <span style="font-weight:400;font-size:11px;color:<?= $zipOk ? '#166534' : '#991b1b' ?>">
+          — <?= $zipOk ? 'activo y funcionando' : 'extensión no disponible' ?>
+        </span>
+      </div>
+      <?php if ($zipMsg): ?>
+        <div class="msg-<?= $zipMsg['type'] === 'ok' ? 'ok' : ($zipMsg['type'] === 'restart' ? 'restart' : 'err') ?>">
+          <?= $zipMsg['text'] ?>
+        </div>
+      <?php elseif (!$zipOk): ?>
+        <p>La exportación Excel no funcionará hasta activar la extensión <strong>ZipArchive</strong> de PHP. Pulsa el botón para modificar php.ini automáticamente.</p>
+        <form method="POST" style="display:inline">
+          <input type="hidden" name="_csrf" value="<?= $csrf ?>">
+          <button type="submit" name="mode" value="fixzip" class="btn-fixzip">
+            🔧 Activar ZipArchive en php.ini
+          </button>
+        </form>
+        <span style="font-size:11px;color:#6b7280;margin-left:8px">Después reinicia Apache en el Panel de XAMPP</span>
+      <?php endif; ?>
+    </div>
+
+    <!-- Copia de seguridad -->
+    <div class="backup-section">
+      <div class="backup-section-title">
+        💾 Copia de seguridad
+      </div>
+      <p>Descarga los datos antes de realizar cualquier instalación. Podrás restaurarlos desde phpMyAdmin si algo va mal.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <form method="POST">
+          <input type="hidden" name="_csrf" value="<?= $csrf ?>">
+          <button type="submit" name="mode" value="backup" class="btn-backup">
+            ⬇ Completa (estructura + datos)
+          </button>
+        </form>
+        <form method="POST">
+          <input type="hidden" name="_csrf" value="<?= $csrf ?>">
+          <button type="submit" name="mode" value="backup_data" class="btn-backup-outline">
+            ⬇ Solo datos (INSERT)
+          </button>
+        </form>
+      </div>
+      <p style="margin-top:8px;font-size:11px;color:#6b7280;margin-bottom:0">
+        <strong>Completa</strong>: crea las tablas desde cero + datos. Útil para mover a otro servidor.<br>
+        <strong>Solo datos</strong>: solo los INSERT, sin DROP/CREATE. Útil para restaurar datos en una instalación existente.
+      </p>
+    </div>
+
+    <!-- Restaurar desde SQL -->
+    <div class="restore-section">
+      <div class="restore-section-title">
+        📂 Restaurar base de datos desde archivo SQL
+      </div>
+      <p>Sube un archivo <strong>.sql</strong> generado desde esta misma pantalla (copia completa o solo datos) para restaurarlo directamente en la base de datos.</p>
+      <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="mode" value="restore">
+        <input type="hidden" name="_csrf" value="<?= $csrf ?>">
+        <div class="restore-file-row">
+          <input type="file" name="sql_file" accept=".sql" required>
+          <button type="submit" class="btn-restore"
+            onclick="return confirm('Se ejecutará el SQL sobre la base de datos actual.\n\nSi el archivo es una copia completa (con DROP TABLE) se borrarán los datos existentes.\n\n¿Continuar?')">
+            ⬆ Subir y ejecutar
+          </button>
+        </div>
+      </form>
+      <?php if ($restoreMsg): ?>
+        <div class="msg-restore-<?= $restoreMsg['type'] === 'ok' ? 'ok' : 'err' ?>">
+          <?= $restoreMsg['text'] ?>
+        </div>
+      <?php endif; ?>
+      <p style="margin-top:8px;font-size:11px;color:#3b82f6;margin-bottom:0">
+        ⚠ Una copia <strong>completa</strong> (con DROP TABLE) sobreescribirá todos los datos actuales.<br>
+        Una copia de <strong>solo datos</strong> (con DELETE + INSERT) también reemplaza los datos pero mantiene la estructura.
+      </p>
+    </div>
+
+    <div class="install-divider">Instalación — borra todos los datos</div>
+
+    <!-- Aviso de peligro -->
+    <div class="danger-banner">
+      <div class="danger-banner-title">
+        ⚠ ADVERTENCIA: LAS SIGUIENTES OPCIONES BORRAN TODOS LOS DATOS
+      </div>
+      <p>Cualquiera de los dos botones de instalación eliminará por completo la base de datos actual: propietarios, fincas, inmuebles, inquilinos, contratos y recibos. <strong>Esta acción no puede deshacerse.</strong> Las cuentas de usuario y el historial de actividad NO se borran. Descarga una copia de seguridad antes de continuar.</p>
+    </div>
+
+    <div class="mb-3 mt-2 p-3" style="background:#fff3cd;border:1px solid #ffc107;border-radius:6px">
+      <label class="form-label fw-semibold">
+        Por seguridad, escribe <strong>CONFIRMAR</strong> en el campo para activar los botones de instalación:
+      </label>
+      <input type="text" id="input-confirmar" class="form-control mt-1" autocomplete="off"
+             oninput="var ok=this.value.trim()==='CONFIRMAR';document.getElementById('btn-instalar-clean').disabled=!ok;document.getElementById('btn-instalar-sample').disabled=!ok;"
+             placeholder="Escribe CONFIRMAR...">
+    </div>
+    <form method="POST">
+      <input type="hidden" name="_csrf" value="<?= $csrf ?>">
+      <div class="d-grid gap-3">
+        <button id="btn-instalar-clean" name="mode" value="clean" class="btn btn-outline-danger btn-lg" disabled
+          onclick="return confirm('⚠ ATENCIÓN\n\nSe borrarán TODOS los datos actuales.\n\n¿Confirmas que quieres continuar con la instalación limpia?')">
+          🗄️ Instalación limpia<br>
+          <small class="fw-normal">Solo crea las tablas vacías — borra todos los datos existentes</small>
+        </button>
+        <button id="btn-instalar-sample" name="mode" value="sample" class="btn btn-danger btn-lg" disabled
+          onclick="return confirm('⚠ ATENCIÓN\n\nSe borrarán TODOS los datos actuales y se sustituirán por datos de ejemplo.\n\n¿Confirmas que quieres continuar?')">
+          📋 Instalación con datos de ejemplo<br>
+          <small class="fw-normal">Borra todos los datos e inserta fincas, pisos, inquilinos y recibos de prueba</small>
+        </button>
+      </div>
+    </form>
+    <?php
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -1185,6 +1454,23 @@ if ($mode === 'clean' || $mode === 'sample') {
       &nbsp;·&nbsp; BD: <strong><?= htmlspecialchars($cfg['name']) ?></strong>
     </p>
 
+    <?php if ($usuarioActual): ?>
+    <p class="mb-3" style="font-size:12px;color:#6b7280">
+      Sesión: <strong><?= htmlspecialchars($usuarioActual['nombre']) ?></strong>
+      (<?= $usuarioActual['rol'] === 'admin' ? 'administrador' : 'usuario' ?>) ·
+      <a href="#" onclick="fetch('../php/api.php?action=logout',{method:'POST'}).then(()=>location.href='../../login.php');return false;">cerrar sesión</a>
+    </p>
+    <?php endif; ?>
+
+    <?php if ($adminCreado): ?>
+    <div class="alert alert-success">
+      ✅ Administrador <strong><?= htmlspecialchars($adminCreado) ?></strong> creado correctamente.
+    </div>
+    <div class="d-grid gap-2">
+      <a href="../../login.php" class="btn btn-primary">Ir a iniciar sesión →</a>
+    </div>
+
+    <?php else: ?>
     <?php
     // Mostrar formulario principal si: sin modo, modo=fixzip (muestra resultado en el panel),
     // o backup/backup_data con error (el éxito ya hizo exit con el archivo)
@@ -1199,120 +1485,83 @@ if ($mode === 'clean' || $mode === 'sample') {
     </div>
     <?php endif; ?>
 
-    <!-- ZipArchive / Excel fix -->
-    <?php
-    $zipOk = ($zipStatus === 'ok');
-    $zipClass = $zipOk ? 'zip-ok' : 'zip-bad';
-    ?>
-    <div class="zip-section <?= $zipClass ?>">
-      <div class="zip-section-title">
-        <?= $zipOk ? '✅' : '❌' ?> Excel XLSX (ZipArchive)
-        <span style="font-weight:400;font-size:11px;color:<?= $zipOk ? '#166534' : '#991b1b' ?>">
-          — <?= $zipOk ? 'activo y funcionando' : 'extensión no disponible' ?>
-        </span>
-      </div>
-      <?php if ($zipMsg): ?>
-        <div class="msg-<?= $zipMsg['type'] === 'ok' ? 'ok' : ($zipMsg['type'] === 'restart' ? 'restart' : 'err') ?>">
-          <?= $zipMsg['text'] ?>
-        </div>
-      <?php elseif (!$zipOk): ?>
-        <p>La exportación Excel no funcionará hasta activar la extensión <strong>ZipArchive</strong> de PHP. Pulsa el botón para modificar php.ini automáticamente.</p>
-        <form method="POST" style="display:inline">
-          <button type="submit" name="mode" value="fixzip" class="btn-fixzip">
-            🔧 Activar ZipArchive en php.ini
-          </button>
-        </form>
-        <span style="font-size:11px;color:#6b7280;margin-left:8px">Después reinicia Apache en el Panel de XAMPP</span>
-      <?php endif; ?>
+    <?php if ($accesoDenegado): ?>
+    <div class="alert alert-warning mb-3">
+      <strong>🚫</strong> <?= htmlspecialchars($accesoDenegado) ?>
     </div>
+    <?php endif; ?>
 
-    <!-- Copia de seguridad -->
-    <div class="backup-section">
-      <div class="backup-section-title">
-        💾 Copia de seguridad
-      </div>
-      <p>Descarga los datos antes de realizar cualquier instalación. Podrás restaurarlos desde phpMyAdmin si algo va mal.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <?php if ($primeraInstalacion && $usuariosTablaExiste): ?>
+      <!-- Paso 2 de la primera instalación: crear el primer administrador.
+           Las tablas ya existen (se acaba de ejecutar clean/sample o vienen de
+           una instalación anterior a este sistema de usuarios), pero todavía
+           no hay ninguna cuenta con la que iniciar sesión. -->
+      <div class="restore-section">
+        <div class="restore-section-title">👤 Crear el primer administrador</div>
+        <p>La base de datos ya está lista. Crea la cuenta de administrador para poder entrar en la aplicación — a partir de este momento, install.php exigirá iniciar sesión.</p>
         <form method="POST">
-          <button type="submit" name="mode" value="backup" class="btn-backup">
-            ⬇ Completa (estructura + datos)
-          </button>
+          <input type="hidden" name="mode" value="create_admin">
+          <input type="hidden" name="_csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
+          <div class="mb-2"><label class="form-label">Nombre completo</label><input class="form-control" name="nombre" required></div>
+          <div class="mb-2"><label class="form-label">Usuario (login)</label><input class="form-control" name="username" pattern="[a-zA-Z0-9._\-]{3,60}" required></div>
+          <div class="mb-2"><label class="form-label">Email</label><input class="form-control" type="email" name="email"></div>
+          <div class="mb-2"><label class="form-label">Contraseña</label><input class="form-control" type="password" name="password" minlength="8" required></div>
+          <div class="mb-3"><label class="form-label">Repetir contraseña</label><input class="form-control" type="password" name="password2" minlength="8" required></div>
+          <button type="submit" class="btn-restore" style="width:100%;justify-content:center">Crear administrador</button>
         </form>
-        <form method="POST">
-          <button type="submit" name="mode" value="backup_data" class="btn-backup-outline">
-            ⬇ Solo datos (INSERT)
-          </button>
-        </form>
       </div>
-      <p style="margin-top:8px;font-size:11px;color:#6b7280;margin-bottom:0">
-        <strong>Completa</strong>: crea las tablas desde cero + datos. Útil para mover a otro servidor.<br>
-        <strong>Solo datos</strong>: solo los INSERT, sin DROP/CREATE. Útil para restaurar datos en una instalación existente.
-      </p>
-    </div>
-
-    <!-- Restaurar desde SQL -->
-    <div class="restore-section">
-      <div class="restore-section-title">
-        📂 Restaurar base de datos desde archivo SQL
-      </div>
-      <p>Sube un archivo <strong>.sql</strong> generado desde esta misma pantalla (copia completa o solo datos) para restaurarlo directamente en la base de datos.</p>
-      <form method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="mode" value="restore">
-        <div class="restore-file-row">
-          <input type="file" name="sql_file" accept=".sql" required>
-          <button type="submit" class="btn-restore"
-            onclick="return confirm('Se ejecutará el SQL sobre la base de datos actual.\n\nSi el archivo es una copia completa (con DROP TABLE) se borrarán los datos existentes.\n\n¿Continuar?')">
-            ⬆ Subir y ejecutar
-          </button>
+      <details class="mt-3">
+        <summary style="cursor:pointer;font-size:12px;color:#6b7280">¿Necesitas reinstalar la base de datos desde cero antes de crear el administrador?</summary>
+        <div class="mt-3">
+          <?php renderBloqueInstalacionCompleta($zipStatus, $zipMsg, $restoreMsg); ?>
         </div>
-      </form>
-      <?php if ($restoreMsg): ?>
-        <div class="msg-restore-<?= $restoreMsg['type'] === 'ok' ? 'ok' : 'err' ?>">
-          <?= $restoreMsg['text'] ?>
+      </details>
+
+    <?php elseif ($primeraInstalacion): ?>
+      <!-- Todavía no existe ni la base de datos ni la tabla usuarios: instalación normal -->
+      <?php renderBloqueInstalacionCompleta($zipStatus, $zipMsg, $restoreMsg); ?>
+
+    <?php elseif ($soloBackup): ?>
+      <!-- Rol 'user': solo copia de seguridad, resto oculto (y bloqueado en backend) -->
+      <?php $zipOk = ($zipStatus === 'ok'); ?>
+      <div class="zip-section <?= $zipOk ? 'zip-ok' : 'zip-bad' ?>">
+        <div class="zip-section-title">
+          <?= $zipOk ? '✅' : '❌' ?> Excel XLSX (ZipArchive)
+          <span style="font-weight:400;font-size:11px;color:<?= $zipOk ? '#166534' : '#991b1b' ?>">
+            — <?= $zipOk ? 'activo y funcionando' : 'extensión no disponible (contacta con un administrador)' ?>
+          </span>
         </div>
-      <?php endif; ?>
-      <p style="margin-top:8px;font-size:11px;color:#3b82f6;margin-bottom:0">
-        ⚠ Una copia <strong>completa</strong> (con DROP TABLE) sobreescribirá todos los datos actuales.<br>
-        Una copia de <strong>solo datos</strong> (con DELETE + INSERT) también reemplaza los datos pero mantiene la estructura.
-      </p>
-    </div>
-
-    <div class="install-divider">Instalación — borra todos los datos</div>
-
-    <!-- Aviso de peligro -->
-    <div class="danger-banner">
-      <div class="danger-banner-title">
-        ⚠ ADVERTENCIA: LAS SIGUIENTES OPCIONES BORRAN TODOS LOS DATOS
       </div>
-      <p>Cualquiera de los dos botones de instalación eliminará por completo la base de datos actual: propietarios, fincas, inmuebles, inquilinos, contratos y recibos. <strong>Esta acción no puede deshacerse.</strong> Descarga una copia de seguridad antes de continuar.</p>
-    </div>
 
-    <div class="mb-3 mt-2 p-3" style="background:#fff3cd;border:1px solid #ffc107;border-radius:6px">
-      <label class="form-label fw-semibold">
-        Por seguridad, escribe <strong>CONFIRMAR</strong> en el campo para activar los botones de instalación:
-      </label>
-      <input type="text" id="input-confirmar" class="form-control mt-1" autocomplete="off"
-             oninput="var ok=this.value.trim()==='CONFIRMAR';document.getElementById('btn-instalar-clean').disabled=!ok;document.getElementById('btn-instalar-sample').disabled=!ok;"
-             placeholder="Escribe CONFIRMAR...">
-    </div>
-    <form method="POST">
-      <div class="d-grid gap-3">
-        <button id="btn-instalar-clean" name="mode" value="clean" class="btn btn-outline-danger btn-lg" disabled
-          onclick="return confirm('⚠ ATENCIÓN\n\nSe borrarán TODOS los datos actuales.\n\n¿Confirmas que quieres continuar con la instalación limpia?')">
-          🗄️ Instalación limpia<br>
-          <small class="fw-normal">Solo crea las tablas vacías — borra todos los datos existentes</small>
-        </button>
-        <button id="btn-instalar-sample" name="mode" value="sample" class="btn btn-danger btn-lg" disabled
-          onclick="return confirm('⚠ ATENCIÓN\n\nSe borrarán TODOS los datos actuales y se sustituirán por datos de ejemplo.\n\n¿Confirmas que quieres continuar?')">
-          📋 Instalación con datos de ejemplo<br>
-          <small class="fw-normal">Borra todos los datos e inserta fincas, pisos, inquilinos y recibos de prueba</small>
-        </button>
+      <div class="backup-section">
+        <div class="backup-section-title">💾 Copia de seguridad</div>
+        <p>Descarga una copia de los datos actuales.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <form method="POST">
+            <input type="hidden" name="_csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
+            <button type="submit" name="mode" value="backup" class="btn-backup">⬇ Completa (estructura + datos)</button>
+          </form>
+          <form method="POST">
+            <input type="hidden" name="_csrf" value="<?= htmlspecialchars(csrfToken()) ?>">
+            <button type="submit" name="mode" value="backup_data" class="btn-backup-outline">⬇ Solo datos (INSERT)</button>
+          </form>
+        </div>
       </div>
-    </form>
 
-    <div class="mt-3 text-center">
-      <a href="../../index.php" class="text-muted" style="font-size:13px">← Volver al inicio</a>
-    </div>
+      <div class="alert alert-secondary" style="font-size:12px">
+        No tienes permisos para instalar, restaurar ni ejecutar migraciones desde aquí. Contacta con un administrador si necesitas alguna de esas acciones.
+      </div>
+      <div class="mt-3 text-center">
+        <a href="../../AlquiGest.php" class="text-muted" style="font-size:13px">← Volver a la aplicación</a>
+      </div>
+
+    <?php else: ?>
+      <!-- Administrador autenticado: acceso completo -->
+      <?php renderBloqueInstalacionCompleta($zipStatus, $zipMsg, $restoreMsg); ?>
+      <div class="mt-3 text-center">
+        <a href="../../index.php" class="text-muted" style="font-size:13px">← Volver al inicio</a>
+      </div>
+    <?php endif; ?>
 
     <?php elseif ($error): ?>
     <div class="alert alert-danger">
@@ -1331,6 +1580,7 @@ if ($mode === 'clean' || $mode === 'sample') {
       <a href="install.php" class="btn btn-outline-secondary">← Volver al instalador</a>
     </div>
     <?php endif; ?>
+    <?php endif; // adminCreado ?>
 
   </div>
 </div>

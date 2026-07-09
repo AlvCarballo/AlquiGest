@@ -1,0 +1,15 @@
+- generic [ref=f3e3]:
+  - generic [ref=f3e4]:
+    - generic [ref=f3e5]: 🏠
+    - heading "AlquiGest – Instalación" [level=4] [ref=f3e6]
+  - paragraph [ref=f3e7]:
+    - text: "Host:"
+    - strong [ref=f3e8]: localhost:3306
+    - text: "· BD:"
+    - strong [ref=f3e9]: alquigest
+  - generic [ref=f3e10]:
+    - text: ✅ Administrador
+    - strong [ref=f3e11]: admin
+    - text: creado correctamente.
+  - link "Ir a iniciar sesión →" [ref=f3e13] [cursor=pointer]:
+    - /url: ../../login.php

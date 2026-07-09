@@ -112,17 +112,30 @@ const DB = {
   },
 
   // Elimina un registro de la BD y lo quita de la caché (async).
+  // Devuelve { ok:true } si se ha borrado, o { ok:false, error, code, details }
+  // si el backend lo ha rechazado (p.ej. por tener dependencias asociadas).
+  // El backend es quien decide si el borrado físico está permitido: la caché
+  // local solo se actualiza cuando la respuesta confirma que se ha borrado.
   async delete(col, id) {
+    let result = null;
     try {
-      await fetch('assets/php/api.php?action=delete&table=' + encodeURIComponent(col) + '&id=' + id, {
+      const resp = await fetch('assets/php/api.php?action=delete&table=' + encodeURIComponent(col) + '&id=' + id, {
         method: 'POST',
       });
+      result = await resp.json().catch(() => null);
     } catch(e) {
       console.error('DB.delete error [' + col + ']', e);
+      return { ok: false, error: 'Error de comunicación con el servidor' };
+    }
+    if (!result || result.ok === false || result.error) {
+      const msg = (result && result.error) || 'No se ha podido eliminar el registro';
+      console.error('DB.delete error [' + col + ']', result);
+      return { ok: false, error: msg, code: result?.code, details: result?.details };
     }
     if (this._cache?.[col]) {
       this._cache[col] = this._cache[col].filter(i => i.id !== id);
     }
+    return { ok: true };
   },
 
   // Devuelve el registro de la tabla empresa (siempre es el primero).

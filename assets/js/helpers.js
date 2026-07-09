@@ -35,6 +35,7 @@ function navigate(page, params = {}) {
     importar:       'Importar datos (CSV / Excel)',
     configuracion:  'Configuración del sistema',
     plantillas:     'Plantillas DOCX',
+    usuarios:       'Gestión de usuarios',
   };
   document.getElementById('header-title').textContent = params.titulo || titles[page] || page;
   const pages = {
@@ -50,6 +51,7 @@ function navigate(page, params = {}) {
     importar:      renderImportar,
     configuracion: renderConfiguracion,
     plantillas:    renderPlantillas,
+    usuarios:      renderUsuarios,
   };
   document.getElementById('header-actions').innerHTML = '';
   updateNotificationBell();

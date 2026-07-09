@@ -28,7 +28,6 @@ function _accionesContrato(c, esActivo) {
     ]},
     { titulo:'Gestión', items:[
       { label:'Editar', icon:'✎', onclick:`modalContrato(${c.id})` },
-      { label:'Eliminar', icon:'🗑', danger:true, onclick:`deleteContrato(${c.id})`, oculto: !_cfgVisi('VisiBorrarCont') },
     ]},
   ];
   const principal = esActivo
@@ -377,14 +376,11 @@ async function saveContrato(id) {
   renderContratos();
 }
 
-async function deleteContrato(id) {
-  if (DB.get('recibos').some(r => r.contrato_id === id))
-    return toast('No se puede eliminar: tiene recibos asociados', 'error');
-  if (!confirm('¿Eliminar este contrato?')) return;
-  await DB.delete('contratos', id);
-  toast('Contrato eliminado', 'info');
-  renderContratos();
-}
+// Los contratos no se pueden borrar físicamente (documento con trazabilidad
+// legal/contractual): la única vía para cerrarlos es "Dar de baja" (modalBajaContrato),
+// que conserva el registro y su histórico de recibos/facturas. El backend
+// (assets/php/api.php, acción 'delete') rechaza cualquier intento de DELETE
+// sobre la tabla contratos aunque se llame directamente a la API.
 
 // --- Baja de contrato ---
 function modalBajaContrato(id) {
@@ -758,7 +754,8 @@ async function _inqSecGuardar(contratoId, id) {
 // Elimina un inquilino secundario tras confirmación.
 async function _inqSecEliminar(id, contratoId) {
   if (!confirm('¿Eliminar este inquilino secundario?')) return;
-  await DB.delete('contratos_inq_sec', id);
+  const r = await DB.delete('contratos_inq_sec', id);
+  if (!r.ok) { toast(r.error || 'Error al eliminar', 'error'); return; }
   toast('Inquilino secundario eliminado', 'info');
   _inqSecRender(contratoId);
 }

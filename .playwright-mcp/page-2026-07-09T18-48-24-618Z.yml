@@ -1,0 +1,34 @@
+- generic [ref=f1e3]:
+  - generic [ref=f1e4]:
+    - generic [ref=f1e5]: 🏠
+    - heading "AlquiGest – Instalación" [level=4] [ref=f1e6]
+  - paragraph [ref=f1e7]:
+    - text: "Host:"
+    - strong [ref=f1e8]: localhost:3306
+    - text: "· BD:"
+    - strong [ref=f1e9]: alquigest
+  - generic [ref=f1e10]:
+    - strong [ref=f1e11]: 🚫
+    - text: Token de seguridad inválido o caducado. Recarga la página e inténtalo de nuevo.
+  - generic [ref=f1e12]:
+    - generic [ref=f1e13]: 👤 Crear el primer administrador
+    - paragraph [ref=f1e14]: La base de datos ya está lista. Crea la cuenta de administrador para poder entrar en la aplicación — a partir de este momento, install.php exigirá iniciar sesión.
+    - generic [ref=f1e15]:
+      - generic [ref=f1e16]:
+        - generic [ref=f1e17]: Nombre completo
+        - textbox [ref=f1e18]
+      - generic [ref=f1e19]:
+        - generic [ref=f1e20]: Usuario (login)
+        - textbox [ref=f1e21]
+      - generic [ref=f1e22]:
+        - generic [ref=f1e23]: Email
+        - textbox [ref=f1e24]
+      - generic [ref=f1e25]:
+        - generic [ref=f1e26]: Contraseña
+        - textbox [ref=f1e27]
+      - generic [ref=f1e28]:
+        - generic [ref=f1e29]: Repetir contraseña
+        - textbox [ref=f1e30]
+      - button "Crear administrador" [ref=f1e31] [cursor=pointer]
+  - group [ref=f1e32]:
+    - generic "¿Necesitas reinstalar la base de datos desde cero antes de crear el administrador?" [ref=f1e33] [cursor=pointer]

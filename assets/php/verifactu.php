@@ -20,8 +20,10 @@
 
 // ── Funciones compartidas (seguridad, CORS, helpers de BD) ───
 require __DIR__ . '/helpers.php';
+require __DIR__ . '/auth.php';
 requireLocalhost();
 setCorsHeaders();
+session_bootstrap();
 
 // ── Configuración de base de datos ───────────────────────────
 $cfg = require __DIR__ . '/config.php';
@@ -54,6 +56,9 @@ try {
 } catch (Exception $e) {
     jsonOut(['error' => 'Error de conexión con la base de datos'], 500);
 }
+
+// Toda la integración VERI*FACTU exige sesión iniciada (cualquier rol).
+requireLoginApi($pdo);
 
 // ── Leer toda la configuración VERI*FACTU ────────────────────
 $vfActivo   = getCfg($pdo, 'verifactu_activo');

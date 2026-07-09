@@ -1,0 +1,97 @@
+- generic [active] [ref=f20e1]:
+  - generic [ref=f20e2]:
+    - complementary [ref=f20e3]:
+      - generic [ref=f20e4]:
+        - img [ref=f20e5]
+        - generic [ref=f20e9]:
+          - generic [ref=f20e10]: AlquiGest
+          - generic [ref=f20e11]: Gestión de Alquileres
+      - navigation [ref=f20e12]:
+        - link "Inicio" [ref=f20e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=f20e14]
+          - text: Inicio
+        - generic [ref=f20e16]:
+          - generic [ref=f20e17]: Principal
+          - button "Dashboard" [ref=f20e18] [cursor=pointer]:
+            - img [ref=f20e19]
+            - text: Dashboard
+        - generic [ref=f20e24]:
+          - generic [ref=f20e25]: Maestros
+          - button "Propietarios" [ref=f20e26] [cursor=pointer]:
+            - img [ref=f20e27]
+            - text: Propietarios
+          - button "Fincas / Edificios" [ref=f20e30] [cursor=pointer]:
+            - img [ref=f20e31]
+            - text: Fincas / Edificios
+          - button "Pisos / Locales" [ref=f20e34] [cursor=pointer]:
+            - img [ref=f20e35]
+            - text: Pisos / Locales
+          - button "Inquilinos" [ref=f20e38] [cursor=pointer]:
+            - img [ref=f20e39]
+            - text: Inquilinos
+        - generic [ref=f20e44]:
+          - generic [ref=f20e45]: Alquileres
+          - button "Contratos" [ref=f20e46] [cursor=pointer]:
+            - img [ref=f20e47]
+            - text: Contratos
+          - button "Recibos" [ref=f20e50] [cursor=pointer]:
+            - img [ref=f20e51]
+            - text: Recibos
+          - button "Facturas" [ref=f20e54] [cursor=pointer]:
+            - img [ref=f20e55]
+            - text: Facturas
+          - button "Generar Recibos" [ref=f20e57] [cursor=pointer]:
+            - img [ref=f20e58]
+            - text: Generar Recibos
+        - generic [ref=f20e60]:
+          - generic [ref=f20e61]: Informes
+          - button "Informes Excel" [ref=f20e62] [cursor=pointer]:
+            - img [ref=f20e63]
+            - text: Informes Excel
+          - button "Calendario Cobros" [ref=f20e64] [cursor=pointer]:
+            - img [ref=f20e65]
+            - text: Calendario Cobros
+          - button "Morosidad" [ref=f20e67] [cursor=pointer]:
+            - img [ref=f20e68]
+            - text: Morosidad
+          - button "Actividad" [ref=f20e70] [cursor=pointer]:
+            - img [ref=f20e71]
+            - text: Actividad
+        - generic [ref=f20e74]:
+          - generic [ref=f20e75]: Configuración
+          - button "Mi Empresa" [ref=f20e76] [cursor=pointer]:
+            - img [ref=f20e77]
+            - text: Mi Empresa
+          - button "Parámetros" [ref=f20e80] [cursor=pointer]:
+            - img [ref=f20e81]
+            - text: Parámetros
+          - button "VERI*FACTU" [ref=f20e84] [cursor=pointer]:
+            - img [ref=f20e85]
+            - text: VERI*FACTU
+          - button "Plantillas" [ref=f20e87] [cursor=pointer]:
+            - img [ref=f20e88]
+            - text: Plantillas
+          - button "Usuarios" [ref=f20e91] [cursor=pointer]:
+            - img [ref=f20e92]
+            - text: Usuarios
+      - generic [ref=f20e97]: AlquiGest v3.0.1 · 2026
+    - banner [ref=f20e99]:
+      - generic [ref=f20e100]: Dashboard
+      - generic [ref=f20e101]:
+        - img
+        - textbox "Buscar inquilino, inmueble, contrato…" [ref=f20e102]
+      - generic [ref=f20e103]:
+        - button "Alternar modo oscuro" [ref=f20e104] [cursor=pointer]:
+          - img [ref=f20e105]
+        - button "Avisos de revisión anual" [ref=f20e112] [cursor=pointer]:
+          - img [ref=f20e113]
+        - button "A Administrador Principal" [ref=f20e117] [cursor=pointer]:
+          - generic [ref=f20e118]: A
+          - generic [ref=f20e119]: Administrador Principal
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

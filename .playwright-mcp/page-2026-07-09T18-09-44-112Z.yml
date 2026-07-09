@@ -1,0 +1,226 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - button "Dashboard" [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - button "Propietarios" [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - button "Fincas / Edificios" [active] [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - button "Pisos / Locales" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - button "Inquilinos" [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - button "Contratos" [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - button "Recibos" [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - button "Facturas" [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - button "Generar Recibos" [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - button "Informes Excel" [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - button "Calendario Cobros" [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - button "Morosidad" [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - button "Actividad" [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - button "Mi Empresa" [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - button "Parámetros" [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - button "VERI*FACTU" [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - button "Plantillas" [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v3.0.0 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Fincas / Edificios
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "3" [ref=e111] [cursor=pointer]:
+            - img [ref=e107]
+            - generic [ref=e112]: "3"
+          - button "Nueva finca" [ref=e775] [cursor=pointer]:
+            - img [ref=e776]
+            - text: Nueva finca
+      - generic [ref=e777]:
+        - generic [ref=e778]:
+          - generic [ref=e779]: Fincas / Edificios (5)
+          - generic [ref=e780]:
+            - img
+            - searchbox "Buscar..." [ref=e781]
+        - table [ref=e783]:
+          - rowgroup [ref=e784]:
+            - row "Nombre / Dirección Propietario Pisos Recibos" [ref=e785]:
+              - columnheader "Nombre / Dirección" [ref=e786] [cursor=pointer]
+              - columnheader "Propietario" [ref=e787] [cursor=pointer]
+              - columnheader "Pisos" [ref=e788] [cursor=pointer]
+              - columnheader "Recibos" [ref=e789] [cursor=pointer]
+              - columnheader [ref=e790]
+          - rowgroup [ref=e791]:
+            - row "C/ Mayor 15 28001 Madrid (Madrid) García Martínez, Manuel 4 pisos 20 recibos Ver pisos Más ▾" [ref=e792]:
+              - cell "C/ Mayor 15 28001 Madrid (Madrid)" [ref=e793]:
+                - strong [ref=e794]: C/ Mayor 15
+                - text: 28001 Madrid (Madrid)
+              - cell "García Martínez, Manuel" [ref=e795]
+              - cell "4 pisos" [ref=e796]:
+                - generic [ref=e797]: 4 pisos
+              - cell "20 recibos" [ref=e798]:
+                - generic [ref=e799]: 20 recibos
+              - cell "Ver pisos Más ▾" [ref=e800]:
+                - generic [ref=e801]:
+                  - button "Ver pisos" [ref=e802] [cursor=pointer]
+                  - button "Más ▾" [ref=e804] [cursor=pointer]
+            - row "Av. Constitución 8 28002 Madrid (Madrid) Fernández Torres, Ana 2 pisos 10 recibos Ver pisos Más ▾" [ref=e805]:
+              - cell "Av. Constitución 8 28002 Madrid (Madrid)" [ref=e806]:
+                - strong [ref=e807]: Av. Constitución 8
+                - text: 28002 Madrid (Madrid)
+              - cell "Fernández Torres, Ana" [ref=e808]
+              - cell "2 pisos" [ref=e809]:
+                - generic [ref=e810]: 2 pisos
+              - cell "10 recibos" [ref=e811]:
+                - generic [ref=e812]: 10 recibos
+              - cell "Ver pisos Más ▾" [ref=e813]:
+                - generic [ref=e814]:
+                  - button "Ver pisos" [ref=e815] [cursor=pointer]
+                  - button "Más ▾" [ref=e817] [cursor=pointer]
+            - row "C/ Alcalá 120 28009 Madrid (Madrid) Ruiz Delgado, Francisco 3 pisos 7 recibos Ver pisos Más ▾" [ref=e818]:
+              - cell "C/ Alcalá 120 28009 Madrid (Madrid)" [ref=e819]:
+                - strong [ref=e820]: C/ Alcalá 120
+                - text: 28009 Madrid (Madrid)
+              - cell "Ruiz Delgado, Francisco" [ref=e821]
+              - cell "3 pisos" [ref=e822]:
+                - generic [ref=e823]: 3 pisos
+              - cell "7 recibos" [ref=e824]:
+                - generic [ref=e825]: 7 recibos
+              - cell "Ver pisos Más ▾" [ref=e826]:
+                - generic [ref=e827]:
+                  - button "Ver pisos" [ref=e828] [cursor=pointer]
+                  - button "Más ▾" [ref=e830] [cursor=pointer]
+            - row "C/ Velázquez 22 28006 Madrid (Madrid) Molina Vidal, Teresa 4 pisos 0 recibos Ver pisos Más ▾" [ref=e831]:
+              - cell "C/ Velázquez 22 28006 Madrid (Madrid)" [ref=e832]:
+                - strong [ref=e833]: C/ Velázquez 22
+                - text: 28006 Madrid (Madrid)
+              - cell "Molina Vidal, Teresa" [ref=e834]
+              - cell "4 pisos" [ref=e835]:
+                - generic [ref=e836]: 4 pisos
+              - cell "0 recibos" [ref=e837]:
+                - generic [ref=e838]: 0 recibos
+              - cell "Ver pisos Más ▾" [ref=e839]:
+                - generic [ref=e840]:
+                  - button "Ver pisos" [ref=e841] [cursor=pointer]
+                  - button "Más ▾" [ref=e843] [cursor=pointer]
+            - row "C/ Goya 30 28001 Madrid (Madrid) Santos Prieto, Álvaro 3 pisos 0 recibos Ver pisos Más ▾" [ref=e844]:
+              - cell "C/ Goya 30 28001 Madrid (Madrid)" [ref=e845]:
+                - strong [ref=e846]: C/ Goya 30
+                - text: 28001 Madrid (Madrid)
+              - cell "Santos Prieto, Álvaro" [ref=e847]
+              - cell "3 pisos" [ref=e848]:
+                - generic [ref=e849]: 3 pisos
+              - cell "0 recibos" [ref=e850]:
+                - generic [ref=e851]: 0 recibos
+              - cell "Ver pisos Más ▾" [ref=e852]:
+                - generic [ref=e853]:
+                  - button "Ver pisos" [ref=e854] [cursor=pointer]
+                  - button "Más ▾" [ref=e856] [cursor=pointer]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Nuevo propietario
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Datos personales
+          - generic:
+            - generic: Nombre completo *
+            - textbox "Apellidos, Nombre o Razón Social": PRUEBA E2E Sin Fincas
+          - generic:
+            - generic: NIF / CIF
+            - textbox "12345678A"
+          - generic:
+            - generic: Teléfono
+            - textbox "600 000 000"
+          - generic:
+            - generic: Email
+            - textbox "propietario@email.com"
+          - generic:
+            - generic: Tipo IRPF
+            - combobox:
+              - option "Sin IRPF" [selected]
+              - option "Física"
+              - option "Jurídica"
+          - generic:
+            - generic: Dirección
+          - generic:
+            - generic: Dirección
+            - textbox "Calle, número, piso..."
+          - generic:
+            - generic: C.P.
+            - textbox "28001"
+          - generic:
+            - generic: Municipio
+            - textbox "Madrid"
+          - generic:
+            - generic: Provincia
+            - textbox "Madrid"
+          - generic:
+            - generic: País
+            - textbox "España"
+          - generic:
+            - generic: Datos bancarios
+          - generic:
+            - generic: IBAN
+            - textbox "ES00 0000 0000 0000 0000 0000"
+          - generic:
+            - generic: Observaciones
+            - textbox
+      - generic:
+        - button "Cancelar"
+        - button "Guardar"

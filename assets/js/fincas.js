@@ -139,10 +139,12 @@ async function saveFinca(id) {
 }
 
 async function deleteFinca(id) {
-  if (DB.get('inmuebles').some(i => i.finca_id === id))
-    return toast('No se puede eliminar: tiene pisos asociados', 'error');
-  if (!confirm('¿Eliminar esta finca?')) return;
-  await DB.delete('fincas', id);
+  const inmuebles = DB.get('inmuebles').filter(i => i.finca_id === id);
+  if (inmuebles.length)
+    return toast(`No se puede eliminar: tiene ${inmuebles.length} inmueble(s) asociado(s)`, 'error');
+  if (!confirm('Este registro se marcará como eliminado y dejará de aparecer en los listados normales, pero se conservará para mantener el histórico.\n\n¿Desea continuar?')) return;
+  const r = await DB.delete('fincas', id);
+  if (!r.ok) return toast(r.error || 'No se puede eliminar esta finca', 'error');
   toast('Finca eliminada', 'info');
   renderFincas();
 }

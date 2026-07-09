@@ -465,9 +465,13 @@ function imprimirRecibosInquilino(id) {
 
 async function deleteInquilino(id) {
   const contratos = DB.get('contratos').filter(c => c.inquilino_id === id);
-  if (contratos.length) { toast('No se puede eliminar: tiene contratos asociados', 'error'); return; }
-  if (!confirm('¿Eliminar este inquilino?')) return;
-  await DB.delete('inquilinos', id);
+  if (contratos.length) {
+    toast(`No se puede eliminar: tiene ${contratos.length} contrato(s) asociado(s)`, 'error');
+    return;
+  }
+  if (!confirm('Este registro se marcará como eliminado y dejará de aparecer en los listados normales, pero se conservará para mantener el histórico.\n\n¿Desea continuar?')) return;
+  const r = await DB.delete('inquilinos', id);
+  if (!r.ok) { toast(r.error || 'No se puede eliminar este inquilino', 'error'); return; }
   toast('Inquilino eliminado', 'info');
   renderInquilinos();
 }

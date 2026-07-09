@@ -1,0 +1,182 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - generic [ref=f1e4]:
+        - img [ref=f1e5]
+        - generic [ref=f1e9]:
+          - generic [ref=f1e10]: AlquiGest
+          - generic [ref=f1e11]: Gestión de Alquileres
+      - navigation [ref=f1e12]:
+        - link "Inicio" [ref=f1e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=f1e14]
+          - text: Inicio
+        - generic [ref=f1e16]:
+          - generic [ref=f1e17]: Principal
+          - button "Dashboard" [ref=f1e18] [cursor=pointer]:
+            - img [ref=f1e19]
+            - text: Dashboard
+        - generic [ref=f1e24]:
+          - generic [ref=f1e25]: Maestros
+          - button "Propietarios" [ref=f1e26] [cursor=pointer]:
+            - img [ref=f1e27]
+            - text: Propietarios
+          - button "Fincas / Edificios" [ref=f1e30] [cursor=pointer]:
+            - img [ref=f1e31]
+            - text: Fincas / Edificios
+          - button "Pisos / Locales" [ref=f1e34] [cursor=pointer]:
+            - img [ref=f1e35]
+            - text: Pisos / Locales
+          - button "Inquilinos" [ref=f1e38] [cursor=pointer]:
+            - img [ref=f1e39]
+            - text: Inquilinos
+        - generic [ref=f1e44]:
+          - generic [ref=f1e45]: Alquileres
+          - button "Contratos" [ref=f1e46] [cursor=pointer]:
+            - img [ref=f1e47]
+            - text: Contratos
+          - button "Recibos" [ref=f1e50] [cursor=pointer]:
+            - img [ref=f1e51]
+            - text: Recibos
+          - button "Facturas" [ref=f1e54] [cursor=pointer]:
+            - img [ref=f1e55]
+            - text: Facturas
+          - button "Generar Recibos" [ref=f1e57] [cursor=pointer]:
+            - img [ref=f1e58]
+            - text: Generar Recibos
+        - generic [ref=f1e60]:
+          - generic [ref=f1e61]: Informes
+          - button "Informes Excel" [active] [ref=f1e62] [cursor=pointer]:
+            - img [ref=f1e63]
+            - text: Informes Excel
+          - button "Calendario Cobros" [ref=f1e64] [cursor=pointer]:
+            - img [ref=f1e65]
+            - text: Calendario Cobros
+          - button "Morosidad" [ref=f1e67] [cursor=pointer]:
+            - img [ref=f1e68]
+            - text: Morosidad
+          - button "Actividad" [ref=f1e70] [cursor=pointer]:
+            - img [ref=f1e71]
+            - text: Actividad
+        - generic [ref=f1e74]:
+          - generic [ref=f1e75]: Configuración
+          - button "Mi Empresa" [ref=f1e76] [cursor=pointer]:
+            - img [ref=f1e77]
+            - text: Mi Empresa
+          - button "Parámetros" [ref=f1e80] [cursor=pointer]:
+            - img [ref=f1e81]
+            - text: Parámetros
+          - button "VERI*FACTU" [ref=f1e84] [cursor=pointer]:
+            - img [ref=f1e85]
+            - text: VERI*FACTU
+          - button "Plantillas" [ref=f1e87] [cursor=pointer]:
+            - img [ref=f1e88]
+            - text: Plantillas
+      - generic [ref=f1e91]: AlquiGest v3.0.0 · 2026
+    - generic [ref=f1e92]:
+      - banner [ref=f1e93]:
+        - generic [ref=f1e94]: Informes Excel
+        - generic [ref=f1e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=f1e96]
+        - generic [ref=f1e97]:
+          - button "Alternar modo oscuro" [ref=f1e98] [cursor=pointer]:
+            - img [ref=f1e99]
+          - button "3" [ref=f1e111] [cursor=pointer]:
+            - img [ref=f1e107]
+            - generic [ref=f1e112]: "3"
+      - generic [ref=f1e436]:
+        - generic [ref=f1e438]: Informes Excel
+        - generic [ref=f1e439]:
+          - generic [ref=f1e440]:
+            - generic [ref=f1e441]: Año del informe
+            - spinbutton [ref=f1e442]: "2026"
+          - generic [ref=f1e443]: Informes de gestión
+          - generic [ref=f1e444]:
+            - generic [ref=f1e445]:
+              - generic [ref=f1e446]: 📋
+              - generic [ref=f1e447]: Todos los recibos del año
+              - generic [ref=f1e448]: Listado completo con base, IVA, IRPF, total, cobrado y pendiente.
+              - button "Descargar Excel" [ref=f1e449] [cursor=pointer]:
+                - img [ref=f1e450]
+                - text: Descargar Excel
+            - generic [ref=f1e453]:
+              - generic [ref=f1e454]: 🏢
+              - generic [ref=f1e455]: Ingresos por finca
+              - generic [ref=f1e456]: Ingresos mensuales agrupados por edificio o finca, con total anual.
+              - button "Descargar Excel" [ref=f1e457] [cursor=pointer]:
+                - img [ref=f1e458]
+                - text: Descargar Excel
+            - generic [ref=f1e461]:
+              - generic [ref=f1e462]: 🏠
+              - generic [ref=f1e463]: Ingresos por piso/unidad
+              - generic [ref=f1e464]: Detalle mensual de cada inmueble, con inquilino y total anual.
+              - button "Descargar Excel" [ref=f1e465] [cursor=pointer]:
+                - img [ref=f1e466]
+                - text: Descargar Excel
+            - generic [ref=f1e469]:
+              - generic [ref=f1e470]: ⏳
+              - generic [ref=f1e471]: Recibos pendientes
+              - generic [ref=f1e472]: Todos los recibos sin cobrar o con pago parcial, con importes.
+              - button "Descargar Excel" [ref=f1e473] [cursor=pointer]:
+                - img [ref=f1e474]
+                - text: Descargar Excel
+            - generic [ref=f1e477]:
+              - generic [ref=f1e478]: 💰
+              - generic [ref=f1e479]: Histórico de cobros
+              - generic [ref=f1e480]: Todos los pagos recibidos con fecha, método y cuenta.
+              - button "Descargar Excel" [ref=f1e481] [cursor=pointer]:
+                - img [ref=f1e482]
+                - text: Descargar Excel
+            - generic [ref=f1e485]:
+              - generic [ref=f1e486]: 👤
+              - generic [ref=f1e487]: Resumen por propietario
+              - generic [ref=f1e488]: Ingresos facturados y cobrados agrupados por propietario y finca.
+              - button "Descargar Excel" [ref=f1e489] [cursor=pointer]:
+                - img [ref=f1e490]
+                - text: Descargar Excel
+          - generic [ref=f1e494]: Informes fiscales · Hacienda España
+          - generic [ref=f1e495]:
+            - img [ref=f1e496]
+            - generic [ref=f1e498]:
+              - strong [ref=f1e499]: Basados en normativa IRPF española (LIRPF, arts. 22-24).
+              - text: Estos informes son una ayuda para preparar la documentación.
+              - strong [ref=f1e500]: Revise siempre los datos con su asesor fiscal o gestor
+              - text: antes de presentar cualquier declaración. Los
+              - emphasis [ref=f1e501]: gastos deducibles
+              - text: no están registrados en la aplicación y deben añadirse manualmente en el Excel.
+          - generic [ref=f1e502]:
+            - generic [ref=f1e503]:
+              - generic [ref=f1e504]: 📊
+              - generic [ref=f1e505]: Rendimientos trimestrales (IRPF)
+              - generic [ref=f1e506]: Ingresos por inmueble desglosados en T1-T4, con reducción del 60 % para arrendamiento de vivienda (art. 23.2 LIRPF). Base para la Declaración de la Renta.
+              - button "Descargar Excel" [ref=f1e507] [cursor=pointer]:
+                - img [ref=f1e508]
+                - text: Descargar Excel
+            - generic [ref=f1e511]:
+              - generic [ref=f1e512]: 📄
+              - generic [ref=f1e513]: Declaración de la Renta — Cap. Inmobiliario
+              - generic [ref=f1e514]: "Informe completo para la sección F del Modelo 100 (Rendimientos del Capital Inmobiliario): ingresos íntegros, reducción 60 %, columna para gastos deducibles y recordatorio de cada gasto aplicable."
+              - button "Descargar Excel" [ref=f1e515] [cursor=pointer]:
+                - img [ref=f1e516]
+                - text: Descargar Excel
+            - generic [ref=f1e519]:
+              - generic [ref=f1e520]: 🏛️
+              - generic [ref=f1e521]: Modelo 115 / 180 — Retenciones arrendamiento
+              - generic [ref=f1e522]: Base imponible y cuota de retención (19 %) por trimestre para el Modelo 115 (trimestral) y el Modelo 180 (resumen anual). Solo aplica si el arrendatario es empresa o autónomo.
+              - button "Descargar Excel" [ref=f1e523] [cursor=pointer]:
+                - img [ref=f1e524]
+                - text: Descargar Excel
+            - generic [ref=f1e527]:
+              - generic [ref=f1e528]: 📑
+              - generic [ref=f1e529]: Modelo 303 — IVA trimestral (arrendamientos)
+              - generic [ref=f1e530]: Desglose por trimestre de la base imponible y cuotas de IVA repercutido en recibos de arrendamiento. Aplicable cuando el arrendamiento está sujeto a IVA (locales, oficinas, naves).
+              - button "Descargar Excel" [ref=f1e531] [cursor=pointer]:
+                - img [ref=f1e532]
+                - text: Descargar Excel
+  - generic:
+    - generic:
+      - generic:
+        - generic: Modal
+        - button:
+          - img

@@ -19,8 +19,10 @@
 
 // ── Funciones compartidas (seguridad, CORS, helpers de BD) ───
 require __DIR__ . '/helpers.php';
+require __DIR__ . '/auth.php';
 requireLocalhost();
 setCorsHeaders();
+session_bootstrap();
 
 // ── Cargar configuración de BD y leer el cuerpo de la petición ─
 $cfg   = require __DIR__ . '/config.php';
@@ -38,6 +40,9 @@ try {
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
 } catch (Exception $e) { jsonOut(['error' => 'Error BD: '.$e->getMessage()], 503); }
+
+// El envío de emails exige sesión iniciada (cualquier rol).
+requireLoginApi($pdo);
 
 // ── Leer configuración de email de la tabla 'empresa' ─────────
 // gmail_user y gmail_pass son los datos del remitente.

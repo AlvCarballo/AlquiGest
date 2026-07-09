@@ -1,11 +1,31 @@
-<?php $cfg = require __DIR__ . '/assets/php/config.php'; ?><!DOCTYPE html>
+<?php
+require __DIR__ . '/assets/php/auth.php';
+$cfg = require __DIR__ . '/assets/php/config.php';
+session_bootstrap();
+
+// Acceso fail-closed: cualquier fallo de conexión/sesión redirige a login.php,
+// salvo que todavía no exista ningún usuario (primera instalación), en cuyo
+// caso se redirige a install.php para crear el primer administrador.
+$usuarioActual = null;
+try {
+    if (esPrimeraInstalacion($cfg)) {
+        header('Location: assets/php/install.php');
+        exit;
+    }
+    $pdoAuth = authConnect($cfg);
+    $usuarioActual = requireLoginWeb($pdoAuth, 'login.php');
+} catch (\Throwable $e) {
+    header('Location: login.php');
+    exit;
+}
+?><!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AlquiGest – Gestión de Alquileres</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="assets/css/main.css?v=20260709a">
+<link rel="stylesheet" href="assets/css/main.css?v=20260711c">
 </head>
 <body>
 
@@ -111,6 +131,10 @@
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
           Plantillas
         </div>
+        <div class="nav-item" tabindex="0" role="button" id="nav-usuarios" data-page="usuarios" onclick="navigate('usuarios')" style="display:none">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="17.5" cy="10" r="2.5"/><path d="M21.5 21v-1.2a3 3 0 0 0-2.2-2.9"/></svg>
+          Usuarios
+        </div>
       </div>
     </nav>
     <div class="sidebar-footer">AlquiGest v<?= htmlspecialchars($cfg['version']) ?> · <?= htmlspecialchars($cfg['year']) ?></div>
@@ -145,6 +169,13 @@
           </button>
           <div id="notif-panel"></div>
         </div>
+        <div id="user-menu-wrap">
+          <button id="user-menu-btn" onclick="toggleUserMenu(event)" title="Cuenta">
+            <span id="user-menu-avatar"><?= htmlspecialchars(mb_strtoupper(mb_substr($usuarioActual['nombre'] ?? '?', 0, 1))) ?></span>
+            <span id="user-menu-name"><?= htmlspecialchars($usuarioActual['nombre'] ?? '') ?></span>
+          </button>
+          <div id="user-menu-panel"></div>
+        </div>
         <div id="header-actions"></div>
       </div>
     </header>
@@ -175,19 +206,26 @@
 </div>
 
 
+<!-- Sesión actual: el JS nunca decide permisos, solo adapta la interfaz.
+     El backend (assets/php/auth.php, api.php) revalida el rol en cada petición. -->
+<script>
+  window.AG_USER  = <?= json_encode($usuarioActual, JSON_UNESCAPED_UNICODE) ?>;
+  window.AG_CSRF  = <?= json_encode(csrfToken()) ?>;
+</script>
+
 <!-- Modulos JS separados (M-T06) â€" carga en orden de dependencias -->
-<script src="assets/js/config.js?v=20260625o"></script>
-<script src="assets/js/helpers.js?v=20260704a"></script>
-<script src="assets/js/actividad.js?v=20260709a"></script>
+<script src="assets/js/config.js?v=20260710a"></script>
+<script src="assets/js/helpers.js?v=20260710a"></script>
+<script src="assets/js/actividad.js?v=20260710a"></script>
 <script src="assets/js/tabla.js?v=20260708b"></script>
 <script src="assets/js/notificaciones.js?v=20260625o"></script>
-<script src="assets/js/dashboard.js?v=20260709a"></script>
+<script src="assets/js/dashboard.js?v=20260710a"></script>
 <script src="assets/js/empresa.js?v=20260626c"></script>
-<script src="assets/js/propietarios.js?v=20260708a"></script>
-<script src="assets/js/fincas.js?v=20260708a"></script>
-<script src="assets/js/inmuebles.js?v=20260625o"></script>
-<script src="assets/js/inquilinos.js?v=20260708b"></script>
-<script src="assets/js/contratos.js?v=20260709a"></script>
+<script src="assets/js/propietarios.js?v=20260710a"></script>
+<script src="assets/js/fincas.js?v=20260710a"></script>
+<script src="assets/js/inmuebles.js?v=20260710a"></script>
+<script src="assets/js/inquilinos.js?v=20260710a"></script>
+<script src="assets/js/contratos.js?v=20260710a"></script>
 <script src="assets/js/contratos-pdf.js?v=20260626w"></script>
 <script src="assets/js/recibos-lista.js?v=20260708b"></script>
 <script src="assets/js/recibos-cobro.js?v=20260709a"></script>
@@ -197,10 +235,11 @@
 <script src="assets/js/email.js?v=20260709a"></script>
 <script src="assets/js/facturas.js?v=20260709a"></script>
 <script src="assets/js/verifactu.js?v=20260708a"></script>
-<script src="assets/js/ux.js?v=20260709a"></script>
+<script src="assets/js/ux.js?v=20260710a"></script>
 <script src="assets/js/extras.js?v=20260626w"></script>
-<script src="assets/js/configuracion.js?v=20260709b"></script>
-<script src="assets/js/plantillas.js?v=20260709b"></script>
+<script src="assets/js/configuracion.js?v=20260710a"></script>
+<script src="assets/js/plantillas.js?v=20260711a"></script>
+<script src="assets/js/usuarios.js?v=20260710b"></script>
 <!-- Librerias externas locales (sin dependencia de internet) -->
 <script src="assets/js/vendor/chart.umd.min.js"></script>
 <script src="assets/js/vendor/html2canvas.min.js"></script>

@@ -17,8 +17,10 @@
 
 // ── Funciones compartidas (seguridad, CORS, helpers de BD) ───
 require __DIR__ . '/helpers.php';
+require __DIR__ . '/auth.php';
 requireLocalhost();
 setCorsHeaders();
+session_bootstrap();
 
 // ── Configuración de base de datos ───────────────────────────
 $cfg    = require __DIR__ . '/config.php';
@@ -110,6 +112,90 @@ function validTable(string $t): bool {
 // ── Alias local de json_respond para compatibilidad con el resto del archivo ─
 // api.php usaba el nombre json_out internamente; se mantiene como alias.
 function json_out($data, int $code = 200): void { json_respond($data, $code); }
+
+// ── Integridad referencial y borrado lógico ───────────────────
+// Jerarquía real de la aplicación (ver README §10):
+//   Propietario → Finca → Inmueble → Contrato → Recibo → Factura
+//
+// NINGUNA entidad de negocio se borra físicamente desde la aplicación:
+//   · propietarios/fincas/inmuebles/inquilinos → borrado lógico (columna 'eliminado')
+//     si no tienen dependencias; si las tienen, se bloquea el borrado.
+//   · contratos/recibos/facturas → documentos con trazabilidad legal/contractual.
+//     Ya tienen su propio campo 'estado' (baja/anulado/rectificada) que cumple la
+//     misma función; un 'eliminado' adicional sería redundante. 'delete' se bloquea
+//     siempre sin excepción: la baja/anulación/rectificación es la única vía.
+$TABLAS_SIN_BORRADO_FISICO = [
+    'contratos' => 'Los contratos no se pueden eliminar. Usa "Dar de baja" para finalizarlo conservando su histórico de recibos y facturas.',
+    'recibos'   => 'Los recibos no se pueden eliminar físicamente. Usa la anulación (el registro se conserva para auditoría).',
+    'facturas'  => 'Las facturas no se pueden eliminar físicamente. Usa la anulación/rectificación (RD 1619/2012).',
+];
+
+// Tablas con borrado lógico real: 'delete' hace UPDATE eliminado=1 en vez de DELETE,
+// y quedan excluidas por defecto de getAll (ver acción 'getAll' más abajo), por lo
+// que no aparecen en listados, selects, informes ni PDF.
+$TABLAS_CON_BORRADO_LOGICO = ['propietarios', 'fincas', 'inmuebles', 'inquilinos'];
+
+// Antes de marcar como eliminado, comprobamos si existen registros dependientes.
+// Formato: tabla => [ [tabla_hija, columna_fk, etiqueta, respetaEliminado], ... ]
+// 'respetaEliminado' = true cuando la tabla_hija también tiene columna 'eliminado':
+// en ese caso solo cuentan como dependencia las filas hija que sigan activas
+// (una finca ya eliminada, sin inmuebles, no debe bloquear borrar su propietario).
+$DEPENDENCIAS_BORRADO = [
+    'propietarios' => [
+        ['fincas', 'propietario_id', 'finca(s) asociada(s)', true],
+    ],
+    'fincas' => [
+        ['inmuebles', 'finca_id', 'inmueble(s) asociado(s)', true],
+    ],
+    'inmuebles' => [
+        ['contratos', 'inmueble_id', 'contrato(s) asociado(s)', false],
+        ['recibos',   'inmueble_id', 'recibo(s) asociado(s)', false],
+        ['facturas',  'inmueble_id', 'factura(s) asociada(s)', false],
+    ],
+    'inquilinos' => [
+        ['contratos', 'inquilino_id', 'contrato(s) asociado(s)', false],
+        ['recibos',   'inquilino_id', 'recibo(s) asociado(s)', false],
+        ['facturas',  'inquilino_id', 'factura(s) asociada(s)', false],
+    ],
+];
+
+// Nombre legible de la entidad para el mensaje de error.
+$NOMBRE_ENTIDAD = [
+    'propietarios' => 'este propietario',
+    'fincas'       => 'esta finca',
+    'inmuebles'    => 'este inmueble',
+    'inquilinos'   => 'este inquilino',
+];
+
+/**
+ * Comprueba si la tabla/id tienen registros dependientes que impidan el borrado (lógico o físico).
+ * Devuelve null si se puede borrar, o un array ['error'=>..,'details'=>[...]] si no.
+ */
+function comprobarDependencias(PDO $pdo, string $table, int $id): ?array {
+    global $DEPENDENCIAS_BORRADO, $NOMBRE_ENTIDAD;
+    if (!isset($DEPENDENCIAS_BORRADO[$table])) return null;
+
+    $details = [];
+    $partes  = [];
+    foreach ($DEPENDENCIAS_BORRADO[$table] as [$tablaHija, $columnaFk, $etiqueta, $respetaEliminado]) {
+        $sql = "SELECT COUNT(*) FROM `$tablaHija` WHERE `$columnaFk` = ?";
+        if ($respetaEliminado) $sql .= " AND `eliminado` = 0";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$id]);
+        $n = (int)$stmt->fetchColumn();
+        if ($n > 0) {
+            $details[$tablaHija] = $n;
+            $partes[] = "$n $etiqueta";
+        }
+    }
+    if (!$partes) return null;
+
+    $nombre = $NOMBRE_ENTIDAD[$table] ?? 'este registro';
+    return [
+        'error'   => "No se puede eliminar $nombre porque tiene " . implode(' y ', $partes) . '.',
+        'details' => $details,
+    ];
+}
 
 // ── IneIndexService: obtiene la variación anual del IPC o IRAV ───────────
 //
@@ -307,6 +393,19 @@ try {
         $pdo->exec("ALTER TABLE `contratos` ADD COLUMN `direccion_fiador` TEXT DEFAULT NULL");
     }
 
+    // ── Migración: borrado lógico (propietarios, fincas, inmuebles, inquilinos) ──
+    // Estas tablas nunca se borran físicamente: 'delete' marca eliminado=1 en su lugar
+    // (ver comprobarDependencias() y la acción 'delete' más abajo).
+    foreach (['propietarios', 'fincas', 'inmuebles', 'inquilinos'] as $tablaBorradoLogico) {
+        $colsTabla = array_column($pdo->query("SHOW COLUMNS FROM `$tablaBorradoLogico`")->fetchAll(), 'Field');
+        if (!in_array('eliminado', $colsTabla, true)) {
+            $pdo->exec("ALTER TABLE `$tablaBorradoLogico` ADD COLUMN `eliminado` TINYINT(1) NOT NULL DEFAULT 0");
+        }
+        if (!in_array('eliminado_en', $colsTabla, true)) {
+            $pdo->exec("ALTER TABLE `$tablaBorradoLogico` ADD COLUMN `eliminado_en` DATETIME NULL DEFAULT NULL");
+        }
+    }
+
     // ── Migración: columna recibo_rectificado_id en recibos (recibos rectificativos RER) ──
     $existingColsRecibos = array_column($pdo->query("SHOW COLUMNS FROM `recibos`")->fetchAll(), 'Field');
     if (!in_array('recibo_rectificado_id', $existingColsRecibos)) {
@@ -323,12 +422,58 @@ try {
                 `entidad` VARCHAR(50) DEFAULT '',
                 `entidad_id` INT DEFAULT NULL,
                 `descripcion` TEXT DEFAULT NULL,
+                `usuario_id` INT DEFAULT NULL,
+                `usuario_nombre` VARCHAR(150) DEFAULT NULL,
+                `usuario_username` VARCHAR(60) DEFAULT NULL,
+                `usuario_rol` VARCHAR(20) DEFAULT NULL,
+                `ip` VARCHAR(45) DEFAULT NULL,
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 INDEX `idx_log_fecha` (`fecha`),
-                INDEX `idx_log_tipo` (`tipo_accion`)
+                INDEX `idx_log_tipo` (`tipo_accion`),
+                INDEX `idx_log_usuario` (`usuario_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
         } catch (\PDOException $e) { /* tabla ya existe */ }
+
+        // Instalaciones existentes con log_actividad anterior a la atribución de usuario:
+        // añadir las columnas nuevas si faltan (misma tabla, no se recrea ni se pierden datos).
+        $colsLog = array_column($pdo->query("SHOW COLUMNS FROM `log_actividad`")->fetchAll(), 'Field');
+        foreach ([
+            'usuario_id'       => "ALTER TABLE `log_actividad` ADD COLUMN `usuario_id` INT DEFAULT NULL",
+            'usuario_nombre'   => "ALTER TABLE `log_actividad` ADD COLUMN `usuario_nombre` VARCHAR(150) DEFAULT NULL",
+            'usuario_username' => "ALTER TABLE `log_actividad` ADD COLUMN `usuario_username` VARCHAR(60) DEFAULT NULL",
+            'usuario_rol'      => "ALTER TABLE `log_actividad` ADD COLUMN `usuario_rol` VARCHAR(20) DEFAULT NULL",
+            'ip'               => "ALTER TABLE `log_actividad` ADD COLUMN `ip` VARCHAR(45) DEFAULT NULL",
+        ] as $col => $ddl) {
+            if (!in_array($col, $colsLog, true)) {
+                try { $pdo->exec($ddl); } catch (\PDOException $e) { /* ya existe */ }
+            }
+        }
+        try { $pdo->exec("CREATE INDEX `idx_log_usuario` ON `log_actividad`(`usuario_id`)"); }
+        catch (\PDOException $e) { /* índice ya existe */ }
     }
+
+    // ── Migración: tabla usuarios (sistema de autenticación) ──────
+    // Nunca se destruye en una reinstalación (ver install.php): solo se crea
+    // aquí si todavía no existe, para instalaciones que arrancaron antes de
+    // que existiera el sistema de usuarios.
+    try {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS `usuarios` (
+            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `nombre` VARCHAR(150) NOT NULL,
+            `email` VARCHAR(150) DEFAULT '',
+            `username` VARCHAR(60) NOT NULL,
+            `password_hash` VARCHAR(255) NOT NULL,
+            `rol` VARCHAR(20) NOT NULL DEFAULT 'user',
+            `activo` TINYINT(1) NOT NULL DEFAULT 1,
+            `ultimo_login` DATETIME NULL DEFAULT NULL,
+            `creado_en` DATETIME DEFAULT CURRENT_TIMESTAMP,
+            `actualizado_en` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            `eliminado_en` DATETIME NULL DEFAULT NULL,
+            UNIQUE KEY `uq_usuarios_username` (`username`),
+            INDEX `idx_usuarios_rol` (`rol`),
+            INDEX `idx_usuarios_activo` (`activo`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    } catch (\PDOException $e) { /* tabla ya existe */ }
 
     // ── Migración automática: cifrar contraseñas en texto plano ──
     // Si existe encrypt_key en config.php y hay contraseñas sin cifrar, se cifran ahora.
@@ -395,6 +540,10 @@ try {
         "CREATE INDEX `idx_recibos_inquilino` ON `recibos`(`inquilino_id`)",
         "CREATE INDEX `idx_recibos_inmueble`  ON `recibos`(`inmueble_id`)",
         "CREATE INDEX `idx_historial_contrato` ON `historial_rentas`(`contrato_id`)",
+        "CREATE INDEX `idx_propietarios_eliminado` ON `propietarios`(`eliminado`)",
+        "CREATE INDEX `idx_fincas_eliminado`       ON `fincas`(`eliminado`)",
+        "CREATE INDEX `idx_inmuebles_eliminado`    ON `inmuebles`(`eliminado`)",
+        "CREATE INDEX `idx_inquilinos_eliminado`   ON `inquilinos`(`eliminado`)",
     ];
     foreach ($indicesMigracion as $sqlIdx) {
         try { $pdo->exec($sqlIdx); } catch (\PDOException $e) { /* índice ya existe, se ignora */ }
@@ -418,15 +567,157 @@ try {
         }
     } catch (\PDOException $e) { /* se ignora: se revisará en el próximo arranque */ }
 
+    // ── Control de acceso: todas las acciones exigen sesión iniciada, ──
+    // salvo 'login' (para poder autenticarse) y 'check' (ping de conexión,
+    // sin datos de negocio, usado por install.php antes de tener sesión).
+    // Las auto-migraciones de arriba SÍ deben ejecutarse siempre: son las que
+    // crean la tabla `usuarios` en instalaciones que se actualizan a esta versión.
+    $ACCIONES_PUBLICAS = ['login', 'check'];
+    $usuarioActual = null;
+    if (!in_array($action, $ACCIONES_PUBLICAS, true)) {
+        $usuarioActual = requireLoginApi($pdo);
+    }
+
+    // ── login: autenticación de usuario ───────────────────────
+    if ($action === 'login') {
+        $u = trim($input['username'] ?? '');
+        $p = (string)($input['password'] ?? '');
+        $resultado = attemptLogin($pdo, $u, $p);
+        if (!$resultado['ok']) json_out(['ok' => false, 'error' => $resultado['error']], 401);
+        json_out(['ok' => true, 'user' => $resultado['user'], 'csrf' => csrfToken()]);
+    }
+
+    // ── logout: cierre de sesión ───────────────────────────────
+    if ($action === 'logout') {
+        doLogout($pdo, $usuarioActual);
+        json_out(['ok' => true]);
+    }
+
+    // ── me: usuario autenticado actual (para refrescar la cabecera) ──
+    if ($action === 'me') {
+        json_out(['ok' => true, 'user' => $usuarioActual, 'csrf' => csrfToken()]);
+    }
+
+    // ── Gestión de usuarios (solo admin) ───────────────────────
+    if ($action === 'listUsuarios') {
+        requireRoleApi($usuarioActual, 'admin');
+        $rows = $pdo->query(
+            "SELECT id, nombre, email, username, rol, activo, ultimo_login, creado_en, actualizado_en
+             FROM usuarios WHERE eliminado_en IS NULL ORDER BY id"
+        )->fetchAll();
+        // Castear tipos explícitamente: PDO devuelve todo como string y el frontend
+        // compara u.id === AG_USER.id (número) para saber si es el propio usuario.
+        foreach ($rows as &$r) {
+            $r['id']     = (int)$r['id'];
+            $r['activo'] = (int)$r['activo'];
+        }
+        unset($r);
+        json_out(['ok' => true, 'usuarios' => $rows]);
+    }
+
+    if ($action === 'saveUsuario') {
+        requireRoleApi($usuarioActual, 'admin');
+        if (!csrfValid($input['_csrf'] ?? null)) {
+            json_out(['ok' => false, 'error' => 'Token de seguridad inválido. Recarga la página e inténtalo de nuevo.', 'code' => 'CSRF'], 419);
+        }
+
+        $id       = (int)($input['id'] ?? 0);
+        $nombre   = trim($input['nombre'] ?? '');
+        $email    = trim($input['email'] ?? '');
+        $username = trim($input['username'] ?? '');
+        $rol      = ($input['rol'] ?? 'user') === 'admin' ? 'admin' : 'user';
+        $activo   = !empty($input['activo']) ? 1 : 0;
+        $password = (string)($input['password'] ?? '');
+
+        if ($nombre === '' || $username === '') {
+            json_out(['ok' => false, 'error' => 'Nombre y usuario son obligatorios.'], 422);
+        }
+        if (!preg_match('/^[a-zA-Z0-9._-]{3,60}$/', $username)) {
+            json_out(['ok' => false, 'error' => 'El usuario solo puede contener letras, números, puntos, guiones y guiones bajos (mínimo 3 caracteres).'], 422);
+        }
+
+        // Username único (excluyendo el propio registro si es una edición)
+        $dupSt = $pdo->prepare("SELECT id FROM usuarios WHERE username = ? AND id != ? AND eliminado_en IS NULL");
+        $dupSt->execute([$username, $id]);
+        if ($dupSt->fetch()) {
+            json_out(['ok' => false, 'error' => 'Ya existe un usuario con ese nombre de usuario.'], 422);
+        }
+
+        if ($id > 0) {
+            // Edición: no permitir quitarse a sí mismo el rol admin ni desactivarse
+            // si es el único admin activo (evita quedarse sin ningún administrador).
+            if (($id === (int)$usuarioActual['id']) && ($rol !== 'admin' || $activo !== 1)) {
+                $otrosAdmins = (int)$pdo->query(
+                    "SELECT COUNT(*) FROM usuarios WHERE rol='admin' AND activo=1 AND eliminado_en IS NULL AND id != " . (int)$id
+                )->fetchColumn();
+                if ($otrosAdmins === 0) {
+                    json_out(['ok' => false, 'error' => 'No puedes quitarte el rol de administrador ni desactivarte: eres el único administrador activo.'], 422);
+                }
+            }
+            $sets = "nombre=?, email=?, username=?, rol=?, activo=?";
+            $vals = [$nombre, $email, $username, $rol, $activo];
+            if ($password !== '') {
+                if (strlen($password) < 8) json_out(['ok' => false, 'error' => 'La contraseña debe tener al menos 8 caracteres.'], 422);
+                $sets .= ", password_hash=?";
+                $vals[] = password_hash($password, PASSWORD_DEFAULT);
+            }
+            $vals[] = $id;
+            $pdo->prepare("UPDATE usuarios SET $sets WHERE id = ?")->execute($vals);
+            logActividad($pdo, 'usuario_editado', 'usuarios', $id, "Editado el usuario \"$username\"");
+        } else {
+            if (strlen($password) < 8) {
+                json_out(['ok' => false, 'error' => 'La contraseña debe tener al menos 8 caracteres.'], 422);
+            }
+            $pdo->prepare(
+                "INSERT INTO usuarios (nombre, email, username, password_hash, rol, activo) VALUES (?,?,?,?,?,?)"
+            )->execute([$nombre, $email, $username, password_hash($password, PASSWORD_DEFAULT), $rol, $activo]);
+            $id = (int)$pdo->lastInsertId();
+            logActividad($pdo, 'usuario_creado', 'usuarios', $id, "Creado el usuario \"$username\" (rol: $rol)");
+        }
+        json_out(['ok' => true, 'id' => $id]);
+    }
+
+    if ($action === 'deleteUsuario') {
+        requireRoleApi($usuarioActual, 'admin');
+        if (!csrfValid($input['_csrf'] ?? $_GET['_csrf'] ?? null)) {
+            json_out(['ok' => false, 'error' => 'Token de seguridad inválido. Recarga la página e inténtalo de nuevo.', 'code' => 'CSRF'], 419);
+        }
+        $id = (int)($_GET['id'] ?? $input['id'] ?? 0);
+        if ($id <= 0) json_out(['ok' => false, 'error' => 'Parámetros inválidos'], 400);
+        if ($id === (int)$usuarioActual['id']) {
+            json_out(['ok' => false, 'error' => 'No puedes eliminar tu propio usuario mientras tienes la sesión iniciada.'], 422);
+        }
+        $st = $pdo->prepare("SELECT username, rol, activo FROM usuarios WHERE id = ? AND eliminado_en IS NULL");
+        $st->execute([$id]);
+        $row = $st->fetch();
+        if (!$row) json_out(['ok' => false, 'error' => 'Usuario no encontrado'], 404);
+        if ($row['rol'] === 'admin' && (int)$row['activo'] === 1) {
+            $otrosAdmins = (int)$pdo->query(
+                "SELECT COUNT(*) FROM usuarios WHERE rol='admin' AND activo=1 AND eliminado_en IS NULL AND id != " . (int)$id
+            )->fetchColumn();
+            if ($otrosAdmins === 0) {
+                json_out(['ok' => false, 'error' => 'No se puede eliminar: es el único administrador activo.'], 422);
+            }
+        }
+        $pdo->prepare("UPDATE usuarios SET eliminado_en = NOW(), activo = 0 WHERE id = ?")->execute([$id]);
+        logActividad($pdo, 'usuario_eliminado', 'usuarios', $id, "Eliminado el usuario \"{$row['username']}\"");
+        json_out(['ok' => true]);
+    }
+
     // ── getAll: carga inicial completa de la BD ──────────────
     // El JavaScript llama a esto una sola vez al arrancar para cachear
     // todos los datos en memoria (objeto DB._cache).
     // Los campos cifrados (gmail_pass, verifactu_cert_pass) se descifran
     // aquí antes de devolver al cliente JS para que el frontend sea transparente.
     if ($action === 'getAll') {
+        global $TABLAS_CON_BORRADO_LOGICO;
         $result = [];
         foreach ($TABLES as $t) {
-            $rows    = $pdo->query("SELECT * FROM `$t` ORDER BY id")->fetchAll();
+            // Las tablas con borrado lógico nunca envían al navegador los registros
+            // marcados eliminado=1: quedan fuera de listados, selects, informes y PDF
+            // sin necesidad de filtrar en cada pantalla (ver acción 'delete' más abajo).
+            $where = in_array($t, $TABLAS_CON_BORRADO_LOGICO, true) ? ' WHERE `eliminado` = 0' : '';
+            $rows    = $pdo->query("SELECT * FROM `$t`$where ORDER BY id")->fetchAll();
             $jCols   = $JSON_COLS;
             $result[$t] = array_map(fn($r) => rowToObj($r, $jCols), $rows);
         }
@@ -458,6 +749,7 @@ try {
 
     // ── log: registrar una acción en log_actividad ───────────
     // Si log_actividad está desactivado en config.php, responde ok sin insertar.
+    // El usuario se toma siempre de la sesión del servidor (nunca del cliente).
     if ($action === 'log') {
         if (empty($cfg['log_actividad'])) {
             json_out(['ok' => true, 'skip' => true]);
@@ -467,26 +759,29 @@ try {
         $entId   = isset($input['entidad_id']) ? (int)$input['entidad_id'] : null;
         $desc    = trim($input['descripcion']  ?? '');
         if (!$tipo) json_out(['ok' => false, 'error' => 'tipo_accion requerido'], 400);
-        $pdo->prepare(
-            "INSERT INTO `log_actividad` (fecha, tipo_accion, entidad, entidad_id, descripcion) VALUES (NOW(), ?, ?, ?, ?)"
-        )->execute([$tipo, $entidad, $entId, $desc]);
-        json_out(['ok' => true, 'id' => (int)$pdo->lastInsertId()]);
+        logActividad($pdo, $tipo, $entidad, $entId, $desc);
+        json_out(['ok' => true]);
     }
 
     // ── getLog: obtener registros de actividad con filtros ────
     // Devuelve los últimos N registros (defecto 100, máx 200).
-    // Filtros opcionales: tipo (GET), desde (GET fecha), hasta (GET fecha).
+    // Filtros opcionales: tipo, desde, hasta (GET) y usuario_id (GET).
     if ($action === 'getLog') {
         if (empty($cfg['log_actividad'])) json_out([]);
-        $tipo   = trim($_GET['tipo']  ?? '');
-        $desde  = trim($_GET['desde'] ?? '');
-        $hasta  = trim($_GET['hasta'] ?? '');
-        $limite = min(200, max(1, (int)($_GET['limite'] ?? 100)));
-        $where  = ['1=1'];
-        $params = [];
+        $tipo    = trim($_GET['tipo']  ?? '');
+        $desde   = trim($_GET['desde'] ?? '');
+        $hasta   = trim($_GET['hasta'] ?? '');
+        $usrId   = trim($_GET['usuario_id'] ?? '');
+        $limite  = min(200, max(1, (int)($_GET['limite'] ?? 100)));
+        $where   = ['1=1'];
+        $params  = [];
         if ($tipo)  { $where[] = 'tipo_accion = ?'; $params[] = $tipo; }
         if ($desde) { $where[] = 'fecha >= ?';      $params[] = $desde . ' 00:00:00'; }
         if ($hasta) { $where[] = 'fecha <= ?';      $params[] = $hasta . ' 23:59:59'; }
+        if ($usrId !== '') {
+            if ($usrId === '0') { $where[] = 'usuario_id IS NULL'; }
+            else                { $where[] = 'usuario_id = ?'; $params[] = (int)$usrId; }
+        }
         $sql = "SELECT * FROM `log_actividad` WHERE " . implode(' AND ', $where) .
                " ORDER BY id DESC LIMIT " . $limite;
         $st = $pdo->prepare($sql);
@@ -494,13 +789,18 @@ try {
         $rows = $st->fetchAll(PDO::FETCH_ASSOC);
         $result = array_map(function ($r) {
             return [
-                'id'          => (int)$r['id'],
-                'fecha'       => $r['fecha'],
-                'tipo_accion' => $r['tipo_accion'],
-                'entidad'     => $r['entidad'],
-                'entidad_id'  => $r['entidad_id'] !== null ? (int)$r['entidad_id'] : null,
-                'descripcion' => $r['descripcion'],
-                'created_at'  => $r['created_at'],
+                'id'               => (int)$r['id'],
+                'fecha'            => $r['fecha'],
+                'tipo_accion'      => $r['tipo_accion'],
+                'entidad'          => $r['entidad'],
+                'entidad_id'       => $r['entidad_id'] !== null ? (int)$r['entidad_id'] : null,
+                'descripcion'      => $r['descripcion'],
+                'usuario_id'       => isset($r['usuario_id']) && $r['usuario_id'] !== null ? (int)$r['usuario_id'] : null,
+                'usuario_nombre'   => $r['usuario_nombre']   ?? null,
+                'usuario_username' => $r['usuario_username'] ?? null,
+                'usuario_rol'      => $r['usuario_rol']      ?? null,
+                'ip'               => $r['ip'] ?? null,
+                'created_at'       => $r['created_at'],
             ];
         }, $rows);
         json_out($result);
@@ -725,6 +1025,7 @@ try {
         }
 
         $id   = isset($input['id']) ? (int)$input['id'] : 0;
+        $esAlta = ($id <= 0);
         $cols = $SCHEMA[$table] ?? [];
 
         // ── VERI*FACTU: hash encadenado al insertar una factura nueva ──────
@@ -792,18 +1093,66 @@ try {
             $id = (int)$pdo->lastInsertId();
         }
 
+        // Registrar en el log de actividad las altas/modificaciones de las entidades
+        // principales de negocio (propietarios, fincas, inmuebles, inquilinos, contratos).
+        // Recibos y facturas no se registran aquí: sus eventos relevantes (cobro, anulación,
+        // factura generada...) ya se registran de forma más descriptiva desde el frontend.
+        if (in_array($table, ['propietarios', 'fincas', 'inmuebles', 'inquilinos', 'contratos'], true)) {
+            logActividad($pdo, ($esAlta ? 'alta_' : 'modificacion_') . $table, $table, $id,
+                ($esAlta ? 'Alta' : 'Modificación') . " en $table #$id");
+        }
+
         // Devolver el objeto original con el id real (útil si era nuevo)
         $input['id'] = $id;
         json_out($input);
     }
 
-    // ── delete: eliminar registro por id ─────────────────────
-    // Valida tabla e id antes de ejecutar el DELETE.
+    // ── delete: eliminar registro por id ──────────────────────
+    // Ninguna entidad de negocio se borra físicamente:
+    //   · contratos/recibos/facturas → bloqueado siempre (usar baja/anulación/rectificación).
+    //   · propietarios/fincas/inmuebles/inquilinos → borrado LÓGICO (UPDATE eliminado=1)
+    //     si no hay dependencias; si las hay, se bloquea con el detalle del motivo.
     if ($action === 'delete') {
+        global $TABLAS_SIN_BORRADO_FISICO, $TABLAS_CON_BORRADO_LOGICO;
         $table = $_GET['table'] ?? '';
         $id    = (int)($_GET['id'] ?? 0);
         if (!validTable($table) || $id <= 0) json_out(['error' => 'Parámetros inválidos'], 400);
 
+        // Documentos con trazabilidad legal/contractual: nunca se borran físicamente
+        // y no tienen equivalente de borrado lógico adicional (ya usan 'estado').
+        if (isset($TABLAS_SIN_BORRADO_FISICO[$table])) {
+            json_out([
+                'ok'    => false,
+                'error' => $TABLAS_SIN_BORRADO_FISICO[$table],
+                'code'  => 'DELETE_NOT_ALLOWED',
+            ], 409);
+        }
+
+        // Resto de tablas de negocio: bloquear si tienen registros dependientes activos.
+        $dep = comprobarDependencias($pdo, $table, $id);
+        if ($dep !== null) {
+            json_out([
+                'ok'      => false,
+                'error'   => $dep['error'],
+                'code'    => 'ENTITY_HAS_DEPENDENCIES',
+                'details' => $dep['details'],
+            ], 409);
+        }
+
+        // Borrado lógico: el registro se conserva en BD (auditoría/histórico) pero
+        // queda excluido de getAll, por lo que desaparece de listados, selects,
+        // informes y PDF sin necesidad de tocar cada pantalla.
+        if (in_array($table, $TABLAS_CON_BORRADO_LOGICO, true)) {
+            $stmt = $pdo->prepare("UPDATE `$table` SET `eliminado` = 1, `eliminado_en` = NOW() WHERE id = ?");
+            $stmt->execute([$id]);
+            if ($stmt->rowCount() === 0) json_out(['ok' => false, 'error' => 'Registro no encontrado'], 404);
+            logActividad($pdo, 'eliminacion_logica', $table, $id, "Eliminación lógica en $table #$id");
+            json_out(['ok' => true, 'message' => 'Registro eliminado correctamente.', 'logical_delete' => true]);
+        }
+
+        // Cualquier otra tabla de la lista blanca (ej. configuracion, contratos_inq_sec,
+        // empresa) sin trazabilidad legal ni jerarquía de negocio: sin botón "Eliminar"
+        // en la interfaz, se mantiene el borrado físico simple existente.
         $pdo->prepare("DELETE FROM `$table` WHERE id = ?")->execute([$id]);
         json_out(['ok' => true]);
     }

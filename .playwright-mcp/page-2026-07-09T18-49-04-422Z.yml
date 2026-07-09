@@ -1,0 +1,18 @@
+- generic [ref=f5e1]:
+  - generic [ref=f5e2]:
+    - img [ref=f5e4]
+    - heading "AlquiGest" [level=1] [ref=f5e7]
+    - paragraph [ref=f5e8]: Inicia sesión para continuar
+    - generic [ref=f5e9]: Usuario o contraseña incorrectos.
+    - generic [ref=f5e10]:
+      - generic [ref=f5e11]:
+        - generic [ref=f5e12]: Usuario
+        - textbox "Usuario" [active] [ref=f5e13]
+      - generic [ref=f5e14]:
+        - generic [ref=f5e15]: Contraseña
+        - textbox "Contraseña" [ref=f5e16]
+      - button "Entrar" [ref=f5e17] [cursor=pointer]
+  - contentinfo [ref=f5e18]:
+    - text: AlquiGest ·
+    - link "Volver al inicio" [ref=f5e19] [cursor=pointer]:
+      - /url: index.php

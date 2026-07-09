@@ -1,0 +1,351 @@
+- generic [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - complementary [ref=f2e3]:
+      - generic [ref=f2e4]:
+        - img [ref=f2e5]
+        - generic [ref=f2e9]:
+          - generic [ref=f2e10]: AlquiGest
+          - generic [ref=f2e11]: Gestión de Alquileres
+      - navigation [ref=f2e12]:
+        - link "Inicio" [ref=f2e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=f2e14]
+          - text: Inicio
+        - generic [ref=f2e16]:
+          - generic [ref=f2e17]: Principal
+          - button "Dashboard" [ref=f2e18] [cursor=pointer]:
+            - img [ref=f2e19]
+            - text: Dashboard
+        - generic [ref=f2e24]:
+          - generic [ref=f2e25]: Maestros
+          - button "Propietarios" [ref=f2e26] [cursor=pointer]:
+            - img [ref=f2e27]
+            - text: Propietarios
+          - button "Fincas / Edificios" [ref=f2e30] [cursor=pointer]:
+            - img [ref=f2e31]
+            - text: Fincas / Edificios
+          - button "Pisos / Locales" [ref=f2e34] [cursor=pointer]:
+            - img [ref=f2e35]
+            - text: Pisos / Locales
+          - button "Inquilinos" [ref=f2e38] [cursor=pointer]:
+            - img [ref=f2e39]
+            - text: Inquilinos
+        - generic [ref=f2e44]:
+          - generic [ref=f2e45]: Alquileres
+          - button "Contratos" [ref=f2e46] [cursor=pointer]:
+            - img [ref=f2e47]
+            - text: Contratos
+          - button "Recibos" [ref=f2e50] [cursor=pointer]:
+            - img [ref=f2e51]
+            - text: Recibos
+          - button "Facturas" [ref=f2e54] [cursor=pointer]:
+            - img [ref=f2e55]
+            - text: Facturas
+          - button "Generar Recibos" [ref=f2e57] [cursor=pointer]:
+            - img [ref=f2e58]
+            - text: Generar Recibos
+        - generic [ref=f2e60]:
+          - generic [ref=f2e61]: Informes
+          - button "Informes Excel" [ref=f2e62] [cursor=pointer]:
+            - img [ref=f2e63]
+            - text: Informes Excel
+          - button "Calendario Cobros" [ref=f2e64] [cursor=pointer]:
+            - img [ref=f2e65]
+            - text: Calendario Cobros
+          - button "Morosidad" [ref=f2e67] [cursor=pointer]:
+            - img [ref=f2e68]
+            - text: Morosidad
+          - button "Actividad" [ref=f2e70] [cursor=pointer]:
+            - img [ref=f2e71]
+            - text: Actividad
+        - generic [ref=f2e74]:
+          - generic [ref=f2e75]: Configuración
+          - button "Mi Empresa" [ref=f2e76] [cursor=pointer]:
+            - img [ref=f2e77]
+            - text: Mi Empresa
+          - button "Parámetros" [ref=f2e80] [cursor=pointer]:
+            - img [ref=f2e81]
+            - text: Parámetros
+          - button "VERI*FACTU" [ref=f2e84] [cursor=pointer]:
+            - img [ref=f2e85]
+            - text: VERI*FACTU
+          - button "Plantillas" [ref=f2e87] [cursor=pointer]:
+            - img [ref=f2e88]
+            - text: Plantillas
+          - button "Usuarios" [ref=f2e91] [cursor=pointer]:
+            - img [ref=f2e92]
+            - text: Usuarios
+      - generic [ref=f2e97]: AlquiGest v3.0.1 · 2026
+    - generic [ref=f2e98]:
+      - banner [ref=f2e99]:
+        - generic [ref=f2e100]: Plantillas DOCX
+        - generic [ref=f2e101]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=f2e102]
+        - generic [ref=f2e103]:
+          - button "Alternar modo oscuro" [ref=f2e104] [cursor=pointer]:
+            - img [ref=f2e105]
+          - button "3" [ref=f2e121] [cursor=pointer]:
+            - img [ref=f2e113]
+            - generic [ref=f2e122]: "3"
+          - button "A Admin" [ref=f2e117] [cursor=pointer]:
+            - generic [ref=f2e118]: A
+            - generic [ref=f2e119]: Admin
+          - generic [ref=f2e123]:
+            - button "Subir plantilla" [ref=f2e124] [cursor=pointer]:
+              - img [ref=f2e125]
+              - text: Subir plantilla
+            - 'button "{ } Variables" [ref=f2e126] [cursor=pointer]'
+      - generic [ref=f2e120]:
+        - generic [ref=f2e128]:
+          - heading "Plantillas DOCX" [level=2] [ref=f2e129]
+          - generic [ref=f2e130]:
+            - text: Gestiona plantillas Word con variables dinámicas como
+            - code [ref=f2e131]: "{{Renta}}"
+            - text: ","
+            - code [ref=f2e132]: "{{NombreInquilino}}"
+            - text: ", etc."
+        - generic [ref=f2e133]:
+          - generic [ref=f2e134]:
+            - generic [ref=f2e136]: Contrato de arrendamiento (4)
+            - table [ref=f2e137]:
+              - rowgroup [ref=f2e138]:
+                - row "Nombre Descripción Estado Acciones" [ref=f2e139]:
+                  - columnheader "Nombre" [ref=f2e140]
+                  - columnheader "Descripción" [ref=f2e141]
+                  - columnheader "Estado" [ref=f2e142]
+                  - columnheader "Acciones" [ref=f2e143]
+              - rowgroup [ref=f2e144]:
+                - row "Contrato de Vivienda 2026 Contrato de arrendamiento de vivienda (inquilino único) Activa Vista previa Más ▾" [ref=f2e145]:
+                  - cell "Contrato de Vivienda 2026" [ref=f2e146]
+                  - cell "Contrato de arrendamiento de vivienda (inquilino único)" [ref=f2e147]
+                  - cell "Activa" [ref=f2e148]:
+                    - generic [ref=f2e149]: Activa
+                  - cell "Vista previa Más ▾" [ref=f2e150]:
+                    - generic [ref=f2e151]:
+                      - button "Vista previa" [active] [ref=f2e152] [cursor=pointer]
+                      - button "Más ▾" [ref=f2e154] [cursor=pointer]
+                - row "Contrato de Vivienda 2026 (Multi-inquilino) Contrato de arrendamiento de vivienda con bloque multi-inquilino Activa Vista previa Más ▾" [ref=f2e155]:
+                  - cell "Contrato de Vivienda 2026 (Multi-inquilino)" [ref=f2e156]
+                  - cell "Contrato de arrendamiento de vivienda con bloque multi-inquilino" [ref=f2e157]
+                  - cell "Activa" [ref=f2e158]:
+                    - generic [ref=f2e159]: Activa
+                  - cell "Vista previa Más ▾" [ref=f2e160]:
+                    - generic [ref=f2e161]:
+                      - button "Vista previa" [ref=f2e162] [cursor=pointer]
+                      - button "Más ▾" [ref=f2e164] [cursor=pointer]
+                - row "Contrato de Vivienda Temporada 2026 Contrato de arrendamiento de vivienda de temporada (inquilino único) Activa Vista previa Más ▾" [ref=f2e165]:
+                  - cell "Contrato de Vivienda Temporada 2026" [ref=f2e166]
+                  - cell "Contrato de arrendamiento de vivienda de temporada (inquilino único)" [ref=f2e167]
+                  - cell "Activa" [ref=f2e168]:
+                    - generic [ref=f2e169]: Activa
+                  - cell "Vista previa Más ▾" [ref=f2e170]:
+                    - generic [ref=f2e171]:
+                      - button "Vista previa" [ref=f2e172] [cursor=pointer]
+                      - button "Más ▾" [ref=f2e174] [cursor=pointer]
+                - row "Contrato de Vivienda Temporada 2026 (Multi-inquilino) Contrato de arrendamiento de vivienda de temporada con bloque multi-inquilino Activa Vista previa Más ▾" [ref=f2e175]:
+                  - cell "Contrato de Vivienda Temporada 2026 (Multi-inquilino)" [ref=f2e176]
+                  - cell "Contrato de arrendamiento de vivienda de temporada con bloque multi-inquilino" [ref=f2e177]
+                  - cell "Activa" [ref=f2e178]:
+                    - generic [ref=f2e179]: Activa
+                  - cell "Vista previa Más ▾" [ref=f2e180]:
+                    - generic [ref=f2e181]:
+                      - button "Vista previa" [ref=f2e182] [cursor=pointer]
+                      - button "Más ▾" [ref=f2e184] [cursor=pointer]
+          - generic [ref=f2e185]:
+            - generic [ref=f2e187]: Otro (2)
+            - table [ref=f2e188]:
+              - rowgroup [ref=f2e189]:
+                - row "Nombre Descripción Estado Acciones" [ref=f2e190]:
+                  - columnheader "Nombre" [ref=f2e191]
+                  - columnheader "Descripción" [ref=f2e192]
+                  - columnheader "Estado" [ref=f2e193]
+                  - columnheader "Acciones" [ref=f2e194]
+              - rowgroup [ref=f2e195]:
+                - row "Inventario del Contrato 2026 Anexo de inventario y estado del inmueble (inquilino único) Activa Vista previa Más ▾" [ref=f2e196]:
+                  - cell "Inventario del Contrato 2026" [ref=f2e197]
+                  - cell "Anexo de inventario y estado del inmueble (inquilino único)" [ref=f2e198]
+                  - cell "Activa" [ref=f2e199]:
+                    - generic [ref=f2e200]: Activa
+                  - cell "Vista previa Más ▾" [ref=f2e201]:
+                    - generic [ref=f2e202]:
+                      - button "Vista previa" [ref=f2e203] [cursor=pointer]
+                      - button "Más ▾" [ref=f2e205] [cursor=pointer]
+                - row "Inventario del Contrato 2026 (Multi-inquilino) Anexo de inventario y estado del inmueble con bloque multi-inquilino Activa Vista previa Más ▾" [ref=f2e206]:
+                  - cell "Inventario del Contrato 2026 (Multi-inquilino)" [ref=f2e207]
+                  - cell "Anexo de inventario y estado del inmueble con bloque multi-inquilino" [ref=f2e208]
+                  - cell "Activa" [ref=f2e209]:
+                    - generic [ref=f2e210]: Activa
+                  - cell "Vista previa Más ▾" [ref=f2e211]:
+                    - generic [ref=f2e212]:
+                      - button "Vista previa" [ref=f2e213] [cursor=pointer]
+                      - button "Más ▾" [ref=f2e215] [cursor=pointer]
+  - generic [ref=f2e217]:
+    - generic [ref=f2e218]:
+      - generic [ref=f2e219]: Vista previa de plantilla
+      - button [ref=f2e220] [cursor=pointer]:
+        - img [ref=f2e221]
+    - generic [ref=f2e224]:
+      - paragraph [ref=f2e225]: Vista previa con variables de sistema. Las variables en verde están resueltas. Las variables en rojo no están disponibles sin seleccionar una entidad.
+      - generic [ref=f2e226]:
+        - paragraph [ref=f2e227]: CONTRATO DE ARRENDAMIENTO DE VIVIDIENDA
+        - paragraph [ref=f2e228]:
+          - text: En Sevilla, a
+          - mark [ref=f2e229]: 9 de Julio del 2026
+        - paragraph [ref=f2e230]: REUNIDOS
+        - paragraph [ref=f2e231]: "De una parte, en lo sucesivo LA PARTE ARRENDADORA:"
+        - paragraph [ref=f2e232]:
+          - text: DON/ÑA
+          - mark [ref=f2e233]: <<NombrePropietario>>
+          - text: "mayor de edad, con NIF:"
+          - mark [ref=f2e234]: <<NIFPropietario>>
+          - text: y domicilio en
+          - mark [ref=f2e235]: <<DireccionPropietario>>
+          - text: ", en su propio nombre y derecho."
+        - paragraph [ref=f2e236]: "Y de otra, en lo sucesivo LA PARTE ARRENDATARIA:"
+        - paragraph [ref=f2e237]:
+          - text: DON/ÑA
+          - mark [ref=f2e238]: <<NombreInquilino>>
+          - text: "de mayor de edad, con NIF:"
+          - mark [ref=f2e239]: <<NIFInquilino>>
+          - text: y domicilio en
+          - mark [ref=f2e240]: <<DireccionInquilino>>
+          - text: ", en su propio nombre y derecho."
+        - paragraph [ref=f2e241]: Tienen y se reconocen mutuamente plena capacidad para el otorgamiento del presente contrato y a tal fin.
+        - paragraph [ref=f2e242]: EXPONEN
+        - paragraph [ref=f2e243]: "PRIMERO. - Que LA PARTE ARRENDADORA es propietaria de las siguientes viviendas, objeto del presente contrato de arrendamiento:"
+        - paragraph [ref=f2e244]:
+          - text: "- Sita en"
+          - mark [ref=f2e245]: <<DireccionInmueble>>
+          - text: con referencia catastral
+          - mark [ref=f2e246]: <<RefCatastral>>
+          - text: .
+        - paragraph [ref=f2e247]: "SEGUNDO. - Que interesando a LA PARTE ARRENDATARIA ocupar dicha vivienda, ambas partes llevan a cabo el presente CONTRATO DE ARRENDAMIENTO DE VIVIENDA, de conformidad con las siguientes:"
+        - paragraph [ref=f2e248]: ESTIPULACIONES
+        - paragraph [ref=f2e249]: PRIMERA. - OBJETO DEL CONTRATO.
+        - paragraph [ref=f2e250]:
+          - text: Es objeto del presente contrato el arrendamiento de la vivienda sita en Sevilla, en
+          - mark [ref=f2e251]: <<DireccionInmueble>>
+          - text: y cuya extensión, circunstancias, usos, características y servicios comunes y privativos conoce y acepta el arrendatario, el cual declara recibir en este acto la expresada finca en perfectas condiciones para su uso convenido.
+        - paragraph [ref=f2e252]: SEGUNDA. - CAUSA DEL CONTRATO.
+        - paragraph [ref=f2e253]: La vivienda arrendada lo es para ser destinada única y exclusivamente a satisfacer la necesidad de vivienda permanente del arrendatario y su familia.
+        - paragraph [ref=f2e254]: Es objeto de este arrendamiento el piso descrito en el expositivo PRIMERO del presente contrato, debiéndose desalojar una vez se rescinda el arrendamiento.
+        - paragraph [ref=f2e255]: TERCERA. - DURACIÓN DEL CONTRATO.
+        - paragraph [ref=f2e256]:
+          - text: La duración del presente contrato será de
+          - mark [ref=f2e257]: <<Duracion>>
+          - text: a partir del
+          - mark [ref=f2e258]: <<FechaInicio>>
+          - text: hasta el
+          - mark [ref=f2e259]: <<FechaFin>>
+          - text: . Llegado el día del vencimiento, el contrato se prorrogará obligatoriamente por plazos anuales hasta que el arrendamiento alcance una duración mínima de cinco años, salvo que el arrendatario manifieste al arrendador, con al menos treinta días de antelación a la fecha de terminación del contrato o de cualquiera de sus prórrogas, su voluntad de no renovarlo.
+        - paragraph [ref=f2e260]: Penalizaciones por determinados incumplimientos.
+        - paragraph [ref=f2e261]: El arrendatario podrá desistir del contrato una vez hayan transcurrido al menos seis meses, siempre que lo comunique al arrendador con una antelación mínima de treinta días. En tal caso, el arrendatario indemnizará al arrendador con una cantidad equivalente a una mensualidad de la renta en vigor por cada año del contrato que reste por cumplir. Los períodos de tiempo inferiores al año darán lugar a la parte proporcional de la indemnización.
+        - paragraph [ref=f2e262]: CUARTA. - PRECIO DEL ARRENDAMIENTO.
+        - paragraph [ref=f2e263]:
+          - text: El precio estipulado por ambas partes es de
+          - mark [ref=f2e264]: <<Renta>>
+          - text: mensuales, pagaderos por meses anticipados, dentro de los
+          - mark [ref=f2e265]: <<DiaPago>>
+          - text: primeros días del mismo.
+        - paragraph [ref=f2e266]: El retraso en el pago de dos o más cuotas del alquiler, será causa suficiente para la resolución anticipada del presente contrato, sin que sea precisa notificación previa al efecto.
+        - paragraph [ref=f2e267]: QUINTA. -PROHIBICIONES.
+        - paragraph [ref=f2e268]: El arrendatario no podrá realizar obra/reforma alguna sin el permiso manifiesto del arrendador, a tal fin se considerará el expresado por escrito.
+        - paragraph [ref=f2e269]: SEXTA. - ACTUALIZACION DE LA RENTA.
+        - paragraph [ref=f2e270]:
+          - text: La renta pactada de
+          - mark [ref=f2e271]: <<Renta>>
+          - text: regirá únicamente durante el primer año de vigencia del contrato. A partir de la citada fecha se producirá la revisión anual de la renta en la fecha de cada aniversario de la firma del contrato.
+        - paragraph [ref=f2e272]: La actualización se realizará aplicando la variación anual del Índice de Referencia de Arrendamientos de Vivienda (IRAV) o, en su caso, del índice o sistema que lo sustituya conforme a la normativa vigente.
+        - paragraph [ref=f2e273]: En todo caso, se aplicará el índice que permita la mayor actualización de renta dentro de los límites legales vigentes en cada momento.
+        - paragraph [ref=f2e274]: La renta actualizada será exigible al arrendatario a partir del mes siguiente a aquel en que la parte arrendadora notifique por escrito la actualización, indicando el porcentaje aplicado.
+        - paragraph [ref=f2e275]:
+          - text: La actualización se realizará aplicando
+          - mark [ref=f2e276]: <<MetodoRevision>>
+          - text: o, en su caso, del índice o sistema que lo sustituya conforme a la normativa vigente.
+        - paragraph [ref=f2e277]: Si en el momento de realizar la revisión de la renta no se hubiese publicado aún el índice aplicable por el organismo correspondiente, se utilizará el último índice oficial disponible.
+        - paragraph [ref=f2e278]: Cualquier modificación normativa que afecte al sistema de actualización será de aplicación automática al presente contrato, sin necesidad de acuerdo entre las partes.
+        - paragraph [ref=f2e279]: SEPTIMA. - CONSERVACIÓN DE LA VIVIENDA.
+        - paragraph [ref=f2e280]: El arrendador queda obligado a mantener la vivienda, así como sus instalaciones y servicios en estado de habitabilidad para servir al uso convenido, por lo que tales gastos serán de su exclusiva cuenta.
+        - paragraph [ref=f2e281]: Las reparaciones que sean necesarias por el uso ordinario, o por el desgaste lógico por uso y que tengan la consideración de “pequeñas reparaciones” (a este efecto se considerarán en cualquier caso las que no sobrepasen los 200,00 € en total), serán de la exclusiva cuenta del arrendatario.
+        - paragraph [ref=f2e282]: Igualmente serán de su cuenta las reparaciones que sean consecuencia de un daño doloso o un mal uso de la cosa arrendada.
+        - paragraph [ref=f2e283]: El arrendatario se obliga a permitir la entrada a los trabajadores cuando deban realizar obras de conservación en la vivienda. Asimismo, deberá comunicar al arrendador, por el medio más rápido posible, la necesidad de obras de conservación; en cualquier caso, permitirá el acceso del arrendador a la vivienda, o de las personas que designe, para verificar el estado del inmueble. Las obras solo podrán realizarse por el arrendatario, en los casos de urgencia y para evitar daños mayores o perjuicios a terceros, pero siempre dando inmediata cuenta al arrendador.
+        - paragraph [ref=f2e284]: OCTAVA. - SERVICIOS, SUMINISTROS Y GASTOS DE COMUNIDAD.
+        - paragraph [ref=f2e285]: Todos los servicios y suministros, y sus tributos, con que cuenta la vivienda (agua, saneamiento, luz, etc.) serán por cuenta exclusiva de la arrendataria, aunque los recibos vengan a nombre del arrendador.
+        - paragraph [ref=f2e286]: La arrendataria deberá contratar con la empresa suministradora de fluido eléctrico y agua, el abastecimiento de electricidad y agua de la vivienda arrendada o en caso de estar contratada la arrendataria se compromete a cambiar dichos suministros a su nombre, siendo de su cuenta las facturas que se emitan por tal concepto, así como todos los gastos que se ocasionen para su contratación.
+        - paragraph [ref=f2e287]: A la resolución del contrato de arrendamiento, la parte arrendataria se obliga a la realización de cuantos actos sean precisos en orden a cambiar la titularidad de los suministros a nombre del arrendador, o de la persona que ocupe la finca como nuevo arrendatario, así como la domiciliación bancaria para el pago de los mismos.
+        - paragraph [ref=f2e288]: NOVENA. -DE LOS DAÑOS Y PERJUICIOS.
+        - paragraph [ref=f2e289]: Además de las causas que se mencionan en los arts. 27 y 28 de la LAU, LA PARTE ARRENDATARIA será responsable tanto de sus propios actos como de los que cometan los restantes ocupantes de la vivienda, aun siendo estos ocasionales, a efectos de la posible indemnización que por daños y perjuicios pueda derivarse.
+        - paragraph [ref=f2e290]: DÉCIMA. - USOS DE BUENA VECINDAD.
+        - paragraph [ref=f2e291]: Queda obligado el arrendatario a observar los usos de buena vecindad y de política urbana, debiendo abstenerse de causar molestias a los vecinos o perjudicar sus inmuebles, tener animales en el local objeto de este arrendamiento, aunque sean domésticos, así como poner en funcionamiento aparatos productores de música o ruido, en horas que alteren el descanso de la vecindad.
+        - paragraph [ref=f2e292]: UNDÉCIMA. - CASO FORTUITO
+        - paragraph [ref=f2e293]: El arrendador no responde de los daños y perjuicios que puedan ocasionarse al arrendatario por caso fortuito, entendiéndose como tales los causados en el contenido de la finca arrendada (mobiliario, electrodomésticos, aparatos electrónicos e informáticos, enseres y en general cualquier objeto propiedad del arrendatario) por filtraciones, humedades, desperfectos en las instalaciones de gas, agua y electricidad, etc.
+        - paragraph [ref=f2e294]: DUODÉCIMA. - MOBILIARIO.
+        - paragraph [ref=f2e295]: Junto con el presente documento se deberá formalizar un Anexo-Inventario donde se relacionan todos los muebles y enseres propiedad de LA PARTE ARRENDADORA que quedan en la vivienda.
+        - paragraph [ref=f2e296]: Dicho mobiliario deberá mantenerse en el perfecto estado en que hoy se encuentra, ya que, en caso contrario, su reparación se realizará con cargo a la fianza.
+        - paragraph [ref=f2e297]: DECIMOTERCERA. - MOTIVOS DE RESOLUCIÓN CONTRACTUAL.
+        - paragraph [ref=f2e298]: El incumplimiento por cualquiera de las partes de las obligaciones resultantes del contrato dará derecho a la parte que hubiere cumplido las suyas a exigir el cumplimiento de la obligación o a promover la resolución del contrato de acuerdo con lo dispuesto en el art. 1124 CC.
+        - paragraph [ref=f2e299]: "2. Además, LA PARTE ARRENDADORA podrá resolver de pleno derecho el contrato por las siguientes causas:"
+        - paragraph [ref=f2e300]: a) La falta de pago de la renta o, en su caso, de cualquiera de las cantidades cuyo pago haya asumido o corresponda a LA PARTE ARRENDATARIA.
+        - paragraph [ref=f2e301]: b) La falta de pago del importe de la fianza o de su actualización.
+        - paragraph [ref=f2e302]: c) El subarriendo o la cesión no consentidos.
+        - paragraph [ref=f2e303]: d) La realización de daños causados dolosamente en la finca o de obras no consentidas por LA PARTE ARRENDADORA cuando el consentimiento de éste sea necesario.
+        - paragraph [ref=f2e304]: e) Cuando en la vivienda tengan lugar actividades molestas, insalubres, nocivas, peligrosas o ilícitas.
+        - paragraph [ref=f2e305]: f) No procederá la prórroga obligatoria del presente contrato si, una vez transcurrido el primer año de duración del mismo, el arrendador comunica al arrendatario que tiene necesidad de la vivienda arrendada para destinarla a vivienda permanente para sí o sus familiares en primer grado de consanguinidad o por adopción o para su cónyuge en los supuestos de sentencia firme de separación, divorcio o nulidad matrimonial. La referida comunicación deberá realizarse al arrendatario al menos con dos meses de antelación a la fecha en la que la vivienda se vaya a necesitar y el arrendatario estará obligado a entregar la finca arrendada en dicho plazo si las partes no llegan a un acuerdo distinto.
+        - paragraph [ref=f2e306]: "3. Del mismo modo, LA PARTE ARRENDATARIA podrá resolver el contrato por las siguientes causas:"
+        - paragraph [ref=f2e307]: a) La no realización por LA PARTE ARRENDADORA de las reparaciones a que se refiere el art. 21.
+        - paragraph [ref=f2e308]: b) La perturbación de hecho o de derecho que realice LA PARTE ARRENDADORA en la utilización de la vivienda.
+        - paragraph [ref=f2e309]: "DECIMOCUARTA. -RENUNCIAS:"
+        - paragraph [ref=f2e310]: La arrendataria hace expresa y formal renuncia a todo derecho de adquisición preferente (tanteo y retracto), en los términos que señala el artículo 25 de la LAU, así como a cualquier indemnización derivada de la extinción de este contrato, pese a que no se prorrogue el arriendo, una vez transcurra el plazo contractual. El arrendador deberá comunicar al arrendatario su intención de vender la vivienda con una antelación mínima de treinta días a la fecha de formalización del contrato de compraventa.
+        - paragraph [ref=f2e311]: DECIMOQUINTA. - JURISDICCIÓN Y COMPETENCIA DE LOS TRIBUNALES.
+        - paragraph [ref=f2e312]: Para el caso de controversia derivada de este contrato, las partes se someten expresa e irrevocablemente a la jurisdicción y competencia de los Tribunales de la ciudad de Sevilla, renunciado, desde ahora, al fuero que, por razón de su domicilio presente o futuro, pudiera corresponderles.
+        - paragraph [ref=f2e313]: DECIMOSEXTA. - DESISTIMIENTO DEL ARRENDATARIO
+        - paragraph [ref=f2e314]: Las partes pactan expresamente que, para el caso de desistimiento unilateral del arrendatario, y siempre que se cumplan los requisitos establecidos en el artículo 11 de la vigente Ley de Arrendamientos Urbanos, el arrendatario deberá indemnizar al arrendador con una cantidad equivalente a una mensualidad de la renta en vigor por cada año del contrato que reste por cumplir. Los períodos de tiempo inferiores al año darán lugar a la parte proporcional de la indemnización.
+        - paragraph [ref=f2e315]: DECIMOSEPTIMA. - CESION Y SUBARRIENDO
+        - paragraph [ref=f2e316]: Será aplicable el art. 8 de la ley, quedando prohibida la cesión o subarriendo total o parcial de la vivienda que no esté expresamente autorizada.
+        - paragraph [ref=f2e317]: DECIMOCTAVA. - FIANZA
+        - paragraph [ref=f2e318]:
+          - text: Con carácter previo a la firma del presente contrato, LA PARTE ARRENDATARIA ha hecho entrega a LA PARTE ARRENDADORA, la cantidad de
+          - mark [ref=f2e319]: <<Fianza>>
+          - text: importe equivalente a UN MES de renta en concepto de fianza legal arrendaticia, que LA PARTE ARRENDADORA declara haber recibido antes de este acto y que le será devuelta a LA PARTE ARRENDATARIA a la finalización del contrato, previa constatación por parte de LA PARTE ARRENDADORA de que la finca se halla en perfecto estado de conservación, entendiendo a este respecto que la misma se halla en igual estado que al comienzo del contrato.
+        - paragraph [ref=f2e320]: DECIMONOVENA. - FIADOR/ES
+        - paragraph [ref=f2e321]:
+          - text: Con independencia de la fianza descrita en el párrafo anterior, DON/ÑA
+          - mark [ref=f2e322]: <<NombreFiador>>
+          - text: "con NIF:"
+          - mark [ref=f2e323]: <<NIFFiador>>
+          - text: con domicilio en
+          - mark [ref=f2e324]: <<DireccionFiador>>
+          - text: constituyen de forma solidaria e indefinida, como fiador y garante en el cumplimiento y pago de las rentas, así como de las cantidades a ellas asimiladas y/o demás obligaciones dimanantes para la misma de este contrato, hasta la finalización del mismo, incluidas sus posibles prórrogas, renunciando expresamente a lo dispuesto en el Art.1.851 del Código Civil, así como los beneficios de orden exclusión y división.
+        - paragraph [ref=f2e325]: VEINTIAVA. - SOLUCIÓN DE CONFLICTOS
+        - paragraph [ref=f2e326]: En la presente cláusula se regulan los acuerdos alcanzados por las partes respecto a la aplicación, con carácter previo a la vía judicial, de Medios Adecuados de Solución de Controversias (MASC).
+        - paragraph [ref=f2e327]: "Apartado 1.- Respecto a los siguientes incumplimientos o conflictos, cuando fuera obligatorio acudir, con carácter previo a la vía judicial, a un MASC:"
+        - paragraph [ref=f2e328]: Impago de la renta (ya sea total o parcialmente) y/o de cantidades asimiladas a renta (suministros, comunidad, basura, tributos, repercusiones del coste de la Oferta Vinculante Confidencial, etc).
+        - paragraph [ref=f2e329]: incumplimiento de la obligación de devolver la posesión del inmueble una vez llegado el vencimiento del plazo contractual o de la prórroga vigente
+        - paragraph [ref=f2e330]: Ambos incumplimientos de forma conjunta.
+        - paragraph [ref=f2e331]: Impago de la fianza y/o de la garantía adicional.
+        - paragraph [ref=f2e332]: Si diera uno o varios de los casos mencionados en este apartado y en ese momento fuera obligatorio acudir, con carácter previo a la vía judicial, a un MASC., las partes acuerdan que el MASC elegido para intentar solucionar extrajudicialmente la controversia será la Oferta Vinculante Confidencial (OVC).
+        - paragraph [ref=f2e333]: Acuerdan las partes que la no recogida de la comunicación que contenga la OVC., su rehusó o su recepción por una tercera persona distinta al destinatario, así como la imposibilidad de entrega, tendrá los mismos efectos que si la comunicación se hubiera entregado al propio destinatario, por lo que en tales casos no será necesario realizar nuevamente la OVC en otros domicilios u otras cuentas de correo-e, ni acudir a cualquier otro MASC., quedando abierto el acceso a la vía judicial para el arrendador.
+        - paragraph [ref=f2e334]: Se obliga la parte arrendataria a pagar a la arrendadora, en el plazo máximo de 30 días desde que sea requerida al efecto, todos los gastos que ésta haya tenido que soportar por la realización y envío de cada OVC que se haya tenido que enviar a la arrendataria. Acuerdan las partes que el incumplimiento de esta obligación de resarcimiento por parte de la arrendataria en el plazo indicado, equivaldrá a un incumplimiento en el pago de cantidades asimiladas a renta, pudiendo la arrendadora instar la resolución del contrato por tal motivo.
+        - paragraph [ref=f2e335]: Si, siendo obligatorio acudir, con carácter previo a la vía judicial, a un MASC., la OVC hubiera dejado de formar parte del catálogo de MASC válidos en derecho, en el momento de surgir el incumplimiento o conflicto las partes podrán elegir otro MASC para intentar solucionar extrajudicialmente el conflicto.
+        - paragraph [ref=f2e336]: "Apartado 2.- Respecto a otros incumplimientos distintos a los mencionados en el apartado anterior, cuando fuera obligatorio acudir, con carácter previo a la vía judicial, a un MASC:"
+        - paragraph [ref=f2e337]: En caso de que exista obligación de acudir a un MASC para intentar solucionar extrajudicialmente incumplimientos o conflictos distintos a los mencionados en el apartado 1 de esta cláusula, las partes podrán elegir cualquier MASC válido en derecho para intentar solucionar la controversia.
+        - paragraph [ref=f2e338]: "Apartado 3.- Sumisión a los juzgados y tribunales ordinarios tras el MASC:"
+        - paragraph [ref=f2e339]: Las partes acuerdan someter las controversias derivadas del presente contrato a los juzgados y tribunales ordinarios si, una vez intentada la solución extrajudicial mediante un MASC., no se hubiera solucionado el conflicto.
+        - paragraph [ref=f2e340]: "Apartado 4.- Respecto a cualquier incumplimiento o conflicto derivado del presente contrato, cuando no fuera obligatorio acudir, con carácter previo a la vía judicial, a un MASC:"
+        - paragraph [ref=f2e341]: Si se diera algún incumplimiento o conflicto derivado del presente contrato y, al tiempo del conflicto no fuera obligatorio acudir, con carácter previo a la vía judicial, a un MASC., las partes renuncian a la aplicación de cualquier MASC, acordando someter sus controversias a los juzgados y tribunales ordinarios.
+        - paragraph [ref=f2e342]: OTRAS ESTIPULACIONES
+        - paragraph [ref=f2e343]: Se prohíbe colocar cualquier objeto y/o vehículos de cualquier género en pasillos, patios, escaleras y azoteas, igualmente tender fuera de las azoteas, quedando facultada la propietaria para, sin previo aviso, hacer retirar todo lo que incumpla esta estipulación, haciéndose responsable la arrendataria de los gastos que esto pudiera ocasionar.
+        - paragraph [ref=f2e344]: Se prohíbe expresamente la tenencia de animales en la vivienda. El incumplimiento de esta prohibición será causa suficiente para la resolución del contrato de pleno derecho, de conformidad con el artículo 27.2.n de la LAU.
+        - paragraph [ref=f2e345]: Si la propiedad facilita al inquilino los colchones que se encuentran en el piso, el inquilino declara haber visto el estado de los colchones, al ser un objeto muy personal la propiedad bajo ningún concepto cambiará los colchones proporcionados, si el inquilino quisiera cambiar los colchones será por su propia cuenta. Y sin que esto suponga ningún coste sobre la propiedad.
+        - paragraph [ref=f2e346]:
+          - text: El pago de las rentas se hará por transferencia bancaria en el siguiente número de cuenta
+          - mark [ref=f2e347]: ES91 2100 0418 4502 0005 1332
+          - text: .
+        - paragraph [ref=f2e348]: Leído el presente documento por ambas partes y estando conformes con su contenido, lo firman por duplicado en todas las páginas en el lugar y fecha reseñadas en el encabezamiento.
+        - paragraph [ref=f2e349]:
+          - text: DON/ÑA
+          - mark [ref=f2e350]: <<NombrePropietario>>
+          - text: DON/ÑA
+          - mark [ref=f2e351]: <<NombreInquilino>>
+    - button "Cerrar" [ref=f2e353] [cursor=pointer]

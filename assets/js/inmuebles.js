@@ -146,10 +146,12 @@ async function saveInmueble(id) {
 }
 
 async function deleteInmueble(id) {
-  if (DB.get('contratos').some(c => c.inmueble_id === id))
-    return toast('No se puede eliminar: tiene contratos asociados', 'error');
-  if (!confirm('¿Eliminar este piso?')) return;
-  await DB.delete('inmuebles', id);
+  const contratos = DB.get('contratos').filter(c => c.inmueble_id === id);
+  if (contratos.length)
+    return toast(`No se puede eliminar: tiene ${contratos.length} contrato(s) asociado(s)`, 'error');
+  if (!confirm('Este registro se marcará como eliminado y dejará de aparecer en los listados normales, pero se conservará para mantener el histórico.\n\n¿Desea continuar?')) return;
+  const r = await DB.delete('inmuebles', id);
+  if (!r.ok) return toast(r.error || 'No se puede eliminar este inmueble', 'error');
   toast('Piso eliminado', 'info');
   renderInmuebles(navParams);
 }

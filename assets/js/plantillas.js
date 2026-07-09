@@ -405,7 +405,7 @@ function _plantillaSetDefault(id, tipoDocumento, valor) {
 function _plantillaEliminar(id, nombre) {
     openModal('Eliminar plantilla',
         '<p>¿Eliminar la plantilla <strong>' + esc(nombre) + '</strong>?</p>' +
-        '<p style="color:var(--red);font-size:13px">Esta acción no se puede deshacer. El fichero DOCX también se eliminará del servidor.</p>',
+        '<p style="color:var(--text-secondary);font-size:13px">Este registro se marcará como eliminado y dejará de aparecer en los listados normales, pero se conservará para mantener el histórico.</p>',
         '<button class="btn btn-danger" onclick="_plantillaEliminarConfirmar(' + id + ')">Eliminar</button>' +
         '<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'
     );
@@ -447,28 +447,28 @@ function _plantillaPreview(plantillaId, tipoDoc) {
         var contenido = document.getElementById('modal-body');
         if (!contenido) return;
         if (!res.ok) {
-            contenido.innerHTML = '<div style="color:var(--red);padding:12px">' + esc(res.error) + '</div>';
+            contenido.innerHTML = '<div class="tpl-preview-error-msg">' + esc(res.error) + '</div>';
             return;
         }
 
         var avisoVars = res.variables_desconocidas && res.variables_desconocidas.length
-            ? '<div style="background:var(--orange-light);border:1px solid var(--color-warn-muted);border-radius:6px;padding:10px;font-size:12px;margin-bottom:12px">' +
+            ? '<div class="tpl-preview-warning">' +
               '<strong>Variables no resueltas (aparecerán como &lt;&lt;…&gt;&gt; en el DOCX):</strong> ' +
               res.variables_desconocidas.map(function(v){ return '<code>' + esc(v) + '</code>'; }).join(', ') +
               '</div>'
             : '';
 
         contenido.innerHTML =
-            '<p style="font-size:12px;color:var(--gray-500);margin-bottom:12px">' +
-            'Vista previa con variables de sistema. Las variables en <span style="background:var(--green-light);padding:0 3px">verde</span> están resueltas. ' +
-            'Las variables en <span style="background:var(--red-light);padding:0 3px;color:var(--red)">rojo</span> no están disponibles sin seleccionar una entidad.' +
+            '<p class="tpl-preview-legend">' +
+            'Vista previa con variables de sistema. Las variables en <span class="tpl-preview-legend-ok">verde</span> están resueltas. ' +
+            'Las variables en <span class="tpl-preview-legend-error">rojo</span> no están disponibles sin seleccionar una entidad.' +
             '</p>' +
             avisoVars +
             res.html;
     })
     .catch(function(e) {
         var contenido = document.getElementById('modal-body');
-        if (contenido) contenido.innerHTML = '<div style="color:var(--red)">Error: ' + esc(e.message) + '</div>';
+        if (contenido) contenido.innerHTML = '<div class="tpl-preview-error-msg">Error: ' + esc(e.message) + '</div>';
     });
 }
 
@@ -633,7 +633,7 @@ function _plantillaPreviewConEntidad(plantillaId, tipo, entidadId) {
         if (!cuerpo || !res.ok) return;
 
         var avisoVars = res.variables_desconocidas && res.variables_desconocidas.length
-            ? '<div style="background:var(--orange-light);border:1px solid var(--color-warn-muted);border-radius:6px;padding:10px;font-size:12px;margin-bottom:10px">' +
+            ? '<div class="tpl-preview-warning">' +
               '<strong>Variables no reconocidas</strong> (se marcarán como &lt;&lt;…&gt;&gt;): ' +
               res.variables_desconocidas.map(function(v){ return '<code>' + esc(v) + '</code>'; }).join(', ') +
               '</div>' : '';
@@ -861,7 +861,7 @@ function _fotosRender() {
         html += '<div style="width:calc(' + colPct + '% - 8px);box-sizing:border-box;' +
                 'border:1px solid var(--gray-200);border-radius:6px;overflow:hidden">' +
                 '  <img src="' + foto.url + '" style="width:100%;height:110px;object-fit:cover;display:block">' +
-                '  <div style="padding:4px 6px;background:#fff;display:flex;align-items:center;gap:3px">' +
+                '  <div class="tpl-foto-caption">' +
                 '    <span style="flex:1;font-size:10px;color:var(--gray-500);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">' +
                 esc(foto.file.name) + '</span>' +
                 (idx > 0

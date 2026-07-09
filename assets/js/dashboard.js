@@ -520,20 +520,34 @@ function _dashRenderLog(filas) {
     'email_enviado': 'bi-envelope text-primary',
     'baja_contrato': 'bi-file-earmark-x text-danger',
     'subida_ipc': 'bi-graph-up-arrow text-warning',
+    'eliminacion_logica': 'bi-trash text-danger',
+    'login_correcto': 'bi-box-arrow-in-right text-success',
+    'login_fallido': 'bi-shield-exclamation text-danger',
+    'logout': 'bi-box-arrow-right text-secondary',
+    'usuario_creado': 'bi-person-plus text-success',
+    'usuario_editado': 'bi-person-gear text-primary',
+    'usuario_eliminado': 'bi-person-x text-danger',
   };
   const labels = {
     'cobro': 'Cobro', 'anulacion_pago': 'Pago anulado', 'anulacion_recibo': 'Recibo anulado',
     'generacion_lote': 'Lote generado', 'factura_generada': 'Factura', 'email_enviado': 'Email',
     'baja_contrato': 'Baja contrato', 'subida_ipc': 'Subida IPC',
+    'eliminacion_logica': 'Eliminado', 'login_correcto': 'Inicio sesión', 'login_fallido': 'Acceso fallido',
+    'logout': 'Cierre sesión', 'usuario_creado': 'Usuario creado', 'usuario_editado': 'Usuario editado',
+    'usuario_eliminado': 'Usuario eliminado',
   };
   const html = filas.map(function (f) {
     const ico   = iconos[f.tipo_accion] || 'bi-info-circle';
-    const lbl   = labels[f.tipo_accion] || f.tipo_accion;
+    let   lbl   = labels[f.tipo_accion] || f.tipo_accion;
+    if (!labels[f.tipo_accion] && f.tipo_accion.indexOf('alta_') === 0)         lbl = 'Alta en ' + f.tipo_accion.slice(5);
+    if (!labels[f.tipo_accion] && f.tipo_accion.indexOf('modificacion_') === 0) lbl = 'Modif. en ' + f.tipo_accion.slice(13);
     const fecha = (f.fecha || '').replace('T', ' ').slice(0, 16);
+    const usuario = f.usuario_nombre ? esc(f.usuario_nombre) : 'Sistema';
     return '<div style="display:flex;align-items:baseline;gap:10px;padding:5px 0;border-bottom:1px solid var(--gray-100)">' +
       '<i class="bi ' + ico + '" style="width:16px;flex-shrink:0"></i>' +
       '<span style="font-weight:600;font-size:13px;min-width:110px">' + lbl + '</span>' +
       '<span style="color:var(--gray-700);font-size:13px;flex:1">' + esc(f.descripcion || '') + '</span>' +
+      '<span style="color:var(--gray-400);font-size:11px;white-space:nowrap" title="Usuario">' + usuario + '</span>' +
       '<span style="color:var(--gray-400);font-size:11px;white-space:nowrap">' + fecha + '</span>' +
       '</div>';
   }).join('');

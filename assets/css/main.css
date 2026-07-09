@@ -133,6 +133,23 @@ body.dark {
   --text-disabled:  #475569;
 
   /* Tokens semánticos de color */
+  /* --color-success/-error/-brand/-warn NO se redefinían aquí: en :root son
+     alias tipo `var(--green)`, y ese var() se resuelve una sola vez para el
+     elemento :root (<html>), quedando "congelado" en su valor claro; al no
+     redeclararse en body.dark, el valor claro heredaba tal cual a todos los
+     descendientes en modo oscuro. Detectado el 11/07/2026 al usarlos por
+     primera vez en la previsualización de Plantillas (ver
+     UX_UI_MODO_OSCURO_COLORES.md § Previsualización de Plantillas) — se
+     corrige aquí para que cualquier uso futuro de estos alias funcione bien. */
+  --color-success:      var(--green);
+  --color-success-light:var(--green-light);
+  --color-error:        var(--red);
+  --color-error-light:  var(--red-light);
+  --color-brand:        var(--blue);
+  --color-brand-dark:   var(--blue-dark);
+  --color-brand-light:  var(--blue-light);
+  --color-warn:         var(--orange);
+  --color-warn-light:   var(--orange-light);
   --color-info:         #38bdf8;
   --color-info-light:   #0c2033;
   --color-info-muted:   #0c2840;
@@ -864,6 +881,58 @@ label {
 .notif-item-fecha      { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
 .notif-empty           { padding: 28px 20px; text-align: center; color: var(--text-muted); font-size: 13px; }
 
+/* ── Menú de usuario (cabecera) ── */
+#user-menu-wrap { position: relative; }
+#user-menu-btn {
+  background: none;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 5px 10px 5px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  transition: background .15s, border-color .15s;
+}
+#user-menu-btn:hover { background: var(--bg-muted); }
+#user-menu-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+#user-menu-name { font-size: 13px; font-weight: 600; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#user-menu-panel {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 240px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  border: 1px solid var(--border-default);
+  z-index: 200;
+  overflow: hidden;
+}
+.user-menu-header { padding: 14px 16px; border-bottom: 1px solid var(--border-subtle); }
+.user-menu-header .um-nombre { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.user-menu-header .um-rol {
+  display: inline-block; margin-top: 4px; font-size: 11px; font-weight: 600;
+  padding: 2px 8px; border-radius: 4px; background: var(--blue-light); color: var(--blue);
+}
+.user-menu-item {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 10px 16px; border: none; background: none; text-align: left;
+  font-size: 13px; color: var(--text-primary); cursor: pointer;
+}
+.user-menu-item:hover { background: var(--bg-subtle); }
+.user-menu-item.danger { color: var(--red); }
 
 /* ============================================================
    TARJETAS DEL DASHBOARD
@@ -1562,4 +1631,103 @@ details.filtros-plegables .filtros-bar { border: none; margin: 0; border-radius:
 
 .backup-alert strong {
   color: var(--text-primary);
+}
+
+/* ============================================================
+   PREVISUALIZACIÓN DE PLANTILLAS (módulo Plantillas → Vista previa)
+   09/07/2026: sustituye los <mark style="background:#d1fae5..."> generados
+   en assets/php/plantillas.php (generarPreviewHtml) por clases con tokens
+   del sistema de diseño — antes rompían el contraste en modo oscuro porque
+   eran colores fijos que no se adaptaban a body.dark. Ver
+   UX_UI_MODO_OSCURO_COLORES.md § Previsualización de Plantillas.
+   ============================================================ */
+.tpl-preview {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  line-height: 1.6;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 16px;
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius);
+}
+.tpl-preview p { margin: 6px 0; }
+
+.tpl-preview mark {
+  font-family: inherit;
+  border-radius: 4px;
+  padding: 1px 4px;
+  border: 1px solid transparent;
+}
+
+/* Variable resuelta correctamente */
+.tpl-preview-mark-ok {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+/* Bloque dinámico que se generará al descargar el DOCX (fotos, mobiliario…):
+   no es un error, es informativo — mismo tratamiento visual para ambos casos. */
+.tpl-preview-mark-placeholder {
+  background: var(--color-info-light);
+  color: var(--color-info);
+  font-size: 11px;
+  padding: 2px 8px;
+}
+
+/* Variable no reconocida: además del color, un borde y el texto <<Nombre>>
+   (ya generado en PHP) para no depender solo del color — accesible también
+   para daltonismo o pantallas mal calibradas. */
+.tpl-preview-mark-error {
+  background: var(--color-error-light);
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+/* Leyenda y aviso de variables no resueltas mostrados por assets/js/plantillas.js
+   antes/después del HTML de la plantilla (fuera de .tpl-preview) */
+.tpl-preview-legend {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.tpl-preview-legend-ok    { background: var(--color-success-light); color: var(--color-success); border-radius: 3px; padding: 0 3px; }
+.tpl-preview-legend-error { background: var(--color-error-light);   color: var(--color-error);   border-radius: 3px; padding: 0 3px; }
+
+/* --color-success (#22c55e) sobre --color-success-light (#14532d) da 4.00:1
+   en modo oscuro — por debajo del 4.5:1 que exige WCAG AA para texto normal
+   (mismo criterio ya aplicado a --orange, ver más arriba en :root). El resto
+   de pares (error 5.84:1, info 7.72:1) ya cumplen y no se tocan. Se oscurece
+   solo el fondo de estas dos clases (no el token --green-light global, para
+   no alterar otros usos de esa variable) hasta 6.12:1. */
+body.dark .tpl-preview-mark-ok,
+body.dark .tpl-preview-legend-ok {
+  background: #0d3319;
+}
+
+.tpl-preview-warning {
+  background: var(--color-warn-light);
+  border: 1px solid var(--color-warn-muted);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  font-size: 12px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.tpl-preview-error-msg {
+  color: var(--color-error);
+  padding: 12px;
+}
+
+/* Pie de miniatura en el selector de fotos de FotosContrato (mismo bug: fondo
+   blanco fijo que desentonaba en modo oscuro) */
+.tpl-foto-caption {
+  padding: 4px 6px;
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }

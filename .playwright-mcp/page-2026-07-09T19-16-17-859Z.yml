@@ -1,0 +1,217 @@
+- generic [ref=f3e1]:
+  - generic [ref=f3e2]:
+    - complementary [ref=f3e3]:
+      - generic [ref=f3e4]:
+        - img [ref=f3e5]
+        - generic [ref=f3e9]:
+          - generic [ref=f3e10]: AlquiGest
+          - generic [ref=f3e11]: Gestión de Alquileres
+      - navigation [ref=f3e12]:
+        - link "Inicio" [ref=f3e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=f3e14]
+          - text: Inicio
+        - generic [ref=f3e16]:
+          - generic [ref=f3e17]: Principal
+          - button "Dashboard" [ref=f3e18] [cursor=pointer]:
+            - img [ref=f3e19]
+            - text: Dashboard
+        - generic [ref=f3e24]:
+          - generic [ref=f3e25]: Maestros
+          - button "Propietarios" [ref=f3e26] [cursor=pointer]:
+            - img [ref=f3e27]
+            - text: Propietarios
+          - button "Fincas / Edificios" [ref=f3e30] [cursor=pointer]:
+            - img [ref=f3e31]
+            - text: Fincas / Edificios
+          - button "Pisos / Locales" [ref=f3e34] [cursor=pointer]:
+            - img [ref=f3e35]
+            - text: Pisos / Locales
+          - button "Inquilinos" [ref=f3e38] [cursor=pointer]:
+            - img [ref=f3e39]
+            - text: Inquilinos
+        - generic [ref=f3e44]:
+          - generic [ref=f3e45]: Alquileres
+          - button "Contratos" [ref=f3e46] [cursor=pointer]:
+            - img [ref=f3e47]
+            - text: Contratos
+          - button "Recibos" [ref=f3e50] [cursor=pointer]:
+            - img [ref=f3e51]
+            - text: Recibos
+          - button "Facturas" [ref=f3e54] [cursor=pointer]:
+            - img [ref=f3e55]
+            - text: Facturas
+          - button "Generar Recibos" [ref=f3e57] [cursor=pointer]:
+            - img [ref=f3e58]
+            - text: Generar Recibos
+        - generic [ref=f3e60]:
+          - generic [ref=f3e61]: Informes
+          - button "Informes Excel" [ref=f3e62] [cursor=pointer]:
+            - img [ref=f3e63]
+            - text: Informes Excel
+          - button "Calendario Cobros" [ref=f3e64] [cursor=pointer]:
+            - img [ref=f3e65]
+            - text: Calendario Cobros
+          - button "Morosidad" [ref=f3e67] [cursor=pointer]:
+            - img [ref=f3e68]
+            - text: Morosidad
+          - button "Actividad" [ref=f3e70] [cursor=pointer]:
+            - img [ref=f3e71]
+            - text: Actividad
+        - generic [ref=f3e74]:
+          - generic [ref=f3e75]: Configuración
+          - button "Mi Empresa" [ref=f3e76] [cursor=pointer]:
+            - img [ref=f3e77]
+            - text: Mi Empresa
+          - button "Parámetros" [ref=f3e80] [cursor=pointer]:
+            - img [ref=f3e81]
+            - text: Parámetros
+          - button "VERI*FACTU" [ref=f3e84] [cursor=pointer]:
+            - img [ref=f3e85]
+            - text: VERI*FACTU
+          - button "Plantillas" [ref=f3e87] [cursor=pointer]:
+            - img [ref=f3e88]
+            - text: Plantillas
+          - button "Usuarios" [ref=f3e91] [cursor=pointer]:
+            - img [ref=f3e92]
+            - text: Usuarios
+      - generic [ref=f3e97]: AlquiGest v3.0.1 · 2026
+    - generic [ref=f3e98]:
+      - banner [ref=f3e99]:
+        - generic [ref=f3e100]: Plantillas DOCX
+        - generic [ref=f3e101]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=f3e102]
+        - generic [ref=f3e103]:
+          - button "Alternar modo oscuro" [ref=f3e104] [cursor=pointer]:
+            - img [ref=f3e105]
+          - button "3" [ref=f3e117] [cursor=pointer]:
+            - img [ref=f3e109]
+            - generic [ref=f3e118]: "3"
+          - button "A Admin" [ref=f3e113] [cursor=pointer]:
+            - generic [ref=f3e114]: A
+            - generic [ref=f3e115]: Admin
+          - generic [ref=f3e458]:
+            - button "Subir plantilla" [ref=f3e551] [cursor=pointer]:
+              - img [ref=f3e552]
+              - text: Subir plantilla
+            - 'button "{ } Variables" [ref=f3e553] [cursor=pointer]'
+      - generic [ref=f3e116]:
+        - generic [ref=f3e555]:
+          - heading "Plantillas DOCX" [level=2] [ref=f3e556]
+          - generic [ref=f3e557]:
+            - text: Gestiona plantillas Word con variables dinámicas como
+            - code [ref=f3e558]: "{{Renta}}"
+            - text: ","
+            - code [ref=f3e559]: "{{NombreInquilino}}"
+            - text: ", etc."
+        - generic [ref=f3e560]:
+          - generic [ref=f3e561]:
+            - generic [ref=f3e563]: Contrato de arrendamiento (4)
+            - table [ref=f3e564]:
+              - rowgroup [ref=f3e565]:
+                - row "Nombre Descripción Estado Acciones" [ref=f3e566]:
+                  - columnheader "Nombre" [ref=f3e567]
+                  - columnheader "Descripción" [ref=f3e568]
+                  - columnheader "Estado" [ref=f3e569]
+                  - columnheader "Acciones" [ref=f3e570]
+              - rowgroup [ref=f3e571]:
+                - row "Contrato de Vivienda 2026 Contrato de arrendamiento de vivienda (inquilino único) Activa Vista previa Más ▾" [ref=f3e572]:
+                  - cell "Contrato de Vivienda 2026" [ref=f3e573]
+                  - cell "Contrato de arrendamiento de vivienda (inquilino único)" [ref=f3e574]
+                  - cell "Activa" [ref=f3e575]:
+                    - generic [ref=f3e576]: Activa
+                  - cell "Vista previa Más ▾" [ref=f3e577]:
+                    - generic [ref=f3e578]:
+                      - button "Vista previa" [ref=f3e579] [cursor=pointer]
+                      - button "Más ▾" [ref=f3e581] [cursor=pointer]
+                - row "Contrato de Vivienda 2026 (Multi-inquilino) Contrato de arrendamiento de vivienda con bloque multi-inquilino Activa Vista previa Más ▾" [ref=f3e582]:
+                  - cell "Contrato de Vivienda 2026 (Multi-inquilino)" [ref=f3e583]
+                  - cell "Contrato de arrendamiento de vivienda con bloque multi-inquilino" [ref=f3e584]
+                  - cell "Activa" [ref=f3e585]:
+                    - generic [ref=f3e586]: Activa
+                  - cell "Vista previa Más ▾" [ref=f3e587]:
+                    - generic [ref=f3e588]:
+                      - button "Vista previa" [ref=f3e589] [cursor=pointer]
+                      - button "Más ▾" [ref=f3e591] [cursor=pointer]
+                - row "Contrato de Vivienda Temporada 2026 Contrato de arrendamiento de vivienda de temporada (inquilino único) Activa Vista previa Más ▾" [ref=f3e592]:
+                  - cell "Contrato de Vivienda Temporada 2026" [ref=f3e593]
+                  - cell "Contrato de arrendamiento de vivienda de temporada (inquilino único)" [ref=f3e594]
+                  - cell "Activa" [ref=f3e595]:
+                    - generic [ref=f3e596]: Activa
+                  - cell "Vista previa Más ▾" [ref=f3e597]:
+                    - generic [ref=f3e598]:
+                      - button "Vista previa" [ref=f3e599] [cursor=pointer]
+                      - button "Más ▾" [ref=f3e601] [cursor=pointer]
+                - row "Contrato de Vivienda Temporada 2026 (Multi-inquilino) Contrato de arrendamiento de vivienda de temporada con bloque multi-inquilino Activa Vista previa Más ▾" [ref=f3e602]:
+                  - cell "Contrato de Vivienda Temporada 2026 (Multi-inquilino)" [ref=f3e603]
+                  - cell "Contrato de arrendamiento de vivienda de temporada con bloque multi-inquilino" [ref=f3e604]
+                  - cell "Activa" [ref=f3e605]:
+                    - generic [ref=f3e606]: Activa
+                  - cell "Vista previa Más ▾" [ref=f3e607]:
+                    - generic [ref=f3e608]:
+                      - button "Vista previa" [ref=f3e609] [cursor=pointer]
+                      - button "Más ▾" [ref=f3e611] [cursor=pointer]
+          - generic [ref=f3e612]:
+            - generic [ref=f3e614]: Otro (2)
+            - table [ref=f3e615]:
+              - rowgroup [ref=f3e616]:
+                - row "Nombre Descripción Estado Acciones" [ref=f3e617]:
+                  - columnheader "Nombre" [ref=f3e618]
+                  - columnheader "Descripción" [ref=f3e619]
+                  - columnheader "Estado" [ref=f3e620]
+                  - columnheader "Acciones" [ref=f3e621]
+              - rowgroup [ref=f3e622]:
+                - row "Inventario del Contrato 2026 Anexo de inventario y estado del inmueble (inquilino único) Activa Vista previa Más ▾" [ref=f3e623]:
+                  - cell "Inventario del Contrato 2026" [ref=f3e624]
+                  - cell "Anexo de inventario y estado del inmueble (inquilino único)" [ref=f3e625]
+                  - cell "Activa" [ref=f3e626]:
+                    - generic [ref=f3e627]: Activa
+                  - cell "Vista previa Más ▾" [ref=f3e628]:
+                    - generic [ref=f3e629]:
+                      - button "Vista previa" [ref=f3e630] [cursor=pointer]
+                      - button "Más ▾" [ref=f3e632] [cursor=pointer]
+                - row "Inventario del Contrato 2026 (Multi-inquilino) Anexo de inventario y estado del inmueble con bloque multi-inquilino Activa Vista previa Más ▾" [ref=f3e633]:
+                  - cell "Inventario del Contrato 2026 (Multi-inquilino)" [ref=f3e634]
+                  - cell "Anexo de inventario y estado del inmueble con bloque multi-inquilino" [ref=f3e635]
+                  - cell "Activa" [ref=f3e636]:
+                    - generic [ref=f3e637]: Activa
+                  - cell "Vista previa Más ▾" [ref=f3e638]:
+                    - generic [ref=f3e639]:
+                      - button "Vista previa" [active] [ref=f3e640] [cursor=pointer]
+                      - button "Más ▾" [ref=f3e642] [cursor=pointer]
+  - generic [ref=f3e644]:
+    - generic [ref=f3e645]:
+      - generic [ref=f3e646]: Vista previa de plantilla
+      - button [ref=f3e647] [cursor=pointer]:
+        - img [ref=f3e648]
+    - generic [ref=f3e651]:
+      - paragraph [ref=f3e652]: Vista previa con variables de sistema. Las variables en verde están resueltas. Las variables en rojo no están disponibles sin seleccionar una entidad.
+      - generic [ref=f3e653]:
+        - paragraph [ref=f3e654]:
+          - text: Sevilla
+          - mark [ref=f3e655]: 9 de Julio del 2026
+        - paragraph [ref=f3e656]: ANEXO I – MOBILIARIO
+        - paragraph [ref=f3e657]: REUNIDOS
+        - paragraph [ref=f3e658]: "De una parte, en lo sucesivo LA PARTE ARRENDADORA:"
+        - paragraph [ref=f3e659]:
+          - text: DON/ÑA
+          - mark [ref=f3e660]: <<NombrePropietario>>
+          - text: ", mayor de edad, con NIF"
+          - mark [ref=f3e661]: <<NIFPropietario>>
+          - text: y domicilio en
+          - mark [ref=f3e662]: <<DireccionPropietario>>
+          - text: en su propio nombre y derecho.
+        - paragraph [ref=f3e663]: "Y de otra, en lo sucesivo LA PARTE ARRENDATARIA:"
+        - paragraph [ref=f3e664]: EXPONEN
+        - paragraph [ref=f3e665]: La vivienda se entrega con el siguiente mobiliario.
+        - paragraph [ref=f3e666]:
+          - mark [ref=f3e667]: "[📋 Aquí se insertará el listado de mobiliario]"
+        - paragraph [ref=f3e668]:
+          - mark [ref=f3e669]: "[📷 Aquí se insertará la tabla de fotos]"
+        - paragraph [ref=f3e670]:
+          - text: DON/ÑA
+          - mark [ref=f3e671]: <<NombrePropietario>>
+          - text: DON/ÑA
+          - mark [ref=f3e672]: <<NombreInquilino>>
+    - button "Cerrar" [ref=f3e674] [cursor=pointer]

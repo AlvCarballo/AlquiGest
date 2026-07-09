@@ -1,0 +1,265 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - button "Dashboard" [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - button "Propietarios" [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - button "Fincas / Edificios" [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - button "Pisos / Locales" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - button "Inquilinos" [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - button "Contratos" [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - button "Recibos" [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - button "Facturas" [active] [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - button "Generar Recibos" [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - button "Informes Excel" [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - button "Calendario Cobros" [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - button "Morosidad" [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - button "Actividad" [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - button "Mi Empresa" [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - button "Parámetros" [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - button "VERI*FACTU" [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - button "Plantillas" [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v3.0.0 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Facturas
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "3" [ref=e111] [cursor=pointer]:
+            - img [ref=e107]
+            - generic [ref=e112]: "3"
+          - generic [ref=e436]:
+            - button "Imprimir" [ref=e1803] [cursor=pointer]
+            - button "PDF" [ref=e1804] [cursor=pointer]
+      - generic [ref=e1805]:
+        - generic [ref=e1806]:
+          - generic [ref=e1807]: Facturas emitidas (3)
+          - generic [ref=e1808]:
+            - combobox [ref=e1809]:
+              - option "Año" [selected]
+              - option "2026"
+            - combobox [ref=e1810]:
+              - option "Mes" [selected]
+              - option "Enero"
+              - option "Febrero"
+              - option "Marzo"
+              - option "Abril"
+              - option "Mayo"
+              - option "Junio"
+              - option "Julio"
+              - option "Agosto"
+              - option "Septiembre"
+              - option "Octubre"
+              - option "Noviembre"
+              - option "Diciembre"
+            - combobox [ref=e1811]:
+              - option "Todos inquilinos" [selected]
+              - option "Rodríguez Pérez, Laura"
+              - option "González Sánchez, Pedro"
+              - option "Martín López, María"
+              - option "Torres Ruiz, Carlos"
+              - option "Comercial Díaz S.L."
+              - option "Jiménez Vega, Sofía"
+              - option "Ortega Campos, Beatriz"
+              - option "Navarro Iglesias, Diego"
+              - option "Castillo Herrera, Marta"
+              - option "Delgado Núñez, Cristina"
+              - option "Vázquez Roldán, Ismael"
+              - option "Bravo Cano, Nuria"
+              - option "Serra Montoya, Álex"
+              - option "Pardo Segura, Lucía"
+              - option "Cabrera Morales, Rubén"
+              - option "Iglesias Farto, Patricia"
+            - combobox [ref=e1812]:
+              - option "Todos estados" [selected]
+              - option "Emitidas"
+              - option "Anuladas"
+              - option "Rectificadas"
+            - generic [ref=e1813]:
+              - img
+              - searchbox "Nº factura..." [ref=e1814]
+        - table [ref=e1816]:
+          - rowgroup [ref=e1817]:
+            - row "Nº Factura Fecha emisión ▼ Cliente Inmueble Período Base IVA IRPF Total Estado" [ref=e1818]:
+              - columnheader "Nº Factura" [ref=e1819] [cursor=pointer]
+              - columnheader "Fecha emisión ▼" [ref=e1820] [cursor=pointer]
+              - columnheader "Cliente" [ref=e1821] [cursor=pointer]
+              - columnheader "Inmueble" [ref=e1822] [cursor=pointer]
+              - columnheader "Período" [ref=e1823] [cursor=pointer]
+              - columnheader "Base" [ref=e1824] [cursor=pointer]
+              - columnheader "IVA" [ref=e1825] [cursor=pointer]
+              - columnheader "IRPF" [ref=e1826] [cursor=pointer]
+              - columnheader "Total" [ref=e1827] [cursor=pointer]
+              - columnheader "Estado" [ref=e1828] [cursor=pointer]
+              - columnheader [ref=e1829]
+          - rowgroup [ref=e1830]:
+            - 'row "RET-202607-00001 Rect: FAC-202601-00001 9/7/2026 Navarro Iglesias, Diego Alcalá 120 3º B, CP 28009, Madrid 1/1/2026–31/1/2026 -620,00 € — — -620,00 € Emitida Imprimir / PDF Más ▾" [ref=e1831]':
+              - 'cell "RET-202607-00001 Rect: FAC-202601-00001" [ref=e1832]':
+                - strong [ref=e1833]: RET-202607-00001
+                - text: "Rect: FAC-202601-00001"
+              - cell "9/7/2026" [ref=e1834]
+              - cell "Navarro Iglesias, Diego" [ref=e1835]
+              - cell "Alcalá 120 3º B, CP 28009, Madrid" [ref=e1836]
+              - cell "1/1/2026–31/1/2026" [ref=e1837]
+              - cell "-620,00 €" [ref=e1838]
+              - cell "—" [ref=e1839]
+              - cell "—" [ref=e1840]
+              - cell "-620,00 €" [ref=e1841]:
+                - strong [ref=e1842]: "-620,00 €"
+              - cell "Emitida" [ref=e1843]:
+                - generic [ref=e1844]: Emitida
+              - cell "Imprimir / PDF Más ▾" [ref=e1845]:
+                - generic [ref=e1846]:
+                  - button "Imprimir / PDF" [ref=e1847] [cursor=pointer]
+                  - button "Más ▾" [ref=e1849] [cursor=pointer]
+            - 'row "FAC-202602-00001 Rec: REC-202602-00001 5/2/2026 Ortega Campos, Beatriz Alcalá 120 3º A, CP 28009, Madrid 1/2/2026–28/2/2026 750,00 € — — 750,00 € Emitida Imprimir / PDF Más ▾" [ref=e1850]':
+              - 'cell "FAC-202602-00001 Rec: REC-202602-00001" [ref=e1851]':
+                - strong [ref=e1852]: FAC-202602-00001
+                - text: "Rec: REC-202602-00001"
+              - cell "5/2/2026" [ref=e1853]
+              - cell "Ortega Campos, Beatriz" [ref=e1854]
+              - cell "Alcalá 120 3º A, CP 28009, Madrid" [ref=e1855]
+              - cell "1/2/2026–28/2/2026" [ref=e1856]
+              - cell "750,00 €" [ref=e1857]
+              - cell "—" [ref=e1858]
+              - cell "—" [ref=e1859]
+              - cell "750,00 €" [ref=e1860]:
+                - strong [ref=e1861]: 750,00 €
+              - cell "Emitida" [ref=e1862]:
+                - generic [ref=e1863]: Emitida
+              - cell "Imprimir / PDF Más ▾" [ref=e1864]:
+                - generic [ref=e1865]:
+                  - button "Imprimir / PDF" [ref=e1866] [cursor=pointer]
+                  - button "Más ▾" [ref=e1868] [cursor=pointer]
+            - 'row "FAC-202601-00001 Rec: REC-202601-00002 5/1/2026 Navarro Iglesias, Diego Alcalá 120 3º B, CP 28009, Madrid 1/1/2026–31/1/2026 620,00 € — — 620,00 € Rectificada Ver Más ▾" [ref=e1869]':
+              - 'cell "FAC-202601-00001 Rec: REC-202601-00002" [ref=e1870]':
+                - strong [ref=e1871]: FAC-202601-00001
+                - text: "Rec: REC-202601-00002"
+              - cell "5/1/2026" [ref=e1872]
+              - cell "Navarro Iglesias, Diego" [ref=e1873]
+              - cell "Alcalá 120 3º B, CP 28009, Madrid" [ref=e1874]
+              - cell "1/1/2026–31/1/2026" [ref=e1875]
+              - cell "620,00 €" [ref=e1876]
+              - cell "—" [ref=e1877]
+              - cell "—" [ref=e1878]
+              - cell "620,00 €" [ref=e1879]:
+                - strong [ref=e1880]: 620,00 €
+              - cell "Rectificada" [ref=e1881]:
+                - generic [ref=e1882]: Rectificada
+              - cell "Ver Más ▾" [ref=e1883]:
+                - generic [ref=e1884]:
+                  - button "Ver" [ref=e1885] [cursor=pointer]
+                  - button "Más ▾" [ref=e1887] [cursor=pointer]
+  - generic:
+    - generic:
+      - generic:
+        - generic: Nuevo propietario
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Datos personales
+          - generic:
+            - generic: Nombre completo *
+            - textbox "Apellidos, Nombre o Razón Social": PRUEBA E2E Sin Fincas
+          - generic:
+            - generic: NIF / CIF
+            - textbox "12345678A"
+          - generic:
+            - generic: Teléfono
+            - textbox "600 000 000"
+          - generic:
+            - generic: Email
+            - textbox "propietario@email.com"
+          - generic:
+            - generic: Tipo IRPF
+            - combobox:
+              - option "Sin IRPF" [selected]
+              - option "Física"
+              - option "Jurídica"
+          - generic:
+            - generic: Dirección
+          - generic:
+            - generic: Dirección
+            - textbox "Calle, número, piso..."
+          - generic:
+            - generic: C.P.
+            - textbox "28001"
+          - generic:
+            - generic: Municipio
+            - textbox "Madrid"
+          - generic:
+            - generic: Provincia
+            - textbox "Madrid"
+          - generic:
+            - generic: País
+            - textbox "España"
+          - generic:
+            - generic: Datos bancarios
+          - generic:
+            - generic: IBAN
+            - textbox "ES00 0000 0000 0000 0000 0000"
+          - generic:
+            - generic: Observaciones
+            - textbox
+      - generic:
+        - button "Cancelar"
+        - button "Guardar"

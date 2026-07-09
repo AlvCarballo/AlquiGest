@@ -162,3 +162,58 @@ openModal = function(title, bodyHtml, footerHtml, large) {
   _openModalOriginal(title, bodyHtml, footerHtml, large);
 };
 
+// ===========================
+// MENÚ DE USUARIO Y SESIÓN
+// window.AG_USER / window.AG_CSRF los inyecta AlquiGest.php desde la sesión
+// PHP (assets/php/auth.php). El backend es quien decide permisos: aquí solo
+// se adapta la interfaz (ocultar "Usuarios" si no es admin, etc.).
+// ===========================
+function _iniciarUX_Usuario() {
+  const esAdmin = !!(window.AG_USER && window.AG_USER.rol === 'admin');
+  const navUsuarios = document.getElementById('nav-usuarios');
+  if (navUsuarios) navUsuarios.style.display = esAdmin ? '' : 'none';
+}
+document.addEventListener('DOMContentLoaded', _iniciarUX_Usuario);
+// init.js navega antes de que a veces termine DOMContentLoaded en algunos navegadores;
+// llamar también de forma inmediata cubre ese caso sin duplicar efectos visibles.
+_iniciarUX_Usuario();
+
+function toggleUserMenu(e) {
+  e.stopPropagation();
+  const panel = document.getElementById('user-menu-panel');
+  const isOpen = panel.style.display === 'block';
+  panel.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) _renderUserMenuPanel();
+}
+
+function _renderUserMenuPanel() {
+  const panel = document.getElementById('user-menu-panel');
+  const u = window.AG_USER;
+  if (!u) { panel.innerHTML = ''; return; }
+  const rolLabel = u.rol === 'admin' ? 'Administrador' : 'Usuario';
+  panel.innerHTML =
+    '<div class="user-menu-header">' +
+    '  <div class="um-nombre">' + esc(u.nombre) + '</div>' +
+    '  <span class="um-rol">' + rolLabel + '</span>' +
+    '</div>' +
+    (u.rol === 'admin'
+      ? '<button class="user-menu-item" onclick="toggleUserMenu(event);navigate(\'usuarios\')">👥 Gestión de usuarios</button>'
+      : '') +
+    '<button class="user-menu-item danger" onclick="cerrarSesion()">⎋ Cerrar sesión</button>';
+}
+
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('user-menu-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    const panel = document.getElementById('user-menu-panel');
+    if (panel) panel.style.display = 'none';
+  }
+});
+
+async function cerrarSesion() {
+  try {
+    await fetch('assets/php/api.php?action=logout', { method: 'POST' });
+  } catch (e) { /* si falla la petición, igualmente redirigimos a login */ }
+  window.location.href = 'login.php';
+}
+

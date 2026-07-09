@@ -1,0 +1,435 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]:
+          - generic [ref=e10]: AlquiGest
+          - generic [ref=e11]: Gestión de Alquileres
+      - navigation [ref=e12]:
+        - link "Inicio" [ref=e13] [cursor=pointer]:
+          - /url: index.html
+          - img [ref=e14]
+          - text: Inicio
+        - generic [ref=e16]:
+          - generic [ref=e17]: Principal
+          - button "Dashboard" [active] [ref=e18] [cursor=pointer]:
+            - img [ref=e19]
+            - text: Dashboard
+        - generic [ref=e24]:
+          - generic [ref=e25]: Maestros
+          - button "Propietarios" [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+            - text: Propietarios
+          - button "Fincas / Edificios" [ref=e30] [cursor=pointer]:
+            - img [ref=e31]
+            - text: Fincas / Edificios
+          - button "Pisos / Locales" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Pisos / Locales
+          - button "Inquilinos" [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Inquilinos
+        - generic [ref=e44]:
+          - generic [ref=e45]: Alquileres
+          - button "Contratos" [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Contratos
+          - button "Recibos" [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Recibos
+          - button "Facturas" [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Facturas
+          - button "Generar Recibos" [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+            - text: Generar Recibos
+        - generic [ref=e60]:
+          - generic [ref=e61]: Informes
+          - button "Informes Excel" [ref=e62] [cursor=pointer]:
+            - img [ref=e63]
+            - text: Informes Excel
+          - button "Calendario Cobros" [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+            - text: Calendario Cobros
+          - button "Morosidad" [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - text: Morosidad
+          - button "Actividad" [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: Actividad
+        - generic [ref=e74]:
+          - generic [ref=e75]: Configuración
+          - button "Mi Empresa" [ref=e76] [cursor=pointer]:
+            - img [ref=e77]
+            - text: Mi Empresa
+          - button "Parámetros" [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Parámetros
+          - button "VERI*FACTU" [ref=e84] [cursor=pointer]:
+            - img [ref=e85]
+            - text: VERI*FACTU
+          - button "Plantillas" [ref=e87] [cursor=pointer]:
+            - img [ref=e88]
+            - text: Plantillas
+      - generic [ref=e91]: AlquiGest v3.0.0 · 2026
+    - generic [ref=e92]:
+      - banner [ref=e93]:
+        - generic [ref=e94]: Dashboard
+        - generic [ref=e95]:
+          - img
+          - textbox "Buscar inquilino, inmueble, contrato…" [ref=e96]
+        - generic [ref=e97]:
+          - button "Alternar modo oscuro" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+          - button "3" [ref=e111] [cursor=pointer]:
+            - img [ref=e107]
+            - generic [ref=e112]: "3"
+      - generic [ref=e110]:
+        - generic [ref=e2308]:
+          - img [ref=e2309]
+          - generic [ref=e2312]:
+            - strong [ref=e2313]: No hay ningún backup registrado.
+            - text: Se recomienda descargar una copia de seguridad periódicamente.
+            - button "Descargar backup" [ref=e2314] [cursor=pointer]
+        - generic [ref=e2315]:
+          - img [ref=e2316]
+          - generic [ref=e2318]:
+            - strong [ref=e2319]: Revisión IPC pendiente
+            - text: 1 contrato con revisión IPC correspondiente a este mes
+            - button "Ver contratos" [ref=e2320] [cursor=pointer]
+        - generic [ref=e2321]:
+          - generic [ref=e2322]:
+            - img [ref=e2324]
+            - generic [ref=e2327]:
+              - generic [ref=e2328]: "5"
+              - generic [ref=e2329]: Propietarios
+          - generic [ref=e2330]:
+            - img [ref=e2332]
+            - generic [ref=e2335]:
+              - generic [ref=e2336]: "16"
+              - generic [ref=e2337]: Inmuebles
+          - generic [ref=e2338]:
+            - img [ref=e2340]
+            - generic [ref=e2343]:
+              - generic [ref=e2344]: "15"
+              - generic [ref=e2345]: Contratos activos
+          - generic [ref=e2346]:
+            - img [ref=e2348]
+            - generic [ref=e2351]:
+              - generic [ref=e2352]: 9284,00 €
+              - generic [ref=e2353]: Pendiente de cobro
+        - generic [ref=e2354]:
+          - generic [ref=e2356]:
+            - img [ref=e2357]
+            - text: Previsión de cobros — Julio 2026
+          - generic [ref=e2360]:
+            - generic [ref=e2361]:
+              - generic [ref=e2362]: Total esperado
+              - generic [ref=e2363]: 5002,00 €
+              - generic [ref=e2364]: 6 recibos
+            - generic [ref=e2365]:
+              - generic [ref=e2366]: Cobrado
+              - generic [ref=e2367]: 0,00 €
+            - generic [ref=e2368]:
+              - generic [ref=e2369]: Pendiente
+              - generic [ref=e2370]: 5002,00 €
+            - generic [ref=e2371]:
+              - generic [ref=e2372]: Progreso de cobros
+              - generic [ref=e2374]: 0% cobrado
+        - generic [ref=e2375]:
+          - generic [ref=e2376]:
+            - img [ref=e2377]
+            - text: Revisiones anuales próximas — 3 avisos
+          - table [ref=e2381]:
+            - rowgroup [ref=e2382]:
+              - row "Inmueble Inquilino Fecha revisión Año Días" [ref=e2383]:
+                - columnheader "Inmueble" [ref=e2384]
+                - columnheader "Inquilino" [ref=e2385]
+                - columnheader "Fecha revisión" [ref=e2386]
+                - columnheader "Año" [ref=e2387]
+                - columnheader "Días" [ref=e2388]
+            - rowgroup [ref=e2389]:
+              - row "VZ Velázquez 22 1º A Delgado Núñez, Cristina 09 de julio de 2026 3º HOY" [ref=e2390]:
+                - cell "VZ Velázquez 22 1º A" [ref=e2391]:
+                  - strong [ref=e2392]: VZ Velázquez 22 1º A
+                - cell "Delgado Núñez, Cristina" [ref=e2393]
+                - cell "09 de julio de 2026" [ref=e2394]
+                - cell "3º" [ref=e2395]
+                - cell "HOY" [ref=e2396]
+              - row "VZ Velázquez 22 2º A Bravo Cano, Nuria 09 de julio de 2026 2º HOY" [ref=e2397]:
+                - cell "VZ Velázquez 22 2º A" [ref=e2398]:
+                  - strong [ref=e2399]: VZ Velázquez 22 2º A
+                - cell "Bravo Cano, Nuria" [ref=e2400]
+                - cell "09 de julio de 2026" [ref=e2401]
+                - cell "2º" [ref=e2402]
+                - cell "HOY" [ref=e2403]
+              - row "VZ Velázquez 22 1º B Vázquez Roldán, Ismael 03 de agosto de 2026 4º 25 días" [ref=e2404]:
+                - cell "VZ Velázquez 22 1º B" [ref=e2405]:
+                  - strong [ref=e2406]: VZ Velázquez 22 1º B
+                - cell "Vázquez Roldán, Ismael" [ref=e2407]
+                - cell "03 de agosto de 2026" [ref=e2408]
+                - cell "4º" [ref=e2409]
+                - cell "25 días" [ref=e2410]
+        - generic [ref=e2412]:
+          - generic [ref=e2413]:
+            - img [ref=e2414]
+            - text: Próximas renovaciones de contrato
+            - generic [ref=e2416]: 8 contratos · vencidos o próximos 6 meses
+            - button "Ver contratos" [ref=e2417] [cursor=pointer]
+          - table [ref=e2419]:
+            - rowgroup [ref=e2420]:
+              - row "Inmueble Inquilino Vencimiento Tiempo restante Plazo para avisar" [ref=e2421]:
+                - columnheader "Inmueble" [ref=e2422]
+                - columnheader "Inquilino" [ref=e2423]
+                - columnheader "Vencimiento" [ref=e2424]
+                - columnheader "Tiempo restante" [ref=e2425]
+                - columnheader "Plazo para avisar" [ref=e2426]
+                - columnheader [ref=e2427]
+            - rowgroup [ref=e2428]:
+              - row "C Mayor 15 2º A Martín López, María 31 de mayo de 2024 Vencido hace 769 días — Renovar Gestionar" [ref=e2429]:
+                - cell "C Mayor 15 2º A" [ref=e2430]:
+                  - strong [ref=e2431]: C Mayor 15 2º A
+                - cell "Martín López, María" [ref=e2432]
+                - cell "31 de mayo de 2024" [ref=e2433]
+                - cell "Vencido hace 769 días" [ref=e2434]
+                - cell "—" [ref=e2435]
+                - cell "Renovar Gestionar" [ref=e2436]:
+                  - button "Renovar" [ref=e2437] [cursor=pointer]
+                  - button "Gestionar" [ref=e2438] [cursor=pointer]
+              - row "AV Constitución 8 BAJO A Comercial Díaz S.L. 31 de diciembre de 2024 Vencido hace 555 días — Renovar Gestionar" [ref=e2439]:
+                - cell "AV Constitución 8 BAJO A" [ref=e2440]:
+                  - strong [ref=e2441]: AV Constitución 8 BAJO A
+                - cell "Comercial Díaz S.L." [ref=e2442]
+                - cell "31 de diciembre de 2024" [ref=e2443]
+                - cell "Vencido hace 555 días" [ref=e2444]
+                - cell "—" [ref=e2445]
+                - cell "Renovar Gestionar" [ref=e2446]:
+                  - button "Renovar" [ref=e2447] [cursor=pointer]
+                  - button "Gestionar" [ref=e2448] [cursor=pointer]
+              - row "C Mayor 15 1º B González Sánchez, Pedro 28 de febrero de 2025 Vencido hace 496 días — Renovar Gestionar" [ref=e2449]:
+                - cell "C Mayor 15 1º B" [ref=e2450]:
+                  - strong [ref=e2451]: C Mayor 15 1º B
+                - cell "González Sánchez, Pedro" [ref=e2452]
+                - cell "28 de febrero de 2025" [ref=e2453]
+                - cell "Vencido hace 496 días" [ref=e2454]
+                - cell "—" [ref=e2455]
+                - cell "Renovar Gestionar" [ref=e2456]:
+                  - button "Renovar" [ref=e2457] [cursor=pointer]
+                  - button "Gestionar" [ref=e2458] [cursor=pointer]
+              - row "AV Constitución 8 1º A Jiménez Vega, Sofía 31 de mayo de 2025 Vencido hace 404 días — Renovar Gestionar" [ref=e2459]:
+                - cell "AV Constitución 8 1º A" [ref=e2460]:
+                  - strong [ref=e2461]: AV Constitución 8 1º A
+                - cell "Jiménez Vega, Sofía" [ref=e2462]
+                - cell "31 de mayo de 2025" [ref=e2463]
+                - cell "Vencido hace 404 días" [ref=e2464]
+                - cell "—" [ref=e2465]
+                - cell "Renovar Gestionar" [ref=e2466]:
+                  - button "Renovar" [ref=e2467] [cursor=pointer]
+                  - button "Gestionar" [ref=e2468] [cursor=pointer]
+              - row "C Mayor 15 2º B Torres Ruiz, Carlos 31 de agosto de 2025 Vencido hace 312 días — Renovar Gestionar" [ref=e2469]:
+                - cell "C Mayor 15 2º B" [ref=e2470]:
+                  - strong [ref=e2471]: C Mayor 15 2º B
+                - cell "Torres Ruiz, Carlos" [ref=e2472]
+                - cell "31 de agosto de 2025" [ref=e2473]
+                - cell "Vencido hace 312 días" [ref=e2474]
+                - cell "—" [ref=e2475]
+                - cell "Renovar Gestionar" [ref=e2476]:
+                  - button "Renovar" [ref=e2477] [cursor=pointer]
+                  - button "Gestionar" [ref=e2478] [cursor=pointer]
+              - row "C Mayor 15 1º A Rodríguez Pérez, Laura 31 de diciembre de 2025 Vencido hace 190 días — Renovar Gestionar" [ref=e2479]:
+                - cell "C Mayor 15 1º A" [ref=e2480]:
+                  - strong [ref=e2481]: C Mayor 15 1º A
+                - cell "Rodríguez Pérez, Laura" [ref=e2482]
+                - cell "31 de diciembre de 2025" [ref=e2483]
+                - cell "Vencido hace 190 días" [ref=e2484]
+                - cell "—" [ref=e2485]
+                - cell "Renovar Gestionar" [ref=e2486]:
+                  - button "Renovar" [ref=e2487] [cursor=pointer]
+                  - button "Gestionar" [ref=e2488] [cursor=pointer]
+          - generic [ref=e2489]:
+            - button "‹ Ant." [disabled] [ref=e2490]
+            - generic [ref=e2491]: Página 1 de 2
+            - button "Sig. ›" [ref=e2492] [cursor=pointer]
+        - generic [ref=e2494]:
+          - generic [ref=e2495]:
+            - img [ref=e2496]
+            - text: Próximas revisiones anuales de renta
+            - generic [ref=e2498]: 15 contratos activos
+          - table [ref=e2500]:
+            - rowgroup [ref=e2501]:
+              - row "Inmueble Inquilino Fecha revisión Año Días restantes" [ref=e2502]:
+                - columnheader "Inmueble" [ref=e2503]
+                - columnheader "Inquilino" [ref=e2504]
+                - columnheader "Fecha revisión" [ref=e2505]
+                - columnheader "Año" [ref=e2506]
+                - columnheader "Días restantes" [ref=e2507]
+            - rowgroup [ref=e2508]:
+              - row "VZ Velázquez 22 1º A Delgado Núñez, Cristina 09 jul 2026AVISO ACTIVO 3º año Hoy" [ref=e2509]:
+                - cell "VZ Velázquez 22 1º A" [ref=e2510]
+                - cell "Delgado Núñez, Cristina" [ref=e2511]
+                - cell "09 jul 2026AVISO ACTIVO" [ref=e2512]
+                - cell "3º año" [ref=e2513]
+                - cell "Hoy" [ref=e2514]:
+                  - strong [ref=e2515]: Hoy
+              - row "VZ Velázquez 22 2º A Bravo Cano, Nuria 09 jul 2026AVISO ACTIVO 2º año Hoy" [ref=e2516]:
+                - cell "VZ Velázquez 22 2º A" [ref=e2517]
+                - cell "Bravo Cano, Nuria" [ref=e2518]
+                - cell "09 jul 2026AVISO ACTIVO" [ref=e2519]
+                - cell "2º año" [ref=e2520]
+                - cell "Hoy" [ref=e2521]:
+                  - strong [ref=e2522]: Hoy
+              - row "VZ Velázquez 22 1º B Vázquez Roldán, Ismael 03 ago 2026AVISO ACTIVO 4º año 25 días" [ref=e2523]:
+                - cell "VZ Velázquez 22 1º B" [ref=e2524]
+                - cell "Vázquez Roldán, Ismael" [ref=e2525]
+                - cell "03 ago 2026AVISO ACTIVO" [ref=e2526]
+                - cell "4º año" [ref=e2527]
+                - cell "25 días" [ref=e2528]
+              - row "C Mayor 15 2º B Torres Ruiz, Carlos 01 sept 2026 2º año 54 días" [ref=e2529]:
+                - cell "C Mayor 15 2º B" [ref=e2530]
+                - cell "Torres Ruiz, Carlos" [ref=e2531]
+                - cell "01 sept 2026" [ref=e2532]
+                - cell "2º año" [ref=e2533]
+                - cell "54 días" [ref=e2534]
+              - row "AL Alcalá 120 3º A Ortega Campos, Beatriz 01 nov 2026 1º año 115 días" [ref=e2535]:
+                - cell "AL Alcalá 120 3º A" [ref=e2536]
+                - cell "Ortega Campos, Beatriz" [ref=e2537]
+                - cell "01 nov 2026" [ref=e2538]
+                - cell "1º año" [ref=e2539]
+                - cell "115 días" [ref=e2540]
+              - row "AL Alcalá 120 3º B Navarro Iglesias, Diego 01 dic 2026 1º año 145 días" [ref=e2541]:
+                - cell "AL Alcalá 120 3º B" [ref=e2542]
+                - cell "Navarro Iglesias, Diego" [ref=e2543]
+                - cell "01 dic 2026" [ref=e2544]
+                - cell "1º año" [ref=e2545]
+                - cell "145 días" [ref=e2546]
+          - generic [ref=e2547]:
+            - button "‹ Ant." [disabled] [ref=e2548]
+            - generic [ref=e2549]: Página 1 de 3
+            - button "Sig. ›" [ref=e2550] [cursor=pointer]
+        - generic [ref=e2551]:
+          - generic [ref=e2552]:
+            - generic [ref=e2553]:
+              - generic [ref=e2554]: Últimos recibos
+              - button "Ver todos" [ref=e2555] [cursor=pointer]
+            - table [ref=e2557]:
+              - rowgroup [ref=e2558]:
+                - row "Nº Recibo Inquilino Importe Estado" [ref=e2559]:
+                  - columnheader "Nº Recibo" [ref=e2560]
+                  - columnheader "Inquilino" [ref=e2561]
+                  - columnheader "Importe" [ref=e2562]
+                  - columnheader "Estado" [ref=e2563]
+              - rowgroup [ref=e2564]:
+                - row "RER-202607-00001 Navarro Iglesias, Diego -620,00 € Rectificativo" [ref=e2565]:
+                  - cell "RER-202607-00001" [ref=e2566]:
+                    - strong [ref=e2567]: RER-202607-00001
+                  - cell "Navarro Iglesias, Diego" [ref=e2568]
+                  - cell "-620,00 €" [ref=e2569]
+                  - cell "Rectificativo" [ref=e2570]:
+                    - generic [ref=e2571]: Rectificativo
+                - row "REC-202602-00002 Navarro Iglesias, Diego 620,00 € Anulado" [ref=e2572]:
+                  - cell "REC-202602-00002" [ref=e2573]:
+                    - strong [ref=e2574]: REC-202602-00002
+                  - cell "Navarro Iglesias, Diego" [ref=e2575]
+                  - cell "620,00 €" [ref=e2576]
+                  - cell "Anulado" [ref=e2577]:
+                    - generic [ref=e2578]: Anulado
+                - row "REC-202602-00001 Ortega Campos, Beatriz 750,00 € Anulado" [ref=e2579]:
+                  - cell "REC-202602-00001" [ref=e2580]:
+                    - strong [ref=e2581]: REC-202602-00001
+                  - cell "Ortega Campos, Beatriz" [ref=e2582]
+                  - cell "750,00 €" [ref=e2583]
+                  - cell "Anulado" [ref=e2584]:
+                    - generic [ref=e2585]: Anulado
+                - row "REC-202601-00002 Navarro Iglesias, Diego 620,00 € Cobrado" [ref=e2586]:
+                  - cell "REC-202601-00002" [ref=e2587]:
+                    - strong [ref=e2588]: REC-202601-00002
+                  - cell "Navarro Iglesias, Diego" [ref=e2589]
+                  - cell "620,00 €" [ref=e2590]
+                  - cell "Cobrado" [ref=e2591]:
+                    - generic [ref=e2592]: Cobrado
+                - row "REC-202601-00001 Ortega Campos, Beatriz 750,00 € Cobrado" [ref=e2593]:
+                  - cell "REC-202601-00001" [ref=e2594]:
+                    - strong [ref=e2595]: REC-202601-00001
+                  - cell "Ortega Campos, Beatriz" [ref=e2596]
+                  - cell "750,00 €" [ref=e2597]
+                  - cell "Cobrado" [ref=e2598]:
+                    - generic [ref=e2599]: Cobrado
+          - generic [ref=e2600]:
+            - generic [ref=e2602]: Cobrado este mes
+            - generic [ref=e2603]:
+              - generic [ref=e2604]: 0,00 €
+              - generic [ref=e2605]: julio de 2026
+              - generic [ref=e2606]:
+                - generic [ref=e2607]:
+                  - generic [ref=e2608]: "11"
+                  - generic [ref=e2609]: Recibos pendientes
+                - generic [ref=e2610]:
+                  - generic [ref=e2611]: "22"
+                  - generic [ref=e2612]: Total cobrados
+        - generic [ref=e2613]:
+          - generic [ref=e2616]: Ingresos últimos 6 meses
+          - generic [ref=e2620]: Ocupación de inmuebles
+        - generic [ref=e2623]:
+          - generic [ref=e2624]:
+            - generic [ref=e2625]:
+              - img [ref=e2626]
+              - text: Últimas actividades
+            - button "Ver todo" [ref=e2629] [cursor=pointer]
+          - generic [ref=e2630]: Sin actividad registrada todavía.
+  - generic:
+    - generic:
+      - generic:
+        - generic: Nuevo propietario
+        - button:
+          - img
+      - generic:
+        - generic:
+          - generic:
+            - generic: Datos personales
+          - generic:
+            - generic: Nombre completo *
+            - textbox "Apellidos, Nombre o Razón Social": PRUEBA E2E Sin Fincas
+          - generic:
+            - generic: NIF / CIF
+            - textbox "12345678A"
+          - generic:
+            - generic: Teléfono
+            - textbox "600 000 000"
+          - generic:
+            - generic: Email
+            - textbox "propietario@email.com"
+          - generic:
+            - generic: Tipo IRPF
+            - combobox:
+              - option "Sin IRPF" [selected]
+              - option "Física"
+              - option "Jurídica"
+          - generic:
+            - generic: Dirección
+          - generic:
+            - generic: Dirección
+            - textbox "Calle, número, piso..."
+          - generic:
+            - generic: C.P.
+            - textbox "28001"
+          - generic:
+            - generic: Municipio
+            - textbox "Madrid"
+          - generic:
+            - generic: Provincia
+            - textbox "Madrid"
+          - generic:
+            - generic: País
+            - textbox "España"
+          - generic:
+            - generic: Datos bancarios
+          - generic:
+            - generic: IBAN
+            - textbox "ES00 0000 0000 0000 0000 0000"
+          - generic:
+            - generic: Observaciones
+            - textbox
+      - generic:
+        - button "Cancelar"
+        - button "Guardar"
