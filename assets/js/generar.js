@@ -97,15 +97,17 @@ function previsualizarLote() {
   const anyo = parseInt(document.getElementById('gen-anyo').value);
   const inquilinos = DB.get('inquilinos');
   const inmuebles = DB.get('inmuebles');
-  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const periodo = `${meses[mes-1]} ${anyo}`;
+  const periodo = periodoLabel(mes, anyo);
 
   // Comprueba qué contratos ya tienen recibo para este período para no duplicar.
+  // Un recibo anulado o rectificativo no cuenta como "ya generado": anular un
+  // recibo debe permitir volver a emitir uno nuevo para el mismo período.
   const recibosExist = DB.get('recibos');
   const rows = contratos.map(c => {
     const inq = inquilinos.find(i => i.id === c.inquilino_id);
     const inm = inmuebles.find(i => i.id === c.inmueble_id);
-    const yaExiste = recibosExist.some(r => r.contrato_id === c.id && r.concepto_periodo === periodo);
+    const yaExiste = recibosExist.some(r => r.contrato_id === c.id && r.concepto_periodo === periodo
+      && r.estado !== 'anulado' && r.estado !== 'rectificativo');
     return { c, inq, inm, yaExiste };
   });
 
@@ -139,16 +141,17 @@ async function generarLote() {
   if (!contratos) return;
   const mes = parseInt(document.getElementById('gen-mes').value);
   const anyo = parseInt(document.getElementById('gen-anyo').value);
-  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const periodo = `${meses[mes-1]} ${anyo}`;
+  const periodo = periodoLabel(mes, anyo);
   const recibosExist = DB.get('recibos');
   const empresa = DB.getEmpresa() || {};
   const inquilinos = DB.get('inquilinos');
   const inmuebles = DB.get('inmuebles');
 
-  // Filtrar solo contratos que aún no tienen recibo para este período
+  // Filtrar solo contratos que aún no tienen recibo para este período.
+  // Un recibo anulado/rectificativo no bloquea la remisión de uno nuevo (ver previsualizarLote()).
   const contratosAGenerar = contratos.filter(c =>
-    !recibosExist.some(r => r.contrato_id === c.id && r.concepto_periodo === periodo)
+    !recibosExist.some(r => r.contrato_id === c.id && r.concepto_periodo === periodo
+      && r.estado !== 'anulado' && r.estado !== 'rectificativo')
   );
   const total = contratosAGenerar.length;
 
@@ -185,11 +188,13 @@ async function generarLote() {
         <div style="text-align:center;font-size:12px;color:var(--gray-500);margin-top:4px">${pct}%</div>
       </div>`;
 
-    const prefix  = empresa.prefijo_recibos || 'REC';
-    const periodo = String(anyo) + String(mes).padStart(2, '0');
+    const prefix     = empresa.prefijo_recibos || 'REC';
+    // Numeración anual: el año sale del período (periodo_desde) del propio recibo,
+    // no del mes — coincide con `anyo`, el mismo valor usado para periodoPrimerDia().
+    const periodoDoc = String(anyo);
     let seqInfo;
     try {
-      seqInfo = await nextNumeroDoc('REC', periodo, prefix);
+      seqInfo = await nextNumeroDoc('REC', periodoDoc, prefix);
     } catch (e) {
       toast(`Error al generar número para recibo ${n}/${total}. Proceso detenido.`, 'error');
       break;
@@ -197,7 +202,7 @@ async function generarLote() {
     const iva_imp  = (c.renta_base||0) * (c.iva_pct||0) / 100;
     const irpf_imp = (c.renta_base||0) * (c.irpf_pct||0) / 100;
     const totalImporte = (c.renta_base||0) + iva_imp - irpf_imp;
-    const fechaEmision = `${anyo}-${mes.toString().padStart(2,'0')}-01`;
+    const fechaEmision = periodoPrimerDia(mes, anyo);
     const diaPago = c.dia_pago || 5;
     const fechaLimite = fmtLocalISO(new Date(anyo, mes - 1, diaPago));
     const resultado = await DB.save('recibos', {
@@ -207,6 +212,8 @@ async function generarLote() {
       numero_recibo: seqInfo.numero,
       numero_seq: seqInfo.seq,
       fecha_emision: fechaEmision,
+      periodo_desde: periodoPrimerDia(mes, anyo),
+      periodo_hasta: periodoUltimoDia(mes, anyo),
       fecha_limite: fechaLimite,
       concepto_periodo: periodo,
       renta_base: c.renta_base||0,

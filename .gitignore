@@ -1,0 +1,5 @@
+# Artefactos de depuración de herramientas (navegador automatizado, capturas, logs de sesión)
+.playwright-mcp/
+
+# Logs en tiempo de ejecución generados por el backend (pueden contener tokens de descarga)
+assets/php/*.log

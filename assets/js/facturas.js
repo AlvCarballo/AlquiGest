@@ -11,14 +11,19 @@ function badgeEstadoFactura(estado) {
 
 // ===========================
 // GENERACIÓN DE NÚMERO DE FACTURA
-// FAC-YYYYMM-NNNNN donde YYYYMM es el mes de hoy.
-// El contador se reinicia a 00001 el primer día de cada mes.
+// FAC-AAAA-NNNNN donde AAAA es el año de la fecha de emisión de la factura (hoy).
+// El contador continúa durante todos los meses del año y se reinicia a 00001 al
+// empezar un año nuevo — NUNCA se reinicia mensualmente (a diferencia de los
+// recibos REC, que sí son mensuales). El año sale siempre de la fecha de emisión
+// de la FACTURA, nunca del período del recibo que se factura (periodo_desde/
+// periodo_hasta/concepto_periodo) ni del mes de alquiler que factura: un recibo
+// de junio facturado el 10 de julio pertenece a la serie anual del año de hoy.
 // Delega en nextNumeroDoc() (atómico, sin duplicados).
 // ===========================
 async function generarNumeroFacturaDesdeRecibo() {
-  const hoy    = new Date().toISOString().split('T')[0];
-  const periodo = hoy.replace(/-/g, '').slice(0, 6);
-  const info    = await nextNumeroDoc('FAC', periodo, 'FAC');
+  const hoy   = new Date().toISOString().split('T')[0];
+  const anio  = hoy.slice(0, 4);
+  const info  = await nextNumeroDoc('FAC', anio, 'FAC');
   return { numeroFactura: info.numero, numeroSeq: info.seq };
 }
 
@@ -232,12 +237,14 @@ async function anularFacturaConRectificativa(id, opciones = {}) {
     return { ok: false, error: 'Esta factura ya está anulada o rectificada.' };
   }
 
-  // Número de la rectificativa: serie RET-YYYYMM-NNNNN (atómico, reinicio mensual)
-  const hoy    = new Date().toISOString().split('T')[0];
-  const periodo = hoy.replace(/-/g, '').slice(0, 6);
+  // Número de la rectificativa: serie RET-AAAA-NNNNN (atómico, reinicio anual — el
+  // año sale de la fecha de emisión de la rectificativa, igual que en FAC; ver
+  // generarNumeroFacturaDesdeRecibo() arriba para la justificación completa).
+  const hoy  = new Date().toISOString().split('T')[0];
+  const anio = hoy.slice(0, 4);
   let numRect, sigSeq;
   try {
-    const rectInfo = await nextNumeroDoc('RET', periodo, 'RET');
+    const rectInfo = await nextNumeroDoc('RET', anio, 'RET');
     numRect = rectInfo.numero;
     sigSeq  = rectInfo.seq;
   } catch (e) {

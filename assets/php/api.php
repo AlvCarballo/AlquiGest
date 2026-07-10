@@ -43,8 +43,8 @@ $SCHEMA = [
     'contratos'      => ['inmueble_id','inquilino_id','fecha_inicio','fecha_fin','duracion_anos','duracion_unidad','aviso_recibo','aviso_factura','renta_base','iva_pct','irpf_pct','fianza','dia_pago','estado','revision','fecha_baja','motivo_baja','obs_baja','observaciones','ipc_anio_aplicado','motivo_temporada','nombre_fiador','nif_fiador','direccion_fiador'],
     // factura_id vincula el recibo con su factura emitida (NULL si no tiene factura todavía)
     // aviso_recibo (TINYINT 1): si es 1 el pie del recibo muestra el aviso de justificante de pago
-    // recibo_rectificado_id: id del recibo que este recibo rectifica (solo en recibos rectificativos RER-AAAAMM-NNNNN)
-    'recibos'        => ['contrato_id','inquilino_id','inmueble_id','numero_recibo','numero_seq','fecha_emision','periodo_desde','periodo_hasta','concepto_periodo','fecha_limite','renta_base','importe_iva','importe_irpf','importe_total','importe_pagado','conceptos_extra','notas','pagos','estado','fecha_creacion','aviso_recibo','factura_id','recibo_rectificado_id'],
+    // recibo_rectificado_id: id del recibo que este recibo rectifica (solo en recibos rectificativos RER-AAAA-NNNNN)
+    'recibos'        => ['contrato_id','inquilino_id','inmueble_id','numero_recibo','numero_seq','fecha_emision','periodo_desde','periodo_hasta','concepto_periodo','fecha_limite','renta_base','importe_iva','importe_irpf','importe_total','importe_pagado','conceptos_extra','notas','pagos','estado','fecha_creacion','aviso_recibo','factura_id','recibo_rectificado_id','periodo_key'],
     // variable: clave única (ej: 'filas_dashboard')
     // valor:    valor como texto (el JS lo convierte al tipo que necesite)
     // descripcion: texto libre para saber qué hace cada parámetro
@@ -412,6 +412,129 @@ try {
         $pdo->exec("ALTER TABLE `recibos` ADD COLUMN `recibo_rectificado_id` INT DEFAULT NULL");
     }
 
+    // ── Migración: columna periodo_key en recibos (protección real de duplicados) ──
+    // periodo_key = "<contrato_id>-<AAAAMM del periodo_desde>", calculada SIEMPRE en el
+    // servidor (ver acción 'save' más abajo), y solo para recibos "ordinarios"
+    // (no anulados, no rectificativos). En cualquier otro caso queda NULL.
+    // MySQL permite múltiples NULL en una UNIQUE KEY sin colisionar, así que:
+    //   · como máximo un recibo ordinario por contrato+período (protección real,
+    //     atómica, a prueba de condiciones de carrera — no un simple SELECT previo).
+    //   · anular un recibo (o que sea RER) libera el período para reemitir.
+    // Los recibos ya existentes (incl. los de datos de ejemplo) quedan con
+    // periodo_key=NULL: no participan en la protección retroactivamente, mismo
+    // criterio que el resto de migraciones de este bloque (no se pierden datos,
+    // no se reescribe histórico). Revertir: DROP INDEX uq_recibos_periodo_key,
+    // DROP COLUMN periodo_key.
+    if (!in_array('periodo_key', $existingColsRecibos)) {
+        $pdo->exec("ALTER TABLE `recibos` ADD COLUMN `periodo_key` VARCHAR(20) DEFAULT NULL");
+    }
+    try {
+        $tienePeriodoKey = $pdo->query(
+            "SHOW INDEX FROM `recibos` WHERE Key_name = 'uq_recibos_periodo_key'"
+        )->fetch();
+        if (!$tienePeriodoKey) {
+            $pdo->exec("ALTER TABLE `recibos` ADD UNIQUE KEY `uq_recibos_periodo_key` (`periodo_key`)");
+        }
+    } catch (\PDOException $e) { /* índice ya existe o no se pudo crear: se revisará en el próximo arranque */ }
+
+    // ── Migración: inicializar el contador ANUAL de doc_secuencias en instalaciones
+    // existentes con documentos históricos en formato mensual antiguo (AAAAMM) ──
+    // Los 4 tipos documentales (REC, RER, FAC, RET) usan numeración ANUAL (periodo
+    // AAAA en doc_secuencias). NINGÚN documento histórico se renombra ni se
+    // renumera: los numero_recibo/numero_factura ya emitidos (incluidos los de
+    // formato mensual AAAAMM) se conservan tal cual, con sus enlaces, PDFs y
+    // cobros intactos — esta migración solo decide con qué valor arranca el nuevo
+    // contador anual, para que el primer número nuevo emitido en formato anual
+    // nunca retroceda respecto a lo ya emitido ese año en formato antiguo.
+    // Se ejecuta una sola vez por (tipo, año): si ya existe una fila anual para
+    // ese tipo+año no se toca, para no sobrescribir un contador ya en uso.
+    //
+    // Valor de arranque = GREATEST(A, B):
+    //   A = SUM(doc_secuencias.ultimo) de las filas MENSUALES (periodo AAAAMM) de
+    //       ese año — el ledger de reservas atómicas real. Se usa SUM y no MAX
+    //       porque numero_seq se reiniciaba cada mes: MAX solo daría el máximo de
+    //       UN mes, no el total consumido en el año.
+    //   B = recuento de documentos REALES de ese tipo y año, obtenido de
+    //       recibos/facturas usando periodo_desde/fecha_emision (nunca parseando
+    //       numero_recibo/numero_factura) — sirve de contraste por si el ledger
+    //       de doc_secuencias estuviera incompleto respecto a los documentos
+    //       realmente emitidos.
+    // Se toma el MAYOR de los dos, nunca uno solo: un número ya reservado (aunque
+    // el documento asociado ya no exista, p. ej. una reserva que no llegó a
+    // guardarse) no debe poder reutilizarse jamás.
+    try {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS `doc_secuencias` (
+            `tipo`    VARCHAR(20) NOT NULL,
+            `periodo` CHAR(6)     NOT NULL COMMENT 'AAAA (anual) para los 4 tipos REC/RER/FAC/RET; AAAAMM solo en filas historicas previas a la migracion',
+            `ultimo`  INT         NOT NULL DEFAULT 0,
+            PRIMARY KEY (`tipo`, `periodo`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+        $hayMensuales = (int)$pdo->query(
+            "SELECT COUNT(*) FROM doc_secuencias WHERE LENGTH(periodo) = 6"
+        )->fetchColumn();
+
+        if ($hayMensuales > 0) {
+            $anualesExistentes = [];
+            foreach ($pdo->query("SELECT tipo, periodo FROM doc_secuencias WHERE LENGTH(periodo) = 4") as $rowAnual) {
+                $anualesExistentes[$rowAnual['tipo'] . '|' . $rowAnual['periodo']] = true;
+            }
+
+            $mensuales = $pdo->query(
+                "SELECT tipo, SUBSTRING(periodo,1,4) AS anio, SUM(ultimo) AS suma
+                 FROM doc_secuencias
+                 WHERE LENGTH(periodo) = 6 AND tipo IN ('REC','RER','FAC','RET')
+                 GROUP BY tipo, SUBSTRING(periodo,1,4)"
+            )->fetchAll();
+
+            foreach ($mensuales as $m) {
+                $tipoMig = $m['tipo'];
+                $anioMig = $m['anio'];
+                if (isset($anualesExistentes[$tipoMig . '|' . $anioMig])) continue; // ya migrado o en uso: no tocar
+
+                $sumaLedger = (int)$m['suma'];
+                $countReal  = 0;
+                if ($tipoMig === 'REC') {
+                    $stmt = $pdo->prepare(
+                        "SELECT COUNT(*) FROM recibos WHERE estado != 'rectificativo' AND YEAR(periodo_desde) = ?"
+                    );
+                    $stmt->execute([$anioMig]);
+                    $countReal = (int)$stmt->fetchColumn();
+                } elseif ($tipoMig === 'RER') {
+                    $stmt = $pdo->prepare(
+                        "SELECT COUNT(*) FROM recibos rer
+                         INNER JOIN recibos orig ON orig.id = rer.recibo_rectificado_id
+                         WHERE rer.estado = 'rectificativo' AND YEAR(orig.periodo_desde) = ?"
+                    );
+                    $stmt->execute([$anioMig]);
+                    $countReal = (int)$stmt->fetchColumn();
+                } elseif ($tipoMig === 'FAC') {
+                    $stmt = $pdo->prepare(
+                        "SELECT COUNT(*) FROM facturas WHERE serie != 'RET' AND YEAR(fecha_emision) = ?"
+                    );
+                    $stmt->execute([$anioMig]);
+                    $countReal = (int)$stmt->fetchColumn();
+                } elseif ($tipoMig === 'RET') {
+                    $stmt = $pdo->prepare(
+                        "SELECT COUNT(*) FROM facturas WHERE serie = 'RET' AND YEAR(fecha_emision) = ?"
+                    );
+                    $stmt->execute([$anioMig]);
+                    $countReal = (int)$stmt->fetchColumn();
+                }
+
+                $arranque = max($sumaLedger, $countReal);
+                if ($arranque > 0) {
+                    $pdo->prepare(
+                        "INSERT INTO doc_secuencias (tipo, periodo, ultimo) VALUES (?, ?, ?)
+                         ON DUPLICATE KEY UPDATE ultimo = GREATEST(ultimo, VALUES(ultimo))"
+                    )->execute([$tipoMig, $anioMig, $arranque]);
+                }
+            }
+        }
+    } catch (\PDOException $e) {
+        error_log('[AlquiGest] Error en migración de numeración anual doc_secuencias: ' . $e->getMessage());
+    }
+
     // ── Migración: tabla log_actividad (si log_actividad=true en config.php) ──
     if (!empty($cfg['log_actividad'])) {
         try {
@@ -539,6 +662,8 @@ try {
         "CREATE INDEX `idx_recibos_contrato`  ON `recibos`(`contrato_id`)",
         "CREATE INDEX `idx_recibos_inquilino` ON `recibos`(`inquilino_id`)",
         "CREATE INDEX `idx_recibos_inmueble`  ON `recibos`(`inmueble_id`)",
+        "CREATE INDEX `idx_recibos_fecha_emision` ON `recibos`(`fecha_emision`)",
+        "CREATE INDEX `idx_recibos_periodo_desde` ON `recibos`(`periodo_desde`)",
         "CREATE INDEX `idx_historial_contrato` ON `historial_rentas`(`contrato_id`)",
         "CREATE INDEX `idx_propietarios_eliminado` ON `propietarios`(`eliminado`)",
         "CREATE INDEX `idx_fincas_eliminado`       ON `fincas`(`eliminado`)",
@@ -846,7 +971,7 @@ try {
                 break;
 
             case 'recibos':
-                // Los recibos rectificativos (estado='rectificativo', numeración RER-AAAAMM-NNNNN)
+                // Los recibos rectificativos (estado='rectificativo', numeración RER-AAAA-NNNNN)
                 // llevan importes negados a propósito: cancelan en los totales al recibo original.
                 $esRectificativoRec = ($datos['estado'] ?? '') === 'rectificativo';
                 if (!isset($datos['importe_total']) || (!$esRectificativoRec && (float)$datos['importe_total'] < 0)) {
@@ -899,6 +1024,47 @@ try {
                         }
                     }
                 }
+
+                // ── Alta de un recibo ordinario: el backend nunca confía ciegamente en
+                // el cliente. Se exige un contrato REAL (no solo un id positivo) y un
+                // período con fecha válida — igual da si la llamada viene de la UI o
+                // directamente del endpoint. No aplica a los rectificativos (RER), que
+                // no representan un período propio. La detección del recibo DUPLICADO
+                // en sí (mismo contrato+período) la garantiza la UNIQUE KEY
+                // uq_recibos_periodo_key (ver acción 'save'), no esta función.
+                if ($pdo && empty($datos['id']) && !$esRectificativoRec) {
+                    $contratoIdRec = (int)($datos['contrato_id'] ?? 0);
+                    if ($contratoIdRec <= 0) {
+                        return 'El recibo debe tener un contrato asignado.';
+                    }
+                    if (empty($datos['periodo_desde']) || strtotime((string)$datos['periodo_desde']) === false) {
+                        return 'El recibo debe tener un período (periodo_desde) válido.';
+                    }
+                    $periodoHastaRec = (!empty($datos['periodo_hasta']) && strtotime((string)$datos['periodo_hasta']) !== false)
+                        ? $datos['periodo_hasta'] : $datos['periodo_desde'];
+
+                    $stmtContRec = $pdo->prepare('SELECT estado, fecha_inicio, fecha_baja FROM contratos WHERE id = ?');
+                    $stmtContRec->execute([$contratoIdRec]);
+                    $contRec = $stmtContRec->fetch();
+                    if (!$contRec) {
+                        return 'El contrato indicado no existe.';
+                    }
+                    // Un contrato iniciado A MITAD del período sí puede tener recibo de ese
+                    // período (no se prorratea); uno iniciado DESPUÉS del período, no.
+                    if (!empty($contRec['fecha_inicio']) && strtotime($periodoHastaRec) < strtotime($contRec['fecha_inicio'])) {
+                        return 'El período del recibo es anterior a la fecha de inicio del contrato.';
+                    }
+                    // Un contrato no activo (finalizado/rescindido) no genera recibos nuevos,
+                    // igual que ya impide el frontend (modalGenerarRecibo en recibos-cobro.js) —
+                    // aquí se repite la comprobación porque el backend no puede confiar en que
+                    // toda petición pase por esa pantalla. NOTA: `fecha_fin` (duración pactada)
+                    // NO se usa aquí: numerosos contratos de la aplicación siguen 'activo' más
+                    // allá de su fecha_fin nominal en espera de renovación formal (comportamiento
+                    // real y esperado de la app), así que solo `estado` es una señal fiable.
+                    if (($contRec['estado'] ?? '') !== 'activo') {
+                        return 'El contrato no está activo: no se pueden generar recibos nuevos para él.';
+                    }
+                }
                 break;
 
             case 'inquilinos':
@@ -920,8 +1086,10 @@ try {
                 break;
 
             case 'inmuebles':
-                if (empty(trim($datos['nombre'] ?? ''))) {
-                    return 'La referencia/nombre del inmueble es obligatoria.';
+                // La tabla `inmuebles` no tiene columna `nombre` (ver $SCHEMA['inmuebles']);
+                // el campo real obligatorio del formulario (assets/js/inmuebles.js) es `planta`.
+                if (empty(trim($datos['planta'] ?? ''))) {
+                    return 'La planta del inmueble es obligatoria.';
                 }
                 break;
 
@@ -938,24 +1106,60 @@ try {
         return null;
     }
 
-    // ── nextNumeroDoc: reserva el siguiente número de secuencia mensual ──
+    // ── nextNumeroDoc: reserva el siguiente número de secuencia documental ──
     // Devuelve { seq, numero, tipo, periodo } de forma atómica (SELECT FOR UPDATE
     // dentro de una transacción InnoDB). Es imposible generar duplicados aunque
     // varios procesos llamen simultáneamente para el mismo tipo y periodo.
-    // Uso: ?action=nextNumeroDoc&tipo=REC&periodo=202606&prefijo=REC
+    // Los 4 tipos (REC/RER/FAC/RET) usan numeración ANUAL (periodo AAAA). Fuente
+    // del año según tipo: REC → periodo_desde del propio recibo; RER → periodo_desde
+    // del recibo ORIGINAL rectificado; FAC/RET → fecha_emision del propio documento.
+    // Nunca se sustituye por la fecha actual del servidor.
+    // Uso: ?action=nextNumeroDoc&tipo=REC&periodo=2026&prefijo=REC
+    //      ?action=nextNumeroDoc&tipo=FAC&periodo=2026&prefijo=FAC
     if ($action === 'nextNumeroDoc') {
-        $tipo    = preg_replace('/[^A-Z]/',      '', strtoupper($_GET['tipo']    ?? ''));
-        $periodo = preg_replace('/[^0-9]/',      '',              $_GET['periodo'] ?? date('Ym'));
-        $prefijo = preg_replace('/[^A-Z0-9\-]/', '', strtoupper($_GET['prefijo'] ?? $tipo));
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            json_out(['error' => 'Método no permitido'], 405);
+        }
+        $tipo = preg_replace('/[^A-Z]/', '', strtoupper($_GET['tipo'] ?? ''));
+        // 'periodo' es OBLIGATORIO y explícito: si no llega en la petición NO se
+        // sustituye por date('Y') (la fecha actual del servidor). Ese fallback
+        // silencioso era la causa raíz de que un documento de un período pasado
+        // pudiera terminar numerado con el año de HOY si el llamante omitía el
+        // parámetro.
+        $periodoRaw = $_GET['periodo'] ?? '';
+        $periodo    = preg_replace('/[^0-9]/', '', $periodoRaw);
+        $prefijo    = preg_replace('/[^A-Z0-9\-]/', '', strtoupper($_GET['prefijo'] ?? $tipo));
 
-        if (!$tipo || strlen($periodo) !== 6) {
-            json_out(['error' => 'Parámetros inválidos: tipo y periodo (YYYYMM) son obligatorios'], 400);
+        // Validación única para los 4 tipos: periodo debe ser AAAA (año razonable).
+        // Un tipo no reconocido, o un formato incorrecto (p.ej. 6 dígitos AAAAMM,
+        // el formato histórico ya retirado), se rechaza explícitamente — nunca se
+        // recorta ni se ajusta el valor recibido para "hacerlo válido".
+        $TIPOS_DOC = ['REC', 'RER', 'FAC', 'RET'];
+        if (in_array($tipo, $TIPOS_DOC, true)) {
+            $periodoValido   = (bool)preg_match('/^20\d{2}$/', $periodo);
+            $formatoEsperado = 'AAAA (año 2000-2099)';
+        } else {
+            $periodoValido   = false;
+            $formatoEsperado = null;
         }
 
-        // Crear la tabla si aún no existe (instalaciones antiguas sin migración)
+        if (!$tipo || !$periodoValido) {
+            $msg = $formatoEsperado
+                ? "Parámetros inválidos: para el tipo $tipo, periodo debe tener formato $formatoEsperado"
+                : 'Parámetros inválidos: tipo de documento no reconocido';
+            json_out(['error' => $msg], 400);
+        }
+
+        // Crear la tabla si aún no existe (instalaciones antiguas sin migración).
+        // `periodo` es CHAR(6): admite tanto el histórico AAAAMM (6 caracteres, ya
+        // no se genera pero sigue existiendo en filas antiguas) como el AAAA actual
+        // (4 caracteres) sin ningún problema — MySQL retira el relleno de espacios
+        // de un CHAR al leerlo (salvo con el sql_mode no habitual
+        // PAD_CHAR_TO_FULL_LENGTH), así que no hace falta VARCHAR ni migración de
+        // esquema para admitir ambos formatos a la vez.
         $pdo->exec("CREATE TABLE IF NOT EXISTS `doc_secuencias` (
             `tipo`    VARCHAR(20) NOT NULL,
-            `periodo` CHAR(6)     NOT NULL,
+            `periodo` CHAR(6)     NOT NULL COMMENT 'AAAA (anual) para los 4 tipos REC/RER/FAC/RET; AAAAMM solo en filas historicas previas a la migracion',
             `ultimo`  INT         NOT NULL DEFAULT 0,
             PRIMARY KEY (`tipo`, `periodo`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
@@ -997,6 +1201,9 @@ try {
     // Construye la consulta dinámicamente con los campos del $SCHEMA
     // para la tabla indicada. Las columnas JSON se re-codifican a string.
     if ($action === 'save') {
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            json_out(['error' => 'Método no permitido'], 405);
+        }
         global $SCHEMA, $JSON_COLS;
         $table = $_GET['table'] ?? '';
         if (!validTable($table)) json_out(['error' => 'Tabla no válida'], 400);
@@ -1027,6 +1234,26 @@ try {
         $id   = isset($input['id']) ? (int)$input['id'] : 0;
         $esAlta = ($id <= 0);
         $cols = $SCHEMA[$table] ?? [];
+
+        // ── periodo_key: clave real de duplicados de un recibo, calculada SIEMPRE
+        // en el servidor (nunca se confía en lo que envíe el cliente). Un recibo
+        // "ordinario" (no anulado, no rectificativo) solo puede existir una vez
+        // por contrato+período — lo garantiza la UNIQUE KEY uq_recibos_periodo_key
+        // (ver migración más arriba), no una simple comprobación previa: así queda
+        // protegido también frente a dos peticiones concurrentes para el mismo
+        // contrato y período (condición de carrera).
+        if ($table === 'recibos') {
+            $esOrdinario = !in_array($input['estado'] ?? '', ['anulado', 'rectificativo'], true)
+                && empty($input['recibo_rectificado_id']);
+            if ($esOrdinario && !empty($input['contrato_id']) && !empty($input['periodo_desde'])) {
+                $ts = strtotime((string)$input['periodo_desde']);
+                $input['periodo_key'] = $ts !== false
+                    ? ((int)$input['contrato_id'] . '-' . date('Ym', $ts))
+                    : null;
+            } else {
+                $input['periodo_key'] = null;
+            }
+        }
 
         // ── VERI*FACTU: hash encadenado al insertar una factura nueva ──────
         // Solo se ejecuta si es un INSERT (id=0) en la tabla facturas Y la
@@ -1081,16 +1308,26 @@ try {
             $values[] = $val;
         }
 
-        if ($id > 0) {
-            // UPDATE: actualizar registro existente
-            $sets = implode(', ', array_map(function($c) { return "`$c` = ?"; }, $cols));
-            $pdo->prepare("UPDATE `$table` SET $sets WHERE id = ?")->execute(array_merge($values, [$id]));
-        } else {
-            // INSERT: nuevo registro; recuperar el id generado automáticamente
-            $colList = '`' . implode('`,`', $cols) . '`';
-            $marks   = implode(',', array_fill(0, count($cols), '?'));
-            $pdo->prepare("INSERT INTO `$table` ($colList) VALUES ($marks)")->execute($values);
-            $id = (int)$pdo->lastInsertId();
+        try {
+            if ($id > 0) {
+                // UPDATE: actualizar registro existente
+                $sets = implode(', ', array_map(function($c) { return "`$c` = ?"; }, $cols));
+                $pdo->prepare("UPDATE `$table` SET $sets WHERE id = ?")->execute(array_merge($values, [$id]));
+            } else {
+                // INSERT: nuevo registro; recuperar el id generado automáticamente
+                $colList = '`' . implode('`,`', $cols) . '`';
+                $marks   = implode(',', array_fill(0, count($cols), '?'));
+                $pdo->prepare("INSERT INTO `$table` ($colList) VALUES ($marks)")->execute($values);
+                $id = (int)$pdo->lastInsertId();
+            }
+        } catch (\PDOException $e) {
+            // Violación de uq_recibos_periodo_key: ya existe un recibo ordinario
+            // para este contrato y este período. Traducido a un mensaje de negocio
+            // claro en vez de dejar pasar el error crudo de MySQL al cliente.
+            if ($table === 'recibos' && (int)$e->getCode() === 23000 && strpos($e->getMessage(), 'uq_recibos_periodo_key') !== false) {
+                json_out(['error' => 'Ya existe un recibo para este contrato en este período.', 'code' => 'RECIBO_DUPLICADO'], 409);
+            }
+            throw $e;
         }
 
         // Registrar en el log de actividad las altas/modificaciones de las entidades
@@ -1113,6 +1350,9 @@ try {
     //   · propietarios/fincas/inmuebles/inquilinos → borrado LÓGICO (UPDATE eliminado=1)
     //     si no hay dependencias; si las hay, se bloquea con el detalle del motivo.
     if ($action === 'delete') {
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            json_out(['error' => 'Método no permitido'], 405);
+        }
         global $TABLAS_SIN_BORRADO_FISICO, $TABLAS_CON_BORRADO_LOGICO;
         $table = $_GET['table'] ?? '';
         $id    = (int)($_GET['id'] ?? 0);

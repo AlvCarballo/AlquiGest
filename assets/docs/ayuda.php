@@ -167,7 +167,7 @@
   <tr><td><strong>Teléfono / Email</strong></td><td>Datos de contacto que aparecen en los documentos</td></tr>
   <tr><td><strong>IBAN</strong></td><td>Cuenta bancaria para domiciliaciones</td></tr>
   <tr><td><strong>Pie de recibo</strong></td><td>Texto libre al pie de cada recibo (ej: "Gracias por su pago puntual")</td></tr>
-  <tr><td><strong>Prefijo de recibos</strong></td><td>Siglas que preceden al número de recibo (ej: "REC" genera REC-202601-00001)</td></tr>
+  <tr><td><strong>Prefijo de recibos</strong></td><td>Siglas que preceden al número de recibo (ej: "REC" genera REC-2026-00001)</td></tr>
   <tr><td><strong>Gmail usuario / contraseña</strong></td><td>Cuenta Gmail y contraseña de aplicación para enviar correos. Ver sección <a href="#email">Envío por Email</a></td></tr>
   <tr><td><strong>Plantillas de email</strong></td><td>Asunto y cuerpo personalizables para correos de recibo y factura. Variables: <code>{{numero_recibo}}</code>, <code>{{periodo}}</code>, <code>{{inquilino}}</code>, <code>{{importe}}</code>, <code>{{empresa}}</code>, <code>{{numero_factura}}</code></td></tr>
   <tr><td><strong>Backup JSON</strong></td><td>Botón <em>Descargar backup JSON</em> que descarga todos los datos de la BD. Ver <a href="#backup">Copia de seguridad</a></td></tr>
@@ -289,7 +289,7 @@
   <div class="callout-icon">💡</div>
   <div class="callout-body">
     <strong>Numeración automática</strong>
-    <p>El número de recibo usa el prefijo de Mi Empresa, año, mes y un secuencial único. Ejemplo: <code>REC-202601-00001</code>. Cada mes el secuencial comienza de nuevo.</p>
+    <p>El número de recibo usa el prefijo de Mi Empresa, el año del período del recibo y un secuencial único. Ejemplo: <code>REC-2026-00001</code>. El secuencial es anual: continúa durante todos los meses del año y solo reinicia a <code>00001</code> en año nuevo.</p>
   </div>
 </div>
 
@@ -339,9 +339,9 @@
 </div>
 
 <h3>Numeración de facturas</h3>
-<p>Las facturas tienen su propio contador independiente del número de recibo. El formato es <code>FAC-AAAAMM-NNNNN</code> con secuencial autónomo por mes. La primera factura del mes siempre es <code>FAC-AAAAMM-00001</code> aunque el recibo origen sea el número 58. Los números de factura no se derivan de los recibos.</p>
+<p>Las facturas tienen su propio contador independiente del número de recibo. El formato es <code>FAC-AAAA-NNNNN</code> con secuencial <strong>anual</strong>: continúa durante todos los meses del año y solo reinicia a <code>00001</code> en año nuevo. La primera factura del año siempre es <code>FAC-AAAA-00001</code> aunque el recibo origen sea el número 58. Los números de factura no se derivan de los recibos.</p>
 <ul>
-  <li>La numeración es <strong>correlativa, única e inmutable</strong> por serie y mes.</li>
+  <li>La numeración es <strong>correlativa, única e inmutable</strong> por serie y año.</li>
   <li>No se puede editar el número de factura desde la interfaz.</li>
   <li>No se puede generar dos facturas del mismo recibo (bloqueado en base de datos).</li>
 </ul>

@@ -469,17 +469,24 @@ if ($mode === 'clean' || $mode === 'sample') {
                 `estado` VARCHAR(20) DEFAULT 'pendiente',
                 `aviso_recibo` TINYINT(1) NULL DEFAULT 0,
                 `factura_id` INT DEFAULT NULL,
-                -- id del recibo que este recibo rectifica (recibo rectificativo RER-AAAAMM-NNNNN).
+                -- id del recibo que este recibo rectifica (recibo rectificativo RER-AAAA-NNNNN).
                 -- NULL en recibos normales; solo se rellena en el recibo rectificativo generado
                 -- al anular un recibo que todavía no tenía factura emitida.
                 `recibo_rectificado_id` INT DEFAULT NULL,
+                -- Clave de unicidad real: contrato_id-AAAAMM, calculada en el servidor
+                -- (ver accion 'save' en api.php). NULL para recibos anulados/rectificativos:
+                -- solo protege duplicados entre recibos ORDINARIOS del mismo contrato+periodo.
+                `periodo_key` VARCHAR(20) DEFAULT NULL,
                 `fecha_creacion` VARCHAR(50) DEFAULT '',
                 `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 UNIQUE KEY `uq_recibos_numero_recibo` (`numero_recibo`),
+                UNIQUE KEY `uq_recibos_periodo_key` (`periodo_key`),
                 INDEX `idx_recibos_estado` (`estado`),
                 INDEX `idx_recibos_contrato` (`contrato_id`),
                 INDEX `idx_recibos_inquilino` (`inquilino_id`),
-                INDEX `idx_recibos_inmueble` (`inmueble_id`)
+                INDEX `idx_recibos_inmueble` (`inmueble_id`),
+                INDEX `idx_recibos_fecha_emision` (`fecha_emision`),
+                INDEX `idx_recibos_periodo_desde` (`periodo_desde`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
             // ── Tabla de facturas ──────────────────────────────────────────
@@ -617,14 +624,21 @@ if ($mode === 'clean' || $mode === 'sample') {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
         ];
 
-        // Tabla de secuencias de numeración mensual (REC, FAC, RECT, futuras series)
+        // Tabla de secuencias de numeración documental, independiente por tipo:
+        //   REC, RER, FAC, RET → ANUAL, periodo AAAA (el año según la fuente propia
+        //   de cada tipo: REC/RER usan el periodo_desde del recibo, FAC/RET la fecha
+        //   de emisión de la factura — nunca la fecha actual del servidor).
+        //   `periodo` es CHAR(6): admite tanto el AAAA anual actual como el AAAAMM
+        //   mensual histórico (filas antiguas previas a esta migración) sin
+        //   ambigüedad ni colisión (MySQL retira el relleno de espacios de un CHAR
+        //   al leerlo, y las claves 'AAAA' y 'AAAAMM' de un mismo año nunca coinciden).
         $createSqls['doc_secuencias'] = "CREATE TABLE `doc_secuencias` (
-            `tipo`    VARCHAR(20) NOT NULL COMMENT 'REC=Recibos, FAC=Facturas, RECT=Rectificativas',
-            `periodo` CHAR(6)     NOT NULL COMMENT 'Periodo YYYYMM de emision',
+            `tipo`    VARCHAR(20) NOT NULL COMMENT 'REC=Recibos, RER=Recibos rectificativos, FAC=Facturas, RET=Facturas rectificativas',
+            `periodo` CHAR(6)     NOT NULL COMMENT 'AAAA (anual) para los 4 tipos; AAAAMM solo en filas historicas previas a la migracion',
             `ultimo`  INT         NOT NULL DEFAULT 0 COMMENT 'Ultimo numero de secuencia emitido en este periodo',
             PRIMARY KEY (`tipo`, `periodo`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-          COMMENT='Secuencias de numeracion mensual. Un numero consumido nunca se reutiliza.'";
+          COMMENT='Secuencias de numeracion anual. Un numero consumido nunca se reutiliza.'";
 
         foreach ($createSqls as $t => $sql) {
             $pdo->exec("DROP TABLE IF EXISTS `$t`");
@@ -872,7 +886,9 @@ if ($mode === 'clean' || $mode === 'sample') {
             $log[] = "✅ 6 contratos activos creados";
 
             // ── Recibos (últimos 5 meses + estado variado) ───────
-            // La numeración es mensual: el contador se reinicia cada mes.
+            // Numeración ANUAL (REC-AAAA-NNNNN): el contador NO se reinicia cada mes,
+            // continúa durante todo el año (ver $seqAnual más abajo, indexado por año
+            // para soportar correctamente un eventual salto de año dentro del rango).
             // doc_secuencias se pobla automáticamente al final del bloque.
             $contrData = [
                 [$c1,$q1,$i1,700,0,0],[$c2,$q2,$i2,650,0,0],[$c3,$q3,$i3,720,0,0],
@@ -880,14 +896,19 @@ if ($mode === 'clean' || $mode === 'sample') {
             ];
             $now  = new DateTime();
             $recCount = 0;
+            $seqAnual = []; // contador anual continuo por año, para datos de ejemplo
             for ($back = 4; $back >= 0; $back--) {
                 $d   = (clone $now)->modify("-$back month");
                 $mes = (int)$d->format('n');
                 $yr  = (int)$d->format('Y');
                 $periodo = $meses[$mes-1] . ' ' . $yr;
-                $seqMes  = 1; // reinicio mensual para datos de ejemplo
+                $periodoDesde = $d->format('Y-m-01');
+                $periodoHasta = $d->format('Y-m-t');
+                if (!isset($seqAnual[$yr])) $seqAnual[$yr] = 0;
                 foreach ($contrData as [$cid,$qid,$iid,$renta,$iva_pct,$irpf_pct]) {
-                    $num       = 'REC-' . $yr . str_pad($mes,2,'0',STR_PAD_LEFT) . '-' . str_pad($seqMes,5,'0',STR_PAD_LEFT);
+                    $seqAnual[$yr]++;
+                    $seqAno    = $seqAnual[$yr];
+                    $num       = 'REC-' . $yr . '-' . str_pad($seqAno,5,'0',STR_PAD_LEFT);
                     $imp_iva   = round($renta * $iva_pct / 100, 2);
                     $imp_irpf  = round($renta * $irpf_pct / 100, 2);
                     $total     = $renta + $imp_iva - $imp_irpf;
@@ -903,24 +924,25 @@ if ($mode === 'clean' || $mode === 'sample') {
                     }
                     insertRow($pdo,'recibos',[
                         'contrato_id'=>$cid,'inquilino_id'=>$qid,'inmueble_id'=>$iid,
-                        'numero_recibo'=>$num,'numero_seq'=>$seqMes,
+                        'numero_recibo'=>$num,'numero_seq'=>$seqAno,
                         'fecha_emision'=>$yr.'-'.str_pad($mes,2,'0',STR_PAD_LEFT).'-01',
                         'fecha_limite'=>$yr.'-'.str_pad($mes,2,'0',STR_PAD_LEFT).'-05',
+                        'periodo_desde'=>$periodoDesde,'periodo_hasta'=>$periodoHasta,
                         'concepto_periodo'=>$periodo,'renta_base'=>$renta,
                         'importe_iva'=>$imp_iva,'importe_irpf'=>$imp_irpf,'importe_total'=>$total,
                         'importe_pagado'=>$pagado,'pagos'=>$pagos,
                         'estado'=>$estado,'fecha_creacion'=>date('c')
                     ]);
-                    $seqMes++; $recCount++;
+                    $recCount++;
                 }
             }
-            $log[] = "✅ $recCount recibos de ejemplo creados";
+            $log[] = "✅ $recCount recibos de ejemplo creados (numeración anual continua)";
 
             // ── Datos de ejemplo adicionales (inventados) ──────────────────────
             // Cubren casos que el bloque anterior no probaba: facturas normales,
             // facturas rectificativas (RET), recibos anulados con y sin factura,
             // recibos rectificativos (RER), un contrato finalizado y un salto de
-            // año en la numeración mensual. Nombres y direcciones inventados;
+            // año en la numeración histórica mensual antigua. Nombres y direcciones inventados;
             // no reutilizan los datos del SQL de referencia de la raíz del proyecto.
             $p3 = insertRow($pdo,'propietarios',['nombre'=>'Ruiz Delgado, Francisco','nif'=>'66778899Q','telefono'=>'699 222 333','email'=>'francisco.ruiz@email.com','observaciones'=>'Propietario de alta reciente']);
             $f3 = insertRow($pdo,'fincas',['nombre'=>'C/ Alcalá 120','sigla'=>'AL','calle'=>'Alcalá','numero'=>'120','cp'=>'28009','municipio'=>'Madrid','provincia'=>'Madrid','propietario_id'=>$p3,'observaciones'=>'Finca de nueva incorporación']);
@@ -938,21 +960,43 @@ if ($mode === 'clean' || $mode === 'sample') {
             $log[] = "✅ 3 contratos adicionales creados (incl. 1 finalizado/dado de baja)";
 
             // Recibos con fechas fijas (no relativas a "hoy") para que el salto de
-            // año en la numeración mensual sea siempre reproducible al reinstalar.
-            $r_c9_dic = insertRow($pdo,'recibos',['contrato_id'=>$c9,'inquilino_id'=>$q9,'inmueble_id'=>$i9,'numero_recibo'=>'REC-202512-00001','numero_seq'=>1,'fecha_emision'=>'2025-12-01','fecha_limite'=>'2025-12-01','concepto_periodo'=>'Diciembre 2025','renta_base'=>900,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>900,'importe_pagado'=>900,'pagos'=>[['fecha'=>'2025-12-01','importe'=>900,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
-            $r_c7_dic = insertRow($pdo,'recibos',['contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,'numero_recibo'=>'REC-202512-00002','numero_seq'=>2,'fecha_emision'=>'2025-12-01','fecha_limite'=>'2025-12-01','concepto_periodo'=>'Diciembre 2025','renta_base'=>750,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>750,'importe_pagado'=>750,'pagos'=>[['fecha'=>'2025-12-01','importe'=>750,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
-            $r_c7_ene = insertRow($pdo,'recibos',['contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,'numero_recibo'=>'REC-202601-00001','numero_seq'=>1,'fecha_emision'=>'2026-01-01','fecha_limite'=>'2026-01-01','concepto_periodo'=>'Enero 2026','renta_base'=>750,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>750,'importe_pagado'=>750,'pagos'=>[['fecha'=>'2026-01-01','importe'=>750,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
-            $r_c8_ene = insertRow($pdo,'recibos',['contrato_id'=>$c8,'inquilino_id'=>$q8,'inmueble_id'=>$i8,'numero_recibo'=>'REC-202601-00002','numero_seq'=>2,'fecha_emision'=>'2026-01-01','fecha_limite'=>'2026-01-01','concepto_periodo'=>'Enero 2026','renta_base'=>620,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>620,'importe_pagado'=>620,'pagos'=>[['fecha'=>'2026-01-01','importe'=>620,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
-            $r_c7_feb = insertRow($pdo,'recibos',['contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,'numero_recibo'=>'REC-202602-00001','numero_seq'=>1,'fecha_emision'=>'2026-02-01','fecha_limite'=>'2026-02-01','concepto_periodo'=>'Febrero 2026','renta_base'=>750,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>750,'importe_pagado'=>750,'pagos'=>[['fecha'=>'2026-02-01','importe'=>750,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
-            $r_c8_feb = insertRow($pdo,'recibos',['contrato_id'=>$c8,'inquilino_id'=>$q8,'inmueble_id'=>$i8,'numero_recibo'=>'REC-202602-00002','numero_seq'=>2,'fecha_emision'=>'2026-02-01','fecha_limite'=>'2026-02-01','concepto_periodo'=>'Febrero 2026','renta_base'=>620,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>620,'importe_pagado'=>0,'pagos'=>[],'estado'=>'pendiente','fecha_creacion'=>date('c')]);
+            // año sea siempre reproducible al reinstalar. Se dejan deliberadamente en
+            // el formato MENSUAL antiguo (REC-AAAAMM-NNNNN): representan documentos
+            // históricos emitidos ANTES de pasar a numeración anual, y sirven para
+            // probar que la aplicación sigue mostrando/gestionando correctamente el
+            // formato antiguo en paralelo con el nuevo (ver recibos de más arriba).
+            $periodoDesde_c8_feb = '2026-02-01';
+            $periodoHasta_c8_feb = '2026-02-28';
+            $r_c9_dic = insertRow($pdo,'recibos',['contrato_id'=>$c9,'inquilino_id'=>$q9,'inmueble_id'=>$i9,'numero_recibo'=>'REC-202512-00001','numero_seq'=>1,'fecha_emision'=>'2025-12-01','fecha_limite'=>'2025-12-01','periodo_desde'=>'2025-12-01','periodo_hasta'=>'2025-12-31','concepto_periodo'=>'Diciembre 2025','renta_base'=>900,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>900,'importe_pagado'=>900,'pagos'=>[['fecha'=>'2025-12-01','importe'=>900,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
+            $r_c7_dic = insertRow($pdo,'recibos',['contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,'numero_recibo'=>'REC-202512-00002','numero_seq'=>2,'fecha_emision'=>'2025-12-01','fecha_limite'=>'2025-12-01','periodo_desde'=>'2025-12-01','periodo_hasta'=>'2025-12-31','concepto_periodo'=>'Diciembre 2025','renta_base'=>750,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>750,'importe_pagado'=>750,'pagos'=>[['fecha'=>'2025-12-01','importe'=>750,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
+            $r_c7_ene = insertRow($pdo,'recibos',['contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,'numero_recibo'=>'REC-202601-00001','numero_seq'=>1,'fecha_emision'=>'2026-01-01','fecha_limite'=>'2026-01-01','periodo_desde'=>'2026-01-01','periodo_hasta'=>'2026-01-31','concepto_periodo'=>'Enero 2026','renta_base'=>750,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>750,'importe_pagado'=>750,'pagos'=>[['fecha'=>'2026-01-01','importe'=>750,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
+            $r_c8_ene = insertRow($pdo,'recibos',['contrato_id'=>$c8,'inquilino_id'=>$q8,'inmueble_id'=>$i8,'numero_recibo'=>'REC-202601-00002','numero_seq'=>2,'fecha_emision'=>'2026-01-01','fecha_limite'=>'2026-01-01','periodo_desde'=>'2026-01-01','periodo_hasta'=>'2026-01-31','concepto_periodo'=>'Enero 2026','renta_base'=>620,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>620,'importe_pagado'=>620,'pagos'=>[['fecha'=>'2026-01-01','importe'=>620,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
+            $r_c7_feb = insertRow($pdo,'recibos',['contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,'numero_recibo'=>'REC-202602-00001','numero_seq'=>1,'fecha_emision'=>'2026-02-01','fecha_limite'=>'2026-02-01','periodo_desde'=>'2026-02-01','periodo_hasta'=>'2026-02-28','concepto_periodo'=>'Febrero 2026','renta_base'=>750,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>750,'importe_pagado'=>750,'pagos'=>[['fecha'=>'2026-02-01','importe'=>750,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
+            $r_c8_feb = insertRow($pdo,'recibos',['contrato_id'=>$c8,'inquilino_id'=>$q8,'inmueble_id'=>$i8,'numero_recibo'=>'REC-202602-00002','numero_seq'=>2,'fecha_emision'=>'2026-02-01','fecha_limite'=>'2026-02-01','periodo_desde'=>$periodoDesde_c8_feb,'periodo_hasta'=>$periodoHasta_c8_feb,'concepto_periodo'=>'Febrero 2026','renta_base'=>620,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>620,'importe_pagado'=>0,'pagos'=>[],'estado'=>'pendiente','fecha_creacion'=>date('c')]);
             $log[] = "✅ 6 recibos adicionales creados (incl. salto de año dic-2025 → ene-2026)";
+
+            // ── Datos de ejemplo: numeración ANUAL de facturas (FAC/RET) ──────
+            // FAC y RET se numeran por AÑO (FAC-AAAA-NNNNN), no por mes: el contador
+            // continúa durante todos los meses del año y solo se reinicia a 00001 en
+            // año nuevo (mismo criterio que REC/RER desde esta versión — ver
+            // BASE_DE_DATOS.md §7). Fechas fijas (no relativas a "hoy"), igual que los
+            // recibos de arriba, para que el ejemplo sea reproducible.
+            //
+            // FAC-2026-00001 (ene) → rectificada por RET-2026-00001 (feb)
+            // FAC-2026-00002 (feb) → permanece emitida (recibo se anula, factura no)
+            // FAC-2026-00003 (jul, factura un recibo de FEBRERO meses después: mismo
+            //                 patrón que "recibo de junio facturado en julio") →
+            //                 rectificada por RET-2026-00002 (ago)
+            // FAC-2027-00001 (ene 2027, factura un recibo de DICIEMBRE 2026: la serie
+            //                 anual reinicia a 00001 aunque el alquiler sea de 2026) →
+            //                 rectificada por RET-2027-00001 (ene 2027)
 
             // Factura normal para el recibo de febrero de Ortega Campos → el recibo
             // se anula después. La factura permanece "emitida": la rectificación
             // fiscal es un acto explícito sobre la factura, no automático desde el recibo.
             $fac_c7 = insertRow($pdo,'facturas',[
                 'recibo_id'=>$r_c7_feb,'contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,
-                'numero_factura'=>'FAC-202602-00001','numero_seq'=>1,'serie'=>'FAC','tipo_factura'=>'F1',
+                'numero_factura'=>'FAC-2026-00002','numero_seq'=>2,'serie'=>'FAC','tipo_factura'=>'F1',
                 'fecha_emision'=>'2026-02-05','fecha_operacion'=>'2026-02-01',
                 'periodo_desde'=>'2026-02-01','periodo_hasta'=>'2026-02-28',
                 'emisor_nombre'=>'Administración de Fincas López','emisor_nif'=>'B12345678',
@@ -968,16 +1012,16 @@ if ($mode === 'clean' || $mode === 'sample') {
                 'fecha_creacion'=>date('c'),
             ]);
             // Ejemplo "recibo anulado CON factura": el recibo queda anulado lógicamente,
-            // la factura FAC-202602-00001 permanece emitida.
+            // la factura FAC-2026-00002 permanece emitida.
             $pdo->prepare("UPDATE recibos SET estado='anulado', factura_id=?, notas=? WHERE id=?")
-                ->execute([$fac_c7, 'Recibo anulado. La factura FAC-202602-00001 sigue emitida; revisar en Facturas si procede rectificarla.', $r_c7_feb]);
-            $log[] = "✅ Ejemplo: recibo anulado con factura emitida (FAC-202602-00001)";
+                ->execute([$fac_c7, 'Recibo anulado. La factura FAC-2026-00002 sigue emitida; revisar en Facturas si procede rectificarla.', $r_c7_feb]);
+            $log[] = "✅ Ejemplo: recibo anulado con factura emitida (FAC-2026-00002)";
 
             // Factura normal para el recibo de enero de Navarro Iglesias → se rectifica
             // para demostrar la nueva nomenclatura de facturas rectificativas (RET).
             $fac_c8 = insertRow($pdo,'facturas',[
                 'recibo_id'=>$r_c8_ene,'contrato_id'=>$c8,'inquilino_id'=>$q8,'inmueble_id'=>$i8,
-                'numero_factura'=>'FAC-202601-00001','numero_seq'=>1,'serie'=>'FAC','tipo_factura'=>'F1',
+                'numero_factura'=>'FAC-2026-00001','numero_seq'=>1,'serie'=>'FAC','tipo_factura'=>'F1',
                 'fecha_emision'=>'2026-01-05','fecha_operacion'=>'2026-01-01',
                 'periodo_desde'=>'2026-01-01','periodo_hasta'=>'2026-01-31',
                 'emisor_nombre'=>'Administración de Fincas López','emisor_nif'=>'B12345678',
@@ -992,11 +1036,10 @@ if ($mode === 'clean' || $mode === 'sample') {
                 'verifactu_estado'=>'no_enviado','verifactu_respuesta'=>null,'factura_rectificada_id'=>null,
                 'fecha_creacion'=>date('c'),
             ]);
-            $hoy = date('Y-m-d'); $periodoHoy = date('Ym');
             $fac_ret = insertRow($pdo,'facturas',[
                 'recibo_id'=>null,'contrato_id'=>$c8,'inquilino_id'=>$q8,'inmueble_id'=>$i8,
-                'numero_factura'=>'RET-'.$periodoHoy.'-00001','numero_seq'=>1,'serie'=>'RET','tipo_factura'=>'R1',
-                'fecha_emision'=>$hoy,'fecha_operacion'=>'2026-01-05',
+                'numero_factura'=>'RET-2026-00001','numero_seq'=>1,'serie'=>'RET','tipo_factura'=>'R1',
+                'fecha_emision'=>'2026-02-10','fecha_operacion'=>'2026-01-05',
                 'periodo_desde'=>'2026-01-01','periodo_hasta'=>'2026-01-31',
                 'emisor_nombre'=>'Administración de Fincas López','emisor_nif'=>'B12345678',
                 'emisor_direccion'=>'C/ Gran Vía 10, 2º B','emisor_cp'=>'28013','emisor_municipio'=>'Madrid','emisor_provincia'=>'Madrid',
@@ -1005,24 +1048,125 @@ if ($mode === 'clean' || $mode === 'sample') {
                 'cliente_cp'=>'28009','cliente_municipio'=>'Madrid','cliente_provincia'=>'Madrid','cliente_email'=>'diego.navarro@outlook.com',
                 'inmueble_direccion'=>'Alcalá 120 3º B, CP 28009, Madrid',
                 'concepto'=>'Rectificación de: Alquiler del inmueble — Enero 2026','conceptos_extra'=>'',
-                'notas'=>'Factura rectificativa de FAC-202601-00001. Anulación total.',
+                'notas'=>'Factura rectificativa de FAC-2026-00001. Anulación total.',
                 'base_imponible'=>-620,'iva_pct'=>0,'importe_iva'=>0,'irpf_pct'=>0,'importe_irpf'=>0,'importe_total'=>-620,
                 'estado'=>'emitida','hash_factura'=>null,'hash_anterior'=>null,'qr_url'=>null,
                 'verifactu_estado'=>'no_enviado','verifactu_respuesta'=>null,'factura_rectificada_id'=>$fac_c8,
                 'fecha_creacion'=>date('c'),
             ]);
             $pdo->prepare("UPDATE facturas SET notas=? WHERE id=?")
-                ->execute(['Rectificada por: RET-'.$periodoHoy.'-00001 · emitida el '.$hoy.'.', $fac_c8]);
+                ->execute(['Rectificada por: RET-2026-00001 · emitida el 2026-02-10.', $fac_c8]);
             $pdo->prepare("UPDATE recibos SET factura_id=? WHERE id=?")->execute([$fac_c8, $r_c8_ene]);
-            $log[] = "✅ Ejemplo: factura rectificativa RET-$periodoHoy-00001 (rectifica FAC-202601-00001)";
+            $log[] = "✅ Ejemplo: factura rectificativa RET-2026-00001 (rectifica FAC-2026-00001)";
+
+            // Segunda factura de 2026 en un mes distinto (julio) que factura un recibo
+            // de febrero — demuestra que la secuencia anual continúa entre meses sin
+            // reiniciarse (mismo patrón que "recibo de junio facturado en julio").
+            // Se rectifica en agosto (RET-2026-00002): la secuencia RET también continúa
+            // entre meses dentro del mismo año.
+            $fac_2026_03 = insertRow($pdo,'facturas',[
+                'recibo_id'=>$r_c8_feb,'contrato_id'=>$c8,'inquilino_id'=>$q8,'inmueble_id'=>$i8,
+                'numero_factura'=>'FAC-2026-00003','numero_seq'=>3,'serie'=>'FAC','tipo_factura'=>'F1',
+                'fecha_emision'=>'2026-07-15','fecha_operacion'=>'2026-02-01',
+                'periodo_desde'=>'2026-02-01','periodo_hasta'=>'2026-02-28',
+                'emisor_nombre'=>'Administración de Fincas López','emisor_nif'=>'B12345678',
+                'emisor_direccion'=>'C/ Gran Vía 10, 2º B','emisor_cp'=>'28013','emisor_municipio'=>'Madrid','emisor_provincia'=>'Madrid',
+                'emisor_email'=>'admin@fincaslopez.es','emisor_telefono'=>'91 555 1234','emisor_iban'=>'ES91 2100 0418 4502 0005 1332',
+                'cliente_nombre'=>'Navarro Iglesias, Diego','cliente_nif'=>'77223344J','cliente_direccion'=>'C/ Alcalá 120 3º B',
+                'cliente_cp'=>'28009','cliente_municipio'=>'Madrid','cliente_provincia'=>'Madrid','cliente_email'=>'diego.navarro@outlook.com',
+                'inmueble_direccion'=>'Alcalá 120 3º B, CP 28009, Madrid',
+                'concepto'=>'Alquiler del inmueble — Febrero 2026','conceptos_extra'=>'',
+                'notas'=>'Ejemplo: recibo de febrero facturado meses después (julio), misma serie anual 2026.',
+                'base_imponible'=>620,'iva_pct'=>0,'importe_iva'=>0,'irpf_pct'=>0,'importe_irpf'=>0,'importe_total'=>620,
+                'estado'=>'rectificada','hash_factura'=>null,'hash_anterior'=>null,'qr_url'=>null,
+                'verifactu_estado'=>'no_enviado','verifactu_respuesta'=>null,'factura_rectificada_id'=>null,
+                'fecha_creacion'=>date('c'),
+            ]);
+            $ret_2026_02 = insertRow($pdo,'facturas',[
+                'recibo_id'=>null,'contrato_id'=>$c8,'inquilino_id'=>$q8,'inmueble_id'=>$i8,
+                'numero_factura'=>'RET-2026-00002','numero_seq'=>2,'serie'=>'RET','tipo_factura'=>'R1',
+                'fecha_emision'=>'2026-08-01','fecha_operacion'=>'2026-07-15',
+                'periodo_desde'=>'2026-02-01','periodo_hasta'=>'2026-02-28',
+                'emisor_nombre'=>'Administración de Fincas López','emisor_nif'=>'B12345678',
+                'emisor_direccion'=>'C/ Gran Vía 10, 2º B','emisor_cp'=>'28013','emisor_municipio'=>'Madrid','emisor_provincia'=>'Madrid',
+                'emisor_email'=>'admin@fincaslopez.es','emisor_telefono'=>'91 555 1234','emisor_iban'=>'ES91 2100 0418 4502 0005 1332',
+                'cliente_nombre'=>'Navarro Iglesias, Diego','cliente_nif'=>'77223344J','cliente_direccion'=>'C/ Alcalá 120 3º B',
+                'cliente_cp'=>'28009','cliente_municipio'=>'Madrid','cliente_provincia'=>'Madrid','cliente_email'=>'diego.navarro@outlook.com',
+                'inmueble_direccion'=>'Alcalá 120 3º B, CP 28009, Madrid',
+                'concepto'=>'Rectificación de: Alquiler del inmueble — Febrero 2026','conceptos_extra'=>'',
+                'notas'=>'Factura rectificativa de FAC-2026-00003. Anulación total.',
+                'base_imponible'=>-620,'iva_pct'=>0,'importe_iva'=>0,'irpf_pct'=>0,'importe_irpf'=>0,'importe_total'=>-620,
+                'estado'=>'emitida','hash_factura'=>null,'hash_anterior'=>null,'qr_url'=>null,
+                'verifactu_estado'=>'no_enviado','verifactu_respuesta'=>null,'factura_rectificada_id'=>$fac_2026_03,
+                'fecha_creacion'=>date('c'),
+            ]);
+            $pdo->prepare("UPDATE facturas SET notas=? WHERE id=?")
+                ->execute(['Rectificada por: RET-2026-00002 · emitida el 2026-08-01.', $fac_2026_03]);
+            $pdo->prepare("UPDATE recibos SET factura_id=? WHERE id=?")->execute([$fac_2026_03, $r_c8_feb]);
+            $log[] = "✅ Ejemplo: FAC-2026-00003 (recibo de febrero facturado en julio, misma serie anual) rectificada por RET-2026-00002";
+
+            // Recibo de diciembre de 2026 facturado en enero de 2027 → demuestra que la
+            // serie ANUAL de facturas reinicia a 00001 en año nuevo (FAC-2027-00001),
+            // aunque el alquiler que factura sea de 2026. Su rectificativa también
+            // reinicia (RET-2027-00001).
+            $r_c7_dic2026 = insertRow($pdo,'recibos',['contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,'numero_recibo'=>'REC-202612-00001','numero_seq'=>1,'fecha_emision'=>'2026-12-01','fecha_limite'=>'2026-12-01','periodo_desde'=>'2026-12-01','periodo_hasta'=>'2026-12-31','concepto_periodo'=>'Diciembre 2026','renta_base'=>750,'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>750,'importe_pagado'=>750,'pagos'=>[['fecha'=>'2026-12-01','importe'=>750,'metodo'=>'transferencia','cuenta'=>'ES91 2100 0418']],'estado'=>'cobrado','fecha_creacion'=>date('c')]);
+            $fac_2027 = insertRow($pdo,'facturas',[
+                'recibo_id'=>$r_c7_dic2026,'contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,
+                'numero_factura'=>'FAC-2027-00001','numero_seq'=>1,'serie'=>'FAC','tipo_factura'=>'F1',
+                'fecha_emision'=>'2027-01-05','fecha_operacion'=>'2026-12-01',
+                'periodo_desde'=>'2026-12-01','periodo_hasta'=>'2026-12-31',
+                'emisor_nombre'=>'Administración de Fincas López','emisor_nif'=>'B12345678',
+                'emisor_direccion'=>'C/ Gran Vía 10, 2º B','emisor_cp'=>'28013','emisor_municipio'=>'Madrid','emisor_provincia'=>'Madrid',
+                'emisor_email'=>'admin@fincaslopez.es','emisor_telefono'=>'91 555 1234','emisor_iban'=>'ES91 2100 0418 4502 0005 1332',
+                'cliente_nombre'=>'Ortega Campos, Beatriz','cliente_nif'=>'66112233H','cliente_direccion'=>'C/ Alcalá 120 3º A',
+                'cliente_cp'=>'28009','cliente_municipio'=>'Madrid','cliente_provincia'=>'Madrid','cliente_email'=>'beatriz.ortega@gmail.com',
+                'inmueble_direccion'=>'Alcalá 120 3º A, CP 28009, Madrid',
+                'concepto'=>'Alquiler del inmueble — Diciembre 2026','conceptos_extra'=>'',
+                'notas'=>'Ejemplo: primera factura de la serie anual 2027 (reinicia a 00001).',
+                'base_imponible'=>750,'iva_pct'=>0,'importe_iva'=>0,'irpf_pct'=>0,'importe_irpf'=>0,'importe_total'=>750,
+                'estado'=>'rectificada','hash_factura'=>null,'hash_anterior'=>null,'qr_url'=>null,
+                'verifactu_estado'=>'no_enviado','verifactu_respuesta'=>null,'factura_rectificada_id'=>null,
+                'fecha_creacion'=>date('c'),
+            ]);
+            $ret_2027 = insertRow($pdo,'facturas',[
+                'recibo_id'=>null,'contrato_id'=>$c7,'inquilino_id'=>$q7,'inmueble_id'=>$i7,
+                'numero_factura'=>'RET-2027-00001','numero_seq'=>1,'serie'=>'RET','tipo_factura'=>'R1',
+                'fecha_emision'=>'2027-01-20','fecha_operacion'=>'2027-01-05',
+                'periodo_desde'=>'2026-12-01','periodo_hasta'=>'2026-12-31',
+                'emisor_nombre'=>'Administración de Fincas López','emisor_nif'=>'B12345678',
+                'emisor_direccion'=>'C/ Gran Vía 10, 2º B','emisor_cp'=>'28013','emisor_municipio'=>'Madrid','emisor_provincia'=>'Madrid',
+                'emisor_email'=>'admin@fincaslopez.es','emisor_telefono'=>'91 555 1234','emisor_iban'=>'ES91 2100 0418 4502 0005 1332',
+                'cliente_nombre'=>'Ortega Campos, Beatriz','cliente_nif'=>'66112233H','cliente_direccion'=>'C/ Alcalá 120 3º A',
+                'cliente_cp'=>'28009','cliente_municipio'=>'Madrid','cliente_provincia'=>'Madrid','cliente_email'=>'beatriz.ortega@gmail.com',
+                'inmueble_direccion'=>'Alcalá 120 3º A, CP 28009, Madrid',
+                'concepto'=>'Rectificación de: Alquiler del inmueble — Diciembre 2026','conceptos_extra'=>'',
+                'notas'=>'Factura rectificativa de FAC-2027-00001. Anulación total. Ejemplo: primera rectificativa de la serie anual 2027.',
+                'base_imponible'=>-750,'iva_pct'=>0,'importe_iva'=>0,'irpf_pct'=>0,'importe_irpf'=>0,'importe_total'=>-750,
+                'estado'=>'emitida','hash_factura'=>null,'hash_anterior'=>null,'qr_url'=>null,
+                'verifactu_estado'=>'no_enviado','verifactu_respuesta'=>null,'factura_rectificada_id'=>$fac_2027,
+                'fecha_creacion'=>date('c'),
+            ]);
+            $pdo->prepare("UPDATE facturas SET notas=? WHERE id=?")
+                ->execute(['Rectificada por: RET-2027-00001 · emitida el 2027-01-20.', $fac_2027]);
+            $pdo->prepare("UPDATE recibos SET factura_id=? WHERE id=?")->execute([$fac_2027, $r_c7_dic2026]);
+            $log[] = "✅ Ejemplo: salto de año en la serie anual de facturas — FAC-2027-00001 y RET-2027-00001 reinician a 00001";
+
+            $hoy = date('Y-m-d');
 
             // Ejemplo "recibo anulado SIN factura": se anula el recibo de febrero de
             // Navarro Iglesias y se genera su recibo rectificativo (nueva nomenclatura RER).
-            $rer_num = 'RER-'.$periodoHoy.'-00001';
+            // El año de numeración del RER sale del periodo_desde del recibo ORIGINAL
+            // que se rectifica (r_c8_feb, Febrero 2026) — NUNCA de la fecha en que se
+            // ejecuta la instalación — mismo criterio que aplica anularRecibo() en
+            // recibos-cobro.js. Por eso el número es reproducible (RER-2026-00001)
+            // aunque install.php se ejecute en cualquier fecha futura.
+            $rerAnio = substr($periodoDesde_c8_feb, 0, 4);
+            $rer_num = 'RER-'.$rerAnio.'-00001';
             $r_rer = insertRow($pdo,'recibos',[
                 'contrato_id'=>$c8,'inquilino_id'=>$q8,'inmueble_id'=>$i8,
                 'numero_recibo'=>$rer_num,'numero_seq'=>1,
                 'fecha_emision'=>$hoy,'fecha_limite'=>$hoy,
+                'periodo_desde'=>$periodoDesde_c8_feb,'periodo_hasta'=>$periodoHasta_c8_feb,
                 'concepto_periodo'=>'Rectificación de: Febrero 2026','renta_base'=>-620,
                 'importe_iva'=>0,'importe_irpf'=>0,'importe_total'=>-620,'importe_pagado'=>0,'pagos'=>[],
                 'estado'=>'rectificativo','recibo_rectificado_id'=>$r_c8_feb,
@@ -1144,7 +1288,46 @@ if ($mode === 'clean' || $mode === 'sample') {
                   SUBSTRING(numero_factura, LOCATE('-', numero_factura)+1, 6)
                 ON DUPLICATE KEY UPDATE ultimo = GREATEST(ultimo, VALUES(ultimo))
             ");
-            $log[] = "✅ Secuencias de numeración inicializadas en <code>doc_secuencias</code> (recibos y facturas)";
+            // FAC/RET usan numeración ANUAL (periodo de 4 dígitos AAAA). El REGEXP de 6
+            // dígitos de la primera consulta (arriba) nunca coincide con un
+            // numero_factura anual (ej. FAC-2026-00001), así que hace falta esta
+            // segunda consulta específica para esos dos tipos.
+            $pdo->exec("
+                INSERT INTO doc_secuencias (tipo, periodo, ultimo)
+                SELECT
+                  SUBSTRING_INDEX(numero_factura, '-', 1),
+                  SUBSTRING(numero_factura, LOCATE('-', numero_factura)+1, 4),
+                  MAX(numero_seq)
+                FROM facturas
+                WHERE numero_factura REGEXP '^(FAC|RET)-[0-9]{4}-[0-9]+$'
+                GROUP BY
+                  SUBSTRING_INDEX(numero_factura, '-', 1),
+                  SUBSTRING(numero_factura, LOCATE('-', numero_factura)+1, 4)
+                ON DUPLICATE KEY UPDATE ultimo = GREATEST(ultimo, VALUES(ultimo))
+            ");
+            // REC/RER también usan numeración ANUAL desde esta versión (periodo de 4
+            // dígitos AAAA). Los recibos históricos con formato mensual (6 dígitos,
+            // primera consulta de arriba) se mantienen intactos y siguen poblando sus
+            // propias filas mensuales en doc_secuencias — son documentos ya emitidos,
+            // no se renumeran. Esta consulta solo cubre los recibos de ejemplo ya
+            // generados en formato anual (numero_seq ya es una secuencia continua real
+            // dentro del año, igual que en FAC/RET: no hace falta sumar filas mensuales
+            // aquí porque no hay continuidad real que preservar entre el histórico
+            // mensual y el nuevo anual en una instalación de ejemplo recién creada).
+            $pdo->exec("
+                INSERT INTO doc_secuencias (tipo, periodo, ultimo)
+                SELECT
+                  SUBSTRING_INDEX(numero_recibo, '-', 1),
+                  SUBSTRING(numero_recibo, LOCATE('-', numero_recibo)+1, 4),
+                  MAX(numero_seq)
+                FROM recibos
+                WHERE numero_recibo REGEXP '^(REC|RER)-[0-9]{4}-[0-9]+$'
+                GROUP BY
+                  SUBSTRING_INDEX(numero_recibo, '-', 1),
+                  SUBSTRING(numero_recibo, LOCATE('-', numero_recibo)+1, 4)
+                ON DUPLICATE KEY UPDATE ultimo = GREATEST(ultimo, VALUES(ultimo))
+            ");
+            $log[] = "✅ Secuencias de numeración inicializadas en <code>doc_secuencias</code> (los 4 tipos REC/RER/FAC/RET son anuales; las filas mensuales históricas de REC/RER se conservan aparte, sin renumerar)";
         }
     } catch (Exception $e) { $error = $e->getMessage(); }
 }

@@ -215,7 +215,7 @@ try {
 
 <!-- Modulos JS separados (M-T06) â€" carga en orden de dependencias -->
 <script src="assets/js/config.js?v=20260710a"></script>
-<script src="assets/js/helpers.js?v=20260710a"></script>
+<script src="assets/js/helpers.js?v=20260710c"></script>
 <script src="assets/js/actividad.js?v=20260710a"></script>
 <script src="assets/js/tabla.js?v=20260708b"></script>
 <script src="assets/js/notificaciones.js?v=20260625o"></script>
@@ -228,12 +228,12 @@ try {
 <script src="assets/js/contratos.js?v=20260710a"></script>
 <script src="assets/js/contratos-pdf.js?v=20260626w"></script>
 <script src="assets/js/recibos-lista.js?v=20260708b"></script>
-<script src="assets/js/recibos-cobro.js?v=20260709a"></script>
+<script src="assets/js/recibos-cobro.js?v=20260710b"></script>
 <script src="assets/js/recibos-pdf.js?v=20260708a"></script>
-<script src="assets/js/generar.js?v=20260630a"></script>
+<script src="assets/js/generar.js?v=20260710b"></script>
 <script src="assets/js/informes.js?v=20260626p"></script>
 <script src="assets/js/email.js?v=20260709a"></script>
-<script src="assets/js/facturas.js?v=20260709a"></script>
+<script src="assets/js/facturas.js?v=20260710a"></script>
 <script src="assets/js/verifactu.js?v=20260708a"></script>
 <script src="assets/js/ux.js?v=20260710a"></script>
 <script src="assets/js/extras.js?v=20260626w"></script>

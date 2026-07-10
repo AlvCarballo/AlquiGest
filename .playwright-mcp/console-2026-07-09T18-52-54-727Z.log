@@ -1,3 +1,0 @@
-[   11323ms] [INFO] Autofocus processing was blocked because a document already has a focused element. @ http://localhost/AlquiGest_v3/AlquiGest.php:0
-[   11423ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "username"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost/AlquiGest_v3/AlquiGest.php:0
-[   24580ms] [ERROR] Pattern attribute value [a-zA-Z0-9._-]{3,60} is not a valid regular expression: Uncaught SyntaxError: Failed to execute 'checkValidity' on 'HTMLFormElement': Invalid regular expression: /[a-zA-Z0-9._-]{3,60}/v: Invalid character in character class @ http://localhost/AlquiGest_v3/assets/js/usuarios.js?v=20260709a:112

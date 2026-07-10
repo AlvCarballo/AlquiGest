@@ -21,9 +21,10 @@ function modalGenerarRecibo(contratoId) {
   const prop = inm ? DB.getItem('propietarios', inm.propietario_id) : null;
 
   const now = new Date();
-  const mesActual = now.toLocaleDateString('es-ES', { month:'long', year:'numeric' });
-  const primerDia = fmtLocalISO(new Date(now.getFullYear(), now.getMonth(), 1));
-  const ultimoDia = fmtLocalISO(new Date(now.getFullYear(), now.getMonth()+1, 0));
+  const mesSel = now.getMonth() + 1;
+  const anyoSel = now.getFullYear();
+  const primerDia = periodoPrimerDia(mesSel, anyoSel);
+  const ultimoDia = periodoUltimoDia(mesSel, anyoSel);
 
   const iva = (contrato.renta_base * contrato.iva_pct / 100);
   const irpf = (contrato.renta_base * contrato.irpf_pct / 100);
@@ -81,24 +82,35 @@ function modalGenerarRecibo(contratoId) {
                style="color:var(--text-muted);background:var(--bg-subtle);font-style:italic">
       </div>
       <div class="form-group">
+        <label>Período del recibo *</label>
+        <div style="display:flex;gap:8px">
+          <select id="sel-recibo-mes" onchange="actualizarPeriodoRecibo(${contrato.dia_pago||5})" style="flex:2">
+            ${MESES_LARGOS.map((m,i) => `<option value="${i+1}" ${i+1===mesSel?'selected':''}>${m}</option>`).join('')}
+          </select>
+          <input id="sel-recibo-anyo" type="number" min="2000" max="2099" value="${anyoSel}"
+                 oninput="actualizarPeriodoRecibo(${contrato.dia_pago||5})" style="flex:1">
+        </div>
+        <div style="font-size:11px;color:var(--gray-500);margin-top:2px">Determina la numeración, el concepto y las fechas de período de abajo.</div>
+      </div>
+      <div class="form-group">
         <label>Fecha emisión</label>
         <input name="fecha_emision" type="date" value="${fmtLocalISO(now)}">
       </div>
       <div class="form-group">
         <label>Período desde</label>
-        <input name="periodo_desde" type="date" value="${primerDia}">
+        <input name="periodo_desde" id="inp-periodo-desde" type="date" value="${primerDia}">
       </div>
       <div class="form-group">
         <label>Período hasta</label>
-        <input name="periodo_hasta" type="date" value="${ultimoDia}">
+        <input name="periodo_hasta" id="inp-periodo-hasta" type="date" value="${ultimoDia}">
       </div>
       <div class="form-group">
         <label>Concepto período</label>
-        <input name="concepto_periodo" value="Alquiler ${mesActual}">
+        <input name="concepto_periodo" id="inp-concepto-periodo" value="${periodoLabel(mesSel, anyoSel)}">
       </div>
       <div class="form-group">
         <label>Fecha límite pago</label>
-        <input name="fecha_limite" type="date" value="${fmtLocalISO(new Date(now.getFullYear(), now.getMonth(), contrato.dia_pago||5))}">
+        <input name="fecha_limite" id="inp-fecha-limite" type="date" value="${fmtLocalISO(new Date(anyoSel, mesSel-1, contrato.dia_pago||5))}">
       </div>
       <div class="form-group" style="grid-column:1/-1">
         <div class="form-section-title" style="margin-top:4px">Importes</div>
@@ -141,7 +153,7 @@ function modalGenerarRecibo(contratoId) {
     </form>
   `, `
     <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-    <button class="btn btn-primary" onclick="saveRecibo()">
+    <button class="btn btn-primary" id="btn-crear-recibo" onclick="saveRecibo()">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       Crear recibo
     </button>
@@ -195,6 +207,30 @@ async function aplicarIPCDesdeRecibo(contratoId) {
   if (btn) { btn.disabled = true; btn.textContent = '✓ Aplicado'; btn.style.background = 'var(--green)'; }
 }
 
+// Único punto que recalcula período_desde/hasta, concepto_periodo y fecha_límite
+// a partir del selector Mes/Año del modal de generación individual de recibos.
+// Se llama al cambiar el mes o el año — así los 4 campos de "período" del
+// formulario (periodo_desde, periodo_hasta, concepto_periodo, fecha_limite)
+// quedan siempre sincronizados con un único valor elegido por el usuario, en
+// vez de editarse cada uno de forma independiente (causa raíz del bug por el
+// que un recibo "de junio" podía terminar numerado/fechado como julio).
+function actualizarPeriodoRecibo(diaPago) {
+  const selMes  = document.getElementById('sel-recibo-mes');
+  const selAnyo = document.getElementById('sel-recibo-anyo');
+  if (!selMes || !selAnyo) return;
+  const mes  = parseInt(selMes.value);
+  const anyo = parseInt(selAnyo.value);
+  if (!mes || !anyo) return;
+  const inpDesde  = document.getElementById('inp-periodo-desde');
+  const inpHasta  = document.getElementById('inp-periodo-hasta');
+  const inpConcep = document.getElementById('inp-concepto-periodo');
+  const inpLimite = document.getElementById('inp-fecha-limite');
+  if (inpDesde)  inpDesde.value  = periodoPrimerDia(mes, anyo);
+  if (inpHasta)  inpHasta.value  = periodoUltimoDia(mes, anyo);
+  if (inpConcep) inpConcep.value = periodoLabel(mes, anyo);
+  if (inpLimite) inpLimite.value = fmtLocalISO(new Date(anyo, mes - 1, diaPago || 5));
+}
+
 // Recalcula los importes del formulario de generación de recibo en tiempo real.
 // Se llama al cambiar renta base, % IVA o % IRPF.
 // Fórmula: Total = Renta + IVA − IRPF (el IRPF es una retención que descuenta el inquilino)
@@ -228,6 +264,12 @@ function recalcTotal() {
 async function saveRecibo() {
   const form = document.getElementById('form-generar-recibo');
   if (!form) { toast('Selecciona un contrato primero', 'error'); return; }
+  const selMes  = document.getElementById('sel-recibo-mes');
+  const selAnyo = document.getElementById('sel-recibo-anyo');
+  const mes  = parseInt(selMes?.value);
+  const anyo = parseInt(selAnyo?.value);
+  if (!mes || mes < 1 || mes > 12 || !anyo) { toast('Selecciona un período (mes/año) válido', 'error'); return; }
+
   const data = Object.fromEntries(new FormData(form));
   data.contrato_id  = parseInt(data.contrato_id);
   data.inquilino_id = parseInt(data.inquilino_id);
@@ -239,25 +281,46 @@ async function saveRecibo() {
   data.estado = 'pendiente';
   data.fecha_creacion = new Date().toISOString();
 
-  // Obtener número atómico del servidor (reinicio mensual, sin duplicados)
-  const empresa  = DB.getEmpresa();
-  const prefix   = empresa?.prefijo_recibos || 'REC';
-  const fechaEm  = data.fecha_emision || new Date().toISOString().slice(0, 10);
-  const periodo  = fechaEm.replace(/-/g, '').slice(0, 6);
-  let seqInfo;
-  try {
-    seqInfo = await nextNumeroDoc('REC', periodo, prefix);
-  } catch (e) {
-    toast('No se pudo generar el número de recibo. Inténtalo de nuevo.', 'error');
-    return;
-  }
-  data.numero_recibo = seqInfo.numero;
-  data.numero_seq    = seqInfo.seq;
+  // Aviso de duplicado en cliente (comprobación de cortesía; el backend es quien
+  // impide realmente el duplicado — ver validarDatos()/periodo_key en api.php).
+  // Un recibo anulado o rectificativo no cuenta como "ya existente" para este aviso.
+  const yaExiste = DB.get('recibos').some(r => r.contrato_id === data.contrato_id
+    && r.concepto_periodo === periodoLabel(mes, anyo)
+    && r.estado !== 'anulado' && r.estado !== 'rectificativo');
+  if (yaExiste && !confirm(
+    'Ya existe un recibo para este contrato en ' + periodoLabel(mes, anyo) + '.\n\n¿Crear de todos modos?'
+  )) return;
 
-  await DB.save('recibos', data);
-  closeModalForce();
-  toast('Recibo ' + seqInfo.numero + ' creado correctamente');
-  navigate('recibos');
+  // Deshabilitar el botón durante el guardado para evitar duplicados por doble clic
+  const btn = document.getElementById('btn-crear-recibo');
+  if (btn) btn.disabled = true;
+
+  try {
+    // El año de numeración procede SIEMPRE del período elegido (mes/año),
+    // nunca de fecha_emision ni de la fecha actual del servidor: un recibo "de
+    // diciembre" generado en enero debe numerarse en la serie anual de diciembre.
+    const empresa = DB.getEmpresa();
+    const prefix  = empresa?.prefijo_recibos || 'REC';
+    const periodo = String(anyo);
+    let seqInfo;
+    try {
+      seqInfo = await nextNumeroDoc('REC', periodo, prefix);
+    } catch (e) {
+      toast('No se pudo generar el número de recibo. Inténtalo de nuevo.', 'error');
+      return;
+    }
+    data.numero_recibo = seqInfo.numero;
+    data.numero_seq    = seqInfo.seq;
+
+    const resultado = await DB.save('recibos', data);
+    if (!resultado || resultado.error) return; // DB.save ya muestra el toast de error (incl. duplicado rechazado por el servidor)
+
+    closeModalForce();
+    toast('Recibo ' + seqInfo.numero + ' creado correctamente');
+    navigate('recibos');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 // ── Nuevo recibo individual desde sección Recibos ─────────────
@@ -288,7 +351,7 @@ function modalNuevoReciboLibre() {
     </div>
   `, `
     <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-    <button class="btn btn-primary" onclick="saveRecibo()">
+    <button class="btn btn-primary" id="btn-crear-recibo" onclick="saveRecibo()">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       Crear recibo
     </button>
@@ -307,33 +370,45 @@ function actualizarFormNuevoRecibo() {
   const c = DB.getItem('contratos', contratoId);
   if (!c) return;
   const now = new Date();
-  const mesActual = now.toLocaleDateString('es-ES', { month:'long', year:'numeric' });
-  const primerDia = fmtLocalISO(new Date(now.getFullYear(), now.getMonth(), 1));
-  const ultimoDia = fmtLocalISO(new Date(now.getFullYear(), now.getMonth()+1, 0));
+  const mesSel = now.getMonth() + 1;
+  const anyoSel = now.getFullYear();
+  const primerDia = periodoPrimerDia(mesSel, anyoSel);
+  const ultimoDia = periodoUltimoDia(mesSel, anyoSel);
   const iva  = (c.renta_base||0) * (c.iva_pct||0) / 100;
   const irpf = (c.renta_base||0) * (c.irpf_pct||0) / 100;
   const total = (c.renta_base||0) + iva - irpf;
   body.innerHTML = `
     <form id="form-generar-recibo" class="form-grid form-grid-2">
       <div class="form-group">
+        <label>Período del recibo *</label>
+        <div style="display:flex;gap:8px">
+          <select id="sel-recibo-mes" onchange="actualizarPeriodoRecibo(${c.dia_pago||5})" style="flex:2">
+            ${MESES_LARGOS.map((m,i) => `<option value="${i+1}" ${i+1===mesSel?'selected':''}>${m}</option>`).join('')}
+          </select>
+          <input id="sel-recibo-anyo" type="number" min="2000" max="2099" value="${anyoSel}"
+                 oninput="actualizarPeriodoRecibo(${c.dia_pago||5})" style="flex:1">
+        </div>
+        <div style="font-size:11px;color:var(--gray-500);margin-top:2px">Determina la numeración, el concepto y las fechas de período de abajo.</div>
+      </div>
+      <div class="form-group">
         <label>Fecha emisión</label>
         <input name="fecha_emision" type="date" value="${fmtLocalISO(now)}">
       </div>
       <div class="form-group">
         <label>Período desde</label>
-        <input name="periodo_desde" type="date" value="${primerDia}">
+        <input name="periodo_desde" id="inp-periodo-desde" type="date" value="${primerDia}">
       </div>
       <div class="form-group">
         <label>Período hasta</label>
-        <input name="periodo_hasta" type="date" value="${ultimoDia}">
+        <input name="periodo_hasta" id="inp-periodo-hasta" type="date" value="${ultimoDia}">
       </div>
       <div class="form-group">
         <label>Concepto período</label>
-        <input name="concepto_periodo" value="Alquiler ${mesActual}">
+        <input name="concepto_periodo" id="inp-concepto-periodo" value="${periodoLabel(mesSel, anyoSel)}">
       </div>
       <div class="form-group">
         <label>Fecha límite pago</label>
-        <input name="fecha_limite" type="date" value="${fmtLocalISO(new Date(now.getFullYear(), now.getMonth(), c.dia_pago||5))}">
+        <input name="fecha_limite" id="inp-fecha-limite" type="date" value="${fmtLocalISO(new Date(anyoSel, mesSel-1, c.dia_pago||5))}">
       </div>
       <div class="form-group" style="grid-column:1/-1">
         <div class="form-section-title" style="margin-top:4px">Importes</div>
@@ -507,7 +582,8 @@ function marcarCobrado(id) { modalDarCobro(id); }
 // ANULAR RECIBO — anulación lógica (RD 1619/2012 aplicado por analogía a facturas)
 //   · Nunca se borra físicamente: el recibo original queda con estado 'anulado'.
 //   · Si el recibo TODAVÍA NO tiene factura: se genera un recibo rectificativo
-//     RER-AAAAMM-NNNNN (importes negados) que compensa al original en los totales.
+//     RER-AAAA-NNNNN (importes negados, año del periodo_desde del original) que
+//     compensa al original en los totales.
 //       — Si además el recibo ya estaba COBRADO (total o parcialmente), no se anula
 //         "sin más": se pregunta explícitamente si se quiere devolver el cobro, y el
 //         rectificativo generado incluye ese cobro en negativo (campo `pagos` e
@@ -515,7 +591,7 @@ function marcarCobrado(id) { modalDarCobro(id); }
 //         cancela esa pregunta, no se modifica nada (ni estado ni RER ni cobros).
 //   · Si el recibo tiene una factura EMITIDA asociada: ya no basta con anular el
 //     recibo dejando la factura tal cual — hay que rectificar antes la factura
-//     (genera RET-AAAAMM-NNNNN reutilizando anularFacturaConRectificativa() de
+//     (genera RET-AAAA-NNNNN reutilizando anularFacturaConRectificativa() de
 //     facturas.js) y solo si eso sale bien se anula el recibo. Nunca se genera un
 //     RER en este caso: la corrección fiscal ya queda hecha con el RET de la
 //     factura, y generar además un RER duplicaría la compensación.
@@ -621,9 +697,20 @@ async function anularRecibo(id) {
     )) return;
   }
 
-  // Reservar número del recibo rectificativo (atómico, reinicio mensual, mismo servicio que REC/FAC)
-  const hoy     = new Date().toISOString().split('T')[0];
-  const periodo = hoy.replace(/-/g, '').slice(0, 6);
+  // Reservar número del recibo rectificativo (atómico, numeración anual, mismo servicio que REC/FAC).
+  // El año de numeración del RER sale del período (periodo_desde) del RECIBO ORIGINAL
+  // que se rectifica, no de la fecha de emisión del propio rectificativo: un recibo de
+  // junio anulado en julio debe generar un RER numerado en la serie de 2026 (el año del
+  // original), igual que el propio REC. Si el original no tiene periodo_desde (dato
+  // legacy anterior a esa columna), se usa su fecha_emision como año de referencia —
+  // nunca la fecha actual del servidor.
+  const hoy = new Date().toISOString().split('T')[0];
+  const fechaRefOriginal = String(r.periodo_desde || r.fecha_emision || '');
+  if (!/^\d{4}-\d{2}-\d{2}/.test(fechaRefOriginal)) {
+    toast('El recibo original no tiene un período (periodo_desde/fecha_emision) válido; no se puede generar el rectificativo.', 'error');
+    return;
+  }
+  const periodo = fechaRefOriginal.slice(0, 4);
   let rerInfo;
   try {
     rerInfo = await nextNumeroDoc('RER', periodo, 'RER');

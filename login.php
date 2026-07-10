@@ -5,7 +5,9 @@
 //  Si todavía no existe ningún usuario, redirige a install.php
 //  para completar la primera instalación (crear el primer admin).
 // ============================================================
+require __DIR__ . '/assets/php/helpers.php';
 require __DIR__ . '/assets/php/auth.php';
+requireLocalhost();
 $cfg = require __DIR__ . '/assets/php/config.php';
 session_bootstrap();
 

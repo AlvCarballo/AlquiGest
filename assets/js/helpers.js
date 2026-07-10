@@ -190,6 +190,30 @@ function montoEnLetras(n) {
 function fmtLocalISO(d) {
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
+
+// ===========================
+// PERÍODO CANÓNICO DE UN RECIBO/DOCUMENTO (mes 1-12 + año)
+// Única fuente de verdad para derivar de un mes/año: la etiqueta legible
+// (concepto_periodo), la clave YYYYMM (numeración/doc_secuencias) y las
+// fechas de inicio/fin de período. La generación individual (recibos-cobro.js)
+// y la generación en lote (generar.js) usan SIEMPRE estas mismas funciones
+// para que un recibo creado por una vía sea reconocido como "ya existente"
+// por la otra (evita el bug de junio/julio con formatos de texto distintos).
+// ===========================
+const MESES_LARGOS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function periodoLabel(mes, anyo) {
+  return MESES_LARGOS[mes - 1] + ' ' + anyo;
+}
+function periodoYYYYMM(mes, anyo) {
+  return String(anyo) + String(mes).padStart(2, '0');
+}
+function periodoPrimerDia(mes, anyo) {
+  return fmtLocalISO(new Date(anyo, mes - 1, 1));
+}
+function periodoUltimoDia(mes, anyo) {
+  return fmtLocalISO(new Date(anyo, mes, 0));
+}
 // Alterna la visibilidad de un campo contraseña. Usado en empresa.js y configuracion.js.
 function _togglePass(inputId, btn) {
   const inp = document.getElementById(inputId);
@@ -204,23 +228,36 @@ function _togglePass(inputId, btn) {
 // Garantiza que nunca se generan duplicados aunque se llame desde varios
 // contextos simultáneamente (usa SELECT FOR UPDATE en una transacción InnoDB).
 //
-// tipo    : 'REC', 'FAC', 'RET' (factura rectificativa), 'RER' (recibo rectificativo), etc.
-// periodo : 'YYYYMM' — si se omite usa el mes actual
+// tipo    : 'REC'/'RER'/'FAC'/'RET' → los 4 tipos usan numeración ANUAL
+//           (periodo 'AAAA'). Fuente del año según tipo:
+//             REC → año de periodo_desde del propio recibo.
+//             RER → año de periodo_desde del recibo ORIGINAL que se rectifica.
+//             FAC → año de fecha_emision de la factura.
+//             RET → año de fecha_emision de la factura rectificativa.
+//           Nunca se sustituye por la fecha actual del servidor.
+// periodo : obligatorio, formato 'AAAA' (4 dígitos). Nunca se omite ni se
+//           sustituye por la fecha actual.
 // prefijo : prefijo del número formateado — si se omite usa el tipo
 //
 // Retorna: Promise<{ seq: number, numero: string, tipo: string, periodo: string }>
-//   ejemplo: { seq: 42, numero: 'REC-202606-00042', tipo: 'REC', periodo: '202606' }
+//   ejemplo REC: { seq: 42, numero: 'REC-2026-00042', tipo: 'REC', periodo: '2026' }
+//   ejemplo FAC: { seq: 7,  numero: 'FAC-2026-00007', tipo: 'FAC', periodo: '2026' }
 //
 // Lanza una excepción si el servidor devuelve un error (para capturar con try/catch).
+const TIPOS_DOC = ['REC', 'RER', 'FAC', 'RET'];
 async function nextNumeroDoc(tipo, periodo, prefijo) {
-  const now  = new Date();
-  const p    = periodo || (now.getFullYear() + String(now.getMonth()+1).padStart(2,'0'));
+  const periodoStr = String(periodo || '');
+  const formatoValido = TIPOS_DOC.includes(tipo) && /^\d{4}$/.test(periodoStr);
+  if (!formatoValido) {
+    const esperado = TIPOS_DOC.includes(tipo) ? 'AAAA' : '(tipo no reconocido)';
+    throw new Error(`nextNumeroDoc: periodo inválido para tipo "${tipo}" (se esperaba ${esperado})`);
+  }
   const pref = prefijo || tipo;
   const url  = `assets/php/api.php?action=nextNumeroDoc`
              + `&tipo=${encodeURIComponent(tipo)}`
-             + `&periodo=${encodeURIComponent(p)}`
+             + `&periodo=${encodeURIComponent(periodo)}`
              + `&prefijo=${encodeURIComponent(pref)}`;
-  const res  = await fetch(url);
+  const res  = await fetch(url, { method: 'POST' });
   const json = await res.json();
   if (!res.ok || json.error) throw new Error(json.error || 'Error al generar número de documento');
   return json;
